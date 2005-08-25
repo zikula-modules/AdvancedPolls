@@ -1,0 +1,18 @@
+<strong><!--[pnml name="_ADVANCEDPOLLSRANKEDMULTIPLESELECT"]--> <!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--> <!--[$multiplecount|pnvarprephtmldisplay]--> <!--[pnml name=_ADVANCEDPOLLSRANKEDMULTIPLESELECTCOUNTOPTIONS]--></strong>
+<br /><br />
+<table>
+<!--[counter name=counter print=false start=1 assign=optioncounter]-->
+<!--[section name=multiloop loop=$multiplecount]-->
+	<tr>
+		<td><label for="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--> <!--[$optioncounter]-->"><!--[pnml name="_ADVANCEDPOLLSCHOICE"]--> <!--[$optioncounter]--></label> :</td>
+		<td>
+			<select id="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--> <!--[$optioncounter]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
+				<!--[section name=options loop=$options]-->
+					<option value="<!--[$options[options].id|pnvarprepfordisplay]-->"><!--[$options[options].optiontext|pnvarprephtmldisplay|pnvarcensor]--></option>
+				<!--[/section]-->
+			</select><br />
+		</td>
+	<!--[counter name=counter print=false]-->
+	</tr>
+<!--[/section]-->
+</table>

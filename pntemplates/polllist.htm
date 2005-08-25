@@ -1,0 +1,10 @@
+<div style="padding:0.5em;">
+<table>
+<!--[section name=polllist loop=$polls]-->
+<tr>
+<td><!--[$polls[polllist].polltitle|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+<td><a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$polls[polllist].pollid]-->"><!--[pnml name="_ADVANCEDPOLLSVOTE"]--></a></td>
+<!--[/section]-->
+</tr>
+</table>
+</div>

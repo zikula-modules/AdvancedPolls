@@ -1,0 +1,11 @@
+Advanced Polls Module
+Mark West
+(c) 2002-2004
+http://www.markwest.me.uk
+support@markwest.me.uk
+
+
+Additional credits
+
+Gyan S. Penrose-Kafka for writing the initial draft code to group results presented from 
+multiple selection polls

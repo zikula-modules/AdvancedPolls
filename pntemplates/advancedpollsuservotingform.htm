@@ -1,0 +1,31 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsusermenu.htm"]-->
+<h2><!--[pnml name=_ADVANCEDPOLLSCURRENT]--> - <!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></h2>
+<div style="text-align:center;">
+<!--[$item.pn_description|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--><br />
+<form name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+	<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+	<input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+	<input type="hidden" name="polltitle" value="<!--[$polltitle|pnvarprephtmldisplay]-->" />
+	<input type="hidden" name="results" value="1" />
+	<!--[if $polltype eq 0]-->
+		<!--[include file="advancedpollsuservotingform-singleoptionselect.htm"]-->
+	<!--[else]-->
+		<input type="hidden" name="multiple" value="1" />
+		<input type="hidden" name="multiplecount" value="<!--[$multiplecount]-->" />
+		<!--[if $polltype eq 1]-->
+			<!--[if $multiplecount eq -1]-->
+				<!--[include file="advancedpollsuservotingform-unlimitedmultipleselect.htm"]-->
+			<!--[else]-->
+				<!--[include file="advancedpollsuservotingform-multipleselect.htm"]-->
+			<!--[/if]-->
+		<!--[else]-->
+			<!--[include file="advancedpollsuservotingform-rankedmultipleselect.htm"]-->
+		<!--[/if]-->
+	<!--[/if]-->
+	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
+	</div>
+</form>
+</div>
+<!--[$hooks]-->

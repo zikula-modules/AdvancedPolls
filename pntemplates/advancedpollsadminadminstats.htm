@@ -1,0 +1,51 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsadminmenu.htm"]-->
+<h2><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICS"]--></h2>
+<strong><!--[pnml name="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.pn_title|pnvarprephtmldisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.pn_opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.pn_closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay]--><br />
+</div>
+<div style="float:right;">
+<form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="adminstats"]-->" method="post" enctype="application/x-www-form-urlencoded">
+  <div>
+  <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+  <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+  <label for="advancedpolls_sortby"><!--[pnml name=_ADVANCEDPOLLSSORTVOTESBY"]--></label>
+  <select id="advancedpolls_sortby" name="sortby">
+    <!--[html_options options=$sortbyoptions selected=$sortby]-->
+  </select>
+  <label for="advancedpolls_sortorder"><!--[pnml name="_ADVANCEDPOLLSSORTVOTESORDER"]--></label>
+  <select name="sortorder">
+    <!--[html_options options=$sortorderoptions selected=$sortorder]-->
+  </select>
+  <input type="submit" value="<!--[pnml name="_ADVANCEDPOLLSSORTVOTES"]-->" />
+  </div>
+</form>
+<table width="100%" border="3">
+<caption><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICSTABLE"]--></caption>
+  <thead>
+	  <tr>
+		  <th id="col1"><!--[pnml name="_ADVANCEDPOLLSVOTEID"]--></th>
+		  <th id="col2"><!--[pnml name="_ADVANCEDPOLLSVOTEIP"]--></th>
+		  <th id="col3"><!--[pnml name="_ADVANCEDPOLLSVOTETIME"]--></th>
+		  <th id="col4"><!--[pnml name="_ADVANCEDPOLLSVOTEUID"]--></th>
+		  <th id="col5"><!--[pnml name="_ADVANCEDPOLLSVOTERANK"]--></th>
+		  <th id="col6"><!--[pnml name="_ADVANCEDPOLLSVOTEOPTIONID"]--></th>
+	  </tr>
+  </thead>
+  <tbody>
+  <!--[section name=votes loop=$votes]-->  
+    <tr>
+      <td headers="col1"><!--[$votes[votes].voteid|pnvarprepfordisplay]--></td>
+      <td headers="col2"><!--[$votes[votes].host|pnvarprepfordisplay]--></td>
+      <td headers="col3"><!--[$votes[votes].time|pnvarprepfordisplay]--></td>
+      <td headers="col4"><!--[$votes[votes].user|pnvarprepfordisplay]--></td>
+      <td headers="col5"><!--[$votes[votes].rank|pnvarprepfordisplay]--></td>
+      <td headers="col6"><!--[$votes[votes].optiontext|pnvarprepfordisplay]--></td>
+    </tr>
+  <!--[/section]-->
+  </tbody>
+</table>
+<!--[pager show=page rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->
+

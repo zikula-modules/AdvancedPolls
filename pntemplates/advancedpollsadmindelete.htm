@@ -1,0 +1,13 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsadminmenu.htm"]-->
+<h2><!--[pnml name="_ADVANCEDPOLLSDELETE"]--></h2>
+<!--[pnml name="_ADVANCEDPOLLSCONFIRMDELETE"]-->
+<form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
+	<div>
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+    <input type="hidden" name="confirmation" value="1" />
+    <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSCONFIRMDELETE"]-->" />
+	</div>
+</form>
+<a href="<!--[pnmodurl modname="advanced_polls" type="admin" func="view"]-->"><!--[pnml name="_ADVANCEDPOLLSCANCELDELETE"]--></a>

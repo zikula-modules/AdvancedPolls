@@ -1,0 +1,28 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsadminmenu.htm"]-->
+<table class="pn-admintable">
+<caption><!--[pnml name="_ADVANCEDPOLLSVIEW"]--></caption>
+  <thead>
+	  <tr>
+		  <th id="col1"><!--[pnml name="_ADVANCEDPOLLSNAME"]--></th>
+		  <th id="col2"><!--[pnml name="_ADVANCEDPOLLSNUMBER"]--></th>
+		  <th id="col3"><!--[pnml name="_ADVANCEDPOLLSOPTIONS"]--></th>
+	  </tr>
+  </thead>
+  <tbody>
+  <!--[section name=polls loop=$polls]-->  
+    <tr class="<!--[cycle values=pn-odd,pn-even]-->">
+      <td headers="col1"><!--[$polls[polls].polltitle|pnvarprepfordisplay]--></td>
+      <td headers="col2"><!--[$polls[polls].pollid|pnvarprepfordisplay]--></td>
+	  <td headers="col3">
+	    <!--[assign var="options" value=$polls[polls].options]-->
+        [&nbsp;<!--[section name=options loop=$options]-->
+	    <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+			<!--[if $smarty.section.options.last neq true]-->&nbsp;|&nbsp;<!--[/if]-->
+        <!--[/section]-->&nbsp;]
+	  </td>
+    </tr>
+  <!--[/section]-->
+  </tbody>
+</table>
+<!--[pager show=page rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->

@@ -1,0 +1,53 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsadminmenu.htm"]-->
+<script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
+<h2><!--[pnml name="_ADVANCEDPOLLSMODIFYCONFIG"]--></h2>
+<form class="pn-adminform" name="advanced_polls_admin_modifyconfig" action="<!--[pnmodurl modname=advanced_polls type=admin func=updateconfig]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_polladminitemsperpage"><!--[pnml name="_ADVANCEDPOLLSADMINITEMSPERPAGE"]--></label>
+		<input id="advancedpolls_polladminitemsperpage" type="text" name="polladminitemsperpage" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_polluseritemsperpage"><!--[pnml name="_ADVANCEDPOLLSUSERITEMSPERPAGE"]--></label>
+		<input id="advancedpolls_polluseritemsperpage" type="text" name="polluseritemsperpage" size="3" value="<!--[$useritemsperpage|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_pollusereversedns"><!--[pnml name="_ADVANCEDPOLLSUSEREVERSEDNS"]--></label>
+		<!--[if $usereversedns eq 1]-->
+			<input id="advancedpolls_pollusereversedns" name="pollusereversedns" type="checkbox" value="1" checked="checked" />
+		<!--[else]-->
+			<input id="advancedpolls_pollusereversedns" name="pollusereversedns" type="checkbox" value="1" />
+		<!--[/if]-->
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_pollscalingfactor"><!--[pnml name="_ADVANCEDPOLLSSCALINGFACTOR"]--></label>
+		<input id="advancedpolls_pollscalingfactor" type="text" name="pollscalingfactor" size="3" value="<!--[$scalingfactor|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_polladmindateformat"><!--[pnml name="_ADVANCEDPOLLSADMINDATEFORMAT"]--></label>
+		<select id="advancedpolls_polladmindateformat" name="polladmindateformat" size="1">
+			<!--[html_options options=$dateformats selected=$admindateformat]-->
+		</select>
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_polluserdateformat"><!--[pnml name="_ADVANCEDPOLLSADMINDATEFORMAT"]--></label>
+		<select id="advancedpolls_polluserdateformat" name="polluserdateformat" size="1">
+			<!--[html_options options=$dateformats selected=$userdateformat]-->
+		</select>
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_defaultcolor"><!--[pnml name="_ADVANCEDPOLLSDEFAULTCOLOUR"]--></label>
+		<input id="advancedpolls_defaultcolor" type="text" name="defaultcolour" size="7" maxlength="7" value="<!--[$defaultcolour|pnvarprepfordisplay]-->" />
+		<a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+	</div>
+	<div class="pn-adminformrow">
+		<label for="advancedpolls_defaultoptioncount"><!--[pnml name="_ADVANCEDPOLLSDEFAULTOPTIONCOUNT"]--></label>
+		<input id="advancedpolls_defaultoptioncount" type="text" name="defaultoptioncount" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
+	</div>
+	<div class="pn-adminformrow">
+		<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSUPDATECONFIG"]-->" />
+	</div>
+</div>
+</form>

@@ -1,0 +1,12 @@
+<table>
+<!--[section name=options loop=$options]-->
+	<tr>
+	<!--[if $options[options].optioncolor neq '']-->		  
+		<td><span style="color:<!--[$options[options].optioncolor]-->;"><label for="<!--[$options[options].optiontext|pnvarprephtmldisplay]-->"><!--[$options[options].optiontext|pnvarprephtmldisplay]--></label></span></td>
+	<!--[else]-->
+		<td><!--[$options[options].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+	<!--[/if]-->
+	<td><input id="<!--[$options[options].optiontext|pnvarprephtmldisplay]-->" type="radio" name="option<!--[$pollid|pnvarprepfordisplay]-->" value="<!--[$options[options].voteid|pnvarprepfordisplay]-->"></td>
+	</tr>
+<!--[/section]-->
+</table>

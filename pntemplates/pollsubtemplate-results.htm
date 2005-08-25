@@ -1,0 +1,10 @@
+<table>
+<!--[section name=polloptions loop=$polloptions]-->
+	<!--[if $polloptions[polloptions].optiontext neq '']-->
+	<tr>
+		<td><!--[$polloptions[polloptions].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+		<td><!--[$votecounts.percentages[polloptions].percent|pnvarprepfordisplay]-->%</td>
+	</tr>
+	<!--[/if]-->
+<!--[/section]-->
+</table>

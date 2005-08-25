@@ -1,0 +1,2 @@
+This module is released under the GPL. Please see 
+http://www.gnu.org/copyleft/gpl.html  for details.

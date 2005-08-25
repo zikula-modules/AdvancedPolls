@@ -1,0 +1,115 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsadminmenu.htm"]-->
+<script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
+<h2><!--[pnml name="_ADVANCEDPOLLSEDIT"]--></h2>
+<form class="pn-adminform" name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+	<input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+	<fieldset>
+		<legend><!--[pnml name=_ADVANCEDPOLLSBASICINFO]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollname"><!--[pnml name="_ADVANCEDPOLLSNAME"]--></label>
+			<input id="advancedpolls_pollname" name="pollname" type="text" size="50" maxlength="75" value="<!--[$item.pn_title|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_polldescription"><!--[pnml name="_ADVANCEDPOLLSDESCRIPTION"]--></label>
+			<textarea id="advancedpolls_polldescription" name="polldescription" rows="10" cols="50"><!--[$item.pn_description|pnvarprephtmldisplay]--></textarea>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_polllanguage"><!--[pnml name="_LANGUAGE"]--> </label>
+			<!--[languagelist name="polllanguage" installed=true selected=$item.pn_language]-->
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_ADVANCEDPOLLSTIMING]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_startdate"><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></label>
+			<div style="white-space:nowrap">
+				<!--[html_select_date year_as_text=true prefix="start" time=$item.pn_opendate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="start" time=$item.pn_opendate]-->
+			</div>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_closedate"><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></label>
+			<div style="white-space:nowrap">
+				<!--[html_select_date year_as_text=true prefix="close" time=$item.pn_closedate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="close" time=$item.pn_closedate]-->
+			</div>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_noclosedate"><strong style="float:left"><!--[pnml name=_OR]--></strong>&nbsp;<!--[pnml name="_ADVANCEDPOLLSNOCLOSE"]--></label>
+			<!--[if $item.pn_closedate eq 0]-->
+				<input type="checkbox" id="advancedpolls_noclosedate" name="pollnoclosedate" value="1" checked="checked" />
+			<!--[else]-->
+				<input type="checkbox" id="advancedpolls_noclosedate" name="pollnoclosedate" value="1" />
+			<!--[/if]-->
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_ADVANCEDPOLLSREGULATIONS]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollvoteauthtype"><!--[pnml name="_ADVANCEDPOLLSAUTHTYPE"]--> </label>
+			<select id="advancedpolls_pollvoteauthtype" name="pollvoteauthtype">
+				<!--[html_options options=$authtypes selected=$item.pn_voteauthtype]-->
+			</select>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_polltiebreak"><!--[pnml name="_ADVANCEDPOLLSTIEBREAK"]--> </label>
+			<select id="advancedpolls_polltiebreak" name="polltiebreak">
+				<!--[html_options options=$tiebreaktypes selected=$item.pn_tiebreakalg]-->
+			</select>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollmultipleselect"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECT"]--> </label>
+			<select id="advancedpolls_pollmultipleselect" name="pollmultipleselect">
+				<!--[html_options options=$multipleselecttypes selected=$item.pn_multipleselect]-->
+			</select>
+		</div>
+		<legend><!--[pnml name=_ADVANCEDPOLLSONLYMULTIPLESELECT]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollmultipleselectcount"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--></label>
+			<input id="advancedpolls_pollmultipleselectcount" name="pollmultipleselectcount" type="text" size="5" maxlength="5" value="<!--[$item.pn_multipleselectcount|pnvarprepfordisplay]-->" /> <!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNTUNLIMITED"]-->
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollrecurring"><!--[pnml name="_ADVANCEDPOLLSRECURRING"]--> </label>
+			<select id="advancedpolls_pollrecurring" name="pollrecurring">
+				<!--[if $item.pn_recurring eq 0]-->
+					<option value="0" selected="selected"><!--[pnml name="_NO"]--></option>
+					<option value="1"><!--[pnml name="_YES"]--></option>
+				<!--[else]-->
+					<option value="0"><!--[pnml name="_NO"]--></option>
+					<option value="1" selected="selected"><!--[pnml name="_YES"]--></option>
+				<!--[/if]-->
+			</select>
+		</div>
+		<legend><!--[pnml name=_ADVANCEDPOLLSONLYRECURRING]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollrecurringoffset"><!--[pnml name="_ADVANCEDPOLLSRECURRINGOFFSET"]--></label>
+			<input id="advancedpolls_pollrecurringoffset" name="pollrecurringoffset" type="text" size="5" maxlength="5" value="<!--[$item.pn_recurringoffset|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_pollrecurringinterval"><!--[pnml name="_ADVANCEDPOLLSRECURRINGINTERVAL"]--></label>
+			<input id="advancedpolls_pollrecurringinterval" name="pollrecurringinterval" type="text" size="5" maxlength="5" value="<!--[$item.pn_recurringinterval|pnvarprepfordisplay]-->" />
+		</div>
+	</fieldset>
+	<fieldset>
+		<!--[assign var="polloptions" value=$item.pn_optionarray]-->
+		<legend><!--[pnml name=_ADVANCEDPOLLSOPTIONS]--></legend>
+		<!--[section name=polloptions loop=$polloptions]-->
+		<!--[assign var="rowcount" value=$smarty.section.polloptions.rownum]-->
+		<div class="pn-adminformrow">
+			<div style="white-space:nowrap">
+				<label for="advancedpolls_polloption<!--[$rowcount]-->"><!--[pnml name="_ADVANCEDPOLLSOPTION"]--> <!--[$rowcount]--></label>
+				<input id="advancedpolls_polloption<!--[$rowcount]-->" type="text" name="polloption<!--[$rowcount]-->" size="50" maxlength="255" value="<!--[$polloptions.$arraycount.optiontext|pnvarprepfordisplay]-->" />
+				<input id="advancedpolls_polloption<!--[$rowcount]-->color" type="text" name="polloption<!--[$rowcount]-->color" size="7" maxlength="7" value="<!--[$polloptions.$arraycount.optioncolour|pnvarprepfordisplay]-->" />
+				<a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['polloption<!--[$rowcount]-->color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+			</div>
+		</div>
+		<!--[/section]-->
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_polloptioncount"><!--[pnml name="_ADVANCEDPOLLSOPTIONCOUNT"]--></label>
+			<input id="advancedpolls_polloptioncount" name="polloptioncount" type="text" size="3" maxlength="3" value="<!--[$item.pn_optioncount|pnvarprepfordisplay]-->" />
+		</div>
+	</fieldset>
+	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSUPDATE"]-->" />
+</div>
+</form>

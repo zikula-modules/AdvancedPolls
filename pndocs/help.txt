@@ -1,0 +1,120 @@
+Advanced Polls Module v1.51 alpha 1
+
+Description
+-----------
+A rewrite of the core Postnuke polling module to be pnAPI compliant and 
+introduce extended functionality. 
+
+This module is independant to the standard Postnuke polling module and the 
+two modules will happily coincide with each other.
+
+Download
+--------
+http://www.markwest.me.uk
+
+Demo
+----
+http://www.markwest.me.uk
+
+Author
+------
+Mark West - support@markwest.me.uk
+
+Licence
+-------
+
+This module is released under the GPL. Please see 
+http://www.gnu.org/copyleft/gpl.html  for details.
+
+Supported Platforms
+-------------------
+PN .726 or greater running XTE RC3 or later
+
+Feature List
+------------
+1. Single, Multiple or Ranked Selection Polls
+2. Postnuke User, IP or Cookie based voting restrictions
+3. Configurable open and close dates for polls
+4. Recurring Polls options (allows poll to close, clear its results and reopen)
+   Note: I  required this feature for my own site but not sure how useful it may
+   be for others sites.
+5. Tiebreaking functionality.
+6. Block to display and individual, latest or random.
+7. Block to display a list of the polls the current user may vote in.
+8. Block to display the results of the most recently closed polls.
+9. Poll Duplication and Reset options.
+10. Admin voting statistics.
+11. Block to warn a user if a poll has not been voted in - Thanks to Mats Kling for the initial code.
+12. Support for HTML in poll title, descriptions and options including images.
+13. Colour palette to select color overrides for text.
+14. Poll not limited to standard 12 options.
+14. All output fully templated using pnRender (XTE).
+
+Installation Procedure
+----------------------
+1. Copy contents of the archive to your modules directory.
+2. Login to your site as an admin.
+3. Go to the modules administration page and regenerate the modules list.
+4. Locate the advanced polls entry and initialise it.
+5. Locate the advanced polls entry and activate it.
+
+Upgrade Procedure
+-----------------
+1. Copy contents of the archive to your modules directory.
+2. Login to your site as an admin.
+3. Go to the modules administration page and regenerate the modules list.
+4. Locate the advanced polls entry and upgrade it.
+5. Locate the advanced polls entry and activate it.
+
+Permissions
+-----------
+The Postnuke permissions system can be used to restrict access to both the
+administrative and user features of this module. Examples of the usage of
+permissions in this module are as follow
+
+1 Core Module
+
+In addition to the voting regulations in each poll permissions can be used to
+restrict voting to specific groups of users. To restrict the poll 'A Sample 
+Poll' with a Poll ID of 5 from a group called 'Non Voting Users' set these 
+permissions
+
+Group - Non Voting Users
+Component - advanced polls::item
+Instance - A Sample Poll::5
+Permissions Level - None
+
+2 Poll Block
+
+To disallow unregistered users from seeing the a poll block titled 'A Sample 
+Poll' set these permissions
+
+Group - Unregistered
+Component - advanced_polls:pollblock:
+Instance - A Sample Poll::
+Permissions Level - None
+
+3 PollList Block
+
+To disallow unregistered users from seeing the a polllist block titled 'Voting 
+Booth' set these permissions
+
+Group - Unregistered
+Component - advanced_polls:polllistblock:
+Instance - Voting Booth::
+Permissions Level - None
+
+All permissions examples can be equally applied to user based permissions.
+
+Support andFeedback
+-------------------
+Support can be obtained via http://www.markwest.me.uk or via the PN support forums on 
+http://forums.postnuke.com/phpBB2/.
+
+Feedback can be provided via http://www.markwest.me.uk  or via e-mail to support@markwest.me.uk
+
+Note all support requests should be posted in either forum and not via e-mail
+
+Future Features
+---------------
+See the project status page on http://www.markwest.me.uk

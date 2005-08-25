@@ -1,0 +1,43 @@
+<!--[*  $Id$  *]-->
+<!--[include file="advancedpollsusermenu.htm"]-->
+<h2>
+<!--[if $ispollopen eq 1]-->
+<!--[pnml name="_ADVANCEDPOLLSCURRENT"]--> - <!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[else]-->
+<!--[pnml name="_ADVANCEDPOLLSPREVIOUS"]--> - <!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[/if]-->
+</h2>
+<br />
+<!--[$polldescription|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<br />
+<table width="100%">
+	<!--[section name=results loop=$results]-->
+	<tr>
+		<td>
+			<!--[if $results[results].optioncolor neq '']-->
+				<span style="color:<!--[$results[results].optioncolor]-->;">
+					<!--[$results[results].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+				</span>
+			<!--[else]-->
+				<!--[$results[results].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+			<!--[/if]-->
+		</td>
+		<td>
+			<!--[if $results[results].percentage gt 0]-->
+				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$results[results].percentage]--><!--[pnimg src="mainbar.gif" height="15" width=$results[results].scaledpercentage alt=$results[results].percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$results[results].percentage]-->
+			<!--[else]-->
+				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$results[results].percentage]--><!--[pnimg src="mainbar.gif" height="15" width="3" alt=$results[results].percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$results[results].percentage]-->
+			<!--[/if]-->
+		</td>
+		<td>
+			<!--[$results[results].votecount|pnvarprepfordisplay]-->
+			<!--[if $results[results].votecount eq 1 ]-->
+				<!--[pnml name="_ADVANCEDPOLLSVOTE"]-->
+			<!--[else]-->
+				<!--[pnml name="_ADVANCEDPOLLSVOTES"]-->
+			<!--[/if]-->
+		</td>
+	</tr>
+	<!--[/section]-->
+</table>
+<!--[$hooks]-->
