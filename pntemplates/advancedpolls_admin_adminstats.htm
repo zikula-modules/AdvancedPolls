@@ -22,7 +22,7 @@
   <input type="submit" value="<!--[pnml name="_ADVANCEDPOLLSSORTVOTES"]-->" />
   </div>
 </form>
-<table width="100%" border="3">
+<table class="pn-admintable">
 <caption><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICSTABLE"]--></caption>
   <thead>
 	  <tr>
@@ -36,7 +36,7 @@
   </thead>
   <tbody>
   <!--[section name=votes loop=$votes]-->  
-    <tr>
+    <tr class="<!--[cycle values=pn-odd,pn-even]-->">
       <td headers="col1"><!--[$votes[votes].voteid|pnvarprepfordisplay]--></td>
       <td headers="col2"><!--[$votes[votes].host|pnvarprepfordisplay]--></td>
       <td headers="col3"><!--[$votes[votes].time|pnvarprepfordisplay]--></td>
