@@ -2,7 +2,7 @@
 <strong><!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></strong><br />
 </div>
 <div style="text-align:center;width:100%;">
-<!--[include file="pollsubtemplate-results.htm"]-->
+<!--[include file="advancedpolls_block_poll_results.htm"]-->
 <!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$polloptionarray.$votecounts.pn_leadingvoteid.name]--><br />
 <!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.pn_totalvotecount]--><br />
 <a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pn_pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
