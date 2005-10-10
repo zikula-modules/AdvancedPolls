@@ -107,4 +107,8 @@ define('_ADVANCEDPOLLNOSUCHITEM', 'No such poll');
 define('_ADVANCEDPOLLSVOTECOUNT', 'Vote count');
 define('_ADVANCEDPOLLSDESCRIPTION', 'Description');
 define('_ADVANCEDPOLLSNOCLOSE', 'No close date');
+define('_ADVANCEDPOLLSBASICINFO', 'Basic Information');
+define('_ADVANCEDPOLLSTIMING', 'Timing');
+define('_ADVANCEDPOLLSREGULATIONS', 'Voting regulations');
+
 ?>
