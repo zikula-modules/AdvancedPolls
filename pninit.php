@@ -345,14 +345,7 @@ function advanced_polls_delete()
 	}
 	
 	// Delete any module variables
-	pnModDelVar('advanced_polls', 'admindateformat');
-	pnModDelVar('advanced_polls', 'userdateformat');
-	pnModDelVar('advanced_polls', 'usereversedns');
-	pnModDelVar('advanced_polls', 'scalingfactor');
-	pnModDelVar('advanced_polls', 'adminitemsperpage');
-	pnModDelVar('advanced_polls', 'useritemsperpage');
-    pnModDelVar('advanced_polls', 'defaultcolour');
-    pnModDelVar('advanced_polls', 'defaultoptioncount');
+	pnModDelVar('advanced_polls');
 
 	// Deletion successful
 	return true;
