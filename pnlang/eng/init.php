@@ -10,5 +10,5 @@
 * @link http://www.markwest.me.uk Advanced Polls Support Site
 * @copyright (C) 2002-2004 by Mark West
 */
-define('_CREATETABLEFAILED', 'Table creation failed');
+
 ?>
