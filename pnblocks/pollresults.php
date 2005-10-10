@@ -102,7 +102,10 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 	 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
-	 
+
+	// load the user language file
+	pnModLangLoad('advanced_polls', 'user');
+
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
     $pnRender =& new pnRender('advanced_polls');

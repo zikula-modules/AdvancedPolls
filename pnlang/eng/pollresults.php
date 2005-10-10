@@ -12,15 +12,4 @@
 * @copyright (C) 2002-2004 by Mark West
 */
 
-// defines in block display most are duplicated in the main user interface
-// so we must check if they're already defined to prevent E_ALL errors.
-if (!defined('_ADVANCEDPOLLSDETAILEDRESULTS')) {
-    define('_ADVANCEDPOLLSDETAILEDRESULTS','Detailed Results');
-}
-if (!defined('_ADVANCEDPOLLSVOTECOUNT')) {
-    define('_ADVANCEDPOLLSVOTECOUNT','Votes');
-}
-if (!defined('_ADVANCEDPOLLSWINNER')) {
-    define('_ADVANCEDPOLLSWINNER','Winner');
-}
 ?>

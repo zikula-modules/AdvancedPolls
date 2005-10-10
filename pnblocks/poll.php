@@ -125,6 +125,9 @@ function advanced_polls_pollblock_display($blockinfo)
 		return false;
 	}
 
+	// load the user language file
+	pnModLangLoad('advanced_polls', 'user');
+
 	$polloptionarray = array();
 	$polloptionarray = $item['pn_optionarray'];
 

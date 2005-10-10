@@ -51,4 +51,6 @@ define('_ADVANCEDPOLLSAT','at');
 define('_ADVANCEDPOLLSRESULTS', 'Results');
 define('_ADVANCEDPOLLSVOTEFAILED', 'Failed to register vote');
 define('_ADVANCEDPOLLSNOCLOSEDATE', 'No close date');
+define('_ADVANCEDPOLLSWINNER','Winner');
+
 ?>

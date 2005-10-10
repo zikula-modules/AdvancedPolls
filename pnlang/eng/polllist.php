@@ -11,7 +11,5 @@
 * @link http://www.markwest.me.uk Advanced Polls Support Site
 * @copyright (C) 2002-2004 by Mark West
 */
-if (!defined('_ADVANCEDPOLLSVOTE')) {
-    define('_ADVANCEDPOLLSVOTE','Vote');
-}
+
 ?>

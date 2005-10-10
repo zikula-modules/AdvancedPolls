@@ -86,6 +86,9 @@ function advanced_polls_polllistblock_display($blockinfo)
     // get a polls from the api
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
+	// load the user language file
+	pnModLangLoad('advanced_polls', 'user');
+
     // Create output object
     $pnRender =& new pnRender('advanced_polls');
 
