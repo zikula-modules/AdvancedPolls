@@ -82,9 +82,6 @@ function advanced_polls_polllistblock_display($blockinfo)
 	}
 	// Get variables from content block
 	$vars = pnBlockVarsFromContent($blockinfo['content']);
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
-	}
 
     // get a polls from the api
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');

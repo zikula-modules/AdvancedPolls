@@ -80,14 +80,6 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 		return;
 	}
 
-	// Load API.  All of the actual work for obtaining information on the items
-	// is done within the API, so we need to load that in before we can do
-	// anything.  If the API fails to load an appropriate error message is
-	// posted and the function returns
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
-	}
-
 	// get full details on this poll from api
 	$pollid = pnModAPIFunc('advanced_polls', 'user', 'getlastclosed');
 	

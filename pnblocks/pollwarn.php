@@ -88,14 +88,6 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 	$pollopenclosebaseddisplay = $vars['pollopenclosebaseddisplay'];
 	$polluse = $vars['polluse'];
 
-	// Load API.  All of the actual work for obtaining information on the items
-	// is done within the API, so we need to load that in before we can do
-	// anything.  If the API fails to load an appropriate error message is
-	// posted and the function returns
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
-	}
-
 	if ($polluse == 1) {
 		$items = pnModAPIFunc('advanced_polls',	'user',	'getall', array('startnum' => 0));
 		$item = $items[0];
@@ -186,14 +178,6 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
 
 	if (empty($vars['polluse'])) {
 		$vars['polluse'] = 0;
-	}
-
-	// Load API.  All of the actual work for obtaining information on the items
-	// is done within the API, so we need to load that in before we can do
-	// anything.  If the API fails to load an appropriate error message is
-	// posted and the function returns
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
 	}
 
     //  get all items from the module

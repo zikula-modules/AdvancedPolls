@@ -106,14 +106,6 @@ function advanced_polls_pollblock_display($blockinfo)
 	// set return url
 	$returnurl = 'http://' .pnServerGetVar('HTTP_HOST') . pnServerGetVar('SCRIPT_NAME');
 
-	// Load API.  All of the actual work for obtaining information on the items
-	// is done within the API, so we need to load that in before we can do
-	// anything.  If the API fails to load an appropriate error message is
-	// posted and the function returns
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
-	}
-
 	if ($polluse == 1) {
 		$items = pnModAPIFunc('advanced_polls', 'user',	'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
 		$item = $items[0];
@@ -259,14 +251,6 @@ function advanced_polls_pollblock_modify($blockinfo)
 
 	if (!isset($vars['polldisplayresults'])) {
 		$vars['polldisplayresults'] = 1;
-	}
-
-	// Load API.  All of the actual work for obtaining information on the items
-	// is done within the API, so we need to load that in before we can do
-	// anything.  If the API fails to load an appropriate error message is
-	// posted and the function returns
-	if (!pnModAPILoad('advanced_polls', 'user')) {
-		return pnVarPrepHTMLDisplay(_LOADFAILED);
 	}
 
     // Create output object - this object will store all of our output so that
