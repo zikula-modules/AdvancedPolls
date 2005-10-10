@@ -47,20 +47,13 @@
 */
 function advanced_polls_user_main() 
 {
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
-	$pnRender =& new pnRender('advanced_polls');
-
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing.  For the
-	// main function we want to check that the user has at least overview
-	// privilege for some item within this component, or else they won't be
-	// able to see anything and so we refuse access altogether.  The lowest
-	// level of access for administration depends on the particular module, but
-	// it is generally either 'overview' or 'read'
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
 	}
+
+    // Create output object
+	$pnRender =& new pnRender('advanced_polls');
 
 	// Add menu to output - it helps if all of the module pages have a standard
 	// menu at their head to aid in navigation
@@ -82,30 +75,21 @@ function advanced_polls_user_main()
 */
 function advanced_polls_user_view() 
 {
-	// Get parameters from whatever input we need.  All arguments to this
-	// function should be obtained from pnVarCleanFromInput(), getting them
-	// from other places such as the environment is not allowed, as that makes
-	// assumptions that will not hold in future versions of PostNuke
+	// Get parameters from whatever input we need.
 	$startnum = pnVarCleanFromInput('startnum');
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
 	$pnRender =& new pnRender('advanced_polls');
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
 	}
 
-	// The API function is called.  The arguments to the function are passed in
-	// as their own arguments array
+	// The API function is called.
 	$items = pnModAPIFunc('advanced_polls',	'user',	'getall', array('startnum' => $startnum));
 
-	// The return value of the function is checked here, and if the function
-	// suceeded then an appropriate message is posted.  Note that if the
-	// function did not succeed then the API function should have already
-	// posted a failure message so no action is required
+	// The return value of the function is checked
 	if ($items == false) {
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSITEMFAILED);
 	}
@@ -225,8 +209,7 @@ function advanced_polls_user_view()
 			$notyetopen = false;
 		}
 
-		// Security check - important to do this as early as possible to avoid
-		// potential security holes or just too much wasted processing
+		// Security check
 		if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
 
 			//if (($ispollopen == false) and ($isvoteallowed == true) and ($notyetopen == false)) {
@@ -264,37 +247,24 @@ function advanced_polls_user_view()
 */
 function advanced_polls_user_display($args) 
 {
-	// Get parameters from whatever input we need.  All arguments to this
-	// function should be obtained from pnVarCleanFromInput(), getting them
-	// from other places such as the environment is not allowed, as that makes
-	// assumptions that will not hold in future versions of PostNuke
+	// Get parameters from whatever input we need.
 	$pollid = pnVarCleanFromInput('pollid');
 	$results = pnVarCleanFromInput('results');
-	
-	// User functions of this type can be called by other modules.  If this happens
-	// then the calling module will be able to pass in arguments to this function
-	// through the $args parameter.  Hence we extract these arguments *after* we have
-	// obtained any form-based input through pnVarCleanFromInput().
 	extract($args);
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
 	$pnRender =& new pnRender('advanced_polls');
 
 	// get theme name
 	$pnRender->assign('theme', pnUserGetTheme());
 
-	// The API function is called.  The arguments to the function are passed in
-	// as their own arguments array
+	// The API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	$polloptionarray = array();
 	$polloptionarray = $item['pn_optionarray'];
 
-	// The return value of the function is checked here, and if the function
-	// suceeded then an appropriate message is posted.  Note that if the
-	// function did not succeed then the API function should have already
-	// posted a failure message so no action is required
+	// The return value of the function is checked
 	if ($item == false) {
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSITEMFAILED);
 	}
@@ -302,8 +272,7 @@ function advanced_polls_user_display($args)
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing
+	// Security check
 	if (pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$item[pn_pollid]", ACCESS_READ)) {
 
 		// is this poll currently open for voting
@@ -411,10 +380,7 @@ function advanced_polls_user_display($args)
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
 	}
 
-    // Let any hooks know that we are displaying an item.  As this is a display
-    // hook we're passing a URL as the extra info, which is the URL that any
-    // hooks will show after they have finished their own work.  It is normal
-    // for that URL to bring the user back to this function
+    // Let any hooks know that we are displaying an item.
     $pnRender->assign('hooks' ,pnModCallHooks('item',
                                               'display',
                                               $pollid,
@@ -451,11 +417,6 @@ function advanced_polls_user_vote($args)
 	$optioncount =  pnVarCleanFromInput('optioncount');
 	$polldisplayresults = pnVarCleanFromInput('polldisplayresults');
 	$returnurl = pnVarCleanFromInput('returnurl');
-
-	// User functions of this type can be called by other modules.  If this happens
-	// then the calling module will be able to pass in arguments to this function
-	// through the $args parameter.  Hence we extract these arguments *after* we have
-	// obtained any form-based input through pnVarCleanFromInput().
 	extract($args); 
 
 	if (!isset($results)) {

@@ -64,14 +64,10 @@
 */
 function advanced_polls_adminapi_create($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other
-	// places such as the environment is not allowed, as that makes
-	// assumptions that will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present,
-	// if not then set an appropriate error message and return
+	// Argument check
 	if ((!isset($pollname)) || 
 		(!isset($polldescription)) ||
 		(!isset($polllanguage)) ||
@@ -97,32 +93,21 @@ function advanced_polls_adminapi_create($args)
 		return false;
 	}
 
-	// Security check - important to do this as early on as possible to
-	// avoid potential security holes or just too much wasted processing
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$pollname::", ACCESS_ADD)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
 	}
 	 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn()
-	// we currently just want the first item, which is the official
-	// database handle.  For pnDBGetTables() we want to keep the entire
-	// tables array together for easy reference later on
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
-	// It's good practice to name the table and column definitions you
-	// are getting - $table and $column don't cut it in more complex
-	// modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
 	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
 
-	// Get next ID in table - this is required prior to any insert that
-	// uses a unique ID, and ensures that the ID generation is carried
-	// out in a database-portable fashion
+	// Get next ID in table
 	$nextId = $dbconn->GenId($advanced_pollsdesctable);
 
 	$pollopendate = mktime ($pollopenhid, $pollopenminid, 0, $pollopenmid, $pollopendid, $pollopenyid);
@@ -132,10 +117,7 @@ function advanced_polls_adminapi_create($args)
 	 	$pollclosedate = 0;
 	}
 
-	// Add item - the formatting here is not mandatory, but it does make
-	// the SQL statement relatively easy to read.  Also, separating out
-	// the sql statement from the Execute() command allows for simpler
-	// debug operation if it is ever needed
+	// Add item
 	$sql = "INSERT INTO $advanced_pollsdesctable (
 		$advanced_pollsdesccolumn[pn_pollid],
 		$advanced_pollsdesccolumn[pn_title],
@@ -168,22 +150,16 @@ function advanced_polls_adminapi_create($args)
 		'" . pnVarPrepForStore($polllanguage) . "')";
 	$dbconn->Execute($sql);
 	 
-	// Check for an error with the database code, and if so set an
-	// appropriate error message and return
+	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSCREATEFAILED);
 		return false;
 	}
 	 
-	// Get the ID of the item that we inserted.  It is possible, although
-	// very unlikely, that this is different from $nextId as obtained
-	// above, but it is better to be safe than sorry in this situation
+	// Get the ID of the item that we inserted.
 	$pollid = $dbconn->PO_Insert_ID($advanced_pollsdesctable, $advanced_pollsdesccolumn['pn_pollid']);
 	 
-	// Let any hooks know that we have created a new item.  As this is a
-	// create hook we're passing 'pollid' as the extra info, which is the
-	// argument that all of the other functions use to reference this
-	// item
+	// Let any hooks know that we have created a new item.
 	pnModCallHooks('item', 'create', $pollid, 'pollid');
 	 
 	// Return the id of the newly created item to the calling process
@@ -202,23 +178,16 @@ function advanced_polls_adminapi_create($args)
 */
 function advanced_polls_adminapi_delete($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other
-	// places such as the environment is not allowed, as that makes
-	// assumptions that will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 	 
-	// Argument check - make sure that all required arguments are present,
-	// if not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 	 
-	// The user API function is called.  This takes the item ID which
-	// we obtained from the input and gets us the information on the
-	// appropriate item.  If the item does not exist we post an appropriate
-	// message and return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls',
 		'user',
 		'get',
@@ -228,65 +197,44 @@ function advanced_polls_adminapi_delete($args)
 		pnSessionSetVar('errormsg', _TEMPLATENOSUCHITEM);
 		return true;
 	}
-	 
-	// Security check - important to do this as early on as possible to
-	// avoid potential security holes or just too much wasted processing.
-	// However, in this case we had to wait until we could obtain the item
-	// name to complete the instance information so this is the first
-	// chance we get to do the check
+
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_DELETE)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
 	}
-	 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn()
-	// we currently just want the first item, which is the official
-	// database handle.  For pnDBGetTables() we want to keep the entire
-	// tables array together for easy reference later on
+
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-	 
-	// It's good practice to name the table and column definitions you
-	// are getting - $table and $column don't cut it in more complex
-	// modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
 	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
 	 
-	// Delete the item - the formatting here is not mandatory, but it does
-	// make the SQL statement relatively easy to read.  Also, separating
-	// out the sql statement from the Execute() command allows for simpler
-	// debug operation if it is ever needed
+	// Delete the item
 	$sql = "DELETE FROM $advanced_pollsdesctable
 		WHERE $advanced_pollsdesccolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
 	$dbconn->Execute($sql);
 	 
-	// Check for an error with the database code, and if so set an
-	// appropriate error message and return
+	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSDELETEFAILED);
 		return false;
 	}
 	 
-	// Delete the item - the formatting here is not mandatory, but it does
-	// make the SQL statement relatively easy to read.  Also, separating
-	// out the sql statement from the Execute() command allows for simpler
-	// debug operation if it is ever needed
+	// Delete the item
 	$sql = "DELETE FROM $advanced_pollsdatatable
 		WHERE $advanced_pollsdatacolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
 	$dbconn->Execute($sql);
 	 
-	// Check for an error with the database code, and if so set an
-	// appropriate error message and return
+	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSDELETEFAILED);
 		return false;
 	}
 	 
-	// Let any hooks know that we have deleted an item.  As this is a
-	// delete hook we're not passing any extra info
+	// Let any hooks know that we have deleted an item.
 	pnModCallHooks('item', 'delete', $pollid, '');
 	 
 	// Let the calling process know that we have finished successfully
@@ -326,19 +274,15 @@ function advanced_polls_adminapi_delete($args)
 */
 function advanced_polls_adminapi_update($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other
-	// places such as the environment is not allowed, as that makes
-	// assumptions that will not hold in future versions of PostNuke
+	// Get arguments from argument array future versions of PostNuke
 	extract($args);
 
-	//Not sure why unchecked checkboxes don't have a value
+	// Not sure why unchecked checkboxes don't have a value
 	if (!isset($pollmultipleselect)) {
 		$pollmultipleselect = 0;
 	}
 
-	// Argument check - make sure that all required arguments are present,
-	// if not then set an appropriate error message and return
+	// Argument check
 	if ((!isset($pollid)) ||
 		(!isset($pollname)) ||
 		(!isset($polldescription)) ||
@@ -366,10 +310,7 @@ function advanced_polls_adminapi_update($args)
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which
-	// we obtained from the input and gets us the information on the
-	// appropriate item.  If the item does not exist we post an appropriate
-	// message and return
+	// The user API function is called
 	$item = pnModAPIFunc('advanced_polls',
 		'user',
 		'get',
@@ -380,17 +321,10 @@ function advanced_polls_adminapi_update($args)
 		return false;
 	}
 
-	// Security check - important to do this as early on as possible to
-	// avoid potential security holes or just too much wasted processing.
-	// However, in this case we had to wait until we could obtain the item
-	// name to complete the instance information so this is the first
-	// chance we get to do the check
+	// Security check
 
 	// Note that at this stage we have two sets of item information, the
-	// pre-modification and the post-modification.  We need to check against
-	// both of these to ensure that whoever is doing the modification has
-	// suitable permissions to edit the item otherwise people can potentially
-	// edit areas to which they do not have suitable access
+	// pre-modification and the post-modification.
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -400,26 +334,15 @@ function advanced_polls_adminapi_update($args)
 		return false;
 	}
 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn()
-	// we currently just want the first item, which is the official
-	// database handle.  For pnDBGetTables() we want to keep the entire
-	// tables array together for easy reference later on
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
-	// It's good practice to name the table and column definitions you
-	// are getting - $table and $column don't cut it in more complex
-	// modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
 	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
 
-	// Update the item - the formatting here is not mandatory, but it does
-	// make the SQL statement relatively easy to read.  Also, separating
-	// out the sql statement from the Execute() command allows for simpler
-	// debug operation if it is ever needed
+	// Update the item
 	$pollopendate = mktime ($pollopenhid, $pollopenminid, 0, $pollopenmid, $pollopendid, $pollopenyid);
 	if (!$pollnoclosedate) {
 		$pollclosedate = mktime ($pollclosehid, $pollcloseminid, 0, $pollclosemid, $pollclosedid, $pollcloseyid);
@@ -498,23 +421,16 @@ function advanced_polls_adminapi_update($args)
 */
 function advanced_polls_adminapi_resetvotes($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 	
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls',
 		'user',
 		'get',
@@ -572,14 +488,10 @@ return true;
 */
 function advanced_polls_adminapi_getvotes($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
@@ -604,10 +516,7 @@ function advanced_polls_adminapi_getvotes($args)
 		$sortby = 1;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls',
 		'user',
 		'get',
@@ -624,11 +533,9 @@ function advanced_polls_adminapi_getvotes($args)
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
 	} else {
-		// get database connection
+		// get database setup
 		$dbconn =& pnDBGetConn(true);
 		$pntable =& pnDBGetTables();
-
-		// define database tables
 		$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
 		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
 
@@ -701,23 +608,16 @@ function advanced_polls_adminapi_getvotes($args)
 */
 function advanced_polls_adminapi_duplicate($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls',
 		'user',
 		'get',
@@ -735,10 +635,7 @@ function advanced_polls_adminapi_duplicate($args)
 		return false;
 	} else {
 
-		// The API function is called.  Note that the name of the API function and
-		// the name of this function are identical, this helps a lot when
-		// programming more complex modules.  The arguments to the function are
-		// passed in as their own arguments array
+		// The API function is called.
 		$pid = pnModAPIFunc('advanced_polls',
 			'admin',
 			'create',
@@ -797,10 +694,7 @@ function advanced_polls_adminapi_duplicate($args)
 			$result = false;
 		}
 
-		// The return value of the function is checked here, and if the function
-		// suceeded then an appropriate message is posted.  Note that if the
-		// function did not succeed then the API function should have already
-		// posted a failure message so no action is required
+		// The return value of the function is checked
 		if ($result != false) {
 			// Success
 			pnSessionSetVar('statusmsg', _ADVANCEDPOLLSCREATED);

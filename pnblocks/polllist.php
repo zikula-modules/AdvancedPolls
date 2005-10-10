@@ -86,8 +86,7 @@ function advanced_polls_polllistblock_display($blockinfo)
     // get a polls from the api
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
     $pnRender =& new pnRender('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.

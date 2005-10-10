@@ -46,10 +46,7 @@
 */
 function advanced_polls_userapi_getall($args)
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array 
 	extract($args);
 
 	// Optional arguments.
@@ -74,22 +71,14 @@ function advanced_polls_userapi_getall($args)
 
 	$items = array();
 
-	// Security check - important to do this as early on as possible to
-	// avoid potential security holes or just too much wasted processing
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
 		return $items;
 	}
 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn() we
-	// currently just want the first item, which is the official database
-	// handle.  For pnDBGetTables() we want to keep the entire tables array
-	// together for easy reference later on
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
-	// It's good practice to name the table and column definitions you are
-	// getting - $table and $column don't cut it in more complex modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 
@@ -101,10 +90,7 @@ function advanced_polls_userapi_getall($args)
 					  OR $advanced_pollsdesccolumn[pn_language] IS NULL)";
 	}
 
-	// Get items - the formatting here is not mandatory, but it does make the
-	// SQL statement relatively easy to read.  Also, separating out the sql
-	// statement from the SelectLimit() command allows for simpler debug
-	// operation if it is ever needed
+	// Get items
 	$sql = "SELECT $advanced_pollsdesccolumn[pn_pollid],
 				   $advanced_pollsdesccolumn[pn_title],
 				   $advanced_pollsdesccolumn[pn_opendate],
@@ -114,16 +100,13 @@ function advanced_polls_userapi_getall($args)
 		ORDER BY $advanced_pollsdesccolumn[pn_pollid] $desc";
 	$result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);
 
-	// Check for an error with the database code, and if so set an appropriate
-	// error message and return
+	// Check for an error with the database
 	if ($dbconn->ErrorNo()  != 0) {
 		pnSessionSetVar('errormsg', _GETFAILED);
 		return false;
 	}
 
-	// Put items into result array.  Note that each item is checked
-	// individually to ensure that the user is allowed access to it before it
-	// is added to the results array
+	// Put items into result array.
 	for (; !$result->EOF; $result->MoveNext()) {
 		list($pollid, $polltitle, $opendate, $closedate) = $result->fields;
 		if (pnSecAuthAction(0, 'advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
@@ -159,14 +142,10 @@ function advanced_polls_userapi_get($args)
 {
 	static $polls = array();
 
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 	 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
@@ -180,16 +159,9 @@ function advanced_polls_userapi_get($args)
 		$checkml = true;
 	}
 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn() we
-	// currently just want the first item, which is the official database
-	// handle.  For pnDBGetTables() we want to keep the entire tables array
-	// together for easy reference later on
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
-	// It's good practice to name the table and column definitions you are
-	// getting - $table and $column don't cut it in more complex modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 
@@ -201,10 +173,7 @@ function advanced_polls_userapi_get($args)
 					  OR $advanced_pollsdesccolumn[pn_language] IS NULL)";
 	}
 	 
-	// Get item - the formatting here is not mandatory, but it does make the
-	// SQL statement relatively easy to read.  Also, separating out the sql
-	// statement from the Execute() command allows for simpler debug operation
-	// if it is ever needed
+	// Get item
 	$sql = "SELECT $advanced_pollsdesccolumn[pn_title],
 	    $advanced_pollsdesccolumn[pn_description],
 		$advanced_pollsdesccolumn[pn_optioncount],
@@ -247,10 +216,7 @@ function advanced_polls_userapi_get($args)
 	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
 	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
 
-	// Get item - the formatting here is not mandatory, but it does make the
-	// SQL statement relatively easy to read.  Also, separating out the sql
-	// statement from the Execute() command allows for simpler debug operation
-	// if it is ever needed
+	// Get item
 	$sql = "SELECT $advanced_pollsdatacolumn[pn_optionid],
 			$advanced_pollsdatacolumn[pn_optiontext],
 			$advanced_pollsdatacolumn[pn_optioncolour]
@@ -286,10 +252,7 @@ function advanced_polls_userapi_get($args)
 	// set should be closed when it has been finished with
 	$result->Close();
 
-	// Security check - important to do this as early on as possible to avoid
-	// potential security holes or just too much wasted processing.  Although
-	// this one is a bit late in the function it is as early as we can do it as
-	// this is the first time we have the relevant information
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -329,10 +292,7 @@ function advanced_polls_userapi_get($args)
 */
 function advanced_polls_userapi_countitems($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
 	// defauls	
@@ -340,16 +300,9 @@ function advanced_polls_userapi_countitems($args)
 		$checkml = true;
 	}
 
-	// Get datbase setup - note that both pnDBGetConn() and pnDBGetTables()
-	// return arrays but we handle them differently.  For pnDBGetConn() we
-	// currently just want the first item, which is the official database
-	// handle.  For pnDBGetTables() we want to keep the entire tables array
-	// together for easy reference later on
+	// Get datbase setup
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
-	// It's good practice to name the table and column definitions you are
-	// getting - $table and $column don't cut it in more complex modules
 	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
 	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 
@@ -361,10 +314,7 @@ function advanced_polls_userapi_countitems($args)
 					  OR $advanced_pollsdesccolumn[pn_language] IS NULL)";
 	}
 
-	// Get item - the formatting here is not mandatory, but it does make the
-	// SQL statement relatively easy to read.  Also, separating out the sql
-	// statement from the Execute() command allows for simpler debug operation
-	// if it is ever needed
+	// Get item count
 	$sql = "SELECT COUNT(1) FROM $advanced_pollsdesctable $querylang";
 	$result =& $dbconn->Execute($sql);
 
@@ -397,23 +347,16 @@ function advanced_polls_userapi_countitems($args)
 */
 function advanced_polls_userapi_isopen($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	// no such item is db
@@ -422,11 +365,7 @@ function advanced_polls_userapi_isopen($args)
 		return false;
 	}
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing.  However,
-	// in this case we had to wait until we could obtain the item name to
-	// complete the instance information so this is the first chance we get to
-	// do the check
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -462,23 +401,16 @@ function advanced_polls_userapi_isvoteallowed($args)
 {
 	static $uservotinghistory;
 
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	// no such item in db
@@ -487,11 +419,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 		return false;
 	}
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing.  However,
-	// in this case we had to wait until we could obtain the item name to
-	// complete the instance information so this is the first chance we get to
-	// do the check
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -504,7 +432,6 @@ function advanced_polls_userapi_isvoteallowed($args)
 	// get db information for use later
 	$dbconn =& pnDBGetConn(true);
 	$pntable =& pnDBGetTables();
-
 	$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
 	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
 
@@ -606,23 +533,16 @@ function advanced_polls_userapi_isvoteallowed($args)
 */
 function advanced_polls_userapi_resetrecurring($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called. 
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	// check for no such poll return from api function
@@ -712,23 +632,16 @@ function advanced_polls_userapi_resetrecurring($args)
 */
 function advanced_polls_userapi_pollvotecount($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 	 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
-	// The user API function is called.  This takes the item ID which we
-	// obtained from the input and gets us the information on the appropriate
-	// item.  If the item does not exist we post an appropriate message and
-	// return
+	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	if ($item == false) {
@@ -736,11 +649,7 @@ function advanced_polls_userapi_pollvotecount($args)
 		return false;
 	}
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing.  However,
-	// in this case we had to wait until we could obtain the item name to
-	// complete the instance information so this is the first chance we get to
-	// do the check
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -858,34 +767,25 @@ function advanced_polls_userapi_pollvotecount($args)
 */
 function advanced_polls_userapi_addvote($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid) || !isset($voteid) || !isset($voterank)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
 	}
 
+	// Security check
 	if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_OVERVIEW)) {
 		if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_COMMENT)) {
 
 			$dbconn =& pnDBGetConn(true);
 			$pntable =& pnDBGetTables();
-	
-    		// It's good practice to name the table and column definitions you
-			// are getting - $table and $column don't cut it in more complex
-			// modules
 			$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
 			$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
 
-			// Get next ID in table - this is required prior to any insert that
-			// uses a unique ID, and ensures that the ID generation is carried
-			// out in a database-portable fashion
+			// Get next ID in table 
 			$nextId = $dbconn->GenId($advanced_pollsvotestable);
 
 			// extract user id from session variables
@@ -947,14 +847,10 @@ function advanced_polls_userapi_addvote($args)
 */
 function advanced_polls_userapi_timecountback($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
-	// Argument check - make sure that all required arguments are present, if
-	// not then set an appropriate error message and return
+	// Argument check
 	if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
 		pnSessionSetVar('errormsg', _MODARGSERROR);
 		return false;
@@ -969,11 +865,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
-	// Security check - important to do this as early as possible to avoid
-	// potential security holes or just too much wasted processing.  However,
-	// in this case we had to wait until we could obtain the item name to
-	// complete the instance information so this is the first chance we get to
-	// do the check
+	// Security check
 	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
 		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
 		return false;
@@ -1010,14 +902,10 @@ function advanced_polls_userapi_timecountback($args)
 */
 function advanced_polls_userapi_getlastclosed($args) 
 {
-	// Get arguments from argument array - all arguments to this function
-	// should be obtained from the $args array, getting them from other places
-	// such as the environment is not allowed, as that makes assumptions that
-	// will not hold in future versions of PostNuke
+	// Get arguments from argument arra
 	extract($args);
 
-	// The API function is called.  The arguments to the function are passed in
-	// as their own arguments array
+	// The API function is called.
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
     // work out which poll has closed most recently
@@ -1049,8 +937,7 @@ function advanced_polls_userapi_getrandom()
 	}
 	srand(make_seed());
 	
-	// The API function is called.  The arguments to the function are passed in
-	// as their own arguments array
+	// The API function is called.
 	$items = pnModAPIFunc('advanced_polls',	'user', 'getall');
 
 	$randomitemid = array_rand($items , 1);
