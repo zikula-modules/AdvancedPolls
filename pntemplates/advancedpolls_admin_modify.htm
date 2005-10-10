@@ -96,6 +96,7 @@
 		<legend><!--[pnml name=_ADVANCEDPOLLSOPTIONS]--></legend>
 		<!--[section name=polloptions loop=$polloptions]-->
 		<!--[assign var="rowcount" value=$smarty.section.polloptions.rownum]-->
+		<!--[assign var="arraycount" value=$rowcount-1]-->
 		<div class="pn-adminformrow">
 			<div style="white-space:nowrap">
 				<label for="advancedpolls_polloption<!--[$rowcount]-->"><!--[pnml name="_ADVANCEDPOLLSOPTION"]--> <!--[$rowcount]--></label>
