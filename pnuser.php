@@ -435,12 +435,12 @@ function advanced_polls_user_vote($args)
 			if ($ispollopen == true) {
 				// is this vote allowed under voting regulations
 				$isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
-
 				// if vote is allowed then add vote to db tables
 				if ($isvoteallowed == true) {
 					 if ($multiple == 1) {
 						 if ($multiplecount == -1) {
-							 for ($i = 1, $max = $optioncount; $i <= $max; $i++) {
+							$max = $optioncount;
+							 for ($i = 1; $i <= $max; $i++) {
 								 $voteid = pnVarCleanFromInput('option' . ($i));
 								 if ($voteid != null) {
 									 $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
