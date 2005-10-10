@@ -143,7 +143,7 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 	$pnRender->assign('votecounts', $votecounts);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('pollresults.htm');
+	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_pollresults.htm');
 	return themesideblock($blockinfo);
 }
 

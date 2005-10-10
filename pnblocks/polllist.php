@@ -124,7 +124,7 @@ function advanced_polls_polllistblock_display($blockinfo)
 	$pnRender->assign('polls', $polls);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('polllist.htm');
+	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_polllist.htm');
 	return themesideblock($blockinfo);
 }
 

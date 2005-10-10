@@ -222,7 +222,7 @@ function advanced_polls_pollblock_display($blockinfo)
 	$pnRender->assign('blockvars', $vars);
  
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('poll.htm');
+	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_poll.htm');
 	return themesideblock($blockinfo);
 }
 
@@ -299,7 +299,7 @@ function advanced_polls_pollblock_modify($blockinfo)
 									  1 => _YES));
 
 	// Return output
-	return $pnRender->fetch('pollmodify.htm');
+	return $pnRender->fetch('advancedpolls_block_poll_modify.htm');
 }
 
 /**

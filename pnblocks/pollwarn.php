@@ -158,7 +158,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 	$pnRender->assign('item', $item);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('pollwarn.htm');
+	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_pollwarn.htm');
 	return themesideblock($blockinfo);
 }
 
@@ -216,7 +216,7 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
 	$pnRender->assign('items', $polls);
 
 	// Return output
-	return $pnRender->fetch('pollwarnmodify.htm');
+	return $pnRender->fetch('advancedpolls_block_pollwarn_modify.htm');
 }
 
 /**
