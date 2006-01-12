@@ -614,6 +614,11 @@ function advanced_polls_admin_modifyconfig()
 */
 function advanced_polls_admin_updateconfig() 
 {
+	// Security check
+	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_ADMIN)) {
+		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
+	}
+
 	// Get parameters from whatever input we need.
 	list($polladmindateformat,
 		 $polluserdateformat,
