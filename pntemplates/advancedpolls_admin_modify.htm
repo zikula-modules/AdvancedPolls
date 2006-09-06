@@ -1,6 +1,7 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
+<div class="pn-admincontainer">
 <h2><!--[pnml name="_ADVANCEDPOLLSEDIT"]--></h2>
 <form class="pn-adminform" name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
@@ -18,7 +19,7 @@
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_polllanguage"><!--[pnml name="_LANGUAGE"]--> </label>
-			<!--[languagelist name="polllanguage" installed=true selected=$item.pn_language]-->
+			<!--[languagelist id="advancedpolls_polllanguage" name="polllanguage" installed=true selected=$item.pn_language]-->
 		</div>
 	</fieldset>
 	<fieldset>
@@ -114,3 +115,4 @@
 	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSUPDATE"]-->" />
 </div>
 </form>
+</div>

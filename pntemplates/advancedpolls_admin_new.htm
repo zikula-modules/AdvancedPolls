@@ -1,5 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
+<div class="pn-admincontainer">
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
 <h2><!--[pnml name="_ADVANCEDPOLLSADD"]--></h2>
 <form name="advanced_polls_admin_new" action="<!--[pnmodurl modname=advanced_polls type=admin func=create]-->" method="post" enctype="application/x-www-form-urlencoded">
@@ -17,7 +18,7 @@
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_polllanguage"><!--[pnml name="_LANGUAGE"]--> </label>
-			<!--[languagelist name="polllanguage" installed=true]-->
+			<!--[languagelist id="advancedpolls_polllanguage" name="polllanguage" installed=true]-->
 		</div>
 	</fieldset>
 	<fieldset>
@@ -59,7 +60,7 @@
 				<!--[html_options options=$multipleselecttypes]-->
 			</select>
 		</div>
-		<legend><!--[pnml name=_ADVANCEDPOLLSONLYMULTIPLESELECT]--></legend>
+		<p><!--[pnml name=_ADVANCEDPOLLSONLYMULTIPLESELECT]--></p>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_pollmultipleselectcount"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--></label>
 			<input id="advancedpolls_pollmultipleselectcount" name="pollmultipleselectcount" type="text" size="5" maxlength="5" value="1" /> <!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNTUNLIMITED"]-->
@@ -71,7 +72,7 @@
 				<option value="1"><!--[pnml name="_YES"]--></option>
 			</select>
 		</div>
-		<legend><!--[pnml name=_ADVANCEDPOLLSONLYRECURRING]--></legend>
+		<p><!--[pnml name=_ADVANCEDPOLLSONLYRECURRING]--></p>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_pollrecurringoffset"><!--[pnml name="_ADVANCEDPOLLSRECURRINGOFFSET"]--></label>
 			<input id="advancedpolls_pollrecurringoffset" name="pollrecurringoffset" type="text" size="5" maxlength="5" value="0" />
@@ -93,3 +94,4 @@
 	</div>
 </div>
 </form>
+</div>

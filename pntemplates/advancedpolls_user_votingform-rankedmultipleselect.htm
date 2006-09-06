@@ -6,7 +6,7 @@
 	<tr>
 		<td><label for="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--> <!--[$optioncounter]-->"><!--[pnml name="_ADVANCEDPOLLSCHOICE"]--> <!--[$optioncounter]--></label> :</td>
 		<td>
-			<select id="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--> <!--[$optioncounter]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
+			<select id="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--><!--[$optioncounter]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
 				<!--[section name=options loop=$options]-->
 					<option value="<!--[$options[options].id|pnvarprepfordisplay]-->"><!--[$options[options].optiontext|pnvarprephtmldisplay|pnvarcensor]--></option>
 				<!--[/section]-->
