@@ -35,16 +35,18 @@
 <!--[else]-->
     <!--[if $ispollopen]-->
 		<!--[if $votecounts.pn_totalvotecount > 0]-->
-			<strong><!--[pnml name="_ADVANCEDPOLLSCURRENTLEADER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong><br />
-			<!--[pnml name="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.pn_closedate|apdatetime]--><br />
+			<p><strong><!--[pnml name="_ADVANCEDPOLLSCURRENTLEADER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong></p>
+			<!--[if $item.pn_pollnoclosedate neq 0]-->
+			<p><!--[pnml name="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.pn_closedate|apdatetime]--></p>
+			<!--[/if]-->
 		<!--[/if]-->
 	<!--[else]-->
-		<!--[if $votecounts.pn_totalvotecount > 0]--><br />
-			<!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--><br />
+		<!--[if $votecounts.pn_totalvotecount > 0]-->
+			<p><!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></p>
 		<!--[/if]-->
 	<!--[/if]-->
 <!--[/if]-->
-<!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.pn_totalvotecount]--><br />
+<p><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.pn_totalvotecount]--></p>
 <a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
 <br />
 </div>
