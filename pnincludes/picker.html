@@ -11,18 +11,19 @@ About us: Our company provides offshore IT consulting services.
     Contact us at sales@softcomplex.com if you have any programming task you
    want to be handled by professionals. Our typical hourly rate is $20.
 -->
-
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
 	<title>Tigra Color Picker</title>
-	<style>
+	<style type="text/css">
+		body { margin: 5px; }
 		.bd { border : 1px inset InactiveBorder; }
 		.s  { width:181 }
 	</style>
 </head>
-<body leftmargin="5" topmargin="5" marginheight="5" marginwidth="5" onload="P.C(P.initPalette)">
-<table cellpadding=0 cellspacing=2 border=0 width=184>
-<form>
+<body onload="P.C(P.initPalette)">
+<form action="">
+<table cellpadding="0" cellspacing="2" border="0" width="184">
 <tr><td align="center">
 <select name="type" onchange="P.C(this.selectedIndex)" class="s">
 	<option>Web Safe Palette</option>
@@ -31,14 +32,14 @@ About us: Our company provides offshore IT consulting services.
 </select>
 </td></tr>
 <tr><td align="center">
-<script language="JavaScript">
+<script type="text/javascript">
 	var P = opener.TCP;
 	onload = "P.show(P.initPalette)";
 	document.forms[0].elements[0].selectedIndex = P.initPalette;
 	P.draw(window, document);
 </script>
 </td></tr>
-</form>
 </table>
+</form>
 </body>
 </html>
