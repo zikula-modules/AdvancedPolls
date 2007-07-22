@@ -36,8 +36,7 @@ function advanced_polls_userapi_getall($args)
 		$numitems = -1;
 	}
 	if ((!isset($startnum))  || (!isset($numitems))) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 	if (!isset($checkml)) {
 		$checkml = true;
@@ -51,7 +50,7 @@ function advanced_polls_userapi_getall($args)
 	$items = array();
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
 		return $items;
 	}
 
@@ -81,14 +80,13 @@ function advanced_polls_userapi_getall($args)
 
 	// Check for an error with the database
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
+		return LogUtil::registerError(_GETFAILED);
 	}
 
 	// Put items into result array.
 	for (; !$result->EOF; $result->MoveNext()) {
 		list($pollid, $polltitle, $opendate, $closedate) = $result->fields;
-		if (pnSecAuthAction(0, 'advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
 			$items[] = array('pollid' => $pollid,
 				             'polltitle' => $polltitle,
 							 'opendate' => $opendate,
@@ -126,8 +124,7 @@ function advanced_polls_userapi_get($args)
 	 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 	
 	if (isset($polls[$pollid])) {
@@ -174,8 +171,7 @@ function advanced_polls_userapi_get($args)
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
+		return LogUtil::registerError(_GETFAILED);
 	}
 
 	// Check for no rows found, and if so return
@@ -232,9 +228,8 @@ function advanced_polls_userapi_get($args)
 	$result->Close();
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// Create the item array
@@ -300,8 +295,7 @@ function advanced_polls_userapi_countitems($args)
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _GETFAILED);
-		return false;
+		return LogUtil::registerError(_GETFAILED);
 	}
 
 	// Obtain the number of items
@@ -331,8 +325,7 @@ function advanced_polls_userapi_isopen($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
@@ -340,14 +333,12 @@ function advanced_polls_userapi_isopen($args)
 
 	// no such item is db
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	//establish current date and time
@@ -385,8 +376,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
@@ -394,16 +384,14 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 	// no such item in db
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_COMMENT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_COMMENT)) {
 		// Here we don't set an error as this indicates that the user can't vote in this poll
 		return false;
 	}
@@ -496,8 +484,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 		return true;
 
 		default: //any other option - should never occur
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTHTYPE);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
 	}
 }
 
@@ -517,8 +504,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called. 
@@ -526,14 +512,12 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// convert recurring offset into unix timestamp format
@@ -564,8 +548,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
-			pnSessionSetVar('errormsg', _ADVANCEDPOLLSRESETFAILED);
-			return false;
+			return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
 		}
 
 		// set new opening and closing times
@@ -589,8 +572,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
-			pnSessionSetVar('errormsg', _ADVANCEDPOLLSRESETFAILED);
-			return false;
+			return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
 		}
 
 		// close result set
@@ -616,22 +598,19 @@ function advanced_polls_userapi_pollvotecount($args)
 	 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// get database connection
@@ -751,8 +730,7 @@ function advanced_polls_userapi_addvote($args)
 
 	// Argument check
 	if (!isset($pollid) || !isset($voteid) || !isset($voterank)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// Security check
@@ -794,8 +772,7 @@ function advanced_polls_userapi_addvote($args)
 			$result =& $dbconn->Execute($sql);
 
 			if ($dbconn->ErrorNo()  != 0) {
-				pnSessionSetVar('errormsg', _ADVANCEDPOLLSVOTEFAILED);
-				return false;
+				return LogUtil::registerError(_ADVANCEDPOLLSVOTEFAILED);
 			}
 
 			//set cookie to indicate vote made in this poll
@@ -831,8 +808,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	// Argument check
 	if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// get database connection
@@ -845,9 +821,8 @@ function advanced_polls_userapi_timecountback($args)
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	$sql = "SELECT SUM($advanced_pollsvotescolumn[pn_time])

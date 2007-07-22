@@ -68,7 +68,7 @@ function advanced_polls_polllistblock_display($blockinfo)
 	pnModLangLoad('advanced_polls', 'user');
 
     // Create output object
-    $pnRender =& new pnRender('advanced_polls');
+    $pnRender = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
     $pnRender->caching = false;
@@ -84,7 +84,7 @@ function advanced_polls_polllistblock_display($blockinfo)
     // create a results array
 	$polls = array();
 	foreach ($items as $item) {
-		if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 			// is this user/ip etc. allowed to vote under voting regulations
 			if (($currentdate >= $item['opendate'] && $currentdate <= $item['closedate']) || $item['closedate'] == 0) {
 				if (pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {

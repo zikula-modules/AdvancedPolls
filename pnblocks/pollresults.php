@@ -88,7 +88,7 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender =& new pnRender('advanced_polls');
+    $pnRender = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
     $pnRender->caching = false;

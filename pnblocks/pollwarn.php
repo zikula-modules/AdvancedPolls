@@ -88,10 +88,10 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 	}
 
 	// check for permissions on poll
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
 		return;
 	}
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
 		return;			
 	}
 
@@ -120,7 +120,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender =& new pnRender('advanced_polls');
+    $pnRender = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
     $pnRender->caching = false;
@@ -171,7 +171,7 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
 
 	// Create output object - this object will store all of our output so that
 	// we can return it easily when required
-	$pnRender =& new pnRender('advanced_polls');
+	$pnRender = pnRender::getInstance('advanced_polls');
 
     // Assign the block variables
 	$pnRender->assign('blockvars', $vars);

@@ -68,14 +68,12 @@ function advanced_polls_adminapi_create($args)
 		(!isset($pollrecurringinterval)) ||
 		(!isset($pollrecurringoffset)) ||
 		(!isset($polloptioncount))) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSVARIABLEERROR);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSVARIABLEERROR);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$pollname::", ACCESS_ADD)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$pollname::", ACCESS_ADD)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 	 
 	// Get datbase setup
@@ -131,8 +129,7 @@ function advanced_polls_adminapi_create($args)
 	 
 	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSCREATEFAILED);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSCREATEFAILED);
 	}
 	 
 	// Get the ID of the item that we inserted.
@@ -162,8 +159,7 @@ function advanced_polls_adminapi_delete($args)
 	 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 	 
 	// The user API function is called.
@@ -173,14 +169,12 @@ function advanced_polls_adminapi_delete($args)
 		array('pollid' => $pollid));
 	 
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _TEMPLATENOSUCHITEM);
-		return true;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_DELETE)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_DELETE)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// Get datbase setup
@@ -198,8 +192,7 @@ function advanced_polls_adminapi_delete($args)
 	 
 	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSDELETEFAILED);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSDELETEFAILED);
 	}
 	 
 	// Delete the item
@@ -209,8 +202,7 @@ function advanced_polls_adminapi_delete($args)
 	 
 	// Check for an error with the database code
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSDELETEFAILED);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSDELETEFAILED);
 	}
 	 
 	// Let any hooks know that we have deleted an item.
@@ -285,8 +277,7 @@ function advanced_polls_adminapi_update($args)
 		(!isset($pollrecurringinterval)) ||
 		(!isset($polloptioncount)) ||
 		(!isset($polloptions))) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSVARIABLEERROR);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSVARIABLEERROR);
 	}
 
 	// The user API function is called
@@ -296,21 +287,18 @@ function advanced_polls_adminapi_update($args)
 		array('pollid' => $pollid));
 
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
 
 	// Note that at this stage we have two sets of item information, the
 	// pre-modification and the post-modification.
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$pollname::$pollid", ACCESS_EDIT)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$pollname::$pollid", ACCESS_EDIT)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// Get datbase setup
@@ -350,8 +338,7 @@ function advanced_polls_adminapi_update($args)
 	// Check for an error with the database code, and if so set an
 	// appropriate error message and return
 	if ($dbconn->ErrorNo()  != 0) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSUPDATEFAILED);
-		return false;
+		return LogUtil::registerError(_ADVANCEDPOLLSUPDATEFAILED);
 	}
 
 	// loop to populate 12 options into advanced_pollsdata table
@@ -378,8 +365,7 @@ function advanced_polls_adminapi_update($args)
 		// Check for an error with the database code, and if so set an
 		// appropriate error message and return
 		if ($dbconn->ErrorNo()  != 0) {
-			pnSessionSetVar('errormsg', _ADVANCEDPOLLSUPDATEFAILED);
-			return false;
+			return LogUtil::registerError(_ADVANCEDPOLLSUPDATEFAILED);
 		}
 		 
 	}
@@ -405,8 +391,7 @@ function advanced_polls_adminapi_resetvotes($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 	
 	// The user API function is called.
@@ -417,14 +402,12 @@ function advanced_polls_adminapi_resetvotes($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		// get database connection
 		$dbconn =& pnDBGetConn(true);
@@ -443,14 +426,13 @@ function advanced_polls_adminapi_resetvotes($args)
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
-			pnSessionSetVar('errormsg', _ADVANCEDPOLLSVOTESRESETFAILED);
-			return false;
+			return LogUtil::registerError(_ADVANCEDPOLLSVOTESRESETFAILED);
 		}
 
 		// close result set
 		$result->Close();
 	}
-return true;
+    return true;
 }
 
 /**
@@ -472,8 +454,7 @@ function advanced_polls_adminapi_getvotes($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// Optional arguments.
@@ -484,8 +465,7 @@ function advanced_polls_adminapi_getvotes($args)
 		$numitems = -1;
 	}
 	if ((!isset($startnum))  || (!isset($numitems))) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	if (!isset($sortorder)) {
@@ -503,14 +483,12 @@ function advanced_polls_adminapi_getvotes($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		// get database setup
 		$dbconn =& pnDBGetConn(true);
@@ -553,8 +531,7 @@ function advanced_polls_adminapi_getvotes($args)
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
-			pnSessionSetVar('errormsg', _ADVANCEDPOLLSVOTESGETFAILED);
-			return false;
+			return LogUtil::registerError(_ADVANCEDPOLLSVOTESGETFAILED);
 		}
 
 		$votes = array();
@@ -592,8 +569,7 @@ function advanced_polls_adminapi_duplicate($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		pnSessionSetVar('errormsg', _MODARGSERROR);
-		return false;
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
@@ -604,14 +580,12 @@ function advanced_polls_adminapi_duplicate($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOSUCHITEM);
-		return false;
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_ADD)) {
-		pnSessionSetVar('errormsg', _ADVANCEDPOLLSNOAUTH);
-		return false;
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_ADD)) {
+		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 
 		// The API function is called.
@@ -676,10 +650,10 @@ function advanced_polls_adminapi_duplicate($args)
 		// The return value of the function is checked
 		if ($result != false) {
 			// Success
-			pnSessionSetVar('statusmsg', _ADVANCEDPOLLSCREATED);
+			LogUtil::registerStatus( _ADVANCEDPOLLSCREATED);
 		} else {
 			// Failiure
-			pnSessionSetVar('statusmsg', _ADVANCEDPOLLSFAILEDCREATE);
+			LogUtil::registerStatus( _ADVANCEDPOLLSFAILEDCREATE);
 		}
 	 
 		return (bool)$result;

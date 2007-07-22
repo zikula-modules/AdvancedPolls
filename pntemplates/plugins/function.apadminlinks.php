@@ -51,13 +51,13 @@ function smarty_function_apadminlinks($params, &$smarty)
 
     $adminlinks = "<span class=\"$class\">$start ";
 	
-    if (pnSecAuthAction(0, 'advanced_polls::', "::", ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', "::", ACCESS_READ)) {
 		$adminlinks .= "<a href=\"" . pnVarPrepHTMLDisplay(pnModURL('advanced_polls', 'admin', 'view')) . "\">" . _ADVANCEDPOLLSVIEW . "</a> ";
     }
-    if (pnSecAuthAction(0, 'advanced_polls::', "::", ACCESS_ADD)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', "::", ACCESS_ADD)) {
 		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('advanced_polls', 'admin', 'new')) . "\">" . _ADVANCEDPOLLSNEW . "</a> ";
     }
-    if (pnSecAuthAction(0, 'advanced_polls::', "::", ACCESS_ADMIN)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', "::", ACCESS_ADMIN)) {
 		$adminlinks .= "$seperator <a href=\"" . pnVarPrepHTMLDisplay(pnModURL('advanced_polls', 'admin', 'modifyconfig')) . "\">" . _ADVANCEDPOLLSMODIFYCONFIG . "</a> ";
     }
 

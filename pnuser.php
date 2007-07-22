@@ -27,12 +27,12 @@
 function advanced_polls_user_main() 
 {
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
-		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
+	if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+		return LogUtil::registerPermissionError();
 	}
 
     // Create output object
-	$pnRender =& new pnRender('advanced_polls');
+	$pnRender = pnRender::getInstance('advanced_polls');
 
 	// Add menu to output - it helps if all of the module pages have a standard
 	// menu at their head to aid in navigation
@@ -58,11 +58,11 @@ function advanced_polls_user_view()
 	$startnum = pnVarCleanFromInput('startnum');
 
     // Create output object
-	$pnRender =& new pnRender('advanced_polls');
+	$pnRender = pnRender::getInstance('advanced_polls');
 
 	// Security check
-	if (!pnSecAuthAction(0, 'advanced_polls::', '::', ACCESS_OVERVIEW)) {
-		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
+	if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+		return LogUtil::registerPermissionError();
 	}
 
 	// The API function is called.
@@ -93,13 +93,13 @@ function advanced_polls_user_view()
 			$notyetopen = false;
 		}
 
-		if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
 
 			if ($ispollopen == true) {
 				//and ($isvoteallowed == true))
 									 
 				$options = array();
-				if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					if ($isvoteallowed == true) {
 						$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 										   'title' => _ADVANCEDPOLLSVOTE);
@@ -108,7 +108,7 @@ function advanced_polls_user_view()
 							               'title' => _ADVANCEDPOLLSRESULTS);
 					}
 				}
-				if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
 									   'title' => _EDIT);
 				}
@@ -146,12 +146,12 @@ function advanced_polls_user_view()
 			$notyetopen = false;
 		}
 
-		if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
 
 			if (($ispollopen == false) and ($isvoteallowed == true) and ($notyetopen == true)) {
 
 				$options = array();
-				if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 						               'title' => _ADVANCEDPOLLSPREVIEW);
 				}
@@ -189,13 +189,13 @@ function advanced_polls_user_view()
 		}
 
 		// Security check
-		if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
 
 			//if (($ispollopen == false) and ($isvoteallowed == true) and ($notyetopen == false)) {
 			if (($ispollopen == false) and ($notyetopen == false)) {
 				 
 				$options = array();
-				if (pnSecAuthAction(0, 'advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 						               'title' => _ADVANCEDPOLLSRESULTS);
 				}
@@ -232,7 +232,7 @@ function advanced_polls_user_display($args)
 	extract($args);
 
     // Create output object
-	$pnRender =& new pnRender('advanced_polls');
+	$pnRender = pnRender::getInstance('advanced_polls');
 
 	// get theme name
 	$pnRender->assign('theme', pnUserGetTheme());
@@ -252,7 +252,7 @@ function advanced_polls_user_display($args)
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
 	// Security check
-	if (pnSecAuthAction(0, 'advanced_polls::item', "$item[pn_title]::$item[pn_pollid]", ACCESS_READ)) {
+	if (SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$item[pn_pollid]", ACCESS_READ)) {
 
 		// is this poll currently open for voting
 		$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pn_pollid']));
@@ -356,7 +356,7 @@ function advanced_polls_user_display($args)
 			return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOTEMPLATESELECTED);
 		}
 	} else {
-		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOAUTH);
+		return LogUtil::registerPermissionError();
 	}
 
     // Let any hooks know that we are displaying an item.
