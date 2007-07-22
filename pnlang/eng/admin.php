@@ -1,16 +1,16 @@
 <?php 
-// ----------------------------------------------------------------------
-// Advanced Polls Module for the POST-NUKE Content Management System
-// Copyright (C) 2002-2004 by Mark West
-// http://www.markwest.me.uk
-// ----------------------------------------------------------------------
-//
 /**
-* Advanced Polls Module Admin Frontend Language file - English
-* @author Mark West <mark@markwest.me.uk> 
-* @link http://www.markwest.me.uk Advanced Polls Support Site
-* @copyright (C) 2002-2004 by Mark West
-*/
+ * Advanced Polls module for PostNuke
+ *
+ * @author Mark West <mark@markwest.me.uk> 
+ * @copyright (C) 2002-2007 by Mark West
+ * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @version $Id$
+ * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package PostNuke_3rdParty_Modules
+ * @subpackage Advanced_Polls
+ */
+
 define('_ADVANCEDPOLLSCANCELDELETE', 'Cancel deletion');
 define('_ADVANCEDPOLLSCONFIRMDELETE', 'Confirm deletion of Poll');
 if (!defined('_ADVANCEDPOLLSCREATEFAILED')) {
@@ -111,4 +111,3 @@ define('_ADVANCEDPOLLSBASICINFO', 'Basic Information');
 define('_ADVANCEDPOLLSTIMING', 'Timing');
 define('_ADVANCEDPOLLSREGULATIONS', 'Voting regulations');
 
-?>
