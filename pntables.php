@@ -12,70 +12,76 @@
  */
 
 /**
-* This function is called internally by the core whenever the module is
-* loaded.  It adds in the information
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
+ * This function is called internally by the core whenever the module is
+ * loaded.  It adds in the information
+ *
+ * @since 1.0
 */
 function advanced_polls_pntables() 
 {
-	// Initialise table array
 	$pntable = array();
-	 
-	//    ------------------
-	// Name for poll votes database entities
-	$advpolls = pnConfigGetVar('prefix') . '_advanced_polls_votes';
-	 
-	// Table name
-	$pntable['advancedpollsvotes'] = $advpolls;
-	 
-	// Column names
-	$pntable['advanced_polls_votes'] = array('pn_ip' => $advpolls . '.pn_ip',
-											 'pn_time' => $advpolls . '.pn_time',
-											 'pn_uid' => $advpolls . '.pn_uid',
-											 'pn_voterank' => $advpolls . '.pn_voterank',
-											 'pn_pollid' => $advpolls . '.pn_pollid',
-											 'pn_optionid' => $advpolls . '.pn_optionid',
-											 'pn_voteid' => $advpolls . '.pn_voteid');
-	//    ------------------
-	// Name for poll options database entities
-	$advpolls = pnConfigGetVar('prefix') . '_advanced_polls_data';
-	 
-	// Table name
-	$pntable['advancedpollsdata'] = $advpolls;
-	 
-	// Column names
-	$pntable['advanced_polls_data'] = array('pn_pollid' => $advpolls . '.pn_pollid',
-											'pn_optiontext' => $advpolls . '.pn_optiontext',
-											'pn_optionid' => $advpolls . '.pn_optionid',
-											'pn_optioncolour' => $advpolls . '.pn_optioncolour');
-	//    ------------------
-	// Name for poll description database entities
-	$advpolls = pnConfigGetVar('prefix') . '_advanced_polls_desc';
-	 
-	// Table name
-	$pntable['advancedpollsdesc'] = $advpolls;
-	 
-	// Column names
-	$pntable['advanced_polls_desc'] = array('pn_pollid' => $advpolls . '.pn_pollid',
-											'pn_title' => $advpolls . '.pn_title',
-											'pn_description' => $advpolls . '.pn_description',
-											'pn_optioncount' => $advpolls . '.pn_optioncount',
-											'pn_opendate' => $advpolls . '.pn_opendate',
-											'pn_closedate' => $advpolls . '.pn_closedate',
-											'pn_recurring' => $advpolls . '.pn_recurring',
-											'pn_recurringoffset' => $advpolls . '.pn_recurringoffset',
-											'pn_recurringinterval' => $advpolls . '.pn_recurringinterval',
-											'pn_multipleselect' => $advpolls . '.pn_multipleselect',
-											'pn_multipleselectcount' => $advpolls . '.pn_multipleselectcount',
-											'pn_voteauthtype' => $advpolls . '.pn_voteauthtype',
-											'pn_tiebreakalg' => $advpolls . '.pn_tiebreakalg',
-											'pn_language' => $advpolls . '.pn_language',
-											'pn_votingmethod' => $advpolls . '.pn_votingmethod');
-	//    ------------------
-	 
+
+	// Votes table
+	$pntable['advanced_polls_votes'] = DBUtil::getLimitedTablename('advanced_polls_votes');
+	$pntable['advanced_polls_votes_column'] = array('pn_ip'       => 'pn_ip',
+											        'pn_time'     => 'pn_time',
+                                                    'pn_uid'      => 'pn_uid',
+                                                    'pn_voterank' => 'pn_voterank',
+                                                    'pn_pollid'   => 'pn_pollid',
+                                                    'pn_optionid' => 'pn_optionid',
+                                                    'pn_voteid'   => 'pn_voteid');
+    $pntable['advanced_polls_votes_column_def'] = array('pn_voteid'   => 'I AUTOINCREMENT PRIMARY',
+                                                        'pn_ip'       => "C(20) NOTNULL DEFAULT ''",
+                                                        'pn_time'     => "C(14) NOTNULL DEFAULT ''",
+                                                        'pn_uid'      => "I NOTNULL DEFAULT '0'",
+                                                        'pn_voterank' => "I NOTNULL DEFAULT '0'",
+                                                        'pn_pollid'   => "I NOTNULL DEFAULT '0'",
+                                                        'pn_optionid' => "I NOTNULL DEFAULT '0'");
+
+	// Poll options data
+	$pntable['advanced_polls_data'] = DBUtil::getLimitedTablename('advanced_polls_data');
+	$pntable['advanced_polls_data_column'] = array('pn_pollid'       => 'pn_pollid',
+                                                   'pn_optiontext'   => 'pn_optiontext',
+                                                   'pn_optionid'     => 'pn_optionid',
+                                                   'pn_optioncolour' => 'pn_optioncolour');
+    $pntable['advanced_polls_data_column_def'] = array('pn_pollid'       => "I NOTNULL DEFAULT '0'",
+                                                       'pn_optiontext'   => "C(255) NOTNULL DEFAULT ''",
+                                                       'pn_optionid'     => "I NOTNULL DEFAULT '0'",
+                                                       'pn_optioncolour' => "C(7) NOTNULL DEFAULT ''");
+
+	// Poll descriptions
+	$pntable['advanced_polls_desc'] = DBUtil::getLimitedTablename('advanced_polls_desc');
+	$pntable['advanced_polls_desc_column'] = array('pn_pollid'              => 'pn_pollid',
+                                                   'pn_title'               => 'pn_title',
+                                                   'pn_description'         => 'pn_description',
+                                                   'pn_optioncount'         => 'pn_optioncount',
+                                                   'pn_opendate'            => 'pn_opendate',
+                                                   'pn_closedate'           => 'pn_closedate',
+                                                   'pn_recurring'           => 'pn_recurring',
+                                                   'pn_recurringoffset'     => 'pn_recurringoffset',
+                                                   'pn_recurringinterval'   => 'pn_recurringinterval',
+                                                   'pn_multipleselect'      => 'pn_multipleselect',
+                                                   'pn_multipleselectcount' => 'pn_multipleselectcount',
+                                                   'pn_voteauthtype'        => 'pn_voteauthtype',
+                                                   'pn_tiebreakalg'         => 'pn_tiebreakalg',
+                                                   'pn_language'            => 'pn_language',
+                                                   'pn_votingmethod'        => 'pn_votingmethod');
+    $pntable['advanced_polls_desc_column_def'] = array('pn_pollid'              => 'I AUTOINCREMENT PRIMARY',
+                                                       'pn_title'               => "C(100) NOTNULL DEFAULT ''",
+                                                       'pn_description'         => 'X2',
+                                                       'pn_optioncount'         => "I NOTNULL DEFAULT '0'",
+                                                       'pn_opendate'            => "I NOTNULL DEFAULT '0'",
+                                                       'pn_closedate'           => "I NOTNULL DEFAULT '0'",
+                                                       'pn_recurring'           => "I NOTNULL DEFAULT '0'",
+                                                       'pn_recurringoffset'     => "I NOTNULL DEFAULT '0'",
+                                                       'pn_recurringinterval'   => "I NOTNULL DEFAULT '0'",
+                                                       'pn_multipleselect'      => "I NOTNULL DEFAULT '0'",
+                                                       'pn_multipleselectcount' => "I NOTNULL DEFAULT '0'",
+                                                       'pn_voteauthtype'        => "I NOTNULL DEFAULT '0'",
+                                                       'pn_tiebreakalg'         => "I NOTNULL DEFAULT '0'",
+                                                       'pn_language'            => "C(30) NOTNULL DEFAULT ''",
+                                                       'pn_votingmethod'        => "I NOTNULL DEFAULT '0'");
+
 	// Return the table information
 	return $pntable;
 }
