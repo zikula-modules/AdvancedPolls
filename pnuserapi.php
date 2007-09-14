@@ -25,27 +25,26 @@
 */
 function advanced_polls_userapi_getall($args)
 {
-	// Get arguments from argument array 
-	extract($args);
-
-	// Optional arguments.
-	if (!isset($startnum)) {
-		$startnum = 1;
+    // Optional arguments.
+    if (!isset($args['startnum']) || empty($args['startnum'])) {
+        $args['startnum'] = 0;
+    }
+    if (!isset($args['numitems']) || empty($args['numitems'])) {
+        $args['numitems'] = -1;
+    }
+	if (!isset($args['checkml'])) {
+		$args['checkml'] = true;
 	}
-	if (!isset($numitems)) {
-		$numitems = -1;
-	}
-	if ((!isset($startnum))  || (!isset($numitems))) {
-		return LogUtil::registerError (_MODARGSERROR);
-	}
-	if (!isset($checkml)) {
-		$checkml = true;
-	}
-	if (isset($desc) && $desc) {
-		$desc = 'DESC';
+	if (isset($args['desc']) && $args['desc']) {
+		$args['desc'] = 'DESC';
 	} else {
-		$desc = '';
+		$args['desc'] = '';
 	}
+
+    if (!is_numeric($args['startnum']) ||
+        !is_numeric($args['numitems'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
 
 	$items = array();
 
@@ -54,49 +53,37 @@ function advanced_polls_userapi_getall($args)
 		return $items;
 	}
 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
-	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
 
-	// Check if we is an ML situation
-	$querylang = '';
-	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_pollsdesccolumn[pn_language]='" . pnVarPrepForStore(pnUserGetLang()) . "' 
-					  OR $advanced_pollsdesccolumn[pn_language]='' 
-					  OR $advanced_pollsdesccolumn[pn_language] IS NULL)";
-	}
+    // populate an array with each part of the where clause and then implode the array if there is a need.
+    // credit to Jorg Napp for this technique - markwest
+    $pntable = pnDBGetTables();
+    $pagescolumn = $pntable['pages_column'];
+    $queryargs = array();
+    if (pnConfigGetVar('multilingual') == 1 && $args['checkml']) {
+        $queryargs[] = "($pagescolumn[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' OR $pagescolumn[language]='')";
+    }
 
-	// Get items
-	$sql = "SELECT $advanced_pollsdesccolumn[pn_pollid],
-				   $advanced_pollsdesccolumn[pn_title],
-				   $advanced_pollsdesccolumn[pn_opendate],
-				   $advanced_pollsdesccolumn[pn_closedate]
-		FROM $advanced_pollsdesctable
-		$querylang
-		ORDER BY $advanced_pollsdesccolumn[pn_pollid] $desc";
-	$result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);
+    $where = null;
+    if (count($queryargs) > 0) {
+        $where = ' WHERE ' . implode(' AND ', $queryargs);
+    }
 
-	// Check for an error with the database
-	if ($dbconn->ErrorNo()  != 0) {
-		return LogUtil::registerError(_GETFAILED);
-	}
+    // define the permission filter to apply
+    $permFilter = array(array('realm'           => 0,
+                              'component_left'  => 'advanced_polls',
+                              'component_right' => 'item',
+                              'instance_left'   => 'polltitle',
+                              'instance_right'  => 'pollid',
+                              'level'           => ACCESS_READ));
 
-	// Put items into result array.
-	for (; !$result->EOF; $result->MoveNext()) {
-		list($pollid, $polltitle, $opendate, $closedate) = $result->fields;
-		if (SecurityUtil::checkPermission('advanced_polls::item', "$polltitle::$pollid", ACCESS_READ)) {
-			$items[] = array('pollid' => $pollid,
-				             'polltitle' => $polltitle,
-							 'opendate' => $opendate,
-							 'closedate' => $closedate);
-		}
-	}
+    // get the objects from the db
+    $items = DBUtil::selectObjectArray('advanced_polls_desc', $where, 'pollid', $args['startnum']-1, $args['numitems'], '', $permFilter, $args['catFilter']);
 
-	// All successful database queries produce a result set, and that result
-	// set should be closed when it has been finished with
-	$result->Close();
+    // Check for an error with the database code, and if so set an appropriate
+    // error message and return
+    if ($items === false) {
+        return LogUtil::registerError (_GETFAILED);
+    }
 
 	// Return the items
 	return $items;
