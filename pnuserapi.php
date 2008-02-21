@@ -53,7 +53,6 @@ function advanced_polls_userapi_getall($args)
 		return $items;
 	}
 
-
     // populate an array with each part of the where clause and then implode the array if there is a need.
     // credit to Jorg Napp for this technique - markwest
     $pntable = pnDBGetTables();
@@ -281,7 +280,7 @@ function advanced_polls_userapi_countitems($args)
 
 	// Check for an error with the database code, and if so set an appropriate
 	// error message and return
-	if ($dbconn->ErrorNo()  != 0) {
+	if ($dbconn->ErrorNo() != 0) {
 		return LogUtil::registerError(_GETFAILED);
 	}
 
