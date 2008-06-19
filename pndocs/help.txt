@@ -1,4 +1,4 @@
-Advanced Polls Module v1.51 alpha 1
+Advanced Polls Module v1.51
 
 Description
 -----------
@@ -28,12 +28,12 @@ http://www.gnu.org/copyleft/gpl.html  for details.
 
 Supported Platforms
 -------------------
-PN .726 or greater running XTE RC3 or later
+Zikula v1.0 or later
 
 Feature List
 ------------
 1. Single, Multiple or Ranked Selection Polls
-2. Postnuke User, IP or Cookie based voting restrictions
+2. Zikula User, IP or Cookie based voting restrictions
 3. Configurable open and close dates for polls
 4. Recurring Polls options (allows poll to close, clear its results and reopen)
    Note: I  required this feature for my own site but not sure how useful it may
@@ -109,11 +109,9 @@ All permissions examples can be equally applied to user based permissions.
 Support andFeedback
 -------------------
 Support can be obtained via http://www.markwest.me.uk or via the PN support forums on 
-http://forums.postnuke.com/phpBB2/.
+http://commmunity.zikula.org.
 
-Feedback can be provided via http://www.markwest.me.uk  or via e-mail to support@markwest.me.uk
-
-Note all support requests should be posted in either forum and not via e-mail
+Feedback can be provided via http://www.markwest.me.uk
 
 Future Features
 ---------------

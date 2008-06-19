@@ -1,6 +1,6 @@
 Changelog 
 
-v1.51 a1
+v1.51
 All module output fully templated using pnRender
 Support for HTML in poll options and titles (e.g.image based polls)
 Support for polls with more than 12 options

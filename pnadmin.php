@@ -1,25 +1,19 @@
 <?php
 /**
- * Advanced Polls module for PostNuke
+ * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
  * @copyright (C) 2002-2007 by Mark West
  * @link http://www.markwest.me.uk Advanced Polls Support Site
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package PostNuke_3rdParty_Modules
+ * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls
  */
 
 /**
 * the main administration function
 *
-* This function is the default function, and is called whenever the
-* module is initiated without defining arguments.  As such it can
-* be used for a number of things, but most commonly it either just
-* shows the module menu and returns or calls whatever the module
-* designer feels should be the default function (often this is the
-* view() function)
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -42,8 +36,6 @@ function advanced_polls_admin_main()
 /**
 * add new item
 *
-* This is a standard function that is called whenever an administrator
-* wishes to create a new module item
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -86,8 +78,7 @@ function advanced_polls_admin_new()
 }
  
 /** 
-* This is a standard function that is called with the results of the
-* form supplied by advanced_polls_admin_new() to create a new item
+* create a poll
 *
 * @param 'pollname' the name of the poll to be created
 * @param 'polldescrption' the description of the poll to be created
@@ -211,8 +202,6 @@ function advanced_polls_admin_create()
 /**
 * Modify a Poll
 *
-* This is a standard function that is called whenever an administrator
-* wishes to modify a current module item
 * @param 'pollid' the id of the item to be modified
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
@@ -276,8 +265,8 @@ function advanced_polls_admin_modify()
  
  
 /**
-* This is a standard function that is called with the results of the
-* form supplied by advanced_polls_admin_modify() to update a current item
+* Update a poll
+*
 * @param 'pollid' the id of the item to be updated
 * @param 'polldescription' the descriptiom of the item to be updated
 * @param 'pollname' the name of the poll to be updated
@@ -405,16 +394,8 @@ function advanced_polls_admin_update()
 }
  
 /**
-* delete item
-* This is a standard function that is called whenever an administrator
-* wishes to delete a current module item.  Note that this function is
-* the equivalent of both of the modify() and update() functions above as
-* it both creates a form and processes its output.  This is fine for
-* simpler functions, but for more complex operations such as creation and
-* modification it is generally easier to separate them into separate
-* functions.  There is no requirement in the PostNuke MDG to do one or the
-* other, so either or both can be used as seen appropriate by the module
-* developer
+* delete a poll
+*
 * @param 'pollid' the id of the item to be deleted
 * @param 'confirmation' confirmation that this item can be deleted
 */
@@ -477,6 +458,7 @@ function advanced_polls_admin_delete()
  
 /**
 * Main admin function to view a full list of polls
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -545,8 +527,8 @@ function advanced_polls_admin_view()
 }
 
 /**
-* This is a standard function to modify the configuration parameters of the
-* module
+* Modify module configuration
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -581,8 +563,8 @@ function advanced_polls_admin_modifyconfig()
 }
 
 /**
-* This is a standard function to update the configuration parameters of the
-* module given the information passed back by the modification form
+* update module configuration
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -658,6 +640,7 @@ function advanced_polls_admin_updateconfig()
 
 /**
 * Reset the votes on a poll
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.1
@@ -704,6 +687,7 @@ function advanced_polls_admin_resetvotes()
 
 /**
 * Display voting statistics to admin
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.1
@@ -801,6 +785,7 @@ function advanced_polls_admin_adminstats()
 
 /**
 * Duplicate poll
+*
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.1

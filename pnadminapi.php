@@ -1,18 +1,19 @@
 <?php
 /**
- * Advanced Polls module for PostNuke
+ * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
  * @copyright (C) 2002-2007 by Mark West
  * @link http://www.markwest.me.uk Advanced Polls Support Site
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package PostNuke_3rdParty_Modules
+ * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls
  */
  
 /**
 * Create a new Poll item
+*
 * @param $args['pollname'] the name of the poll to be created
 * @param $args['polldescription'] the description of the poll to be created
 * @param $args['polllanguage'] the number of the item to be created
@@ -245,7 +246,7 @@ function advanced_polls_adminapi_delete($args)
 */
 function advanced_polls_adminapi_update($args) 
 {
-	// Get arguments from argument array future versions of PostNuke
+	// Get arguments from argument array
 	extract($args);
 
 	// Not sure why unchecked checkboxes don't have a value
