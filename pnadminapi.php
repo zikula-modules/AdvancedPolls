@@ -14,133 +14,48 @@
 /**
 * Create a new Poll item
 *
-* @param $args['pollname'] the name of the poll to be created
-* @param $args['polldescription'] the description of the poll to be created
-* @param $args['polllanguage'] the number of the item to be created
-* @param $args['pollopendid'] the day component of the poll open date
-* @param $args['pollopenmid'] the month component of the poll open date
-* @param $args['pollopenyid'] the year component of the poll open date
-* @param $args['pollopenhid'] the hour component of the poll open time
-* @param $args['pollopenminid'] the minute component of the poll open time
-* @param $args['pollclosedid'] the day component of the poll close date
-* @param $args['pollclosemid'] the month component of the poll close date
-* @param $args['pollcloseyid'] the year component of the poll close date
-* @param $args['pollclosehid'] the hour component of the poll close time
-* @param $args['pollcloseminid'] the minute component of the poll close time
-* @param $args['polltiebreak'] the tiebreak methodlogy to use
-* @param $args['pollvoteauthtype'] vote authorisation type to use
-* @param $args['multipleselect'] type of poll selection
-* @param $args['multipleselectcount'] number of selections allowed
-* @param $args['pollrecurring'] is poll a recurring one
-* @param $args['pollreucrringoffset'] offset for recurring polls
-* @param $args['pollrecurringinterval'] interval to add for recurring polls
-* @param $args['polloptioncount'] number of options for this poll
-* @returns int
-* @return poll item ID on success, false on failure
+* @return int poll item ID on success, false on failure
 * @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
+* @copyright (C) 2002-2008 by Mark West
 * @since 1.0
-* @version 1.1
 */
 function advanced_polls_adminapi_create($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
-	// Argument check
-	if ((!isset($pollname)) || 
-		(!isset($polldescription)) ||
-		(!isset($polllanguage)) ||
-		(!isset($pollopendid)) ||
-		(!isset($pollopenmid)) ||
-		(!isset($pollopenyid)) || 
-		(!isset($pollopenhid)) ||
-		(!isset($pollopenminid)) ||
-		(!isset($pollclosedid)) || 
-		(!isset($pollclosemid)) || 
-		(!isset($pollcloseyid)) || 
-		(!isset($pollclosehid)) ||
-		(!isset($pollcloseminid)) ||
-		(!isset($pollvoteauthtype)) ||
-		(!isset($polltiebreak)) ||
-		(!isset($pollmultipleselect)) ||
-		(!isset($pollmultipleselectcount)) ||
-		(!isset($pollrecurring)) ||
-		(!isset($pollrecurringinterval)) ||
-		(!isset($pollrecurringoffset)) ||
-		(!isset($polloptioncount))) {
-		return LogUtil::registerError(_ADVANCEDPOLLSVARIABLEERROR);
-	}
+    // Argument check
+    if (!isset($args['title']) || !isset($args['description']) || !isset($args['optioncount'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$pollname::", ACCESS_ADD)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$args[title]::", ACCESS_ADD)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
-	 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
-	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
-	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
-	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
 
-	// Get next ID in table
-	$nextId = $dbconn->GenId($advanced_pollsdesctable);
+    // defaults
+    if (!isset($args['language'])) {
+        $args['language'] = '';
+    }
 
-	$pollopendate = mktime ($pollopenhid, $pollopenminid, 0, $pollopenmid, $pollopendid, $pollopenyid);
-	if (!$pollnoclosedate) {
-		$pollclosedate = mktime ($pollclosehid, $pollcloseminid, 0, $pollclosemid, $pollclosedid, $pollcloseyid);
+	$args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);
+	if (!$args['noclosedate']) {
+		$args['closedate'] = mktime($args['closeHour'], $args['closeMinute'], 0, $args['closeMonth'], $args['closeDay'], $args['closeYear']);
 	} else {
-	 	$pollclosedate = 0;
+	 	$args['closedate'] = 0;
 	}
 
-	// Add item
-	$sql = "INSERT INTO $advanced_pollsdesctable (
-		$advanced_pollsdesccolumn[pn_pollid],
-		$advanced_pollsdesccolumn[pn_title],
-		$advanced_pollsdesccolumn[pn_description],
-		$advanced_pollsdesccolumn[pn_optioncount],
-		$advanced_pollsdesccolumn[pn_opendate],
-		$advanced_pollsdesccolumn[pn_closedate],
-		$advanced_pollsdesccolumn[pn_voteauthtype],
-		$advanced_pollsdesccolumn[pn_tiebreakalg],
-		$advanced_pollsdesccolumn[pn_multipleselect],
-		$advanced_pollsdesccolumn[pn_multipleselectcount],
-		$advanced_pollsdesccolumn[pn_recurring],
-		$advanced_pollsdesccolumn[pn_recurringoffset],
-		$advanced_pollsdesccolumn[pn_recurringinterval],
-		$advanced_pollsdesccolumn[pn_language])
-		VALUES (
-		$nextId,
-		'" . pnVarPrepForStore($pollname) . "',
-		'" . pnVarPrepForStore($polldescription) . "',
-		'" . (int)pnVarPrepForStore($polloptioncount) . "',
-		'" . (int)pnVarPrepForStore($pollopendate) . "',
-		'" . (int)pnVarPrepForStore($pollclosedate) . "',
-		'" . (int)pnVarPrepForStore($pollvoteauthtype) . "',
-		'" . (int)pnVarPrepForStore($polltiebreak) . "',
-		'" . (int)pnVarPrepForStore($pollmultipleselect) . "',
-		'" . (int)pnVarPrepForStore($pollmultipleselectcount) . "',
-		'" . (int)pnVarPrepForStore($pollrecurring) . "',
-		'" . (int)pnVarPrepForStore($pollrecurringoffset) . "',
-		'" . (int)pnVarPrepForStore($pollrecurringinterval) . "',
-		'" . pnVarPrepForStore($polllanguage) . "')";
-	$dbconn->Execute($sql);
-	 
-	// Check for an error with the database code
-	if ($dbconn->ErrorNo()  != 0) {
-		return LogUtil::registerError(_ADVANCEDPOLLSCREATEFAILED);
-	}
-	 
-	// Get the ID of the item that we inserted.
-	$pollid = $dbconn->PO_Insert_ID($advanced_pollsdesctable, $advanced_pollsdesccolumn['pn_pollid']);
-	 
-	// Let any hooks know that we have created a new item.
-	pnModCallHooks('item', 'create', $pollid, 'pollid');
-	 
-	// Return the id of the newly created item to the calling process
-	return $pollid;
+    if (!DBUtil::insertObject($args, 'advanced_polls_desc', 'pollid')) {
+        return LogUtil::registerError (_CREATEFAILED);
+    }
+
+    // Let any hooks know that we have created a new item.
+    pnModCallHooks('item', 'create', $args['pollid'], array('module' => 'advanced_polls'));
+
+    // An item was created, so we clear all cached pages of the items list.
+    $pnRender = pnRender::getInstance('advanced_polls');
+    $pnRender->clear_cache('advancedpolls_user_view.htm');
+
+    // Return the id of the newly created item to the calling process
+    return $args['pollid'];
 }
  
 /**
@@ -155,90 +70,62 @@ function advanced_polls_adminapi_create($args)
 */
 function advanced_polls_adminapi_delete($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-	 
-	// Argument check
-	if (!isset($pollid)) {
-		return LogUtil::registerError (_MODARGSERROR);
-	}
-	 
-	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls',
-		'user',
-		'get',
-		array('pollid' => $pollid));
-	 
-	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
-	}
+    // Argument check
+    if (!isset($args['pollid'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
 
+    // Get the poll
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+
+    if ($item == false) {
+        return LogUtil::registerError (_NOSUCHITEM);
+    }
+	 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_DELETE)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_DELETE)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
-	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
-	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
-	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
-	 
-	// Delete the item
-	$sql = "DELETE FROM $advanced_pollsdesctable
-		WHERE $advanced_pollsdesccolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
-	$dbconn->Execute($sql);
-	 
-	// Check for an error with the database code
-	if ($dbconn->ErrorNo()  != 0) {
-		return LogUtil::registerError(_ADVANCEDPOLLSDELETEFAILED);
-	}
-	 
-	// Delete the item
-	$sql = "DELETE FROM $advanced_pollsdatatable
-		WHERE $advanced_pollsdatacolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
-	$dbconn->Execute($sql);
-	 
-	// Check for an error with the database code
-	if ($dbconn->ErrorNo()  != 0) {
-		return LogUtil::registerError(_ADVANCEDPOLLSDELETEFAILED);
-	}
-	 
-	// Let any hooks know that we have deleted an item.
-	pnModCallHooks('item', 'delete', $pollid, '');
-	 
-	// Let the calling process know that we have finished successfully
+    // Delete the object
+    if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
+        return LogUtil::registerError (_DELETEFAILED);
+    }
+    if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
+        return LogUtil::registerError (_DELETEFAILED);
+    }
+    if (!DBUtil::deleteObjectByID('advanced_polls_desc', $args['pollid'], 'pollid')) {
+        return LogUtil::registerError (_DELETEFAILED);
+    }
+
 	return true;
 }
  
 /**
 * update a poll
 * @param $args['pollid'] the ID of the item
-* @param $args['pollname'] the name of the poll to be updated
-* @param $args['polldescription'] the name of the poll to be updated
-* @param $args['polllanguage'] the number of the item to be updated
-* @param $args['pollopendid'] the day component of the poll open date
-* @param $args['pollopenmid'] the month component of the poll open date
-* @param $args['pollopenyid'] the year component of the poll open date
-* @param $args['pollopenhid'] the hour component of the poll open time
-* @param $args['pollopenminid'] the minute component of the poll open time
-* @param $args['pollclosedid'] the day component of the poll close date
-* @param $args['pollclosemid'] the month component of the poll close date
-* @param $args['pollcloseyid'] the year component of the poll close date
-* @param $args['pollclosehid'] the hour component of the poll close time
-* @param $args['pollcloseminid'] the minute component of the poll close time
-* @param $args['polltiebreak'] the tiebreak methodlogy to use
-* @param $args['pollvoteauthtype'] vote authorisation type to use
+* @param $args['title'] the name of the poll to be updated
+* @param $args['description'] the name of the poll to be updated
+* @param $args['language'] the number of the item to be updated
+* @param $args['opendid'] the day component of the poll open date
+* @param $args['openmid'] the month component of the poll open date
+* @param $args['openyid'] the year component of the poll open date
+* @param $args['openhid'] the hour component of the poll open time
+* @param $args['openminid'] the minute component of the poll open time
+* @param $args['closedid'] the day component of the poll close date
+* @param $args['closemid'] the month component of the poll close date
+* @param $args['closeyid'] the year component of the poll close date
+* @param $args['closehid'] the hour component of the poll close time
+* @param $args['closeminid'] the minute component of the poll close time
+* @param $args['tiebreak'] the tiebreak methodlogy to use
+* @param $args['voteauthtype'] vote authorisation type to use
 * @param $args['multipleselect'] type of poll selection
 * @param $args['multipleselectcount'] number of selections allowed
-* @param $args['pollrecurring'] is poll a recurring one
-* @param $args['pollreucrringoffset'] offset for recurring polls
-* @param $args['pollrecurringinterval'] interval to add for recurring polls
-* @param $args['polloptioncount'] number of options for this poll
-* @returns bool
-* @return true on success, false on failure
+* @param $args['recurring'] is poll a recurring one
+* @param $args['reucrringoffset'] offset for recurring polls
+* @param $args['recurringinterval'] interval to add for recurring polls
+* @param $args['optioncount'] number of options for this poll
+* @return bool true on success, false on failure
 * @author Mark West <mark@markwest.me.uk>
 * @copyright (C) 2002-2004 by Mark West
 * @since 1.0
@@ -246,47 +133,14 @@ function advanced_polls_adminapi_delete($args)
 */
 function advanced_polls_adminapi_update($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
-	// Not sure why unchecked checkboxes don't have a value
-	if (!isset($pollmultipleselect)) {
-		$pollmultipleselect = 0;
-	}
-
-	// Argument check
-	if ((!isset($pollid)) ||
-		(!isset($pollname)) ||
-		(!isset($polldescription)) ||
-		(!isset($polllanguage)) ||
-		(!isset($pollopendid)) ||
-		(!isset($pollopenmid)) || 
-		(!isset($pollopenyid)) ||
-		(!isset($pollopenhid)) || 
-		(!isset($pollopenminid)) ||
-		(!isset($pollclosedid)) || 
-		(!isset($pollclosemid)) ||
-		(!isset($pollcloseyid)) ||
-		(!isset($pollclosehid)) ||
-		(!isset($pollcloseminid)) ||
-		(!isset($pollvoteauthtype)) ||
-		(!isset($polltiebreak)) ||
-		(!isset($pollmultipleselect)) ||
-		(!isset($pollmultipleselectcount)) ||
-		(!isset($pollrecurring)) || 
-		(!isset($pollrecurringoffset)) || 
-		(!isset($pollrecurringinterval)) ||
-		(!isset($polloptioncount)) ||
-		(!isset($polloptions))) {
-		return LogUtil::registerError(_ADVANCEDPOLLSVARIABLEERROR);
-	}
+    // Argument check
+    if (!isset($args['pollid']) || !isset($args['title']) || 
+        !isset($args['description']) || !isset($args['optioncount'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
 
 	// The user API function is called
-	$item = pnModAPIFunc('advanced_polls',
-		'user',
-		'get',
-		array('pollid' => $pollid));
-
+	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 	if ($item == false) {
 		return LogUtil::registerError(_NOSUCHITEM);
 	}
@@ -295,81 +149,43 @@ function advanced_polls_adminapi_update($args)
 
 	// Note that at this stage we have two sets of item information, the
 	// pre-modification and the post-modification.
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$pollname::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$args[title]::$pollid", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
-	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
-	$advanced_pollsdatatable = $pntable['advancedpollsdata'];
-	$advanced_pollsdatacolumn = &$pntable['advanced_polls_data'];
+    // defaults
+    if (!isset($args['language'])) {
+        $args['language'] = '';
+    }
 
-	// Update the item
-	$pollopendate = mktime ($pollopenhid, $pollopenminid, 0, $pollopenmid, $pollopendid, $pollopenyid);
-	if (!$pollnoclosedate) {
-		$pollclosedate = mktime ($pollclosehid, $pollcloseminid, 0, $pollclosemid, $pollclosedid, $pollcloseyid);
+	$args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);
+	if (!$args['noclosedate']) {
+		$args['closedate'] = mktime($args['closeHour'], $args['closeMinute'], 0, $args['closeMonth'], $args['closeDay'], $args['closeYear']);
 	} else {
-	 	$pollclosedate = 0;
+	 	$args['closedate'] = 0;
 	}
 
-	$sql = "UPDATE $advanced_pollsdesctable
-		SET $advanced_pollsdesccolumn[pn_title] = '" . pnVarPrepForStore($pollname) . "',
-		$advanced_pollsdesccolumn[pn_description] = '" . pnVarPrepForStore($polldescription) . "',
-		$advanced_pollsdesccolumn[pn_optioncount] = '" . (int)pnVarPrepForStore($polloptioncount) . "',
-		$advanced_pollsdesccolumn[pn_opendate] = '" . (int)pnVarPrepForStore($pollopendate) . "',
-		$advanced_pollsdesccolumn[pn_closedate] = '" . (int)pnVarPrepForStore($pollclosedate) . "',
-		$advanced_pollsdesccolumn[pn_voteauthtype] = '" . (int)pnVarPrepForStore($pollvoteauthtype) . "',
-		$advanced_pollsdesccolumn[pn_tiebreakalg] = '" . (int)pnVarPrepForStore($polltiebreak) . "',
-		$advanced_pollsdesccolumn[pn_multipleselect] = '" . (int)pnVarPrepForStore($pollmultipleselect) . "',
-		$advanced_pollsdesccolumn[pn_multipleselectcount] = '" . (int)pnVarPrepForStore($pollmultipleselectcount) . "',
-		$advanced_pollsdesccolumn[pn_closedate] = '" . (int)pnVarPrepForStore($pollclosedate) . "',
-		$advanced_pollsdesccolumn[pn_recurring] = '" . (int)pnVarPrepForStore($pollrecurring) . "',
-		$advanced_pollsdesccolumn[pn_recurringoffset] = '" . (int)pnVarPrepForStore($pollrecurringoffset) . "',
-		$advanced_pollsdesccolumn[pn_recurringinterval] = '" . (int)pnVarPrepForStore($pollrecurringinterval) . "',
-		$advanced_pollsdesccolumn[pn_language] = '" . pnVarPrepForStore($polllanguage) . "'
-		WHERE $advanced_pollsdesccolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
-	$dbconn->Execute($sql);
+    // update the object
+    if (!DBUtil::updateObject($args, 'advanced_polls_desc', '', 'pollid')) {
+        return LogUtil::registerError (_UPDATEFAILED);
+    }
 
-	// Check for an error with the database code, and if so set an
-	// appropriate error message and return
-	if ($dbconn->ErrorNo()  != 0) {
-		return LogUtil::registerError(_ADVANCEDPOLLSUPDATEFAILED);
-	}
-
-	// loop to populate 12 options into advanced_pollsdata table
-	// note here to include future code to count number of options
-	for ($optioncount = 0; $optioncount < count($polloptions); $optioncount++) {
-		// Let's delete the option first and then re-insert
-		$sql = "DELETE FROM $advanced_pollsdatatable
-			    WHERE $advanced_pollsdatacolumn[pn_optionid] = '" . (int)pnVarPrepForStore($optioncount+1) . "' AND
-			    $advanced_pollsdatacolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "'";
-		$dbconn->Execute($sql);
-		// now do the reinsert
-		$sql = "INSERT INTO $advanced_pollsdatatable (
-			$advanced_pollsdatacolumn[pn_pollid],
-			$advanced_pollsdatacolumn[pn_optionid],
-			$advanced_pollsdatacolumn[pn_optiontext], 
-			$advanced_pollsdatacolumn[pn_optioncolour])  
-			VALUES (
-			'" . (int)pnVarPrepForStore($pollid) . "',
-			'" . (int)pnVarPrepForStore($optioncount+1) . "',
-			'" . pnVarPrepForStore($polloptions[$optioncount]['optiontext']) . "',
-			'" . pnVarPrepForStore($polloptions[$optioncount]['optioncolor']) . "');";
-		$dbconn->Execute($sql);
-
-		// Check for an error with the database code, and if so set an
-		// appropriate error message and return
-		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_ADVANCEDPOLLSUPDATEFAILED);
-		}
-		 
-	}
+    // first delete the poll options before reinserting them
+    if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
+        return LogUtil::registerError (_DELETEFAILED);
+    }
+    for ($count = 1; $count <= $args['optioncount']; $count++) {
+        $items[] = array('pollid' => $args['pollid'],
+                         'optiontext' => $args['options'][$count]['optiontext'],
+                         'optioncolour' => $args['options'][$count]['optioncolor'],
+                         'optionid' => $count);
+    }
+    if (!DBUtil::insertObjectArray($items, 'advanced_polls_data')) {
+        return LogUtil::registerError (_UPDATEFAILED);
+    }
 
 	// Let the calling process know that we have finished successfully
 	return true;
@@ -532,7 +348,7 @@ function advanced_polls_adminapi_getvotes($args)
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_ADVANCEDPOLLSVOTESGETFAILED);
+			return LogUtil::registerError(_GETFAILED);
 		}
 
 		$votes = array();

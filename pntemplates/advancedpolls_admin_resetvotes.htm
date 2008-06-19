@@ -5,7 +5,7 @@
 <!--[pnml name="_ADVANCEDPOLLSCONFIRMVOTESRESET"]-->
 <form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="resetvotes"]-->" method="post" enctype="application/x-www-form-urlencoded">
 	<div>
-    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+    <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
 	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSCONFIRMVOTESRESET"]-->" />

@@ -11,19 +11,20 @@
 	  </tr>
   </thead>
   <tbody>
-  <!--[section name=polls loop=$polls]-->  
+  <!--[foreach from=$polls item=poll]-->  
     <tr class="<!--[cycle values=pn-odd,pn-even]-->">
-      <td headers="col1"><!--[$polls[polls].polltitle|pnvarprepfordisplay]--></td>
-      <td headers="col2"><!--[$polls[polls].pollid|pnvarprepfordisplay]--></td>
+      <td headers="col1"><!--[$poll.title|pnvarprepfordisplay]--></td>
+      <td headers="col2"><!--[$poll.pollid|pnvarprepfordisplay]--></td>
 	  <td headers="col3">
-	    <!--[assign var="options" value=$polls[polls].options]-->
-        [&nbsp;<!--[section name=options loop=$options]-->
-	    <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
-			<!--[if $smarty.section.options.last neq true]-->&nbsp;|&nbsp;<!--[/if]-->
-        <!--[/section]-->&nbsp;]
+	    <!--[assign var="options" value=$poll.options]-->
+        <!--[section name=options loop=$options]-->
+          <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
+        <!--[/section]-->
 	  </td>
     </tr>
-  <!--[/section]-->
+  <!--[foreachelse]-->
+    <tr class="pn-admintableempty"><td <!--[if $enablecategorization]-->colspan="4"<!--[else]-->colspan="3"<!--[/if]-->><!--[pnml name=_NOITEMSFOUND]--></td></tr>
+  <!--[/foreach]-->
   </tbody>
 </table>
 <!--[pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->

@@ -2,15 +2,15 @@
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="pn-admincontainer">
 <h2><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICS"]--></h2>
-<strong><!--[pnml name="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.pn_title|pnvarprephtmldisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.pn_opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.pn_closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
 <strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay]--><br />
 </div>
 <div style="float:right;">
 <form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="adminstats"]-->" method="post" enctype="application/x-www-form-urlencoded">
   <div>
-  <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+  <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
   <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
   <label for="advancedpolls_sortby"><!--[pnml name=_ADVANCEDPOLLSSORTVOTESBY"]--></label>
   <select id="advancedpolls_sortby" name="sortby">
@@ -36,16 +36,18 @@
 	  </tr>
   </thead>
   <tbody>
-  <!--[section name=votes loop=$votes]-->  
+  <!--[foreach from=$votes item=vote]-->  
     <tr class="<!--[cycle values=pn-odd,pn-even]-->">
-      <td headers="col1"><!--[$votes[votes].voteid|pnvarprepfordisplay]--></td>
-      <td headers="col2"><!--[$votes[votes].host|pnvarprepfordisplay]--></td>
-      <td headers="col3"><!--[$votes[votes].time|apdatetime|pnvarprepfordisplay]--></td>
-      <td headers="col4"><!--[$votes[votes].user|pnvarprepfordisplay]--></td>
-      <td headers="col5"><!--[$votes[votes].rank|pnvarprepfordisplay]--></td>
-      <td headers="col6"><!--[$votes[votes].optiontext|pnvarprepfordisplay]--></td>
+      <td headers="col1"><!--[$vote.voteid|pnvarprepfordisplay]--></td>
+      <td headers="col2"><!--[$vote.host|pnvarprepfordisplay]--></td>
+      <td headers="col3"><!--[$vote.time|apdatetime|pnvarprepfordisplay]--></td>
+      <td headers="col4"><!--[$vote.user|pnvarprepfordisplay]--></td>
+      <td headers="col5"><!--[$vote.rank|pnvarprepfordisplay]--></td>
+      <td headers="col6"><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
     </tr>
-  <!--[/section]-->
+  <!--[foreachelse]-->
+    <tr class="pn-admintableempty"><td colspan="6"><!--[pnml name=_NOITEMSFOUND]--></td></tr>
+  <!--[/foreach]-->
   </tbody>
 </table>
 <!--[pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1]-->

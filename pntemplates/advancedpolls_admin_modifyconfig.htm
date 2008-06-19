@@ -1,11 +1,12 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
+<div class="pn-adminpageicon"><!--[pnimg modname=core src=configure.gif set=icons/large alt='_MODIFYCONFIG' altml=true]--></div>
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_ADVANCEDPOLLSMODIFYCONFIG"]--></h2>
+<h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
 <form class="pn-adminform" name="advanced_polls_admin_modifyconfig" action="<!--[pnmodurl modname=advanced_polls type=admin func=updateconfig]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
-	<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module="advanced_polls"]-->" />
+	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 	<div class="pn-adminformrow">
 		<label for="advancedpolls_polladminitemsperpage"><!--[pnml name="_ADVANCEDPOLLSADMINITEMSPERPAGE"]--></label>
 		<input id="advancedpolls_polladminitemsperpage" type="text" name="polladminitemsperpage" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
@@ -47,9 +48,11 @@
 		<label for="advancedpolls_defaultoptioncount"><!--[pnml name="_ADVANCEDPOLLSDEFAULTOPTIONCOUNT"]--></label>
 		<input id="advancedpolls_defaultoptioncount" type="text" name="defaultoptioncount" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
 	</div>
-	<div class="pn-adminformrow">
-		<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSUPDATECONFIG"]-->" />
-	</div>
+    <!--[pnmodcallhooks hookobject=module hookaction=modifyconfig module=advanced_polls]-->
+    <div class="pn-adminformrow pn-adminformbuttons">
+    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
+    <!--[pnbutton src=button_ok.gif set=icons/small alt="_UPDATECONFIG" title="_UPDATECONFIG"]-->
+    </div>
 </div>
 </form>
 </div>
