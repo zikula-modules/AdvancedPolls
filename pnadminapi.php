@@ -477,3 +477,27 @@ function advanced_polls_adminapi_duplicate($args)
 	}	
 }
 
+/**
+ * get available admin panel links
+ *
+ * @author Mark West
+ * @return array array of admin links
+ */
+function advanced_polls_adminapi_getlinks()
+{
+    $links = array();
+
+    pnModLangLoad('advanced_polls', 'admin');
+
+    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => _ADVANCEDPOLLSVIEW);
+    }
+    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => _ADVANCEDPOLLSNEW);
+    }
+    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => _MODIFYCONFIG);
+    }
+
+    return $links;
+}

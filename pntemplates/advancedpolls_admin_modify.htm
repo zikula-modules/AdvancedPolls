@@ -21,7 +21,7 @@
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_language"><!--[pnml name="_LANGUAGE"]--> </label>
-			<!--[languagelist id="advancedpolls_language" name="poll[language]" installed=true selected=$item.language]-->
+			<!--[html_select_languages id="advancedpolls_language" name="poll[language]" installed=true selected=$item.language]-->
 		</div>
 	</fieldset>
 	<fieldset>
@@ -52,19 +52,19 @@
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_voteauthtype"><!--[pnml name="_ADVANCEDPOLLSAUTHTYPE"]--> </label>
 			<select id="advancedpolls_voteauthtype" name="poll[voteauthtype]">
-				<!--[html_options options=$authtypes selected=$item.voteauthtype]-->
+				<!--[votingtypes selected=$item.voteauthtype]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_tiebreak"><!--[pnml name="_ADVANCEDPOLLSTIEBREAK"]--> </label>
 			<select id="advancedpolls_tiebreak" name="poll[tiebreak]">
-				<!--[html_options options=$tiebreaktypes selected=$item.tiebreakalg]-->
+				<!--[tiebreaktypes selected=$item.tiebreakalg]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_multipleselect"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECT"]--> </label>
 			<select id="advancedpolls_multipleselect" name="poll[multipleselect]">
-				<!--[html_options options=$multipleselecttypes selected=$item.multipleselect]-->
+				<!--[multipleselecttypes selected=$item.multipleselect]-->
 			</select>
 		</div>
 		<legend><!--[pnml name=_ADVANCEDPOLLSONLYMULTIPLESELECT]--></legend>
