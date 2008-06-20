@@ -5,7 +5,7 @@
 <div class="pn-admincontainer">
 <div class="pn-adminpageicon"><!--[pnimg modname=core src=edit.gif set=icons/large alt=$templatetitle]--></div>
 <h2><!--[$templatetitle]--></h2>
-<form class="pn-adminform" name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<form class="pn-adminform" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
 	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 	<input type="hidden" name="poll[pollid]" value="<!--[$pollid|pnvarprepfordisplay]-->" />
@@ -28,13 +28,13 @@
 		<legend><!--[pnml name=_ADVANCEDPOLLSTIMING]--></legend>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_startdate"><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></label>
-			<div style="white-space:nowrap">
+			<div id="advancedpolls_startdate" style="white-space:nowrap">
 				<!--[html_select_date year_as_text=true prefix="start" time=$item.opendate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="start" time=$item.opendate]-->
 			</div>
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_closedate"><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></label>
-			<div style="white-space:nowrap">
+			<div id="advancedpolls_closedate" style="white-space:nowrap">
 				<!--[html_select_date year_as_text=true prefix="close" time=$item.closedate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="close" time=$item.closedate]-->
 			</div>
 		</div>

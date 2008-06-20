@@ -271,8 +271,6 @@ function advanced_polls_userapi_isopen($args)
 */
 function advanced_polls_userapi_isvoteallowed($args) 
 {
-	static $uservotinghistory;
-
 	// Argument check
 	if (!isset($args['pollid'])) {
 		return LogUtil::registerError (_MODARGSERROR);
@@ -295,12 +293,6 @@ function advanced_polls_userapi_isvoteallowed($args)
 		return false;
 	}
 
-	// get db information for use later
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
-
 	// get voting authorisation from item array
 	$voteauthtype = $item['voteauthtype'];
 
@@ -310,77 +302,49 @@ function advanced_polls_userapi_isvoteallowed($args)
 			return true;
 		case 2: //UID Voting
 			// extract user id from session variables
-			$uid = pnUserGetVar('uid');
+			$uid = pnVarPrepForStore(pnUserGetVar('uid'));
 
-			if (!is_array($uservotinghistory[$uid])) {
-				// check user id against db
-				$sql = "SELECT $advanced_pollsvotescolumn[pollid]
-						FROM $advanced_pollsvotestable
-						WHERE
-						$advanced_pollsvotescolumn[uid]= '" . (int)pnVarPrepForStore($uid) . "'";
-				$result =& $dbconn->Execute($sql);
-		
-				$items = array();
-				for (; !$result->EOF; $result->MoveNext()) {
-					list($respollid) = $result->fields;
-					$items[$respollid] = true;
-				}
-		
-				//close result set
-				$result->Close();
+            // get all the matching votes
+            $where = "WHERE pn_uid = '{$uid}' AND pn_pollid = '{$args['pollid']}'";
+            $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
 
-				$uservotinghistory[$uid] = $items;
-			}
-
-			if (isset($uservotinghistory[$uid][$pollid])) {
+			if (isset($votes[$args['pollid']])) {
 				return false;
 			} else {
 				return true;
 			}
-
 		case 3: //Cookie voting
-
-		// check for existance of session variable (cookie)
-		// if set then vote is invalid otherwise set session variable
-		// and return valid
-		if (pnSessionGetVar("advanced_polls_voted$pollid")) {
-			return false;
-		} else {
-			return true;
-		}
-
+			// check for existance of session variable (cookie)
+			// if set then vote is invalid otherwise set session variable
+			// and return valid
+			if (pnSessionGetVar("advanced_polls_voted{$args['pollid']}")) {
+				return false;
+			} else {
+				return true;
+			}
 		case 4: //IP address voting
+			// extract ip from http headers
+			$ip = ServerUtil::getVar('REMOTE_ADDR');
 
-		// extract ip from http headers
-		$ip = pnServerGetVar("REMOTE_ADDR");
+            // get all the matching votes
+            $where = "pn_ip = '{$ip}' AND pn_pollid = '{$args['pollid']}'";
+            $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
 
-		// check ip against db
-		$sql = "SELECT $advanced_pollsvotescolumn[ip]
-				FROM $advanced_pollsvotestable
-				WHERE
-				(($advanced_pollsvotescolumn[pollid]='" . (int)pnVarPrepForStore($pollid) . "') AND
-				($advanced_pollsvotescolumn[ip]='" . pnVarPrepForStore($ip) . "'))";
-		$result =& $dbconn->Execute($sql);
+			//If there are no rows back from this query then this uid can vote
+			if ($votes) {
+				return true;
+			} else {
+				return false;
+			}
 
-		//If there are no rows back from this query then this uid can vote
-		if ($result->EOF) {
 			return true;
-		} else {
-			return false;
-		}
-
-		//close result set
-		$result->Close();
-
-		return true;
 
 		case 5: //Cookie + IP address voting
-
-		// possibly remove this voting style
-		return true;
+			// possibly remove this voting style
+			return true;
 
 		default: //any other option - should never occur
-		return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
+			return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
 	}
 }
 
@@ -616,64 +580,29 @@ function advanced_polls_userapi_pollvotecount($args)
 */
 function advanced_polls_userapi_addvote($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
 	// Argument check
-	if (!isset($pollid) || !isset($voteid) || !isset($voterank)) {
+	if (!isset($args['pollid']) || !isset($args['optionid']) || !isset($args['voterank'])) {
 		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// Security check
-	if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
-		if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
-
-			$dbconn =& pnDBGetConn(true);
-			$pntable =& pnDBGetTables();
-			$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-			$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
-
-			// Get next ID in table 
-			$nextId = $dbconn->GenId($advanced_pollsvotestable);
-
-			// extract user id from session variables
-			$uid = pnUserGetVar('uid');
-			if (!isset($uid)) {
-				$uid = 0;
-			}
-
-			// add first part of vote
-			$sql = "INSERT INTO $advanced_pollsvotestable (
-				$advanced_pollsvotescolumn[voteid],
-				$advanced_pollsvotescolumn[ip],
-				$advanced_pollsvotescolumn[uid],
-				$advanced_pollsvotescolumn[time],
-				$advanced_pollsvotescolumn[pollid],
-				$advanced_pollsvotescolumn[optionid],
-				$advanced_pollsvotescolumn[voterank])
-				VALUES (
-				'" . (int)pnVarPrepForStore($nextId) . "',
-				'" . pnVarPrepForStore(pnServerGetVar("REMOTE_ADDR")) . "',
-				'" . (int)pnVarPrepForStore($uid) . "',
-				'" . (int)pnVarPrepForStore(time()) . "',
-				'" . (int)pnVarPrepForStore($pollid) ."',
-				'" . (int)pnVarPrepForStore($voteid) ."',
-				'" . (int)pnVarPrepForStore($voterank) ."')";
-
-			$result =& $dbconn->Execute($sql);
-
-			if ($dbconn->ErrorNo()  != 0) {
-				return LogUtil::registerError(_ADVANCEDPOLLSVOTEFAILED);
-			}
-
-			//set cookie to indicate vote made in this poll
-			//used only with cookie based voting but set all the time
-			//in case admin changes voting regs.
-			pnSessionSetVar("advanced_polls_voted$pollid", 1);
-
-			return true;
+	if (pnSecAuthAction(0,'advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
+        $args['ip'] = pnServerGetVar('REMOTE_ADDR');
+		$args['uid'] = pnUserGetVar('uid');
+		$args['time'] = time();
+		if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
+			return LogUtil::registerError (_ADVANCEDPOLLSVOTEFAILED);
 		}
+
+		//set cookie to indicate vote made in this poll
+		//used only with cookie based voting but set all the time
+		//in case admin changes voting regs.
+		SessionUtil::setVar("advanced_polls_voted{$args['pollid']}", 1);
+
+		return true;
 	}
+
+	return false;
 }
 
 /**

@@ -2,42 +2,42 @@
 <!--[include file="advancedpolls_user_menu.htm"]-->
 <h2>
 <!--[if $ispollopen eq 1]-->
-<!--[pnml name="_ADVANCEDPOLLSCURRENT"]--> - <!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[pnml name="_ADVANCEDPOLLSCURRENT"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
 <!--[else]-->
-<!--[pnml name="_ADVANCEDPOLLSPREVIOUS"]--> - <!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[pnml name="_ADVANCEDPOLLSPREVIOUS"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
 <!--[/if]-->
 </h2>
-<br />
-<!--[$polldescription|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
-<br />
-<table width="100%">
-	<!--[section name=results loop=$results]-->
+<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></p>
+<table class="pn-datatable">
+	<tbody>
+	<!--[foreach from=$item.options item=option]-->
 	<tr>
 		<td>
-			<!--[if $results[results].optioncolor neq '']-->
-				<span style="color:<!--[$results[results].optioncolor]-->;">
-					<!--[$results[results].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+			<!--[if $option.optioncolour neq '']-->
+				<span style="color:<!--[$option.optioncolour]-->;">
+					<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
 				</span>
 			<!--[else]-->
-				<!--[$results[results].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
 			<!--[/if]-->
 		</td>
 		<td>
-			<!--[if $results[results].percentage gt 0]-->
-				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$results[results].percentage]--><!--[pnimg src="mainbar.gif" height="15" width=$results[results].scaledpercentage alt=$results[results].percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$results[results].percentage]-->
+			<!--[if $option.percentage gt 0]-->
+				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$option.percentage]--><!--[pnimg src="mainbar.gif" height="15" width=$option.percentintscaled alt=$option.percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$option.percentage]-->
 			<!--[else]-->
-				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$results[results].percentage]--><!--[pnimg src="mainbar.gif" height="15" width="3" alt=$results[results].percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$results[results].percentage]-->
+				<!--[pnimg src="leftbar.gif" height="15" width="7" alt=$option.percentage]--><!--[pnimg src="mainbar.gif" height="15" width="3" alt=$option.percentage]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$option.percentage]-->
 			<!--[/if]-->
 		</td>
 		<td>
-			<!--[$results[results].votecount|pnvarprepfordisplay]-->
-			<!--[if $results[results].votecount eq 1 ]-->
+			<!--[$option.votecount|pnvarprepfordisplay]-->
+			<!--[if $option.votecount eq 1 ]-->
 				<!--[pnml name="_ADVANCEDPOLLSVOTE"]-->
 			<!--[else]-->
 				<!--[pnml name="_ADVANCEDPOLLSVOTES"]-->
 			<!--[/if]-->
 		</td>
 	</tr>
-	<!--[/section]-->
+	<!--[/foreach]-->
+	</tbody>
 </table>
 <!--[$hooks]-->

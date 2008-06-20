@@ -266,9 +266,6 @@ function advanced_polls_user_display($args)
 			$notyetopen = false;
 		}
 
-		$pnRender->assign('pollid', $pollid);
-		$pnRender->assign('item', $item);
-
 		// Now lets work out which view to display
 		if ($results) { $displayresults = true; }
 		if ($ispollopen && $isvoteallowed) { $displayvotingform = true;}
@@ -288,36 +285,19 @@ function advanced_polls_user_display($args)
 			// if results have been spefifically requested
 			//----------------------------------------------------------------------------
 			$pnRender->assign('ispollopen', $ispollopen);
-	
+
 			// display poll results
 			$pollresults = array();
-			for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
-				$optiontext = $polloptionarray[$i]['optiontext'];
-				$optioncolor = $polloptionarray[$i]['optioncolour'];
-				$voteid = $polloptionarray[$i]['voteid'];
-				// if the poll option has some text then display its result
-	
-				if ($optiontext) {
-					$row = array();
-					// calculate vote percentage and scaled percentage for graph
-	
-					if ($votecount['votecountarray'][$i+1]  != 0) {
-						$percent = ($votecount['votecountarray'][$i+1] / $votecount['totalvotecount']) * 100;
-					} else {
-						$percent = 0;
-					}
-					$percentint = (int)$percent;
-					$percentintscaled = $percentint * pnModGetVar('advanced_polls', 'scalingfactor');
-	
-					// output poll option text
-					$pollresults[] = array('optiontext' => $optiontext,
-									       'optioncolor' => $optioncolor,
-									       'percentage' => $percentint,
-									       'scaledpercentage' => $percentintscaled,
-									       'votecount' => $votecount['votecountarray'][$i+1]);
+			foreach ($item['options'] as $key => $option) {
+				if ($votecount['votecountarray'][$key+1]  != 0) {
+					$item['options'][$key]['percent'] = ($votecount['votecountarray'][$key+1] / $votecount['totalvotecount']) * 100;
+				} else {
+					$item['options'][$key]['percent']= 0;
 				}
+				$item['options'][$key]['percentint'] = (int)$item['options'][$key]['percent'];
+				$item['options'][$key]['percentintscaled'] = $$item['options'][$key]['percentint'] * pnModGetVar('advanced_polls', 'scalingfactor');
+				$item['options'][$key]['votecount'] = $votecount['votecountarray'][$key+1];
 			}
-			$pnRender->assign('results', $pollresults);
 			$template = 'advancedpolls_user_results';
 		} elseif ($displaypreview) {
 			//----------------------------------------------------------------------------
@@ -340,6 +320,10 @@ function advanced_polls_user_display($args)
 	} else {
 		return LogUtil::registerPermissionError();
 	}
+
+    // assign the full poll info
+	$pnRender->assign('pollid', $pollid);
+	$pnRender->assign('item', $item);
 
     // Let any hooks know that we are displaying an item.
     $pnRender->assign('hooks' ,pnModCallHooks('item',
@@ -400,34 +384,34 @@ function advanced_polls_user_vote($args)
 				// if vote is allowed then add vote to db tables
 				if ($isvoteallowed == true) {
 					 if ($multiple == 1) {
-						 if ($multiplecount == -1) {
+						if ($multiplecount == -1) {
 							$max = $optioncount;
 							 for ($i = 1; $i <= $max; $i++) {
-								$voteid = pnVarCleanFromInput('option' . ($i));
-								if ($voteid != null) {
+								$optionid = pnVarCleanFromInput('option' . ($i));
+								if ($optionid != null) {
 									$result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
 															array('pollid' => $pollid,
 																  'title' => $title,
-																  'voteid' => $i,
+																  'optionid' => $optionid,
 																  'voterank' => 1));
-								 }
+								}
 							 }
 						} else {
 							for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
-								$voteid = pnVarCleanFromInput('option' . ($i));
+								$optionid = pnVarCleanFromInput('option' . ($i));
 								$result = pnModAPIFunc('advanced_polls','user','addvote',
 									array('pollid' => $pollid,
 										  'title' => $title,
-										  'voteid' => $voteid,
+										  'optionid' => $optionid,
 										  'voterank' => $i));
 							}
 						}
 					} else {
-						$voteid = pnVarCleanFromInput('option'.$pollid);
+						$optionid = pnVarCleanFromInput('option'.$pollid);
 						$result = pnModAPIFunc('advanced_polls','user','addvote',
 							array('pollid' => $pollid,
 								  'title' => $title,
-								  'voteid' => $voteid,
+								  'optionid' => $optionid,
 								  'voterank' => 1));
 					}
 				}
