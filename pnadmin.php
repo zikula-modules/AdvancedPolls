@@ -493,50 +493,27 @@ function advanced_polls_admin_adminstats()
 	// get all votes for this poll from api
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
-	foreach ($item as $k=>$v) {
-		if ($k != 'optionarray') {
-			$item[$k] = pnVarPrepForDisplay($v);
-		}
-	}
 	$pnRender->assign('item', $item);
 	$pnRender->assign('pollid', $pollid);
 	$votecountarray = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid'=>$pollid));
 	$votecount = $votecountarray['totalvotecount'];
 	$pnRender->assign('votecount', $votecount);
-
-	$pnRender->assign('sortbyoptions' , array(1 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTEID),
-											  2 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTEIP),
-											  3 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTETIME),
-											  4 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTEUID),
-											  5 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTERANK),
-											  6 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTEOPTIONID)));
 	$pnRender->assign('sortby', $sortby);
-	
-	$pnRender->assign('sortorderoptions', array(0 => pnVarPrepForDisplay(_ADVANCEDPOLLSSORTASCENDING),
-										        1 => pnVarPrepForDisplay(_ADVANCEDPOLLSSORTDESCENDING)));
 	$pnRender->assign('sortorder', $sortorder);
 
-	$polloptionarray = array();
-	$polloptionarray = $item['optionarray'];
-
-	$voteitems = array();
 	if ($votes == true ) {
-		foreach ($votes as $vote) {
+		foreach ($votes as $key => $vote) {
 			if (pnModGetVar('advanced_polls', 'usereversedns')) {
-				$host = gethostbyaddr($vote['voteip']) . ' - ' . $vote['voteip'];
+				$host = gethostbyaddr($vote['ip']) . ' - ' . $vote['ip'];
 			} else {
-				$host = $vote['voteip'];
+				$host = $vote['ip'];
 			}
-			$voteoffset = $vote['voteoptionid']-1;
-			$voteitems[] = array('voteid' => $vote['voteid'],
-								 'host' => $host,
-								 'time' => $vote['votetime'],
-								 'user' => pnUserGetVar('uname',$vote['voteuid']),
-								 'rank' => $vote['voterank'],		
-								 'optiontext' => $polloptionarray[$voteoffset]['optiontext']);
+			$voteoffset = $vote['optionid']-1;
+            $votes[$key]['user'] = pnUserGetVar('uname',$vote['uid']);
+            $votes[$key]['optiontext'] = $item['options'][$voteoffset]['optiontext'];
 		}
 	}		
-	$pnRender->assign('votes', $voteitems);
+	$pnRender->assign('votes', $votes);
 
 	// Assign the values for the smarty plugin to produce a pager in case of there
 	// being many items to display.

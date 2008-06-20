@@ -7,9 +7,9 @@
 		<td><label for="choice<!--[$optioncounter|pnvarprepfordisplay]-->"><!--[pnml name="_ADVANCEDPOLLSCHOICE"]--> <!--[$optioncounter|pnvarprepfordisplay]--></label> :</td>
 		<td>
 			<select id="choice<!--[$optioncounter|pnvarprepfordisplay]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
-				<!--[section name=options loop=$options]-->
-					<option value="<!--[$options[options].voteid|pnvarprepfordisplay]-->"><!--[$options[options].optiontext|pnvarprephtmldisplay|pnvarcensor]--></option>
-				<!--[/section]-->
+				<!--[foreach from=$item.options]-->
+					<option value="<!--[$option.optionid|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay|pnvarcensor]--></option>
+				<!--[/foreach]-->
 			</select><br />
 		</td>
 	</tr>

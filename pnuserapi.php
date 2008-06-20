@@ -306,40 +306,37 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 	switch ($voteauthtype) {
 		case 1: //Free voting
-
-		// voting always allowed
-		return true;
-
-		case 2: //UID Voting
-
-		// extract user id from session variables
-		$uid = pnUserGetVar('uid');
-
-		if (!is_array($uservotinghistory[$uid])) {
-			// check user id against db
-			$sql = "SELECT $advanced_pollsvotescolumn[pollid]
-					FROM $advanced_pollsvotestable
-					WHERE
-					$advanced_pollsvotescolumn[uid]= '" . (int)pnVarPrepForStore($uid) . "'";
-			$result =& $dbconn->Execute($sql);
-	
-			$items = array();
-			for (; !$result->EOF; $result->MoveNext()) {
-				list($respollid) = $result->fields;
-				$items[$respollid] = true;
-			}
-	
-			//close result set
-			$result->Close();
-
-			$uservotinghistory[$uid] = $items;
-		}
-
-		if (isset($uservotinghistory[$uid][$pollid])) {
-			return false;
-		} else {
+			// voting always allowed
 			return true;
-		}
+		case 2: //UID Voting
+			// extract user id from session variables
+			$uid = pnUserGetVar('uid');
+
+			if (!is_array($uservotinghistory[$uid])) {
+				// check user id against db
+				$sql = "SELECT $advanced_pollsvotescolumn[pollid]
+						FROM $advanced_pollsvotestable
+						WHERE
+						$advanced_pollsvotescolumn[uid]= '" . (int)pnVarPrepForStore($uid) . "'";
+				$result =& $dbconn->Execute($sql);
+		
+				$items = array();
+				for (; !$result->EOF; $result->MoveNext()) {
+					list($respollid) = $result->fields;
+					$items[$respollid] = true;
+				}
+		
+				//close result set
+				$result->Close();
+
+				$uservotinghistory[$uid] = $items;
+			}
+
+			if (isset($uservotinghistory[$uid][$pollid])) {
+				return false;
+			} else {
+				return true;
+			}
 
 		case 3: //Cookie voting
 
@@ -594,7 +591,6 @@ function advanced_polls_userapi_pollvotecount($args)
 			$leadingvotecount = $votecountarray[$i];
 			$leadingvoteid = $i;
 		}
-
 	}
 
 	// Create the item array
@@ -629,8 +625,8 @@ function advanced_polls_userapi_addvote($args)
 	}
 
 	// Security check
-	if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_OVERVIEW)) {
-		if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_COMMENT)) {
+	if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
+		if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
 
 			$dbconn =& pnDBGetConn(true);
 			$pntable =& pnDBGetTables();

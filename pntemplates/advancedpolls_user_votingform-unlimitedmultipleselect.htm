@@ -2,19 +2,19 @@
 <br /><br />
 <table>
 <!--[counter name=counter print=false start=0]-->
-<!--[section name=options loop=$options]-->
+<!--[foreach from=$item.options item=option]-->
 	<tr>
-		<td><input id="<!--[$options[options].optiontext|pnvarprephtmldisplay|pnvarcensor]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$options[options].voteid|pnvarprepfordisplay]-->"></td>
+		<td><input id="<!--[$option.optiontext|pnvarprephtmldisplay|pnvarcensor]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->"></td>
 		<td>
-			<!--[if $options[options].optioncolor neq '']-->		  
-				<span style="color:<!--[$options[options].optioncolor]-->;">
-					<label id="<!--[$options[options].optiontext|pnvarprephtmldisplay|pnvarcensor]-->"><!--[$options[options].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></label>
+			<!--[if $option.optioncolor neq '']-->		  
+				<span style="color:<!--[$option.optioncolor]-->;">
+					<label id="<!--[$option.optiontext|pnvarprephtmldisplay|pnvarcensor]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></label>
 				</span>
 			<!--[else]-->
-				<!--[$options[options].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
 			<!--[/if]-->
 		</td>
 	</tr>
-<!--[/section]-->
+<!--[/foreach]-->
 </table>
 <input type="hidden" name="optioncount" value="<!--[$smarty.section.options.iteration-1]-->" />

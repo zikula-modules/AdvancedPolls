@@ -80,7 +80,7 @@ define('_ADVANCEDPOLLSCONFIRMDUPLICATE', 'Confirm Duplication of Poll');
 define('_ADVANCEDPOLLSCANCELDUPLICATE', 'Cancel Duplication of Poll');
 //define('_ADVANCEDPOLLSDUPLICATE', 'Duplicate Poll');
 define('_ADVANCEDPOLLSSORTVOTESBY', 'Sort Votes by');
-define('_ADVANCEDPOLLSSORTVOTESORDER', 'Sort Descending');
+define('_ADVANCEDPOLLSSORTVOTESORDER', 'Sort Order');
 define('_ADVANCEDPOLLSSORTVOTES', 'Sort Votes');
 define('_ADVANCEDPOLLSSORTASCENDING', 'Ascending');
 define('_ADVANCEDPOLLSSORTDESCENDING', 'Descending');

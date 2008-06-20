@@ -289,9 +289,7 @@ function advanced_polls_adminapi_getvotes($args)
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		// get database setup
-		$dbconn =& pnDBGetConn(true);
-		$pntable =& pnDBGetTables();
-		$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+		$pntable = pnDBGetTables();
 		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
 		switch ($sortby) {
@@ -316,37 +314,21 @@ function advanced_polls_adminapi_getvotes($args)
 			default:
 				$sortstring = "";
 		}
-		
+
 		if ($sortorder == 1 ) {
 			$sortstring = $sortstring . " DESC";
 		}
-			
-		// empty votes table for this poll
-		$sql = "SELECT * FROM $advanced_pollsvotestable WHERE
-			    $advanced_pollsvotescolumn[pollid]= '" . (int)pnVarPrepForStore($pollid) . "'" . $sortstring;
-        $result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);	
-		//	$result =& $dbconn->Execute($sql);
 
-		// check for db errors
-		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_GETFAILED);
+		// get the objects from the db
+		$votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring);
+
+		// Check for an error with the database code, and if so set an appropriate
+		// error message and return
+		if ($votes === false) {
+			return LogUtil::registerError (_GETFAILED);
 		}
-
-		$votes = array();
-		// Put items into result array.
-		for (; !$result->EOF; $result->MoveNext()) {
-			list($voteid, $voteip, $votetime, $voteuid, $voterank, $votepollid, $voteoptionid) = $result->fields;
-			$votes[] = array('voteid' => $voteid,
-							 'voteip' => $voteip,
-							 'votetime' => $votetime,
-							 'voteuid' => $voteuid,
-							 'voterank' => $voterank,
-							 'voteoptionid' => $voteoptionid);
-		}
-
-		// close result set
-        // $result->Close();
 	}
+
     return $votes;
 }
 

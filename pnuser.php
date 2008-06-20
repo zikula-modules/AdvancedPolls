@@ -82,12 +82,12 @@ function advanced_polls_user_view()
 		$fullitem = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $item['pollid']));
 
 		// is this poll currently open for voting
-		$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $fullitem['pn_pollid']));
+		$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $fullitem['pollid']));
 
 		// is this user/ip etc. allowed to vote under voting regulations
-		$isvoteallowed = pnModAPIFunc('advanced_polls',	'user', 'isvoteallowed', array('pollid' => $fullitem['pn_pollid']));
+		$isvoteallowed = pnModAPIFunc('advanced_polls',	'user', 'isvoteallowed', array('pollid' => $fullitem['pollid']));
 
-		if ($fullitem['pn_opendate'] > time()) {
+		if ($fullitem['opendate'] > time()) {
 			$notyetopen = true;
 		} else {
 			$notyetopen = false;
@@ -113,13 +113,13 @@ function advanced_polls_user_view()
 									   'title' => _EDIT);
 				}
 
-				if ($fullitem['pn_closedate'] == 0) {
+				if ($fullitem['closedate'] == 0) {
 					$closedate = _ADVANCEDPOLLSNOCLOSEDATE;
 				} else {
-					$closedate = ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['pn_closedate']);
+					$closedate = ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['closedate']);
 				}
 				$activepolls[]=  array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-					                   'title' => $item['polltitle'],
+					                   'title' => $item['title'],
 									   'closedate' => $closedate,
 									   'options' => $options);
 			}
@@ -140,7 +140,7 @@ function advanced_polls_user_view()
 		// is this user/ip etc. allowed to vote under voting regulations
 		$isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $item['pollid']));
 
-		if ($fullitem['pn_opendate'] > time()) {
+		if ($fullitem['opendate'] > time()) {
 			$notyetopen = true;
 		} else {
 			$notyetopen = false;
@@ -157,7 +157,7 @@ function advanced_polls_user_view()
 				}
 				$futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 					                   'title' => $item['polltitle'],
-								       'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['pn_opendate']),
+								       'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
 									   'options' => $options);
 			}
 		}
@@ -182,7 +182,7 @@ function advanced_polls_user_view()
 		//	'isvoteallowed',
 		//	array('pollid' => $item['pollid']));
 
-		if ($fullitem['pn_opendate'] > time()) {
+		if ($fullitem['opendate'] > time()) {
 			$notyetopen = true;
 		} else {
 			$notyetopen = false;
@@ -201,7 +201,7 @@ function advanced_polls_user_view()
 				}
                 $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 					                   'title' => $item['polltitle'],
-									   'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['pn_opendate']),
+									   'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
 									   'options' => $options);
 			}
 		}
@@ -240,9 +240,6 @@ function advanced_polls_user_display($args)
 	// The API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
-	$polloptionarray = array();
-	$polloptionarray = $item['pn_optionarray'];
-
 	// The return value of the function is checked
 	if ($item == false) {
 		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSITEMFAILED);
@@ -252,18 +249,18 @@ function advanced_polls_user_display($args)
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
 	// Security check
-	if (SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$item[pn_pollid]", ACCESS_READ)) {
+	if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
 
 		// is this poll currently open for voting
-		$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pn_pollid']));
+		$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
 	
 		// is this user/ip etc. allowed to vote under voting regulations
-		$isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pn_pollid']));
+		$isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
 
 		// get vote counts
 		$votecount = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
-		if ($item['pn_opendate'] > time()) {
+		if ($item['opendate'] > time()) {
 			$notyetopen = true;
 		} else {
 			$notyetopen = false;
@@ -277,28 +274,13 @@ function advanced_polls_user_display($args)
 		if ($ispollopen && $isvoteallowed) { $displayvotingform = true;}
 		if (!$isvoteallowed || (!$ispollopen && !$notyetopen)) { $displayresults = true; }
 		if ($notyetopen) { $displaypreview = true; }
-		
 
 		//----------------------------------------------------------------------------
 		// if poll is open, voting is allowed then display voting form
 		//----------------------------------------------------------------------------
 		if ($displayvotingform) {
-
-			$pnRender->assign('polltype', $item['pn_multipleselect']);
-			$pnRender->assign('multiplecount', $item['pn_multipleselectcount']);
-	
-			$options = array();
-			for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
-				$optiontext = $polloptionarray[$i]['optiontext'];
-				$optioncolor = $polloptionarray[$i]['optioncolour'];
-				$voteid = $polloptionarray[$i]['voteid'];
-				if ($optiontext) {
-					$options[] = array('optiontext' => $optiontext,
-									   'optioncolor' => $optioncolor,
-									   'voteid' => $voteid);
-				}
-			}
-			$pnRender->assign('options', $options);
+			$pnRender->assign('polltype', $item['multipleselect']);
+			$pnRender->assign('multiplecount', $item['multipleselectcount']);
 			$template = 'advancedpolls_user_votingform';
 		} elseif ($displayresults)  {
 			//----------------------------------------------------------------------------
@@ -319,8 +301,8 @@ function advanced_polls_user_display($args)
 					$row = array();
 					// calculate vote percentage and scaled percentage for graph
 	
-					if ($votecount['pn_votecountarray'][$i+1]  != 0) {
-						$percent = ($votecount['pn_votecountarray'][$i+1] / $votecount['pn_totalvotecount']) * 100;
+					if ($votecount['votecountarray'][$i+1]  != 0) {
+						$percent = ($votecount['votecountarray'][$i+1] / $votecount['totalvotecount']) * 100;
 					} else {
 						$percent = 0;
 					}
@@ -332,7 +314,7 @@ function advanced_polls_user_display($args)
 									       'optioncolor' => $optioncolor,
 									       'percentage' => $percentint,
 									       'scaledpercentage' => $percentintscaled,
-									       'votecount' => $votecount['pn_votecountarray'][$i+1]);
+									       'votecount' => $votecount['votecountarray'][$i+1]);
 				}
 			}
 			$pnRender->assign('results', $pollresults);
@@ -392,7 +374,7 @@ function advanced_polls_user_vote($args)
 	$results = pnVarCleanFromInput('results');
 	$multiple = pnVarCleanFromInput('multiple');
 	$multiplecount = pnVarCleanFromInput('multiplecount');
-	$polltitle = pnVarCleanFromInput('polltitle');
+	$title = pnVarCleanFromInput('title');
 	$optioncount =  pnVarCleanFromInput('optioncount');
 	$polldisplayresults = pnVarCleanFromInput('polldisplayresults');
 	$returnurl = pnVarCleanFromInput('returnurl');
@@ -405,8 +387,9 @@ function advanced_polls_user_vote($args)
 		$multiple = 0;
 	}
 
-	if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_OVERVIEW)) {
-	    if (pnSecAuthAction(0,'advanced_polls::item',"$polltitle::$pollid",ACCESS_COMMENT)) {
+	if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
+	    if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
+
 			// call api function to establish if poll is currently open
 			$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
 
@@ -420,11 +403,11 @@ function advanced_polls_user_vote($args)
 						 if ($multiplecount == -1) {
 							$max = $optioncount;
 							 for ($i = 1; $i <= $max; $i++) {
-								 $voteid = pnVarCleanFromInput('option' . ($i));
-								 if ($voteid != null) {
-									 $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
+								$voteid = pnVarCleanFromInput('option' . ($i));
+								if ($voteid != null) {
+									$result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
 															array('pollid' => $pollid,
-																  'polltitle' => $polltitle,
+																  'title' => $title,
 																  'voteid' => $i,
 																  'voterank' => 1));
 								 }
@@ -434,16 +417,16 @@ function advanced_polls_user_vote($args)
 								$voteid = pnVarCleanFromInput('option' . ($i));
 								$result = pnModAPIFunc('advanced_polls','user','addvote',
 									array('pollid' => $pollid,
-										  'polltitle' => $polltitle,
+										  'title' => $title,
 										  'voteid' => $voteid,
 										  'voterank' => $i));
-							 }
+							}
 						}
 					} else {
 						$voteid = pnVarCleanFromInput('option'.$pollid);
 						$result = pnModAPIFunc('advanced_polls','user','addvote',
 							array('pollid' => $pollid,
-								  'polltitle' => $polltitle,
+								  'title' => $title,
 								  'voteid' => $voteid,
 								  'voterank' => 1));
 					}

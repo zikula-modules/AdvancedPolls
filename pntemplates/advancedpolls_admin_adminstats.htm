@@ -14,11 +14,11 @@
   <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
   <label for="advancedpolls_sortby"><!--[pnml name=_ADVANCEDPOLLSSORTVOTESBY"]--></label>
   <select id="advancedpolls_sortby" name="sortby">
-    <!--[html_options options=$sortbyoptions selected=$sortby]-->
+    <!--[sortbytypes selected=$sortby]-->
   </select>
   <label for="advancedpolls_sortorder"><!--[pnml name="_ADVANCEDPOLLSSORTVOTESORDER"]--></label>
-  <select name="sortorder">
-    <!--[html_options options=$sortorderoptions selected=$sortorder]-->
+  <select id="advancedpolls_sortorder" name="sortorder">
+    <!--[sortordertypes selected=$sortorder]-->
   </select>
   <input type="submit" value="<!--[pnml name="_ADVANCEDPOLLSSORTVOTES"]-->" />
   </div>
@@ -39,10 +39,10 @@
   <!--[foreach from=$votes item=vote]-->  
     <tr class="<!--[cycle values=pn-odd,pn-even]-->">
       <td headers="col1"><!--[$vote.voteid|pnvarprepfordisplay]--></td>
-      <td headers="col2"><!--[$vote.host|pnvarprepfordisplay]--></td>
+      <td headers="col2"><!--[$vote.ip|pnvarprepfordisplay]--></td>
       <td headers="col3"><!--[$vote.time|apdatetime|pnvarprepfordisplay]--></td>
       <td headers="col4"><!--[$vote.user|pnvarprepfordisplay]--></td>
-      <td headers="col5"><!--[$vote.rank|pnvarprepfordisplay]--></td>
+      <td headers="col5"><!--[$vote.voterank|pnvarprepfordisplay]--></td>
       <td headers="col6"><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
     </tr>
   <!--[foreachelse]-->
