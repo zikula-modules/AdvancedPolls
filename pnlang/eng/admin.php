@@ -70,6 +70,7 @@ define('_ADVANCEDPOLLSRESETVOTESCONFIRM', 'Reset Votes');
 define('_ADVANCEDPOLLSCONFIRMVOTESRESET', 'Cofirm Reset of Votes'); 
 define('_ADVANCEDPOLLSCANCELVOTESREST', 'Cancel Reset');
 define('_ADVANCEDPOLLSVOTESRESET', 'Votes Reset');
+define('_ADVANCEDPOLLSVOTESRESETFAILED', 'Vote reset failed');
 define('_ADVANCEDPOLLSADMINDATEFORMAT', 'Date format for Admin Interface');
 define('_ADVANCEDPOLLSUSERDATEFORMAT', 'Date format for User Interface');
 define('_ADVANCEDPOLLSUSEREVERSEDNS', 'Use Reverse DNS for IP Addresses');

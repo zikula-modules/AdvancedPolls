@@ -188,9 +188,9 @@ function advanced_polls_userapi_countitems($args)
 	// Check if we is an ML situation
 	$querylang = '';
 	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_pollsdesccolumn[pn_language]='" . pnVarPrepForStore(pnUserGetLang()) . "' 
-					  OR $advanced_pollsdesccolumn[pn_language]='' 
-					  OR $advanced_pollsdesccolumn[pn_language] IS NULL)";
+		$querylang = "WHERE ($advanced_pollsdesccolumn[language]='" . pnVarPrepForStore(pnUserGetLang()) . "' 
+					  OR $advanced_pollsdesccolumn[language]='' 
+					  OR $advanced_pollsdesccolumn[language] IS NULL)";
 	}
 
 	// Get item count
@@ -317,10 +317,10 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 		if (!is_array($uservotinghistory[$uid])) {
 			// check user id against db
-			$sql = "SELECT $advanced_pollsvotescolumn[pn_pollid]
+			$sql = "SELECT $advanced_pollsvotescolumn[pollid]
 					FROM $advanced_pollsvotestable
 					WHERE
-					$advanced_pollsvotescolumn[pn_uid]= '" . (int)pnVarPrepForStore($uid) . "'";
+					$advanced_pollsvotescolumn[uid]= '" . (int)pnVarPrepForStore($uid) . "'";
 			$result =& $dbconn->Execute($sql);
 	
 			$items = array();
@@ -358,11 +358,11 @@ function advanced_polls_userapi_isvoteallowed($args)
 		$ip = pnServerGetVar("REMOTE_ADDR");
 
 		// check ip against db
-		$sql = "SELECT $advanced_pollsvotescolumn[pn_ip]
+		$sql = "SELECT $advanced_pollsvotescolumn[ip]
 				FROM $advanced_pollsvotestable
 				WHERE
-				(($advanced_pollsvotescolumn[pn_pollid]='" . (int)pnVarPrepForStore($pollid) . "') AND
-				($advanced_pollsvotescolumn[pn_ip]='" . pnVarPrepForStore($ip) . "'))";
+				(($advanced_pollsvotescolumn[pollid]='" . (int)pnVarPrepForStore($pollid) . "') AND
+				($advanced_pollsvotescolumn[ip]='" . pnVarPrepForStore($ip) . "'))";
 		$result =& $dbconn->Execute($sql);
 
 		//If there are no rows back from this query then this uid can vote
@@ -420,29 +420,29 @@ function advanced_polls_userapi_resetrecurring($args)
 	}
 
 	// convert recurring offset into unix timestamp format
-	$offset = $item['pn_recurringoffset'] * 60 * 60;
-	$closetimewithoffset = $item['pn_closedate'] + $offset;
+	$offset = $item['recurringoffset'] * 60 * 60;
+	$closetimewithoffset = $item['closedate'] + $offset;
 
 	// if this poll is currently closed and poll it set to reoccur
 	// then update relevant db tables
 	// Doesn't call IsPollOpen API as this checks for both before
 	// poll open date and after poll close date
 	// We are only insterest in Poll cose date
-	if (($closetimewithoffset < time()) and ($item['pn_recurring'] == 1)) {
+	if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
 
 		// get database connection
 		$dbconn =& pnDBGetConn(true);
 		$pntable =& pnDBGetTables();
 
 		// define database tables
-		$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
-		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
+		$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 		$advanced_pollsdesctable = $pntable['advanced_polls_desc'];
 		$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc_column'];
 
 		// empty votes table for this poll
 		$sql = "DELETE FROM $advanced_pollsvotestable WHERE
-				$advanced_pollsvotescolumn[pn_pollid]='" . (int)pnVarPrepForStore($pollid) . "'";
+				$advanced_pollsvotescolumn[pollid]='" . (int)pnVarPrepForStore($pollid) . "'";
 		$result =& $dbconn->Execute($sql);
 
 		// check for db errors
@@ -452,21 +452,21 @@ function advanced_polls_userapi_resetrecurring($args)
 
 		// set new opening and closing times
 		// calculate recurrance interval in seconds from db value in days
-		$recurranceinterval = $item[pn_recurringinterval] * 24 * 60 * 60;
+		$recurranceinterval = $item['recurringinterval'] * 24 * 60 * 60;
 
 		//new open is close time with offset calculated earlier in this function
 		$newopentime = $closetimewithoffset;
-		$newclosetime = $item[pn_closedate] + $recurranceinterval;
+		$newclosetime = $item['closedate'] + $recurranceinterval;
 
 		// close result set
 		$result->Close();
 
 		// update poll close and open times
 		$sql = "UPDATE $advanced_pollsdesctable SET
-				$advanced_pollsdesccolumn[pn_opendate] = '".(int)pnVarPrepForStore($newopentime)."',
-				$advanced_pollsdesccolumn[pn_closedate] = '".(int)pnVarPrepForStore($newclosetime)."'
+				$advanced_pollsdesccolumn[opendate] = '".(int)pnVarPrepForStore($newopentime)."',
+				$advanced_pollsdesccolumn[closedate] = '".(int)pnVarPrepForStore($newclosetime)."'
 				WHERE
-				$advanced_pollsdesccolumn[pn_pollid]= '" . (int)pnVarPrepForStore($pollid) . "'";
+				$advanced_pollsdesccolumn[pollid]= '" . (int)pnVarPrepForStore($pollid) . "'";
 		$result =& $dbconn->Execute($sql);
 
 		// check for db errors
@@ -516,7 +516,7 @@ function advanced_polls_userapi_pollvotecount($args)
 	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
 	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
-	if ($item['pn_multipleselect'] == 0) {
+	if ($item['multipleselect'] == 0) {
 		//GPK  We have a NON-multiselect poll, so
 		// find the total number of votes in this poll
 		$sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid])
@@ -583,7 +583,7 @@ function advanced_polls_userapi_pollvotecount($args)
 		if (!isset($votecountarray[$i])) {
 			$votecountarray[$i] = 0;
 		}
-		if (($votecountarray[$i] == $leadingvotecount) and ($item['pn_tiebreakalg']) > 0) {
+		if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
 			if ($item['tiebreakalg'] == 1) {
 				$leadingvoteid = pnModAPIFunc('advanced_polls', 'user',	'timecountback',
  								array('pollid' => $args['pollid'], 'voteid1' => $leadingvoteid,	'voteid2' => $i));
@@ -648,13 +648,13 @@ function advanced_polls_userapi_addvote($args)
 
 			// add first part of vote
 			$sql = "INSERT INTO $advanced_pollsvotestable (
-				$advanced_pollsvotescolumn[pn_voteid],
-				$advanced_pollsvotescolumn[pn_ip],
-				$advanced_pollsvotescolumn[pn_uid],
-				$advanced_pollsvotescolumn[pn_time],
-				$advanced_pollsvotescolumn[pn_pollid],
-				$advanced_pollsvotescolumn[pn_optionid],
-				$advanced_pollsvotescolumn[pn_voterank])
+				$advanced_pollsvotescolumn[voteid],
+				$advanced_pollsvotescolumn[ip],
+				$advanced_pollsvotescolumn[uid],
+				$advanced_pollsvotescolumn[time],
+				$advanced_pollsvotescolumn[pollid],
+				$advanced_pollsvotescolumn[optionid],
+				$advanced_pollsvotescolumn[voterank])
 				VALUES (
 				'" . (int)pnVarPrepForStore($nextId) . "',
 				'" . pnVarPrepForStore(pnServerGetVar("REMOTE_ADDR")) . "',
@@ -720,17 +720,17 @@ function advanced_polls_userapi_timecountback($args)
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
-	$sql = "SELECT SUM($advanced_pollsvotescolumn[pn_time])
+	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
 			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pn_pollid] = '". (int)pnVarPrepForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[pn_optionid] = '" . (int)pnVarPrepForStore($voteid1) . "'))";
+			(($advanced_pollsvotescolumn[pollid] = '". (int)pnVarPrepForStore($pollid) . "') AND
+			($advanced_pollsvotescolumn[optionid] = '" . (int)pnVarPrepForStore($voteid1) . "'))";
 	$result =& $dbconn->Execute($sql);
 	list($firstsum) = $result->fields;
 
-	$sql = "SELECT SUM($advanced_pollsvotescolumn[pn_time])
+	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
 			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pn_pollid] = '" . (int)pnVarPrepForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[pn_optionid] = '" . (int)pnVarPrepForStore($voteid2) . "'))";
+			(($advanced_pollsvotescolumn[pollid] = '" . (int)pnVarPrepForStore($pollid) . "') AND
+			($advanced_pollsvotescolumn[optionid] = '" . (int)pnVarPrepForStore($voteid2) . "'))";
 	$result =& $dbconn->Execute($sql);
 	list($secondsum) = $result->fields;
 

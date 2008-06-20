@@ -201,7 +201,7 @@ function advanced_polls_admin_delete()
     }
 
 	// Security check.
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_DELETE)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_DELETE)) {
 		return LogUtil::registerPermissionError();
 	}
 
@@ -494,14 +494,14 @@ function advanced_polls_admin_adminstats()
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	foreach ($item as $k=>$v) {
-		if ($k != 'pn_optionarray') {
+		if ($k != 'optionarray') {
 			$item[$k] = pnVarPrepForDisplay($v);
 		}
 	}
 	$pnRender->assign('item', $item);
 	$pnRender->assign('pollid', $pollid);
 	$votecountarray = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid'=>$pollid));
-	$votecount = $votecountarray['pn_totalvotecount'];
+	$votecount = $votecountarray['totalvotecount'];
 	$pnRender->assign('votecount', $votecount);
 
 	$pnRender->assign('sortbyoptions' , array(1 => pnVarPrepForDisplay(_ADVANCEDPOLLSVOTEID),
@@ -517,7 +517,7 @@ function advanced_polls_admin_adminstats()
 	$pnRender->assign('sortorder', $sortorder);
 
 	$polloptionarray = array();
-	$polloptionarray = $item['pn_optionarray'];
+	$polloptionarray = $item['optionarray'];
 
 	$voteitems = array();
 	if ($votes == true ) {
@@ -571,7 +571,7 @@ function advanced_polls_admin_duplicate()
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
 		return LogUtil::registerPermissionError();
 	}
 

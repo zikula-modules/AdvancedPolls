@@ -223,31 +223,12 @@ function advanced_polls_adminapi_resetvotes($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
-		// get database connection
-		$dbconn =& pnDBGetConn(true);
-		$pntable =& pnDBGetTables();
-
-		// define database tables
-		$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
-		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
-		$advanced_pollsdesctable = $pntable['advancedpollsdesc'];
-		$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc'];
-
-		// empty votes table for this poll
-		$sql = "DELETE FROM $advanced_pollsvotestable WHERE
-			$advanced_pollsvotescolumn[pn_pollid]= '" . (int)pnVarPrepForStore($pollid) . "'";
-		$result =& $dbconn->Execute($sql);
-
-		// check for db errors
-		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_ADVANCEDPOLLSVOTESRESETFAILED);
+		if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
+			return LogUtil::registerError (_ADVANCEDPOLLSVOTESRESETFAILED);
 		}
-
-		// close result set
-		$result->Close();
 	}
     return true;
 }
@@ -304,33 +285,33 @@ function advanced_polls_adminapi_getvotes($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		// get database setup
 		$dbconn =& pnDBGetConn(true);
 		$pntable =& pnDBGetTables();
-		$advanced_pollsvotestable = $pntable['advancedpollsvotes'];
-		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes'];
+		$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
 		switch ($sortby) {
 			case 1:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_voteid]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[voteid]";
 				break;
 			case 2:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_ip]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[ip]";
 				break;
 			case 3:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_time]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[time]";
 				break;
 			case 4:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_uid]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[uid]";
 				break;
 			case 5:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_voterank]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[voterank]";
 				break;
 			case 6:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[pn_optionid]";
+				$sortstring = " ORDER BY $advanced_pollsvotescolumn[optionid]";
 				break;
 			default:
 				$sortstring = "";
@@ -342,7 +323,7 @@ function advanced_polls_adminapi_getvotes($args)
 			
 		// empty votes table for this poll
 		$sql = "SELECT * FROM $advanced_pollsvotestable WHERE
-			    $advanced_pollsvotescolumn[pn_pollid]= '" . (int)pnVarPrepForStore($pollid) . "'" . $sortstring;
+			    $advanced_pollsvotescolumn[pollid]= '" . (int)pnVarPrepForStore($pollid) . "'" . $sortstring;
         $result =& $dbconn->SelectLimit($sql, $numitems, $startnum-1);	
 		//	$result =& $dbconn->Execute($sql);
 
@@ -401,7 +382,7 @@ function advanced_polls_adminapi_duplicate($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_ADD)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_ADD)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 
@@ -409,27 +390,27 @@ function advanced_polls_adminapi_duplicate($args)
 		$pid = pnModAPIFunc('advanced_polls',
 			'admin',
 			'create',
-			array('pollname' => $item['pn_title'],
-			'polldescription' => $item['pn_description'],
-			'polllanguage' => $item['pn_language'],
-			'pollopendid' => date("d", $item['pn_opendate']),
-			'pollopenmid' => date("n", $item['pn_opendate']),
-			'pollopenyid' => date("Y", $item['pn_opendate']),
-			'pollopenhid' => date("H", $item['pn_opendate']),
-			'pollopenminid' => date("i", $item['pn_opendate']),
-			'pollclosedid' => date("d", $item['pn_closedate']),
-			'pollclosemid' => date("n", $item['pn_closedate']),
-			'pollcloseyid' => date("Y", $item['pn_closedate']),
-			'pollclosehid' => date("H", $item['pn_closedate']),
-			'pollcloseminid' => date("i", $item['pn_closedate']),
-			'polltiebreak' => $item['pn_tiebreakalg'],
-			'pollvoteauthtype' => $item['pn_voteauthtype'],
-			'pollmultipleselect' => $item['pn_multipleselect'],
-			'pollmultipleselectcount' => $item['pn_multipleselectcount'],
-			'pollrecurring' => $item['pn_recurring'],
-			'pollrecurringoffset' => $item['pn_recurringoffset'],
-			'pollrecurringinterval' => $item['pn_recurringinterval'],
-			'polloptioncount' => $item['pn_optioncount']));
+			array('title' => $item['title'],
+			'description' => $item['description'],
+			'language' => $item['language'],
+			'opendid' => date("d", $item['opendate']),
+			'openmid' => date("n", $item['opendate']),
+			'openyid' => date("Y", $item['opendate']),
+			'openhid' => date("H", $item['opendate']),
+			'openminid' => date("i", $item['opendate']),
+			'closedid' => date("d", $item['closedate']),
+			'closemid' => date("n", $item['closedate']),
+			'closeyid' => date("Y", $item['closedate']),
+			'closehid' => date("H", $item['closedate']),
+			'closeminid' => date("i", $item['closedate']),
+			'tiebreak' => $item['tiebreakalg'],
+			'voteauthtype' => $item['voteauthtype'],
+			'multipleselect' => $item['multipleselect'],
+			'multipleselectcount' => $item['multipleselectcount'],
+			'recurring' => $item['recurring'],
+			'recurringoffset' => $item['recurringoffset'],
+			'recurringinterval' => $item['recurringinterval'],
+			'optioncount' => $item['optioncount']));
 
 		if ($pid != false) {
 			// Once the poll is created we call the modify function to add 
@@ -438,28 +419,28 @@ function advanced_polls_adminapi_duplicate($args)
 				'admin',
 				'update',
 				array('pollid' => $pid,
-				'pollname' => $item['pn_title'],
-    			'polldescription' => $item['pn_description'],
-				'polloptioncount' => $item['pn_optioncount'],
-				'polllanguage' => $item['pn_language'],
-				'pollopendid' => date("d", $item['pn_opendate']),
-				'pollopenmid' => date("n", $item['pn_opendate']),
-				'pollopenyid' => date("Y", $item['pn_opendate']),
-				'pollopenhid' => date("H", $item['pn_opendate']),
-				'pollopenminid' => date("i", $item['pn_opendate']),
-				'pollclosedid' => date("d", $item['pn_closedate']),
-				'pollclosemid' => date("n", $item['pn_closedate']),
-				'pollcloseyid' => date("Y", $item['pn_closedate']),
-				'pollclosehid' => date("H", $item['pn_closedate']),
-				'pollcloseminid' => date("i", $item['pn_closedate']),
-				'polltiebreak' => $item['pn_tiebreakalg'],
-				'pollvoteauthtype' => $item['pn_voteauthtype'],
-				'pollmultipleselect' => $item['pn_multipleselect'],
-				'pollmultipleselectcount' => $item['pn_multipleselectcount'],
-				'pollrecurring' => $item['pn_recurring'],
-				'pollrecurringoffset' => $item['pn_recurringoffset'],
-				'pollrecurringinterval' => $item['pn_recurringinterval'],
-				'polloptions' => $item['pn_optionarray']));
+				'title' => $item['title'],
+    			'description' => $item['description'],
+				'optioncount' => $item['optioncount'],
+				'language' => $item['language'],
+				'opendid' => date("d", $item['opendate']),
+				'openmid' => date("n", $item['opendate']),
+				'openyid' => date("Y", $item['opendate']),
+				'openhid' => date("H", $item['opendate']),
+				'openminid' => date("i", $item['opendate']),
+				'closedid' => date("d", $item['closedate']),
+				'closemid' => date("n", $item['closedate']),
+				'closeyid' => date("Y", $item['closedate']),
+				'closehid' => date("H", $item['closedate']),
+				'closeminid' => date("i", $item['closedate']),
+				'tiebreak' => $item['tiebreakalg'],
+				'voteauthtype' => $item['voteauthtype'],
+				'multipleselect' => $item['multipleselect'],
+				'multipleselectcount' => $item['multipleselectcount'],
+				'recurring' => $item['recurring'],
+				'recurringoffset' => $item['recurringoffset'],
+				'recurringinterval' => $item['recurringinterval'],
+				'options' => $item['optionarray']));
 		} else {
 			$result = false;
 		}
