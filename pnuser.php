@@ -156,7 +156,7 @@ function advanced_polls_user_view()
 						               'title' => _ADVANCEDPOLLSPREVIEW);
 				}
 				$futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-					                   'title' => $item['polltitle'],
+					                   'title' => $item['title'],
 								       'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
 									   'options' => $options);
 			}
@@ -200,7 +200,7 @@ function advanced_polls_user_view()
 						               'title' => _ADVANCEDPOLLSRESULTS);
 				}
                 $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-					                   'title' => $item['polltitle'],
+					                   'title' => $item['title'],
 									   'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
 									   'options' => $options);
 			}
