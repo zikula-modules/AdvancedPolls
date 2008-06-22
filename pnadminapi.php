@@ -36,6 +36,11 @@ function advanced_polls_adminapi_create($args)
         $args['language'] = '';
     }
 
+    // define the permalink title if not present
+    if (!isset($args['urltitle']) || empty($args['urltitle'])) {
+        $args['urltitle'] = DataUtil::formatPermalink($args['title']);
+    }
+
 	$args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);
 	if (!$args['noclosedate']) {
 		$args['closedate'] = mktime($args['closeHour'], $args['closeMinute'], 0, $args['closeMonth'], $args['closeDay'], $args['closeYear']);
@@ -159,6 +164,11 @@ function advanced_polls_adminapi_update($args)
     // defaults
     if (!isset($args['language'])) {
         $args['language'] = '';
+    }
+
+    // define the permalink title if not present
+    if (!isset($args['urltitle']) || empty($args['urltitle'])) {
+        $args['urltitle'] = DataUtil::formatPermalink($args['title']);
     }
 
 	$args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);

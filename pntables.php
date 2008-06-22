@@ -53,6 +53,7 @@ function advanced_polls_pntables()
 	$pntable['advanced_polls_desc'] = DBUtil::getLimitedTablename('advanced_polls_desc');
 	$pntable['advanced_polls_desc_column'] = array('pollid'              => 'pn_pollid',
                                                    'title'               => 'pn_title',
+                                                   'urltitle'            => 'pn_urltitle',
                                                    'description'         => 'pn_description',
                                                    'optioncount'         => 'pn_optioncount',
                                                    'opendate'            => 'pn_opendate',
@@ -68,6 +69,7 @@ function advanced_polls_pntables()
                                                    'votingmethod'        => 'pn_votingmethod');
     $pntable['advanced_polls_desc_column_def'] = array('pollid'              => 'I AUTOINCREMENT PRIMARY',
                                                        'title'               => "C(100) NOTNULL DEFAULT ''",
+                                                       'urltitle'            => "C(120) NOTNULL DEFAULT ''",
                                                        'description'         => 'X2',
                                                        'optioncount'         => "I NOTNULL DEFAULT '0'",
                                                        'opendate'            => "I NOTNULL DEFAULT '0'",
@@ -81,6 +83,10 @@ function advanced_polls_pntables()
                                                        'tiebreakalg'         => "I NOTNULL DEFAULT '0'",
                                                        'language'            => "C(30) NOTNULL DEFAULT ''",
                                                        'votingmethod'        => "I NOTNULL DEFAULT '0'");
+
+    // add standard data fields
+    ObjectUtil::addStandardFieldsToTableDefinition ($pntable['advanced_polls_desc_column'], 'pn_');
+    ObjectUtil::addStandardFieldsToTableDataDefinition($pntable['advanced_polls_desc_column_def']);
 
 	// Return the table information
 	return $pntable;

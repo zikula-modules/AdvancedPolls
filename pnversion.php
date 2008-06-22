@@ -11,10 +11,10 @@
  * @subpackage Advanced_Polls
  */
 
-$modversion['name'] = 'advanced_polls';
-$modversion['displayname'] = 'Advanced Polls';
-$modversion['description'] = 'Advanced Polls Module';
-$modversion['version'] = '1.51';
+$modversion['name'] = _ADVANCEDPOLLS_NAME;
+$modversion['displayname'] = _ADVANCEDPOLLS_DISPLAYNAME;
+$modversion['description'] = _ADVANCEDPOLLS_DESCRIPTION;
+$modversion['version'] = '2.0';
 $modversion['credits'] = 'pndocs/credits.txt';
 $modversion['help'] = 'pndocs/help.txt';
 $modversion['changelog'] = 'pndocs/changelog.txt';

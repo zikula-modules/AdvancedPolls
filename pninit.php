@@ -29,6 +29,11 @@ function advanced_polls_init()
         }
     }
 
+    // create our default category
+    if (!_advanced_polls_createdefaultcategory()) {
+        return LogUtil::registerError (_CREATEFAILED);
+    }
+
 	// Set up an initial value for each module variable
 	pnModSetVar('advanced_polls', 'admindateformat', '_DATETIMEBRIEF');
 	pnModSetVar('advanced_polls', 'userdateformat', '_DATETIMEBRIEF');
@@ -38,13 +43,15 @@ function advanced_polls_init()
 	pnModSetVar('advanced_polls', 'useritemsperpage', 25);
     pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
     pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
-											 
+    pnModSetVar('advanced_polls', 'enablecategorization', true);
+    pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
+
 	// Initialisation successful
 	return true;
 }
  
 /**
- * upgrade the template module from an old version
+ * upgrade  the Advanced Polls module from an old version
  * This function can be called multiple times
  *
  * @return bool true on success, false on failure
@@ -79,6 +86,22 @@ function advanced_polls_upgrade($oldversion)
 		case 1.5:
             // all changes in this release are covered by the table change
 			return advanced_polls_upgrade(1.51);
+		case 1.51:
+            // populate permalinks for existing content
+            $tables = pnDBGetTables();
+            $shorturlsep = pnConfigGetVar('shorturlsseparator');            
+            $sql  = "UPDATE $tables[advanced_polls_desc] SET pn_urltitle = REPLACE(pn_title, ' ', '{$shorturlsep}')";
+            if (!DBUtil::executeSQL($sql)) {
+                return LogUtil::registerError (_UPDATETABLEFAILED);
+            }
+			// setup categorisation
+            pnModSetVar('advanced_polls', 'enablecategorization', true);
+            pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
+            pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
+            if (!_advanced_polls_createdefaultcategory()) {
+                return LogUtil::registerError (_UPDATEFAILED);
+            }
+			return advanced_polls_upgrade(2.0);
 	}
 
 	// Update successful
@@ -87,7 +110,7 @@ function advanced_polls_upgrade($oldversion)
 }
  
 /**
- * delete the template module
+ * delete the t the Advanced Polls module
  * This function is only ever called once during the lifetime of a particular
  * module instance
  *
@@ -109,4 +132,55 @@ function advanced_polls_delete()
 
 	// Deletion successful
 	return true;
+}
+
+/**
+ * create the category placeholder
+ *
+ * @return bool true on success, false on failure
+ * @since 2.0
+*/
+function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
+{
+    // load necessary classes
+    Loader::loadClass('CategoryUtil');
+    Loader::loadClassFromModule('Categories', 'Category');
+    Loader::loadClassFromModule('Categories', 'CategoryRegistry');
+
+    // get the language file
+    $lang = pnUserGetLang();
+
+    // get the category path for which we're going to insert our place holder category
+    $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules');
+    $apCat   = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Advanced Polls');
+
+    if (!$apCat) {
+        // create placeholder for all our migrated categories
+        $cat = new PNCategory ();
+        $cat->setDataField('parent_id', $rootcat['id']);
+        $cat->setDataField('name', 'Advanced Polls');
+        $cat->setDataField('display_name', array($lang => _ADVANCEDPOLLS_NAME));
+        $cat->setDataField('display_desc', array($lang => _ADVANCEDPOLLS_CATEGORY_DESCRIPTION));
+        if (!$cat->validate('admin')) {
+            return false;
+        }
+        $cat->insert();
+        $cat->update();
+    }
+
+    // get the category path for which we're going to insert our upgraded categories
+    $rootcat = CategoryUtil::getCategoryByPath($regpath);
+    if ($rootcat) {
+        // create an entry in the categories registry
+        $registry = new PNCategoryRegistry();
+        $registry->setDataField('modname', 'advanced_polls');
+        $registry->setDataField('table', 'advanced_polls_desc');
+        $registry->setDataField('property', 'Main');
+        $registry->setDataField('category_id', $rootcat['id']);
+        $registry->insert();
+    } else {
+        return false;
+    }
+
+    return true;
 }
