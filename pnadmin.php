@@ -418,62 +418,60 @@ function advanced_polls_admin_updateconfig()
 		return LogUtil::registerPermissionError();
 	}
 
-	// Get parameters from whatever input we need.
-	list($polladmindateformat,
-		 $polluserdateformat,
-		 $pollusereversedns,
-		 $pollscalingfactor,
-		 $adminitemsperpage,
-		 $useritemsperpage,
-		 $defaultcolour,
-		 $defaultoptioncount) = pnVarCleanFromInput('polladmindateformat',
-												   'polluserdateformat',
-												   'pollusereversedns',
-												   'pollscalingfactor',
-												   'polladminitemsperpage',
-												   'polluseritemsperpage',
-												   'defaultcolour',
-												   'defaultoptioncount');
-
 	// Confirm authorisation code.
 	if (!SecurityUtil::confirmAuthKey()) {
 		return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'admin', 'view'));
 	}
 
+    $config = FormUtil::getPassedValue('config', isset($args['config']) ? $args['config'] : null, 'POST');
+
 	// Update module variables.
-	if (!isset($polladmindateformat)) {
-		$polladmindateformat = 'r';
+	if (!isset($config['admindateformat'])) {
+		$config['admindateformat'] = 'r';
 	}
-	pnModSetVar('advanced_polls', 'admindateformat', $polladmindateformat);
-	if (!isset($polluserdateformat)) {
-		$polluserdateformat = 'r';
+	pnModSetVar('advanced_polls', 'admindateformat', $config['admindateformat']);
+	if (!isset($config['userdateformat'])) {
+		$config['userdateformat'] = 'r';
 	}
-	pnModSetVar('advanced_polls', 'userdateformat', $polluserdateformat);
-	if (!isset($pollusereversedns)) {
-		$pollusereversedns = 0;
+	pnModSetVar('advanced_polls', 'userdateformat', $config['userdateformat']);
+	if (!isset($config['usereversedns'])) {
+		$config['usereversedns'] = 0;
 	}
-	pnModSetVar('advanced_polls', 'usereversedns', $pollusereversedns);
-	 
-	if (!isset($pollscalingfactor)) {
-		$pollscalingfactor = 4;
+	pnModSetVar('advanced_polls', 'usereversedns', $config['usereversedns']);
+	if (!isset($config['scalingfactor'])) {
+		$config['scalingfactor'] = 4;
 	}
-	pnModSetVar('advanced_polls', 'scalingfactor', $pollscalingfactor);
-	if (!isset($adminitemsperpage)) {
-		$adminitemsperpage = 25;
+	pnModSetVar('advanced_polls', 'scalingfactor', $config['scalingfactor']);
+	if (!isset($config['adminitemsperpage'])) {
+		$config['adminitemsperpage'] = 25;
 	}
-	pnModSetVar('advanced_polls', 'adminitemsperpage', $adminitemsperpage);
-	if (!isset($useritemsperpage)) {
-		$useritemsperpage = 25;
+	pnModSetVar('advanced_polls', 'adminitemsperpage', $config['adminitemsperpage']);
+	if (!isset($config['useritemsperpage'])) {
+		$config['useritemsperpage'] = 25;
 	}
-	pnModSetVar('advanced_polls', 'useritemsperpage', $useritemsperpage);
-	if (!isset($defaultcolour)) {
-	    $defaultcolour = '#000000';
+	pnModSetVar('advanced_polls', 'useritemsperpage', $config['useritemsperpage']);
+	if (!isset($config['defaultcolour'])) {
+	    $config['defaultcolour'] = '#000000';
 	}
-	pnModSetVar('advanced_polls', 'defaultcolour', $defaultcolour);
-	if (!isset($defaultoptioncount)) {
-	    $defaultoptioncount = '12';
+	pnModSetVar('advanced_polls', 'defaultcolour', $config['defaultcolour']);
+	if (!isset($config['defaultoptioncount'])) {
+	    $config['defaultoptioncount'] = '12';
 	}
-	pnModSetVar('advanced_polls', 'defaultoptioncount', $defaultoptioncount);
+	pnModSetVar('advanced_polls', 'defaultoptioncount', $config['defaultoptioncount']);
+	if (!isset($config['enablecategorization'])) {
+	    $config['enablecategorization'] = false;
+	}
+	pnModSetVar('advanced_polls', 'enablecategorization', $config['enablecategorization']);
+	if (!isset($config['addcategorytitletopermalink'])) {
+	    $config['addcategorytitletopermalink'] = false;
+	}
+	pnModSetVar('advanced_polls', 'addcategorytitletopermalink', $config['addcategorytitletopermalink']);
+
+    // Let any other modules know that the modules configuration has been updated
+    pnModCallHooks('module', 'updateconfig', 'advanced_polls', array('module' => 'advanced_polls'));
+
+    // the module configuration has been updated successfuly
+    LogUtil::registerStatus (_CONFIGUPDATED);
 
 	// redirect the user to an appropriate page
 	return pnRedirect(pnModURL('advanced_polls', 'admin', 'view'));
