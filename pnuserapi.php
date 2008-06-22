@@ -53,6 +53,16 @@ function advanced_polls_userapi_getall($args)
 		return $items;
 	}
 
+    $args['catFilter'] = array();
+    if (isset($args['category']) && !empty($args['category'])){
+        if (is_array($args['category'])) { 
+            $args['catFilter'] = $args['category'];
+        } elseif (isset($args['property'])) {
+            $property = $args['property'];
+            $args['catFilter'][$property] = $args['category'];
+        }
+    }
+
     // populate an array with each part of the where clause and then implode the array if there is a need.
     // credit to Jorg Napp for this technique - markwest
     $pntable = pnDBGetTables();
@@ -82,6 +92,15 @@ function advanced_polls_userapi_getall($args)
     // error message and return
     if ($items === false) {
         return LogUtil::registerError (_GETFAILED);
+    }
+
+    // need to do this here as the category expansion code can't know the
+    // root category which we need to build the relative path component
+     if ($items && isset($args['catregistry']) && $args['catregistry']) {
+        if (!($class = Loader::loadClass ('CategoryUtil'))) {
+            pn_exit (pnML('_UNABLETOLOADCLASS', array('s' => 'CategoryUtil')));
+	    }
+        ObjectUtil::postProcessExpandedObjectArrayCategories ($items, $args['catregistry']);
     }
 
 	// Return the items

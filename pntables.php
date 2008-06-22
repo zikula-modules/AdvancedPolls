@@ -84,6 +84,10 @@ function advanced_polls_pntables()
                                                        'language'            => "C(30) NOTNULL DEFAULT ''",
                                                        'votingmethod'        => "I NOTNULL DEFAULT '0'");
 
+    // Enable categorization services
+    $pntable['advanced_polls_desc_db_extra_enable_categorization'] = pnModGetVar('advanced_polls', 'enablecategorization');
+    $pntable['advanced_polls_desc_primary_key_column'] = 'pollid';
+
     // add standard data fields
     ObjectUtil::addStandardFieldsToTableDefinition ($pntable['advanced_polls_desc_column'], 'pn_');
     ObjectUtil::addStandardFieldsToTableDataDefinition($pntable['advanced_polls_desc_column_def']);

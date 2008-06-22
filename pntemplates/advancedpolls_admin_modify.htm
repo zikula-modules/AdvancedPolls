@@ -21,6 +21,25 @@
 			<input id="advancedpolls_urltitle" name="poll[urltitle]" type="text" size="50" maxlength="120" value="<!--[$urltitle|pnvarprepfordisplay]-->" />
 			<span class="pn-sub"><!--[pnml name=_PERMALINKTITLEBLANK]--></span>
 		</div>
+        <!--[if $enablecategorization]-->
+        <div class="pn-adminformrow">
+            <label for="advancedpolls_categories"><!--[pnml name="_CATEGORY"]--></label>
+            <!--[ pnml assign="lblDef" name="_CHOOSECATEGORY" ]-->
+            <!--[nocache]-->
+            <ul id="advancedpolls_categories" class="selector_category">
+            <!--[foreach from=$catregistry key=property item=category]-->
+                <!--[array_field_isset array=$__CATEGORIES__ field=$property assign="catExists"]-->
+                <!--[if $catExists]-->
+                    <!--[array_field_isset array=$__CATEGORIES__.$property field="id" returnValue=1 assign="selectedValue"]-->
+                <!--[else]-->
+                    <!--[assign var="selectedValue" value="0"]-->
+                <!--[/if]-->
+                <li><!--[selector_category category=$category name="poll[__CATEGORIES__][$property]" field="id" selectedValue=$selectedValue defaultValue="0" defaultText=$lblDef]--></li>
+            <!--[/foreach]-->
+            </ul>
+            <!--[/nocache]-->
+        </div>
+        <!--[/if]-->
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_description"><!--[pnml name="_ADVANCEDPOLLSDESCRIPTION"]--></label>
 			<textarea id="advancedpolls_description" name="poll[description]" rows="10" cols="50"><!--[$description|pnvarprephtmldisplay]--></textarea>
