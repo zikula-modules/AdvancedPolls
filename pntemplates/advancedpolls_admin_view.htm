@@ -52,7 +52,7 @@
 			<!--[if $enablecategorization]-->
 			<td>
 				<ul>
-				<!--[ foreach from=$page.__CATEGORIES__ item=cat ]-->
+				<!--[ foreach from=$poll.__CATEGORIES__ item=cat ]-->
 					<!--[array_field_isset assign="catname" array=$cat.display_name field=$lang returnValue=1]-->
 					<!--[if $catname eq '']--><!--[assign var="catname" value=$cat.name]--><!--[/if]-->
 					<li><!--[$catname]--></li>

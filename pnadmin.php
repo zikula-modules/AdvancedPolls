@@ -359,6 +359,9 @@ function advanced_polls_admin_view()
 	$pnRender->assign('polls', $items);
     $pnRender->assign($modvars);
 
+    // Assign the default language
+    $pnRender->assign('lang', pnUserGetLang());
+
     // Assign the categories information if enabled
     if ($modvars['enablecategorization']) {
         $pnRender->assign('catregistry', $catregistry);
