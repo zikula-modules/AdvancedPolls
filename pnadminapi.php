@@ -27,7 +27,7 @@ function advanced_polls_adminapi_create($args)
     }
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$args[title]::", ACCESS_ADD)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::", ACCESS_ADD)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
@@ -86,9 +86,9 @@ function advanced_polls_adminapi_delete($args)
     if ($item == false) {
         return LogUtil::registerError (_NOSUCHITEM);
     }
-	 
+ 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_DELETE)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_DELETE)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
@@ -154,10 +154,10 @@ function advanced_polls_adminapi_update($args)
 
 	// Note that at this stage we have two sets of item information, the
 	// pre-modification and the post-modification.
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$args[title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
@@ -213,19 +213,13 @@ function advanced_polls_adminapi_update($args)
 */
 function advanced_polls_adminapi_resetvotes($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
 	// Argument check
-	if (!isset($pollid)) {
+	if (!isset($args['pollid'])) {
 		return LogUtil::registerError (_MODARGSERROR);
 	}
 	
 	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls',
-		'user',
-		'get',
-		array('pollid' => $pollid));
+	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
 	// check for no such poll return from api function
 	if ($item == false) {
@@ -233,13 +227,14 @@ function advanced_polls_adminapi_resetvotes($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
 			return LogUtil::registerError (_ADVANCEDPOLLSVOTESRESETFAILED);
 		}
 	}
+
     return true;
 }
 
@@ -257,37 +252,31 @@ function advanced_polls_adminapi_resetvotes($args)
 */
 function advanced_polls_adminapi_getvotes($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
 	// Argument check
-	if (!isset($pollid)) {
+	if (!isset($args['pollid'])) {
 		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// Optional arguments.
-	if (!isset($startnum)) {
-		$startnum = 1;
+	if (!isset($args['startnum'])) {
+		$args['startnum'] = 1;
 	}
-	if (!isset($numitems)) {
-		$numitems = -1;
+	if (!isset($args['numitems'])) {
+		$args['numitems'] = -1;
 	}
-	if ((!isset($startnum))  || (!isset($numitems))) {
+	if ((!isset($args['startnum']))  || (!isset($args['numitems']))) {
 		return LogUtil::registerError (_MODARGSERROR);
 	}
 
-	if (!isset($sortorder)) {
-		$sortorder = 0;
+	if (!isset($args['sortorder'])) {
+		$args['sortorder'] = 0;
 	}
-	if (!isset($sortby)) {
-		$sortby = 1;
+	if (!isset($args['sortby'])) {
+		$args['sortby'] = 1;
 	}
 
 	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls',
-		'user',
-		'get',
-		array('pollid' => $pollid));
+	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
 	// check for no such poll return from api function
 	if ($item == false) {
@@ -295,38 +284,38 @@ function advanced_polls_adminapi_getvotes($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
 		// get database setup
 		$pntable = pnDBGetTables();
 		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
-		switch ($sortby) {
+		switch ($args['sortby']) {
 			case 1:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[voteid]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['voteid']}";
 				break;
 			case 2:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[ip]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['ip']}";
 				break;
 			case 3:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[time]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['time']}";
 				break;
 			case 4:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[uid]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['uid']}";
 				break;
 			case 5:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[voterank]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['voterank']}";
 				break;
 			case 6:
-				$sortstring = " ORDER BY $advanced_pollsvotescolumn[optionid]";
+				$sortstring = " ORDER BY {$advanced_pollsvotescolumn['optionid']}";
 				break;
 			default:
-				$sortstring = "";
+				$sortstring = '';
 		}
 
-		if ($sortorder == 1 ) {
-			$sortstring = $sortstring . " DESC";
+		if ($args['sortorder'] == 1 ) {
+			$sortstring = $sortstring . ' DESC';
 		}
 
 		// get the objects from the db
@@ -354,19 +343,13 @@ function advanced_polls_adminapi_getvotes($args)
 */
 function advanced_polls_adminapi_duplicate($args) 
 {
-	// Get arguments from argument array
-	extract($args);
-
 	// Argument check
-	if (!isset($pollid)) {
+	if (!isset($args['pollid'])) {
 		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls',
-		'user',
-		'get',
-		array('pollid' => $pollid));
+	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
 	// check for no such poll return from api function
 	if ($item == false) {
@@ -374,65 +357,60 @@ function advanced_polls_adminapi_duplicate($args)
 	}
 
 	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_ADD)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
 		return LogUtil::registerError(_MODULENOAUTH);
 	} else {
-
 		// The API function is called.
-		$pid = pnModAPIFunc('advanced_polls',
-			'admin',
-			'create',
+		$pid = pnModAPIFunc('advanced_polls', 'admin', 'create',
 			array('title' => $item['title'],
-			'description' => $item['description'],
-			'language' => $item['language'],
-			'opendid' => date("d", $item['opendate']),
-			'openmid' => date("n", $item['opendate']),
-			'openyid' => date("Y", $item['opendate']),
-			'openhid' => date("H", $item['opendate']),
-			'openminid' => date("i", $item['opendate']),
-			'closedid' => date("d", $item['closedate']),
-			'closemid' => date("n", $item['closedate']),
-			'closeyid' => date("Y", $item['closedate']),
-			'closehid' => date("H", $item['closedate']),
-			'closeminid' => date("i", $item['closedate']),
-			'tiebreak' => $item['tiebreakalg'],
-			'voteauthtype' => $item['voteauthtype'],
-			'multipleselect' => $item['multipleselect'],
-			'multipleselectcount' => $item['multipleselectcount'],
-			'recurring' => $item['recurring'],
-			'recurringoffset' => $item['recurringoffset'],
-			'recurringinterval' => $item['recurringinterval'],
-			'optioncount' => $item['optioncount']));
+				  'description' => $item['description'],
+				  'language' => $item['language'],
+				  'opendid' => date("d", $item['opendate']),
+				  'openmid' => date("n", $item['opendate']),
+				  'openyid' => date("Y", $item['opendate']),
+				  'openhid' => date("H", $item['opendate']),
+				  'openminid' => date("i", $item['opendate']),
+				  'closedid' => date("d", $item['closedate']),
+				  'closemid' => date("n", $item['closedate']),
+				  'closeyid' => date("Y", $item['closedate']),
+				  'closehid' => date("H", $item['closedate']),
+				  'closeminid' => date("i", $item['closedate']),
+				  'tiebreak' => $item['tiebreakalg'],
+				  'voteauthtype' => $item['voteauthtype'],
+				  'multipleselect' => $item['multipleselect'],
+				  'multipleselectcount' => $item['multipleselectcount'],
+				  'recurring' => $item['recurring'],
+				  'recurringoffset' => $item['recurringoffset'],
+				  'recurringinterval' => $item['recurringinterval'],
+				  'optioncount' => $item['optioncount']));
 
 		if ($pid != false) {
 			// Once the poll is created we call the modify function to add 
 			// the poll options
-			$result = pnModAPIFunc('advanced_polls',
-				'admin',
-				'update',
+			$result = pnModAPIFunc('advanced_polls', 'admin', 'update',
 				array('pollid' => $pid,
-				'title' => $item['title'],
-    			'description' => $item['description'],
-				'optioncount' => $item['optioncount'],
-				'language' => $item['language'],
-				'opendid' => date("d", $item['opendate']),
-				'openmid' => date("n", $item['opendate']),
-				'openyid' => date("Y", $item['opendate']),
-				'openhid' => date("H", $item['opendate']),
-				'openminid' => date("i", $item['opendate']),
-				'closedid' => date("d", $item['closedate']),
-				'closemid' => date("n", $item['closedate']),
-				'closeyid' => date("Y", $item['closedate']),
-				'closehid' => date("H", $item['closedate']),
-				'closeminid' => date("i", $item['closedate']),
-				'tiebreak' => $item['tiebreakalg'],
-				'voteauthtype' => $item['voteauthtype'],
-				'multipleselect' => $item['multipleselect'],
-				'multipleselectcount' => $item['multipleselectcount'],
-				'recurring' => $item['recurring'],
-				'recurringoffset' => $item['recurringoffset'],
-				'recurringinterval' => $item['recurringinterval'],
-				'options' => $item['optionarray']));
+					  'title' => $item['title'],
+					  'description' => $item['description'],
+					  'optioncount' => $item['optioncount'],
+					  'language' => $item['language'],
+					  'opendid' => date("d", $item['opendate']),
+					  'openmid' => date("n", $item['opendate']),
+					  'openyid' => date("Y", $item['opendate']),
+					  'openhid' => date("H", $item['opendate']),
+					  'openminid' => date("i", $item['opendate']),
+					  'closedid' => date("d", $item['closedate']),
+					  'closemid' => date("n", $item['closedate']),
+					  'closeyid' => date("Y", $item['closedate']),
+					  'closehid' => date("H", $item['closedate']),
+					  'closeminid' => date("i", $item['closedate']),
+					  'tiebreak' => $item['tiebreakalg'],
+					  'voteauthtype' => $item['voteauthtype'],
+					  'multipleselect' => $item['multipleselect'],
+					  'multipleselectcount' => $item['multipleselectcount'],
+					  'recurring' => $item['recurring'],
+					  'recurringoffset' => $item['recurringoffset'],
+					  'recurringinterval' => $item['recurringinterval'],
+					  'options' => $item['optionarray']));
 		} else {
 			$result = false;
 		}
@@ -445,7 +423,6 @@ function advanced_polls_adminapi_duplicate($args)
 			// Failiure
 			LogUtil::registerStatus( _ADVANCEDPOLLSFAILEDCREATE);
 		}
-	 
 		return (bool)$result;
 	}	
 }
@@ -462,13 +439,13 @@ function advanced_polls_adminapi_getlinks()
 
     pnModLangLoad('advanced_polls', 'admin');
 
-    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_READ)) {
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => _ADVANCEDPOLLSVIEW);
     }
-    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADD)) {
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => _ADVANCEDPOLLSNEW);
     }
-    if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
+    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => _MODIFYCONFIG);
     }
 
