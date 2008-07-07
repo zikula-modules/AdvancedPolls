@@ -124,10 +124,10 @@ function advanced_polls_pollblock_display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $pnRender->caching = false;
+    $renderer->caching = false;
 
 	// is this user/ip etc. allowed to vote under voting regulations
 	$isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $pollid));
@@ -149,8 +149,8 @@ function advanced_polls_pollblock_display($blockinfo)
 			// if poll is open then display voting form otherwise
 			// show results summary
 			if (($ispollopen == true) and ($isvoteallowed == true)) {
-				$pnRender->assign('polltype', $item['pn_multipleselect']);
-				$pnRender->assign('multiplecount', $item['pn_multipleselectcount']);
+				$renderer->assign('polltype', $item['pn_multipleselect']);
+				$renderer->assign('multiplecount', $item['pn_multipleselectcount']);
 				$options = array();
 				for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
 					$optiontext = $polloptionarray[$i]['optiontext'];
@@ -162,7 +162,7 @@ function advanced_polls_pollblock_display($blockinfo)
 										   'voteid' => $voteid);
 					}
 				}
-				$pnRender->assign('options', $options);
+				$renderer->assign('options', $options);
 			} else {
 				for ($i = 1, $max = count($polloptionarray); $i <= $max; $i++) {
 					$optionText = $polloptionarray[$i-1]['optiontext'];
@@ -187,16 +187,16 @@ function advanced_polls_pollblock_display($blockinfo)
 	}
 
     // assign the poll to the template
-	$pnRender->assign('pollid', $pollid);
-	$pnRender->assign('item', $item);
-	$pnRender->assign('polloptions', $polloptionarray);
-	$pnRender->assign('votecounts', $votecounts);
-	$pnRender->assign('isvoteallowed', $isvoteallowed);
-    $pnRender->assign('ispollopen', $ispollopen);
-	$pnRender->assign('blockvars', $vars);
+	$renderer->assign('pollid', $pollid);
+	$renderer->assign('item', $item);
+	$renderer->assign('polloptions', $polloptionarray);
+	$renderer->assign('votecounts', $votecounts);
+	$renderer->assign('isvoteallowed', $isvoteallowed);
+    $renderer->assign('ispollopen', $ispollopen);
+	$renderer->assign('blockvars', $vars);
  
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_poll.htm');
+	$blockinfo['content'] = $renderer->fetch('advancedpolls_block_poll.htm');
 	return themesideblock($blockinfo);
 }
 
@@ -237,10 +237,10 @@ function advanced_polls_pollblock_modify($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $pnRender->caching = false;
+    $renderer->caching = false;
 
     // get a full list of available polls
 	$items = pnModAPIFunc('advanced_polls',	'user',	'getall');
@@ -250,22 +250,22 @@ function advanced_polls_pollblock_modify($blockinfo)
 		    $polls[$item['pollid']] = $item['polltitle'];
 		}
 	}
-	$pnRender->assign('items', $polls);
+	$renderer->assign('items', $polls);
 
 	// assign the block vars to the template
-    $pnRender->assign('blockvars', $vars);
+    $renderer->assign('blockvars', $vars);
 
 	// poll use values
-	$pnRender->assign('pollusevalues', array( 0 => 'Individual Selection',
+	$renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
 					                          1 => 'Latest',
 										      2 => 'Random'));
 
 	// yes/no array
-	$pnRender->assign('yesno', array( 0 => _NO,
+	$renderer->assign('yesno', array( 0 => _NO,
 									  1 => _YES));
 
 	// Return output
-	return $pnRender->fetch('advancedpolls_block_poll_modify.htm');
+	return $renderer->fetch('advancedpolls_block_poll_modify.htm');
 }
 
 /**

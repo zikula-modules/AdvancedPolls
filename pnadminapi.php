@@ -56,8 +56,8 @@ function advanced_polls_adminapi_create($args)
     pnModCallHooks('item', 'create', $args['pollid'], array('module' => 'advanced_polls'));
 
     // An item was created, so we clear all cached pages of the items list.
-    $pnRender = pnRender::getInstance('advanced_polls');
-    $pnRender->clear_cache('advancedpolls_user_view.htm');
+    $renderer = pnRender::getInstance('advanced_polls');
+    $renderer->clear_cache('advancedpolls_user_view.htm');
 
     // Return the id of the newly created item to the calling process
     return $args['pollid'];

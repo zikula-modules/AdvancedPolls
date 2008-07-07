@@ -88,10 +88,10 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $pnRender->caching = false;
+    $renderer->caching = false;
 
 	// get current vote counts
 	$votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
@@ -113,12 +113,12 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 	$votecounts['percentages'] = $percentages;
 
 	// assign the item to template
-	$pnRender->assign('item', $item);
-	$pnRender->assign('polloptions', $polloptionarray);
-	$pnRender->assign('votecounts', $votecounts);
+	$renderer->assign('item', $item);
+	$renderer->assign('polloptions', $polloptionarray);
+	$renderer->assign('votecounts', $votecounts);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_pollresults.htm');
+	$blockinfo['content'] = $renderer->fetch('advancedpolls_block_pollresults.htm');
 	return themesideblock($blockinfo);
 }
 

@@ -68,10 +68,10 @@ function advanced_polls_polllistblock_display($blockinfo)
 	pnModLangLoad('advanced_polls', 'user');
 
     // Create output object
-    $pnRender = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $pnRender->caching = false;
+    $renderer->caching = false;
 
     // if there are no polls then don't display anything
 	if (count($items) == 0) {
@@ -98,10 +98,10 @@ function advanced_polls_polllistblock_display($blockinfo)
 		return;
 	}
 
-	$pnRender->assign('polls', $polls);
+	$renderer->assign('polls', $polls);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_polllist.htm');
+	$blockinfo['content'] = $renderer->fetch('advancedpolls_block_polllist.htm');
 	return themesideblock($blockinfo);
 }
 

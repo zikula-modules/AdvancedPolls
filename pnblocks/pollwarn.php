@@ -120,17 +120,17 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $pnRender = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('advanced_polls');
 
     // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $pnRender->caching = false;
+    $renderer->caching = false;
 
 	// assign content to the template
-	$pnRender->assign('blockvars', $vars);
-	$pnRender->assign('item', $item);
+	$renderer->assign('blockvars', $vars);
+	$renderer->assign('item', $item);
 
 	// Populate block info and pass to theme
-	$blockinfo['content'] = $pnRender->fetch('advancedpolls_block_pollwarn.htm');
+	$blockinfo['content'] = $renderer->fetch('advancedpolls_block_pollwarn.htm');
 	return themesideblock($blockinfo);
 }
 
@@ -171,16 +171,16 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
 
 	// Create output object - this object will store all of our output so that
 	// we can return it easily when required
-	$pnRender = pnRender::getInstance('advanced_polls');
+	$renderer = pnRender::getInstance('advanced_polls');
 
     // Assign the block variables
-	$pnRender->assign('blockvars', $vars);
+	$renderer->assign('blockvars', $vars);
 	
 	// assign the items
-	$pnRender->assign('items', $polls);
+	$renderer->assign('items', $polls);
 
 	// Return output
-	return $pnRender->fetch('advancedpolls_block_pollwarn_modify.htm');
+	return $renderer->fetch('advancedpolls_block_pollwarn_modify.htm');
 }
 
 /**
