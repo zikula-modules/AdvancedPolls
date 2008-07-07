@@ -188,19 +188,20 @@ function advanced_polls_userapi_get($args)
 */
 function advanced_polls_userapi_countitems($args) 
 {
-	// Get arguments from argument array
-	extract($args);
+    $args['catFilter'] = array();
+    if (isset($args['category']) && !empty($args['category'])){
+        if (is_array($args['category'])) { 
+            $args['catFilter'] = $args['category'];
+        } elseif (isset($args['property'])) {
+            $property = $args['property'];
+            $args['catFilter'][$property] = $args['category'];
+        }
+    }
 
 	// defauls	
 	if (!isset($checkml)) {
 		$checkml = true;
 	}
-
-	// Get datbase setup
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
-	$advanced_pollsdesctable = $pntable['advanced_polls_desc'];
-	$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc_column'];
 
 	// Check if we is an ML situation
 	$querylang = '';
@@ -210,25 +211,8 @@ function advanced_polls_userapi_countitems($args)
 					  OR $advanced_pollsdesccolumn[language] IS NULL)";
 	}
 
-	// Get item count
-	$sql = "SELECT COUNT(1) FROM $advanced_pollsdesctable $querylang";
-	$result =& $dbconn->Execute($sql);
-
-	// Check for an error with the database code, and if so set an appropriate
-	// error message and return
-	if ($dbconn->ErrorNo() != 0) {
-		return LogUtil::registerError(_GETFAILED);
-	}
-
-	// Obtain the number of items
-	list($numitems) = $result->fields;
-
-	// All successful database queries produce a result set, and that result
-	// set should be closed when it has been finished with
-	$result->Close();
-
-	// Return the number of items
-	return $numitems;
+    // Return the number of items
+    return DBUtil::selectObjectCount('advanced_polls_desc', $querylang, 'pollid', false, $args['catFilter']);
 }
 
 /**
