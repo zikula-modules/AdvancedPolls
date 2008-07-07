@@ -5,7 +5,7 @@
 <strong><!--[pnml name="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
 <strong><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
 <strong><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay]--><br />
+<strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay|default:'0']--><br />
 </div>
 <div style="float:right;">
 <form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="adminstats"]-->" method="post" enctype="application/x-www-form-urlencoded">
