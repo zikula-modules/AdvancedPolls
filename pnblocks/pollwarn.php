@@ -41,9 +41,8 @@ function advanced_polls_pollwarnblock_info()
 */
 function advanced_polls_pollwarnblock_display($blockinfo) 
 {
-
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
 
@@ -76,7 +75,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 
 	if ($polluse == 2) {
 		$pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
-		//$pollid = $item['pn_pollid'];
+		//$pollid = $item['pollid'];
 	}
 
 	// get full details on this poll from api
@@ -88,16 +87,16 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 	}
 
 	// check for permissions on poll
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
 		return;
 	}
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
 		return;			
 	}
 
     // populate the options array
 	$polloptionarray = array();
-	$polloptionarray = $item['pn_optionarray'];
+	$polloptionarray = $item['optionarray'];
 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
@@ -120,10 +119,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls');
-
-    // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $renderer->caching = false;
+    $renderer = pnRender::getInstance('advanced_polls', false);
 
 	// assign content to the template
 	$renderer->assign('blockvars', $vars);
@@ -140,7 +136,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 function advanced_polls_pollwarnblock_modify($blockinfo) 
 {
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
 

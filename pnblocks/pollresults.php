@@ -56,7 +56,7 @@ function advanced_polls_pollresultsblock_info()
 function advanced_polls_pollresultsblock_display($blockinfo) {
 	 
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:pollresultsblock:',	"$blockinfo[title]::",	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:pollresultsblock:',	"$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
 
@@ -88,10 +88,7 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls');
-
-    // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $renderer->caching = false;
+    $renderer = pnRender::getInstance('advanced_polls', false);
 
 	// get current vote counts
 	$votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));

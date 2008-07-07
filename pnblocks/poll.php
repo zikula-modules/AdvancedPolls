@@ -55,7 +55,7 @@ function advanced_polls_pollblock_info()
 function advanced_polls_pollblock_display($blockinfo) 
 {
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
 
@@ -124,10 +124,7 @@ function advanced_polls_pollblock_display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls');
-
-    // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $renderer->caching = false;
+    $renderer = pnRender::getInstance('advanced_polls', false);
 
 	// is this user/ip etc. allowed to vote under voting regulations
 	$isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $pollid));
@@ -211,7 +208,7 @@ function advanced_polls_pollblock_display($blockinfo)
 function advanced_polls_pollblock_modify($blockinfo) 
 {
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
 

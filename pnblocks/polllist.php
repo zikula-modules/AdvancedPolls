@@ -55,7 +55,7 @@ function advanced_polls_polllistblock_info()
 function advanced_polls_polllistblock_display($blockinfo) 
 {
 	// Security check
-	if (!pnSecAuthAction(0,	'advanced_polls:polllistblock:', "$blockinfo[title]::", 	ACCESS_READ)) {
+	if (!SecurityUtil::checkPermission('advanced_polls:polllistblock:', "$blockinfo[title]::", 	ACCESS_READ)) {
 		return;
 	}
 	// Get variables from content block
@@ -68,10 +68,7 @@ function advanced_polls_polllistblock_display($blockinfo)
 	pnModLangLoad('advanced_polls', 'user');
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls');
-
-    // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $renderer->caching = false;
+    $renderer = pnRender::getInstance('advanced_polls', false);
 
     // if there are no polls then don't display anything
 	if (count($items) == 0) {

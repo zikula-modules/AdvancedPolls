@@ -370,8 +370,8 @@ function advanced_polls_user_vote($args)
 		$multiple = 0;
 	}
 
-	if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
-	    if (pnSecAuthAction(0,'advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
+	if (SecurityUtil::checkPermission('advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
+	    if (SecurityUtil::checkPermission('advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
 
 			// call api function to establish if poll is currently open
 			$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));

@@ -586,7 +586,7 @@ function advanced_polls_userapi_addvote($args)
 	}
 
 	// Security check
-	if (pnSecAuthAction(0,'advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
+	if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
         $args['ip'] = pnServerGetVar('REMOTE_ADDR');
 		$args['uid'] = pnUserGetVar('uid');
 		$args['time'] = time();
