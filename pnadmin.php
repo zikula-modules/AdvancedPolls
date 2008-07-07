@@ -343,7 +343,7 @@ function advanced_polls_admin_view()
                                'image' => 'undo.gif',
 							   'title' => _ADVANCEDPOLLSRESETVOTES);
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'duplicate', array('pollid' => $item['pollid'])),
-                               'image' => 'edit_copy.gif',
+                               'image' => 'editcopy.gif',
 							   'title' => _ADVANCEDPOLLSDUPLICATE);
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'adminstats', array('pollid' => $item['pollid'])),
                                'image' => 'smallcal.gif',
