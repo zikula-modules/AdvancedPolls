@@ -134,4 +134,3 @@ function advanced_polls_polllistblock_update($blockinfo)
 	return $blockinfo;
 
 }
-

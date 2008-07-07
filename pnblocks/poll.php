@@ -10,7 +10,7 @@
  * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls
  */
- 
+
 /**
 * initialise block
 * @author Mark West <mark@markwest.me.uk>
@@ -23,7 +23,7 @@ function advanced_polls_pollblock_init()
 	// Security
 	pnSecAddSchema('advanced_polls:pollblock:', 'Block title::');
 }
- 
+
 /**
 * get information on block
 * @returns block info array
@@ -286,4 +286,3 @@ function advanced_polls_pollblock_update($blockinfo)
 
 	return $blockinfo;
 }
-

@@ -20,7 +20,7 @@ function advanced_polls_pollwarnblock_init()
 	// Security
 	pnSecAddSchema('advanced_polls:pollblock:', 'Block title::');
 }
- 
+
 /**
 * get information on block
 */
@@ -199,4 +199,3 @@ function advanced_polls_pollwarnblock_update($blockinfo)
 
 	return $blockinfo;
 }
-

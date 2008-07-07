@@ -159,10 +159,8 @@ function advanced_polls_userapi_get($args)
                               'instance_right'  => 'pollid',
                               'level'           => ACCESS_READ));
 
-	
     $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['pollid'], 'pollid', '', $permFilter);
     $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', 'pn_pollid=\''.DataUtil::formatForStore($poll['pollid']).'\'', 'optionid');
-
 
 	// pad the array to the correct number of poll options
 	if (count($poll['options']) < $poll['optioncount']) {
@@ -739,4 +737,3 @@ function advanced_polls_userapi_getrandom()
 
 	return $pollid;
 }
-

@@ -49,7 +49,7 @@ function advanced_polls_init()
 	// Initialisation successful
 	return true;
 }
- 
+
 /**
  * upgrade  the Advanced Polls module from an old version
  * This function can be called multiple times

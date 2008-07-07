@@ -19,4 +19,3 @@ define('_ADVANCEDPOLLSDISPLAYRESULTS', 'Display Results Page after Vote');
 define('_ADVANCEDPOLLSID','Poll');
 define('_ADVANCEDPOLLSUSE','Poll to Use (Latest and Random override individual poll selection)');
 define('_ADVANCEDPOLLSNOCLOSEDATE', 'No Close Date');
-

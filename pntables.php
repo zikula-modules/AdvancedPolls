@@ -95,4 +95,3 @@ function advanced_polls_pntables()
 	// Return the table information
 	return $pntable;
 }
-

@@ -10,7 +10,7 @@
  * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls
  */
- 
+
 /**
 * Create a new Poll item
 *
@@ -62,7 +62,7 @@ function advanced_polls_adminapi_create($args)
     // Return the id of the newly created item to the calling process
     return $args['pollid'];
 }
- 
+
 /**
 * delete a Poll item
 * @param $args['pollid'] ID of the item
@@ -105,7 +105,7 @@ function advanced_polls_adminapi_delete($args)
 
 	return true;
 }
- 
+
 /**
 * update a poll
 * @param $args['pollid'] the ID of the item

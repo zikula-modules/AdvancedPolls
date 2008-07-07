@@ -10,7 +10,7 @@
  * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls
  */
- 
+
 /**
 * the main user function
 * This function is the default function, and is called whenever the module is
@@ -304,14 +304,14 @@ function advanced_polls_user_display($args)
 			// Output details of poll if poll is not open yet
 			//----------------------------------------------------------------------------
 			$votecount = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
-	
+
 			// display poll results
 			$options = array();
 			for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
 				$options[] = array('optiontext' => $polloptionarray[$i]['name']);
 			}
 			$renderer->assign('options', $options);
-	
+
 			// close results table out
 			$template = 'advancedpolls_user_futurepoll';
 		} else {
@@ -340,7 +340,6 @@ function advanced_polls_user_display($args)
 	} else {
 		return $renderer->fetch($template.'.htm');
 	}
-
 }
 
 /**
@@ -427,4 +426,3 @@ function advanced_polls_user_vote($args)
 								   'results' => $results)));
 	}
 }
-
