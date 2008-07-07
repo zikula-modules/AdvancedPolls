@@ -25,3 +25,7 @@ $modversion['contact'] = 'http://www.markwest.me.uk/';
 $modversion['admin'] = 1;
 $modversion['securityschema'] = array('advanced_polls::item' => 'Poll Title::Poll ID',
                                       'advanced_polls::' => '::');
+$modversion['dependencies']    = array(array('modname'    => 'EZComments', 
+                                             'minversion' => '1.1',
+                                             'maxversion' => '',
+                                             'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));
