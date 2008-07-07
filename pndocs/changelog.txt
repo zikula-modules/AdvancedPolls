@@ -1,5 +1,13 @@
 Changelog 
 
+v2.0
+Updated for Zikula v1.0 including the following
+Category support
+permalink support
+meta data support
+ajax voting
+improved templates and interface
+
 v1.51
 All module output fully templated using pnRender
 Support for HTML in poll options and titles (e.g.image based polls)
