@@ -206,7 +206,7 @@ function advanced_polls_userapi_countitems($args)
 	// Check if we is an ML situation
 	$querylang = '';
 	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_pollsdesccolumn[language]='" . pnVarPrepForStore(pnUserGetLang()) . "' 
+		$querylang = "WHERE ($advanced_pollsdesccolumn[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' 
 					  OR $advanced_pollsdesccolumn[language]='' 
 					  OR $advanced_pollsdesccolumn[language] IS NULL)";
 	}
@@ -303,7 +303,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 			return true;
 		case 2: //UID Voting
 			// extract user id from session variables
-			$uid = pnVarPrepForStore(pnUserGetVar('uid'));
+			$uid = DataUtil::formatForStore(pnUserGetVar('uid'));
 
             // get all the matching votes
             $where = "WHERE pn_uid = '{$uid}' AND pn_pollid = '{$args['pollid']}'";
@@ -393,8 +393,8 @@ function advanced_polls_userapi_resetrecurring($args)
 	if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
 
 		// get database connection
-		$dbconn =& pnDBGetConn(true);
-		$pntable =& pnDBGetTables();
+		$dbconn = pnDBGetConn(true);
+		$pntable = pnDBGetTables();
 
 		// define database tables
 		$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
@@ -404,8 +404,8 @@ function advanced_polls_userapi_resetrecurring($args)
 
 		// empty votes table for this poll
 		$sql = "DELETE FROM $advanced_pollsvotestable WHERE
-				$advanced_pollsvotescolumn[pollid]='" . (int)pnVarPrepForStore($pollid) . "'";
-		$result =& $dbconn->Execute($sql);
+				$advanced_pollsvotescolumn[pollid]='" . (int)DataUtil::formatForStore($pollid) . "'";
+		$result = $dbconn->Execute($sql);
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
@@ -425,11 +425,11 @@ function advanced_polls_userapi_resetrecurring($args)
 
 		// update poll close and open times
 		$sql = "UPDATE $advanced_pollsdesctable SET
-				$advanced_pollsdesccolumn[opendate] = '".(int)pnVarPrepForStore($newopentime)."',
-				$advanced_pollsdesccolumn[closedate] = '".(int)pnVarPrepForStore($newclosetime)."'
+				$advanced_pollsdesccolumn[opendate] = '".(int)DataUtil::formatForStore($newopentime)."',
+				$advanced_pollsdesccolumn[closedate] = '".(int)DataUtil::formatForStore($newclosetime)."'
 				WHERE
-				$advanced_pollsdesccolumn[pollid]= '" . (int)pnVarPrepForStore($pollid) . "'";
-		$result =& $dbconn->Execute($sql);
+				$advanced_pollsdesccolumn[pollid]= '" . (int)DataUtil::formatForStore($pollid) . "'";
+		$result = $dbconn->Execute($sql);
 
 		// check for db errors
 		if ($dbconn->ErrorNo()  != 0) {
@@ -471,8 +471,8 @@ function advanced_polls_userapi_pollvotecount($args)
 	}
 
 	// get database connection
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+	$dbconn = pnDBGetConn(true);
+	$pntable = pnDBGetTables();
 
 	// define database tables
 	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
@@ -483,9 +483,9 @@ function advanced_polls_userapi_pollvotecount($args)
 		// find the total number of votes in this poll
 		$sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid])
 			FROM $advanced_pollsvotestable WHERE
-			$advanced_pollsvotescolumn[pollid]='".(int)pnVarPrepForStore($args['pollid'])."'";
+			$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."'";
 
-		$result =& $dbconn->Execute($sql);
+		$result = $dbconn->Execute($sql);
 		list($totalvotecount) = $result->fields;
 	} else {
 		//GPK  We have a multi-select poll, so we want to find out the largest
@@ -493,17 +493,17 @@ function advanced_polls_userapi_pollvotecount($args)
 		//GPK  sites which do not allow anonymous votes. 
 		$sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
 		FROM nuke_advanced_polls_votes WHERE
-		$advanced_pollsvotescolumn[pollid]='".(int)pnVarPrepForStore($args['pollid'])."' GROUP BY pn_optionid ASC";
-		$result =& $dbconn->Execute($sql);
+		$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' GROUP BY pn_optionid ASC";
+		$result = $dbconn->Execute($sql);
 		//GPK We just need the first entry since that one will give us largest number of votes.
 		(list($optID, $totalvotecount) = $result->fields);
 		
 		//GPK For systems which allow anonymous we need to find out the number of anonymous votes
 		$sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
 		FROM nuke_advanced_polls_votes WHERE
-		$advanced_pollsvotescolumn[pollid]='".(int)pnVarPrepForStore($args['pollid'])."' AND
+		$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' AND
 		pn_uid = 0 GROUP BY pn_optionid DESC";
-		$result =& $dbconn->Execute($sql);
+		$result = $dbconn->Execute($sql);
 
 		$anonymousvotecount = 0;
 		
@@ -527,9 +527,9 @@ function advanced_polls_userapi_pollvotecount($args)
 	$sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid]),
 						$advanced_pollsvotescolumn[optionid]
 			FROM $advanced_pollsvotestable WHERE
-			$advanced_pollsvotescolumn[pollid] = '" . (int)pnVarPrepForStore($args['pollid']) . "'
+			$advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
 			GROUP BY $advanced_pollsvotescolumn[optionid]";
-	$result =& $dbconn->Execute($sql);
+	$result = $dbconn->Execute($sql);
 
 	// Check for no rows found, and if so return
 	if ($result->EOF) {
@@ -565,7 +565,6 @@ function advanced_polls_userapi_pollvotecount($args)
 
 	// Return the item array
 	return $item;
-
 }
 
 /**
@@ -633,8 +632,8 @@ function advanced_polls_userapi_timecountback($args)
 	}
 
 	// get database connection
-	$dbconn =& pnDBGetConn(true);
-	$pntable =& pnDBGetTables();
+	$dbconn = pnDBGetConn(true);
+	$pntable = pnDBGetTables();
 
 	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
 	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
@@ -648,16 +647,16 @@ function advanced_polls_userapi_timecountback($args)
 
 	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
 			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pollid] = '". (int)pnVarPrepForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[optionid] = '" . (int)pnVarPrepForStore($voteid1) . "'))";
-	$result =& $dbconn->Execute($sql);
+			(($advanced_pollsvotescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "') AND
+			($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
+	$result = $dbconn->Execute($sql);
 	list($firstsum) = $result->fields;
 
 	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
 			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pollid] = '" . (int)pnVarPrepForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[optionid] = '" . (int)pnVarPrepForStore($voteid2) . "'))";
-	$result =& $dbconn->Execute($sql);
+			(($advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "') AND
+			($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
+	$result = $dbconn->Execute($sql);
 	list($secondsum) = $result->fields;
 
 	if ($firstsum < $secondsum) {
@@ -692,7 +691,6 @@ function advanced_polls_userapi_getlastclosed($args)
 	}
 
 	return $lastclosed;
-
 }
 
 /**
