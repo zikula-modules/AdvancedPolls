@@ -27,7 +27,7 @@ function advancedpolls_vote()
         {
             method: 'post', 
             parameters: pars, 
-            onComplete: pollsvote_response
+            onComplete: advancedpolls_vote_response
         });
 }
 
