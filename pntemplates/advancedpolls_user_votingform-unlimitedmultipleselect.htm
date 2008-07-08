@@ -4,14 +4,14 @@
 <!--[counter name=counter print=false start=0]-->
 <!--[foreach from=$item.options item=option]-->
 	<tr>
-		<td><input id="<!--[$option.optiontext|pnvarprephtmldisplay|pnvarcensor]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->"></td>
+		<td><input id="<!--[$option.optiontext|pnvarprephtmldisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->"></td>
 		<td>
 			<!--[if $option.optioncolor neq '']-->		  
 				<span style="color:<!--[$option.optioncolor]-->;">
-					<label id="option<!--[$option.optionid|pnvarprephtmldisplay|pnvarcensor]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></label>
+					<label id="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
 				</span>
 			<!--[else]-->
-				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
 			<!--[/if]-->
 		</td>
 	</tr>

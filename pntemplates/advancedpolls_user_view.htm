@@ -13,7 +13,7 @@
   <tbody>
   <!--[section name=polls loop=$activepolls]-->  
     <tr>
-      <td><a href="<!--[$activepolls[polls].url|pnvarprepfordisplay]-->"><!--[$activepolls[polls].title|pnvarprephtmldisplay|pnvarcensor]--></a></td>
+      <td><a href="<!--[$activepolls[polls].url|pnvarprepfordisplay]-->"><!--[$activepolls[polls].title|pnvarprephtmldisplay]--></a></td>
 	  <td><!--[$activepolls[polls].closedate|pnvarprepfordisplay]--></td>
 	  <td>
 	    <!--[assign var="options" value=$activepolls[polls].options]-->
@@ -40,7 +40,7 @@
   <tbody>
   <!--[section name=polls loop=$futurepolls]-->  
     <tr>
-      <td><a href="<!--[$futurepolls[polls].url|pnvarprepfordisplay]-->"><!--[$futurepolls[polls].title|pnvarprephtmldisplay|pnvarcensor]--></a></td>
+      <td><a href="<!--[$futurepolls[polls].url|pnvarprepfordisplay]-->"><!--[$futurepolls[polls].title|pnvarprephtmldisplay]--></a></td>
 	  <td><!--[$futurepolls[polls].opendate|pnvarprepfordisplay]--></td>
 	  <td>
 	    <!--[assign var="options" value=$futurepolls[polls].options]-->
@@ -67,7 +67,7 @@
   <tbody>
   <!--[section name=polls loop=$closedpolls]-->  
     <tr>
-      <td><a href="<!--[$closedpolls[polls].url|pnvarprepfordisplay]-->"><!--[$closedpolls[polls].title|pnvarprephtmldisplay|pnvarcensor]--></a></td>
+      <td><a href="<!--[$closedpolls[polls].url|pnvarprepfordisplay]-->"><!--[$closedpolls[polls].title|pnvarprephtmldisplay]--></a></td>
 	  <td><!--[$closedpolls[polls].opendate|pnvarprepfordisplay]--></td>
 	  <td>
 	    <!--[assign var="options" value=$closedpolls[polls].options]-->

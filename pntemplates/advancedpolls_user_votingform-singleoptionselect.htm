@@ -4,7 +4,7 @@
 	<!--[if $option.optioncolor neq '']-->		  
 		<td><span style="color:<!--[$option.optioncolor]-->;"><label for="<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></label></span></td>
 	<!--[else]-->
-		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
 	<!--[/if]-->
 	<td><input id="option<!--[$option.optionid|pnvarprephtmldisplay]-->" type="radio" name="option<!--[$pollid|pnvarprepfordisplay]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" /></td>
 	</tr>

@@ -2,12 +2,12 @@
 <!--[include file="advancedpolls_user_menu.htm"]-->
 <h2>
 <!--[if $ispollopen eq 1]-->
-<!--[pnml name="_ADVANCEDPOLLSCURRENT"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[pnml name="_ADVANCEDPOLLSCURRENT"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
 <!--[else]-->
-<!--[pnml name="_ADVANCEDPOLLSPREVIOUS"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+<!--[pnml name="_ADVANCEDPOLLSPREVIOUS"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
 <!--[/if]-->
 </h2>
-<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></p>
+<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
 <table class="pn-datatable">
 	<tbody>
 	<!--[foreach from=$item.options item=option]-->
@@ -15,10 +15,10 @@
 		<td>
 			<!--[if $option.optioncolour neq '']-->
 				<span style="color:<!--[$option.optioncolour]-->;">
-					<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+					<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
 				</span>
 			<!--[else]-->
-				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
+				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
 			<!--[/if]-->
 		</td>
 		<td>

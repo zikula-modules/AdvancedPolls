@@ -2,7 +2,7 @@
 <!--[foreach from=$item.options key=key item=option]-->
 	<!--[if $option.optiontext neq '']-->
 	<tr>
-		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
 		<td><!--[$votecounts.percentages.$key.percent|pnvarprepfordisplay]-->%</td>
 	</tr>
 	<!--[/if]-->
