@@ -287,6 +287,7 @@ function advanced_polls_user_display($args)
 			$renderer->assign('ispollopen', $ispollopen);
 
 			// display poll results
+            $scalingfactor = pnModGetVar('advanced_polls', 'scalingfactor');
 			$pollresults = array();
 			foreach ($item['options'] as $key => $option) {
 				if ($votecount['votecountarray'][$key+1]  != 0) {
@@ -295,7 +296,7 @@ function advanced_polls_user_display($args)
 					$item['options'][$key]['percent']= 0;
 				}
 				$item['options'][$key]['percentint'] = (int)$item['options'][$key]['percent'];
-				$item['options'][$key]['percentintscaled'] = $$item['options'][$key]['percentint'] * pnModGetVar('advanced_polls', 'scalingfactor');
+				$item['options'][$key]['percentintscaled'] = $item['options'][$key]['percentint'] * $scalingfactor;
 				$item['options'][$key]['votecount'] = $votecount['votecountarray'][$key+1];
 			}
 			$template = 'advancedpolls_user_results';
