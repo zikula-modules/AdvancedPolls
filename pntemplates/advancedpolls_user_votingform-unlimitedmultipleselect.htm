@@ -8,7 +8,7 @@
 		<td>
 			<!--[if $option.optioncolor neq '']-->		  
 				<span style="color:<!--[$option.optioncolor]-->;">
-					<label id="<!--[$option.optiontext|pnvarprephtmldisplay|pnvarcensor]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></label>
+					<label id="option<!--[$option.optionid|pnvarprephtmldisplay|pnvarcensor]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></label>
 				</span>
 			<!--[else]-->
 				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]-->
