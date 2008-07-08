@@ -47,7 +47,8 @@ define('_ADVANCEDPOLLSTIMING', 'Timing');
 
 // view template
 define('_ADVANCEDPOLLSADMINSTATS', 'Voting Statistics');
-define('_ADVANCEDPOLLSDUPLICATE', 'Duplicate Poll'); 
+define('_ADVANCEDPOLLSDUPLICATE', 'Duplicate Poll');
+define('_ADVANCEDPOLLSISOPEN', 'Is poll open?');
 define('_ADVANCEDPOLLSNUMBER', 'Poll ID');
 define('_ADVANCEDPOLLSRESETVOTES', 'Reset Votes');
 

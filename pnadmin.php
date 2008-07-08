@@ -328,6 +328,8 @@ function advanced_polls_admin_view()
 
 	$polls = array();
 	foreach ($items as $key => $item) {
+        // check if poll is open
+        $items[$key]['isopen'] = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
         $options = array();
 		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),

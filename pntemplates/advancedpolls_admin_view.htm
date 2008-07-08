@@ -38,10 +38,11 @@
 		<tr>
 			<th id="col1"><!--[pnml name="_ADVANCEDPOLLSNAME"]--></th>
 			<th id="col2"><!--[pnml name="_ADVANCEDPOLLSNUMBER"]--></th>
+			<th id="col3"><!--[pnml name="_ADVANCEDPOLLSISOPEN"]--></th>
 			<!--[if $enablecategorization]-->
 			<th><!--[pnml name="_CATEGORY"]--></th>
 			<!--[/if]-->
-			<th id="col3"><!--[pnml name="_ADVANCEDPOLLSOPTIONS"]--></th>
+			<th id="col4"><!--[pnml name="_ADVANCEDPOLLSOPTIONS"]--></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -49,6 +50,7 @@
 	    <tr class="<!--[cycle values=pn-odd,pn-even]-->">
 			<td headers="col1"><!--[$poll.title|pnvarprepfordisplay]--></td>
 			<td headers="col2"><!--[$poll.pollid|pnvarprepfordisplay]--></td>
+			<td headers="col3"><!--[$poll.isopen|yesno]--></td>
 			<!--[if $enablecategorization]-->
 			<td>
 				<ul>
@@ -60,7 +62,7 @@
 				</ul>
 			</td>
 			<!--[/if]-->
-			<td headers="col3">
+			<td headers="col4">
 				<!--[assign var="options" value=$poll.options]-->
 				<!--[section name=options loop=$options]-->
 				<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
