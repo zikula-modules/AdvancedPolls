@@ -1,12 +1,11 @@
-<div style="width:100%">
-<h2><!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></h2>
-<!--[$item.pn_description|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--><br />
+<h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
+<p><!--[$item.description|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay]--></p>
 <!--[if $ispollopen and $isvoteallowed]-->
-	<form name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+	<form action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
 		<div>
 		<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 		<input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-		<input type="hidden" name="polltitle" value="<!--[$polltitle|pnvarprephtmldisplay]-->" />
+		<input type="hidden" name="title" value="<!--[$item.title|pnvarprephtmldisplay]-->" />
 		<input type="hidden" name="results" value="1" />
 		<input type="hidden" name="polldisplayresults" value="<!--[$blockvars.polldisplayresults|pnvarprepfordisplay]-->" />
 		<input type="hidden" name="returnurl" value="<!--[$returnurl|pnvarprepfordisplay]-->" />
@@ -34,19 +33,17 @@
 <!--[if $ispollopen and $isvoteallowed]-->
 <!--[else]-->
     <!--[if $ispollopen]-->
-		<!--[if $votecounts.pn_totalvotecount > 0]-->
+		<!--[if $votecounts.totalvotecount > 0]-->
 			<p><strong><!--[pnml name="_ADVANCEDPOLLSCURRENTLEADER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong></p>
-			<!--[if $item.pn_pollnoclosedate neq 0]-->
-			<p><!--[pnml name="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.pn_closedate|apdatetime]--></p>
+			<!--[if $item.pollnoclosedate neq 0]-->
+			<p><!--[pnml name="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.closedate|apdatetime]--></p>
 			<!--[/if]-->
 		<!--[/if]-->
 	<!--[else]-->
-		<!--[if $votecounts.pn_totalvotecount > 0]-->
+		<!--[if $votecounts.totalvotecount > 0]-->
 			<p><!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></p>
 		<!--[/if]-->
 	<!--[/if]-->
 <!--[/if]-->
-<p><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.pn_totalvotecount]--></p>
+<p><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.totalvotecount|default:0]--></p>
 <a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
-<br />
-</div>

@@ -1,10 +1,10 @@
 <table>
-<!--[section name=polloptions loop=$polloptions]-->
-	<!--[if $polloptions[polloptions].optiontext neq '']-->
+<!--[foreach from=$item.options key=key item=option]-->
+	<!--[if $option.optiontext neq '']-->
 	<tr>
-		<td><!--[$polloptions[polloptions].optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
-		<td><!--[$votecounts.percentages[polloptions].percent|pnvarprepfordisplay]-->%</td>
+		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></td>
+		<td><!--[$votecounts.percentages.$key.percent|pnvarprepfordisplay]-->%</td>
 	</tr>
 	<!--[/if]-->
-<!--[/section]-->
+<!--[/foreach]-->
 </table>

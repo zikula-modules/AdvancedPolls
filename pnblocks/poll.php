@@ -36,12 +36,13 @@ function advanced_polls_pollblock_info()
 {
 	// Values
 	return array('text_type' => 'Poll',
-		'module' => 'advanced_polls',
-		'text_type_long' => 'Show a Poll',
-		'allow_multiple' => true,
-		'form_content' => false,
-		'form_refresh' => false,
-		'show_preview' => true);
+				 'module' => 'advanced_polls',
+				 'text_type_long' => 'Show a Poll',
+				 'allow_multiple' => true,
+				 'form_content' => false,
+				 'form_refresh' => false,
+				 'show_preview' => true,
+				 'admin_tableless' => true);
 }
 
 /**
@@ -76,23 +77,20 @@ function advanced_polls_pollblock_display($blockinfo)
 		$vars['polldisplayresults'] = 1;
 	}
 
-	//extract poll variables from block variables
-	$pollid = $vars['pollid'];
-	$pollopenclosebaseddisplay = $vars['pollopenclosebaseddisplay'];
-	$polluse = $vars['polluse'];
-	$polldisplayresults = $vars['polldisplayresults'];
-
 	// set return url
 	$returnurl = 'http://' .pnServerGetVar('HTTP_HOST') . pnServerGetVar('SCRIPT_NAME');
 
-	if ($polluse == 1) {
-		$items = pnModAPIFunc('advanced_polls', 'user',	'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
-		$item = $items[0];
-		$pollid = $item['pollid'];
-	}
-
-	if ($polluse == 2) {
-		$pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
+    switch ($vars['polluse']) {
+		case 1:
+			$items = pnModAPIFunc('advanced_polls', 'user',	'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+			$item = $items[0];
+			$pollid = $item['pollid'];
+			break;
+		case 2:
+			$pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
+			break;
+		default:
+			$pollid = $vars['pollid'];
 	}
 
 	// get full details on this poll from api
@@ -106,9 +104,6 @@ function advanced_polls_pollblock_display($blockinfo)
 
 	// load the user language file
 	pnModLangLoad('advanced_polls', 'user');
-
-	$polloptionarray = array();
-	$polloptionarray = $item['pn_optionarray'];
 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring',	array('pollid' => $pollid));
@@ -133,44 +128,31 @@ function advanced_polls_pollblock_display($blockinfo)
 	$votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
 	// set leading vote title
-	if (isset($polloptionarray[$votecounts['pn_leadingvoteid']-1])) {
-		$votecounts['leadingvotename'] = $polloptionarray[$votecounts['pn_leadingvoteid']-1]['optiontext'];
+	if (isset($item['options'][$votecounts['leadingvoteid']-1])) {
+		$votecounts['leadingvotename'] = $item['options'][$votecounts['leadingvoteid']-1]['optiontext'];
 	} else {
 		$votecounts['leadingvotename'] = '';
 	}
 
 	// check for permissions on poll
-	if (SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_OVERVIEW)) {
-		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[pn_title]::$pollid", ACCESS_READ)) {
+	if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
 
 			// if poll is open then display voting form otherwise
 			// show results summary
 			if (($ispollopen == true) and ($isvoteallowed == true)) {
-				$renderer->assign('polltype', $item['pn_multipleselect']);
-				$renderer->assign('multiplecount', $item['pn_multipleselectcount']);
-				$options = array();
-				for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
-					$optiontext = $polloptionarray[$i]['optiontext'];
-					$optioncolor = $polloptionarray[$i]['optioncolour'];
-					$voteid = $polloptionarray[$i]['voteid'];
-					if ($optiontext) {
-						$options[] = array('optiontext' => $optiontext,
-										   'optioncolor' => $optioncolor,
-										   'voteid' => $voteid);
-					}
-				}
-				$renderer->assign('options', $options);
+				$renderer->assign('polltype', $item['multipleselect']);
+				$renderer->assign('multiplecount', $item['multipleselectcount']);
 			} else {
-				for ($i = 1, $max = count($polloptionarray); $i <= $max; $i++) {
-					$optionText = $polloptionarray[$i-1]['optiontext'];
-					if ($optionText) {
-						if (isset($votecounts['pn_votecountarray'][$i])
-						    && $votecounts['pn_votecountarray'][$i]  != 0) {
-							$percent = ($votecounts['pn_votecountarray'][$i] / $votecounts['pn_totalvotecount']) * 100;
+                foreach ($item['options'] as $key => $option) {
+					if ($option['optiontext']) {
+						if (isset($votecounts['votecountarray'][$key+1])
+						    && $votecounts['votecountarray'][$key+1] != 0) {
+							$percent = ($votecounts['votecountarray'][$key+1] / $votecounts['totalvotecount']) * 100;
 						} else {
 							$percent = 0;
 						}
-						$percentages[$i-1] = array('percent' => (int)$percent,
+						$percentages[$key] = array('percent' => (int)$percent,
  						                           'percentintscaled' => (int)$percent * 4);
 					}
 				}
@@ -186,7 +168,6 @@ function advanced_polls_pollblock_display($blockinfo)
     // assign the poll to the template
 	$renderer->assign('pollid', $pollid);
 	$renderer->assign('item', $item);
-	$renderer->assign('polloptions', $polloptionarray);
 	$renderer->assign('votecounts', $votecounts);
 	$renderer->assign('isvoteallowed', $isvoteallowed);
     $renderer->assign('ispollopen', $ispollopen);
@@ -232,19 +213,15 @@ function advanced_polls_pollblock_modify($blockinfo)
 		$vars['polldisplayresults'] = 1;
 	}
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls');
-
-    // We need the pnsecgenauthkey plugin, so we must not cache here.
-    $renderer->caching = false;
+    // Create output object
+    $renderer = pnRender::getInstance('advanced_polls', false);
 
     // get a full list of available polls
 	$items = pnModAPIFunc('advanced_polls',	'user',	'getall');
 	$polls = array();
 	if (is_array($items)) {
 		foreach ($items as $item) {
-		    $polls[$item['pollid']] = $item['polltitle'];
+		    $polls[$item['pollid']] = $item['title'];
 		}
 	}
 	$renderer->assign('items', $polls);
