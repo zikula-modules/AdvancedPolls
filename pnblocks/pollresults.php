@@ -36,12 +36,12 @@ function advanced_polls_pollresultsblock_info()
 {
 	// Values
 	return array('text_type' => 'Poll',
-				'module' => 'advanced_polls',
-				'text_type_long' => 'Show Results of the Most Recently Closed Poll',
-				'allow_multiple' => true,
-				'form_content' => false,
-				'form_refresh' => false,
-				'show_preview' => true);
+				 'module' => 'advanced_polls',
+				 'text_type_long' => 'Show Results of the Most Recently Closed Poll',
+				 'allow_multiple' => true,
+				 'form_content' => false,
+				 'form_refresh' => false,
+				 'show_preview' => true);
 }
 
 /**
@@ -62,48 +62,55 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 
 	// get full details on this poll from api
 	$pollid = pnModAPIFunc('advanced_polls', 'user', 'getlastclosed');
-	
+
 	//don't show block if no closed polls yet
 	if ($pollid == 0) {
 		return;
 	}
 
 	// get full details on this poll from api
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid, 'titlename' => 'name', 'idname' => 'voteid'));
+	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     // don't show block if we failed to get the item
 	if ($item == false) {
 		return false;
 	}
 
-    // create an array from the poll options for ease of reference
-	$polloptionarray = array();
-	$polloptionarray = $item['pn_optionarray'];
-	 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
 	// load the user language file
 	pnModLangLoad('advanced_polls', 'user');
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
+    // Create output object
     $renderer = pnRender::getInstance('advanced_polls', false);
 
 	// get current vote counts
 	$votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
+    // don't show block if we failed to get any results
+	if ($votecounts == false) {
+		return false;
+	}
+
+	// set leading vote title
+	if (isset($item['options'][$votecounts['leadingvoteid']-1])) {
+		$votecounts['leadingvotename'] = $item['options'][$votecounts['leadingvoteid']-1]['optiontext'];
+	} else {
+		$votecounts['leadingvotename'] = '';
+	}
+
     // calculate results of poll
 	$percentages = array();
-	for ($i = 1, $max = count($polloptionarray); $i <= $max; $i++) {
-		$optionText = $polloptionarray[$i-1]['optiontext'];
-		if ($optionText) {
-			if ($votecounts['pn_votecountarray'][$i]  != 0) {
-				$percent = ($votecounts['pn_votecountarray'][$i] / $votecounts['pn_totalvotecount']) * 100;
+	foreach ($item['options'] as $key => $option) {
+		if ($option['optiontext']) {
+			if (isset($votecounts['votecountarray'][$key+1])
+				&& $votecounts['votecountarray'][$key+1] != 0) {
+				$percent = ($votecounts['votecountarray'][$key+1] / $votecounts['totalvotecount']) * 100;
 			} else {
 				$percent = 0;
 			}
-			$percentages[$i-1] = array('percent' => (int)$percent,
+			$percentages[$key] = array('percent' => (int)$percent,
 									   'percentintscaled' => (int)$percent * 4);
 		}
 	}
@@ -111,7 +118,6 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
 
 	// assign the item to template
 	$renderer->assign('item', $item);
-	$renderer->assign('polloptions', $polloptionarray);
 	$renderer->assign('votecounts', $votecounts);
 
 	// Populate block info and pass to theme

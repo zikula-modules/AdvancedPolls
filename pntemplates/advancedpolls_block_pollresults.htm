@@ -1,10 +1,7 @@
-<div style="text-align:center;width:100%;">
-<strong><!--[$item.pn_title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></strong><br />
-</div>
-<div style="text-align:center;width:100%;">
+<h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay|pnvarcensor]--></h2>
 <!--[include file="advancedpolls_block_poll_results.htm"]-->
-<!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$polloptionarray.$votecounts.pn_leadingvoteid.name]--><br />
-<!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.pn_totalvotecount]--><br />
-<a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pn_pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
-</div>
-<br />
+<ul>
+<li><strong><!--[pnml name="_ADVANCEDPOLLSWINNER"]--></strong> : <!--[$votecounts.leadingvotename]--></li>
+<li><strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecounts.totalvotecount]--></li>
+</ul>
+<a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
