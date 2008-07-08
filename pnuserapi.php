@@ -676,17 +676,16 @@ function advanced_polls_userapi_timecountback($args)
 */
 function advanced_polls_userapi_getlastclosed($args) 
 {
-	// Get arguments from argument arra
-	extract($args);
-
 	// The API function is called.
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
     // work out which poll has closed most recently
 	$lastclosed = 0;
+	$lastcloseddate = 0;
 	foreach ($items as $item) {
-		if ($item['opendate'] < time() && $item['closedate'] < time() && $item['closedate'] != 0) {
+		if ($item['opendate'] < time() && $item['closedate'] < time() && $item['closedate'] != 0 && $item['closedate'] >= $lastcloseddate) {
 			$lastclosed = $item['pollid'];
+			$lastcloseddate = $item['closedate'];
 		}
 	}
 
