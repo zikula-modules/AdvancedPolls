@@ -1,7 +1,12 @@
+<div id="advancedpollblockcontent">
 <h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
 <p><!--[$item.description|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay]--></p>
+
 <!--[if $ispollopen and $isvoteallowed]-->
-	<form action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+	<!--[if $blockvars.ajaxvoting]-->
+		<!--[pnajaxheader modname=advanced_polls filename=advancedpolls.js]-->
+	<!--[/if]-->
+	<form id="advancedpollsvoteform" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
 		<div>
 		<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 		<input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
@@ -24,9 +29,19 @@
 				<!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
 			<!--[/if]-->
 		<!--[/if]-->
-		<input type="submit" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
+		<!--[if $blockvars.ajaxvoting]-->
+			<input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
+		<!--[else]-->
+			<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
+		<!--[/if]-->
 		</div>
 	</form>
+	<!--[if $blockvars.ajaxvoting]-->
+		<div id="advancedpollsvoteinfo">&nbsp;</div>
+		<script type="text/javascript">
+		    var recordingvote  = '<!--[pnml name=_ADVANCEDPOLLSRECORDINGVOTE]-->';
+		</script>
+	<!--[/if]-->
 <!--[else]-->
 	<!--[include file="advancedpolls_block_poll_results.htm"]-->
 <!--[/if]-->
@@ -47,3 +62,4 @@
 <!--[/if]-->
 <p><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.totalvotecount|default:0]--></p>
 <a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
+</div>

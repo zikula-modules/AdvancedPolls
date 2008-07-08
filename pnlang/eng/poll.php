@@ -12,6 +12,7 @@
  */
 
 // defines used in block modifcation form
+define('_ADVANCEDPOLLSAJAXVOTING', 'Use ajax for voting form');
 define('_ADVANCEDPOLLSPECIFIC','Specific Poll');
 define('_ADVANCEDPOLLSLATEST','Latest Poll');
 define('_ADVANCEDPOLLSOPENCLOSEBASEDDISPLAY', 'Display Block based on Open/Close Dates');

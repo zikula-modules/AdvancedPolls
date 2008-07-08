@@ -76,6 +76,9 @@ function advanced_polls_pollblock_display($blockinfo)
 	if (!isset($vars['polldisplayresults'])) {
 		$vars['polldisplayresults'] = 1;
 	}
+	if (!isset($vars['ajaxvoting'])) {
+		$vars['ajaxvoting'] = false;
+	}
 
 	// set return url
 	$returnurl = 'http://' .pnServerGetVar('HTTP_HOST') . pnServerGetVar('SCRIPT_NAME');
@@ -200,17 +203,17 @@ function advanced_polls_pollblock_modify($blockinfo)
 	if (!isset($vars['pollid'])) {
 		$vars['pollid'] = 1;
 	}
-
 	if (!isset($vars['pollopenclosebaseddisplay'])) {
 		$vars['pollopenclosebaseddisplay'] = 0;
 	}
-
 	if (!isset($vars['polluse'])) {
 		$vars['polluse'] = 0;
 	}
-
 	if (!isset($vars['polldisplayresults'])) {
 		$vars['polldisplayresults'] = 1;
+	}
+	if (!isset($vars['ajaxvoting'])) {
+		$vars['ajaxvoting'] = false;
 	}
 
     // Create output object
@@ -256,6 +259,7 @@ function advanced_polls_pollblock_update($blockinfo)
 	$vars['pollopenclosebaseddisplay'] = pnVarCleanFromInput('pollopenclosebaseddisplay');
 	$vars['polluse'] = pnVarCleanFromInput('polluse');
 	$vars['polldisplayresults'] = pnVarCleanFromInput('polldisplayresults');
+	$vars['ajaxvoting'] = pnVarCleanFromInput('ajaxvoting');
 	$blockinfo['content'] = pnBlockVarsToContent($vars);
 
 	return $blockinfo;
