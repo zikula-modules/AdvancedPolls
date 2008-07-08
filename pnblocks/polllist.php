@@ -36,12 +36,12 @@ function advanced_polls_polllistblock_info()
 {
 	// Values
 	return array('text_type' => 'Polllist',
-		'module' => 'advanced_polls',
-		'text_type_long' => 'Display list of Open Polls',
-		'allow_multiple' => true,
-		'form_content' => false,
-		'form_refresh' => false,
-		'show_preview' => true);
+				 'module' => 'advanced_polls',
+				 'text_type_long' => 'Display list of Open Polls',
+				 'allow_multiple' => true,
+				 'form_content' => false,
+				 'form_refresh' => false,
+				 'show_preview' => true);
 }
 
 /**
@@ -64,9 +64,6 @@ function advanced_polls_polllistblock_display($blockinfo)
     // get a polls from the api
 	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
-	// load the user language file
-	pnModLangLoad('advanced_polls', 'user');
-
     // Create output object
     $renderer = pnRender::getInstance('advanced_polls', false);
 
@@ -81,7 +78,7 @@ function advanced_polls_polllistblock_display($blockinfo)
     // create a results array
 	$polls = array();
 	foreach ($items as $item) {
-		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
 			// is this user/ip etc. allowed to vote under voting regulations
 			if (($currentdate >= $item['opendate'] && $currentdate <= $item['closedate']) || $item['closedate'] == 0) {
 				if (pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {
