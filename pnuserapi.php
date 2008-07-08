@@ -318,7 +318,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 			// check for existance of session variable (cookie)
 			// if set then vote is invalid otherwise set session variable
 			// and return valid
-			if (pnSessionGetVar("advanced_polls_voted{$args['pollid']}")) {
+			if (SessionUtil::getVar("advanced_polls_voted{$args['pollid']}")) {
 				return false;
 			} else {
 				return true;
@@ -337,13 +337,9 @@ function advanced_polls_userapi_isvoteallowed($args)
 			} else {
 				return false;
 			}
-
-			return true;
-
 		case 5: //Cookie + IP address voting
 			// possibly remove this voting style
 			return true;
-
 		default: //any other option - should never occur
 			return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
 	}
