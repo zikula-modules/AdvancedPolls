@@ -53,15 +53,17 @@ define('_ADVANCEDPOLLSNUMBER', 'Poll ID');
 define('_ADVANCEDPOLLSRESETVOTES', 'Reset Votes');
 
 // modify config template
-define('_ADVANCEDPOLLSADMINITEMSPERPAGE', 'items per page in admin interface');
+define('_ADVANCEDPOLLSADMINITEMSPERPAGE', 'Items per page in admin interface');
 define('_ADVANCEDPOLLSADMINDATEFORMAT', 'Date format for Admin Interface');
 define('_ADVANCEDPOLLSUSERDATEFORMAT', 'Date format for User Interface');
 define('_ADVANCEDPOLLSDEFAULTCOLOUR', 'Default colour');
 define('_ADVANCEDPOLLSDEFAULTOPTIONCOUNT', 'Default number of options in a poll');
 define('_ADVANCEDPOLLSDISPLAYBOLD', 'Display item names in bold');
+define('_ADVANCEDPOLLSGENERAL', 'General settings');
+define('_ADVANCEDPOLLSINTERFACE', 'Interface settings');
 define('_ADVANCEDPOLLSSCALINGFACTOR', 'Scaling Factor for Poll Results Bar'); 
 define('_ADVANCEDPOLLSUSEREVERSEDNS', 'Use Reverse DNS for IP Addresses');
-define('_ADVANCEDPOLLSUSERITEMSPERPAGE', 'items per page in user interface');
+define('_ADVANCEDPOLLSUSERITEMSPERPAGE', 'Items per page in user interface');
 
 // reset votes template
 define('_ADVANCEDPOLLSCONFIRMVOTESRESET', 'Cofirm Reset of Votes'); 

@@ -8,18 +8,10 @@
 <div>
 	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 	<fieldset>
-		<legend><!--[pnml name=_ADVANCEDPOLLS_GENERAL]--></legend>
+		<legend><!--[pnml name=_ADVANCEDPOLLSGENERAL]--></legend>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_enablecategorization"><!--[pnml name="_ENABLECATEGORIZATION"]--></label>
 			<input id="advancedpolls_enablecategorization" type="checkbox" name="config[enablecategorization]"<!--[if $enablecategorization]--> checked="checked"<!--[/if]--> />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="advancedpolls_adminitemsperpage"><!--[pnml name="_ADVANCEDPOLLSADMINITEMSPERPAGE"]--></label>
-			<input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
-		</div>
-		<div class="pn-adminformrow">
-			<label for="advancedpolls_useritemsperpage"><!--[pnml name="_ADVANCEDPOLLSUSERITEMSPERPAGE"]--></label>
-			<input id="advancedpolls_useritemsperpage" type="text" name="config[useritemsperpage]" size="3" value="<!--[$useritemsperpage|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_usereversedns"><!--[pnml name="_ADVANCEDPOLLSUSEREVERSEDNS"]--></label>
@@ -32,6 +24,21 @@
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_scalingfactor"><!--[pnml name="_ADVANCEDPOLLSSCALINGFACTOR"]--></label>
 			<input id="advancedpolls_scalingfactor" type="text" name="config[scalingfactor]" size="3" value="<!--[$scalingfactor|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_defaultoptioncount"><!--[pnml name="_ADVANCEDPOLLSDEFAULTOPTIONCOUNT"]--></label>
+			<input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend><!--[pnml name=_ADVANCEDPOLLSINTERFACE]--></legend>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_adminitemsperpage"><!--[pnml name="_ADVANCEDPOLLSADMINITEMSPERPAGE"]--></label>
+			<input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="advancedpolls_useritemsperpage"><!--[pnml name="_ADVANCEDPOLLSUSERITEMSPERPAGE"]--></label>
+			<input id="advancedpolls_useritemsperpage" type="text" name="config[useritemsperpage]" size="3" value="<!--[$useritemsperpage|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
 			<label for="advancedpolls_admindateformat"><!--[pnml name="_ADVANCEDPOLLSADMINDATEFORMAT"]--></label>
@@ -49,10 +56,6 @@
 			<label for="advancedpolls_defaultcolor"><!--[pnml name="_ADVANCEDPOLLSDEFAULTCOLOUR"]--></label>
 			<input id="advancedpolls_defaultcolor" type="text" name="config[defaultcolour]" size="7" maxlength="7" value="<!--[$defaultcolour|pnvarprepfordisplay]-->" />
 			<a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
-		</div>
-		<div class="pn-adminformrow">
-			<label for="advancedpolls_defaultoptioncount"><!--[pnml name="_ADVANCEDPOLLSDEFAULTOPTIONCOUNT"]--></label>
-			<input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
 		</div>
 	</fieldset>
 	<fieldset>
