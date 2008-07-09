@@ -832,3 +832,20 @@ function advanced_polls_userapi_decodeurl($args)
 
     return true;
 }
+
+/**
+ * get meta data for the module
+ *
+ */
+function advanced_polls_userapi_getmodulemeta()
+{
+   return array('viewfunc'    => 'view',
+                'displayfunc' => 'display',
+                'newfunc'     => 'new',
+                'createfunc'  => 'create',
+                'modifyfunc'  => 'modify',
+                'updatefunc'  => 'update',
+                'deletefunc'  => 'delete',
+                'titlefield'  => 'title',
+                'itemid'      => 'pollid');
+}
