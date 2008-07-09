@@ -128,7 +128,8 @@ function advanced_polls_userapi_get($args)
     }
 
     // Argument check
-    if (!isset($args['pollid']) || !is_numeric($args['pollid'])) {
+    if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) &&
+         !isset($args['title'])) {
         return LogUtil::registerError (_MODARGSERROR);
     }
 
@@ -159,7 +160,11 @@ function advanced_polls_userapi_get($args)
                               'instance_right'  => 'pollid',
                               'level'           => ACCESS_READ));
 
-    $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['pollid'], 'pollid', '', $permFilter);
+    if (isset($args['pollid']) && is_numeric($args['pollid'])) {
+        $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['pollid'], 'pollid', '', $permFilter);
+    } else {
+        $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['title'], 'urltitle', '', $permFilter);
+    }
     $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', 'pn_pollid=\''.DataUtil::formatForStore($poll['pollid']).'\'', 'optionid');
 
 	// pad the array to the correct number of poll options
@@ -713,4 +718,117 @@ function advanced_polls_userapi_getrandom()
 	$pollid = $randomitem['pollid'];
 
 	return $pollid;
+}
+
+/**
+ * form custom url string
+ *
+ * @author Mark West
+ * @return string custom url string
+ */
+function advanced_polls_userapi_encodeurl($args)
+{
+    // check we have the required input
+    if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
+
+    // create an empty string ready for population
+    $vars = '';
+
+    // view function
+    if ($args['func'] == 'view' && isset($args['args']['cat'])) {
+        $vars = substr($args['args']['cat'], 1);
+    }
+
+    // for the display function use either the title (if present) or the page id
+    if ($args['func'] == 'display' || $args['func'] == 'results') {
+        // check for the generic object id parameter
+        if (isset($args['args']['objectid'])) {
+            $args['args']['pollid'] = $args['args']['objectid'];
+        }
+        // get the item (will be cached by DBUtil)
+        if (isset($args['args']['pollid'])) {
+            $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['args']['pollid']));
+        } else {
+            $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
+        }
+        if (pnModGetVar('Polls', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
+            $vars = $args['args']['cat'].'/'.$item['urltitle'];
+        } else { 
+            $vars = $item['urltitle'];
+        }
+        if (isset($args['args']['page']) && $args['args']['page'] != 1) {
+            $vars .= '/page/'.$args['args']['page'];
+        }
+    }
+    // don't display the function name if either displaying an page or the normal overview
+    if ($args['func'] == 'main' || $args['func'] == 'display') {
+        $args['func'] = '';
+    }
+
+    // construct the custom url part
+    if (empty($args['func']) && empty($vars)) {
+        return $args['modname'] . '/';
+    } elseif (empty($args['func'])) {
+        return $args['modname'] . '/' . $vars . '/';
+    } elseif (empty($vars)) {
+        return $args['modname'] . '/' . $args['func'] . '/';
+    } else {
+        return $args['modname'] . '/' . $args['func'] . '/' . $vars . '/';
+    }
+}
+
+/**
+ * decode the custom url string
+ *
+ * @author Mark West
+ * @return bool true if successful, false otherwise
+ */
+function advanced_polls_userapi_decodeurl($args)
+{
+    // check we actually have some vars to work with...
+    if (!isset($args['vars'])) {
+        return LogUtil::registerError (_MODARGSERROR);
+    }
+
+    // define the available user functions
+    $funcs = array('main', 'view', 'display', 'results', 'vote');
+    // set the correct function name based on our input
+    if (empty($args['vars'][2])) {
+        pnQueryStringSetVar('func', 'main');
+    } elseif (!in_array($args['vars'][2], $funcs)) {
+        pnQueryStringSetVar('func', 'display');
+        $nextvar = 2;
+    } else {
+        pnQueryStringSetVar('func', $args['vars'][2]);
+        $nextvar = 3;
+    }
+
+    $func = FormUtil::getPassedValue('func');
+
+    // add the category info
+    if ($func == 'view') {
+        pnQueryStringSetVar('cat', (string)$args['vars'][$nextvar]);
+    }
+
+    // identify the correct parameter to identify the page
+    if ($func == 'display' || $func == 'results') {
+        // get rid of unused vars
+        $args['vars'] = array_slice($args['vars'], $nextvar);
+        $nextvar = 0;
+        if (pnModGetVar('advanced_polls', 'addcategorytitletopermalink') && !empty($args['vars'][$nextvar+1])) {
+            $varscount = count($args['vars']);
+            $category = array_slice($args['vars'], 0, $varscount - 1);
+            pnQueryStringSetVar('cat', implode('/', $category));
+            array_splice($args['vars'], 0,  $varscount - 1);
+        }
+        if (is_numeric($args['vars'][$nextvar])) {
+            pnQueryStringSetVar('pollid', $args['vars'][$nextvar]);
+        } else {
+            pnQueryStringSetVar('title', $args['vars'][$nextvar]);
+        }
+    }
+
+    return true;
 }

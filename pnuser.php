@@ -226,24 +226,31 @@ function advanced_polls_user_view()
 */
 function advanced_polls_user_display($args) 
 {
-	// Get parameters from whatever input we need.
-	$pollid = pnVarCleanFromInput('pollid');
-	$results = pnVarCleanFromInput('results');
-	extract($args);
+    $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
+    $title = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
+    $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
+    if (!empty($objectid)) {
+        $pollid = $objectid;
+    }
+
+    // Get the poll
+    if (isset($pollid) && is_numeric($pollid)) {
+        $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid, 'parse' => true));
+    } else {
+        $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $title, 'parse' => true));
+        pnQueryStringSetVar('pollid', $item['pollid']);
+        $pollid = $item['pollid'];
+    }
+
+    if ($item == false) {
+        return LogUtil::registerError (_NOSUCHITEM, 404);
+    }
 
     // Create output object
 	$renderer = pnRender::getInstance('advanced_polls');
 
 	// get theme name
 	$renderer->assign('theme', pnUserGetTheme());
-
-	// The API function is called.
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
-
-	// The return value of the function is checked
-	if ($item == false) {
-		return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSITEMFAILED);
-	}
 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));

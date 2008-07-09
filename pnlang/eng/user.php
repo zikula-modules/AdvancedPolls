@@ -12,7 +12,6 @@
  */
 
 define('_ADVANCEDPOLLS', 'Advanced Polls');
-define('_ADVANCEDPOLLSITEMFAILED', 'Failed to get any items');
 define('_ADVANCEDPOLLSVIEW', 'View Polls');
 define('_ADVANCEDPOLLSTITLE', 'Poll Title');
 define('_ADVANCEDPOLLSOPENDATE', 'Poll Open Date');
