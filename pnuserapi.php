@@ -208,12 +208,15 @@ function advanced_polls_userapi_countitems($args)
 		$checkml = true;
 	}
 
+    $pntable = pnDBGetTables();
+    $advanced_polls_desc_column = $pntable['advanced_polls_desc_column'];
+
 	// Check if we is an ML situation
 	$querylang = '';
 	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_pollsdesccolumn[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' 
-					  OR $advanced_pollsdesccolumn[language]='' 
-					  OR $advanced_pollsdesccolumn[language] IS NULL)";
+		$querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' 
+					  OR $advanced_polls_desc_column[language]='' 
+					  OR $advanced_polls_desc_column[language] IS NULL)";
 	}
 
     // Return the number of items
