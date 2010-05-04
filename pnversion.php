@@ -2,7 +2,7 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk> 
+ * @author Mark West <mark@markwest.me.uk>
  * @copyright (C) 2002-2010 by Mark West
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
@@ -25,7 +25,7 @@ $modversion['contact']         = 'http://www.markwest.me.uk/';
 $modversion['admin']           = 1;
 $modversion['securityschema']  = array('advanced_polls::item' => 'Poll Title::Poll ID',
                                       'advanced_polls::' => '::');
-$modversion['dependencies']    = array(array('modname'    => 'EZComments', 
+$modversion['dependencies']    = array(array('modname'    => 'EZComments',
                                              'minversion' => '1.1',
                                              'maxversion' => '',
                                              'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));

@@ -2,7 +2,7 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk> 
+ * @author Mark West <mark@markwest.me.uk>
  * @copyright (C) 2002-2010 by Mark West
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
@@ -21,8 +21,8 @@ function smarty_function_sortbytypes($params, &$smarty)
     unset($params['type']);
 
     $options = array('1' => __('Vote ID', $dom), '2' => __('IP Address', $dom),
-					 '3' => __('Time', $dom), '4' => __('Username', $dom),
-					 '5' => __('Vote Rank', $dom), '6' => __('Option', $dom));
+                     '3' => __('Time', $dom), '4' => __('Username', $dom),
+                     '5' => __('Vote Rank', $dom), '6' => __('Option', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $smarty->_get_plugin_filepath('function','html_options');
@@ -34,9 +34,9 @@ function smarty_function_sortbytypes($params, &$smarty)
                                                  'id'        => isset($id) ? $id : null),
                                                  $smarty);
 
-	if (isset($assign)) {
-		$smarty->assign($assign, $output);
-	} else {
-		return $output;
-	}
+    if (isset($assign)) {
+        $smarty->assign($assign, $output);
+    } else {
+        return $output;
+    }
 }

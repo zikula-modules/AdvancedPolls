@@ -2,7 +2,7 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk> 
+ * @author Mark West <mark@markwest.me.uk>
  * @copyright (C) 2002-2010 by Mark West
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
@@ -14,15 +14,15 @@
  * loaded.  It adds in the information
  *
  * @since 1.0
-*/
-function advanced_polls_pntables() 
+ */
+function advanced_polls_pntables()
 {
-	$pntable = array();
+    $pntable = array();
 
-	// Votes table
-	$pntable['advanced_polls_votes'] = DBUtil::getLimitedTablename('advanced_polls_votes');
-	$pntable['advanced_polls_votes_column'] = array('ip'       => 'pn_ip',
-											        'time'     => 'pn_time',
+    // Votes table
+    $pntable['advanced_polls_votes'] = DBUtil::getLimitedTablename('advanced_polls_votes');
+    $pntable['advanced_polls_votes_column'] = array('ip'       => 'pn_ip',
+                                                    'time'     => 'pn_time',
                                                     'uid'      => 'pn_uid',
                                                     'voterank' => 'pn_voterank',
                                                     'pollid'   => 'pn_pollid',
@@ -36,9 +36,9 @@ function advanced_polls_pntables()
                                                         'pollid'   => "I NOTNULL DEFAULT '0'",
                                                         'optionid' => "I NOTNULL DEFAULT '0'");
 
-	// Poll options data
-	$pntable['advanced_polls_data'] = DBUtil::getLimitedTablename('advanced_polls_data');
-	$pntable['advanced_polls_data_column'] = array('pollid'       => 'pn_pollid',
+    // Poll options data
+    $pntable['advanced_polls_data'] = DBUtil::getLimitedTablename('advanced_polls_data');
+    $pntable['advanced_polls_data_column'] = array('pollid'       => 'pn_pollid',
                                                    'optiontext'   => 'pn_optiontext',
                                                    'optionid'     => 'pn_optionid',
                                                    'optioncolour' => 'pn_optioncolour');
@@ -47,9 +47,9 @@ function advanced_polls_pntables()
                                                        'optionid'     => "I NOTNULL DEFAULT '0'",
                                                        'optioncolour' => "C(7) NOTNULL DEFAULT ''");
 
-	// Poll descriptions
-	$pntable['advanced_polls_desc'] = DBUtil::getLimitedTablename('advanced_polls_desc');
-	$pntable['advanced_polls_desc_column'] = array('pollid'              => 'pn_pollid',
+    // Poll descriptions
+    $pntable['advanced_polls_desc'] = DBUtil::getLimitedTablename('advanced_polls_desc');
+    $pntable['advanced_polls_desc_column'] = array('pollid'              => 'pn_pollid',
                                                    'title'               => 'pn_title',
                                                    'urltitle'            => 'pn_urltitle',
                                                    'description'         => 'pn_description',
@@ -90,6 +90,6 @@ function advanced_polls_pntables()
     ObjectUtil::addStandardFieldsToTableDefinition ($pntable['advanced_polls_desc_column'], 'pn_');
     ObjectUtil::addStandardFieldsToTableDataDefinition($pntable['advanced_polls_desc_column_def']);
 
-	// Return the table information
-	return $pntable;
+    // Return the table information
+    return $pntable;
 }

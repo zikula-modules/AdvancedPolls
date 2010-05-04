@@ -2,7 +2,7 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk> 
+ * @author Mark West <mark@markwest.me.uk>
  * @copyright (C) 2002-2010 by Mark West
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
@@ -10,17 +10,17 @@
  */
 
 /**
-* get all poll items
-* @param $args['startnum'] starting poll id
-* @param $args['numitems'] number of polls to get
-* @param $args['checkml'] flag to check ml status
-* @param $args['desc'] array title key name
-* @return mixed array of items, or false on failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
+ * get all poll items
+ * @param $args['startnum'] starting poll id
+ * @param $args['numitems'] number of polls to get
+ * @param $args['checkml'] flag to check ml status
+ * @param $args['desc'] array title key name
+ * @return mixed array of items, or false on failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
 function advanced_polls_userapi_getall($args)
 {
     // Optional arguments.
@@ -30,30 +30,30 @@ function advanced_polls_userapi_getall($args)
     if (!isset($args['numitems']) || empty($args['numitems'])) {
         $args['numitems'] = -1;
     }
-	if (!isset($args['checkml'])) {
-		$args['checkml'] = true;
-	}
-	if (isset($args['desc']) && $args['desc']) {
-		$args['desc'] = 'DESC';
-	} else {
-		$args['desc'] = '';
-	}
+    if (!isset($args['checkml'])) {
+        $args['checkml'] = true;
+    }
+    if (isset($args['desc']) && $args['desc']) {
+        $args['desc'] = 'DESC';
+    } else {
+        $args['desc'] = '';
+    }
 
     if (!is_numeric($args['startnum']) ||
-        !is_numeric($args['numitems'])) {
+    !is_numeric($args['numitems'])) {
         return LogUtil::registerArgsError();
     }
 
-	$items = array();
+    $items = array();
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
-		return $items;
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+        return $items;
+    }
 
     $args['catFilter'] = array();
     if (isset($args['category']) && !empty($args['category'])){
-        if (is_array($args['category'])) { 
+        if (is_array($args['category'])) {
             $args['catFilter'] = $args['category'];
         } elseif (isset($args['property'])) {
             $property = $args['property'];
@@ -94,47 +94,47 @@ function advanced_polls_userapi_getall($args)
 
     // need to do this here as the category expansion code can't know the
     // root category which we need to build the relative path component
-     if ($items && isset($args['catregistry']) && $args['catregistry']) {
+    if ($items && isset($args['catregistry']) && $args['catregistry']) {
         if (!($class = Loader::loadClass ('CategoryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s]';, array('s' => 'CategoryUtil')));
-	    }
+            pn_exit (__f('Error! Unable to load class [%s]', array('s' => 'CategoryUtil'), $dom));
+        }
         ObjectUtil::postProcessExpandedObjectArrayCategories ($items, $args['catregistry']);
     }
 
-	// Return the items
-	return $items;
+    // Return the items
+    return $items;
 }
 
 /**
-* Get a specific Poll
-* @param $args['pollid'] id of example item to get
-* @param $args['idname'] array id key name
-* @param $args['titlename'] array title key name
-* @param $args['color'] array color key name
-* @param $args['checkml'] flag to check ml status
-* @return mixed item array, or false on failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_get($args) 
+ * Get a specific Poll
+ * @param $args['pollid'] id of example item to get
+ * @param $args['idname'] array id key name
+ * @param $args['titlename'] array title key name
+ * @param $args['color'] array color key name
+ * @param $args['checkml'] flag to check ml status
+ * @return mixed item array, or false on failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_get($args)
 {
     // optional arguments
     if (isset($args['objectid'])) {
-       $args['pollid'] = $args['objectid'];
+        $args['pollid'] = $args['objectid'];
     }
 
     // Argument check
     if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) &&
-         !isset($args['title'])) {
+    !isset($args['title'])) {
         return LogUtil::registerArgsError();
     }
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
-		return false;
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+        return false;
+    }
 
     // populate an array with each part of the where clause and then implode the array if there is a need.
     // credit to Jorg Napp for this technique - markwest
@@ -165,35 +165,35 @@ function advanced_polls_userapi_get($args)
     }
     $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', 'pn_pollid=\''.DataUtil::formatForStore($poll['pollid']).'\'', 'optionid');
 
-	// pad the array to the correct number of poll options
-	if (count($poll['options']) < $poll['optioncount']) {
-	    for($counter = 0; $counter < $poll['optioncount']; $counter++) {
-		    if (!isset($poll['options'][$counter])) {
-				$poll['options'][$counter] = array('voteid' => $counter,
-										           'optiontext' => '',
-										           'optioncolour' => '');
-			}
-		}
-	}
+    // pad the array to the correct number of poll options
+    if (count($poll['options']) < $poll['optioncount']) {
+        for($counter = 0; $counter < $poll['optioncount']; $counter++) {
+            if (!isset($poll['options'][$counter])) {
+                $poll['options'][$counter] = array('voteid' => $counter,
+                               'optiontext' => '',
+                               'optioncolour' => '');
+            }
+        }
+    }
 
-	// Return the item array
-	return $poll;
+    // Return the item array
+    return $poll;
 }
 
 /**
-* utility function to count the number of items held by this module
-* @param $args['checkml'] flag to check ml status
-* @return integer number of items held by this module
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_countitems($args) 
+ * utility function to count the number of items held by this module
+ * @param $args['checkml'] flag to check ml status
+ * @return integer number of items held by this module
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_countitems($args)
 {
     $args['catFilter'] = array();
     if (isset($args['category']) && !empty($args['category'])){
-        if (is_array($args['category'])) { 
+        if (is_array($args['category'])) {
             $args['catFilter'] = $args['category'];
         } elseif (isset($args['property'])) {
             $property = $args['property'];
@@ -201,524 +201,524 @@ function advanced_polls_userapi_countitems($args)
         }
     }
 
-	// defauls	
-	if (!isset($checkml)) {
-		$checkml = true;
-	}
+    // defauls
+    if (!isset($checkml)) {
+        $checkml = true;
+    }
 
     $pntable = pnDBGetTables();
     $advanced_polls_desc_column = $pntable['advanced_polls_desc_column'];
 
-	// Check if we is an ML situation
-	$querylang = '';
-	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' 
-					  OR $advanced_polls_desc_column[language]='' 
-					  OR $advanced_polls_desc_column[language] IS NULL)";
-	}
+    // Check if we is an ML situation
+    $querylang = '';
+    if ($checkml && pnConfigGetVar('multilingual') == 1) {
+        $querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "'
+            OR $advanced_polls_desc_column[language]=''
+            OR $advanced_polls_desc_column[language] IS NULL)";
+    }
 
     // Return the number of items
     return DBUtil::selectObjectCount('advanced_polls_desc', $querylang, 'pollid', false, $args['catFilter']);
 }
 
 /**
-* check if poll is open
-* @param $args['pollid'] id of example item to get
-* @return bool false if closed, true if open
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_isopen($args) 
+ * check if poll is open
+ * @param $args['pollid'] id of example item to get
+ * @return bool false if closed, true if open
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_isopen($args)
 {
-	// Argument check
-	if (!isset($args['pollid'])) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($args['pollid'])) {
+        return LogUtil::registerArgsError();
+    }
 
-	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    // The user API function is called.
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
-	// no such item is db
-	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
-	}
+    // no such item is db
+    if ($item == false) {
+        return LogUtil::registerError(__('No such item found.', $dom));
+    }
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[vpollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerPermissionError();
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[vpollid]", ACCESS_OVERVIEW)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	//establish current date and time
-	$currentdate = time();
+    //establish current date and time
+    $currentdate = time();
 
-	//establish poll open date and time
-	$opendate = $item['opendate'];
+    //establish poll open date and time
+    $opendate = $item['opendate'];
 
-	//establish poll close date and time
-	$closedate = $item['closedate'];
+    //establish poll close date and time
+    $closedate = $item['closedate'];
 
-	//is poll open?
-	if (($currentdate >= $opendate) && (($currentdate <= $closedate) || $closedate == 0)) {
-		return true;
-	} else {
-		return false;
-	}
+    //is poll open?
+    if (($currentdate >= $opendate) && (($currentdate <= $closedate) || $closedate == 0)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
-* check if user has voted in poll
-* @param $args['pollid'] id of poll item to get
-* @return bool true on vote allowed, false on vote not allowed
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_isvoteallowed($args) 
+ * check if user has voted in poll
+ * @param $args['pollid'] id of poll item to get
+ * @return bool true on vote allowed, false on vote not allowed
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_isvoteallowed($args)
 {
-	// Argument check
-	if (!isset($args['pollid'])) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($args['pollid'])) {
+        return LogUtil::registerArgsError();
+    }
 
-	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    // The user API function is called.
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
-	// no such item in db
-	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
-	}
+    // no such item in db
+    if ($item == false) {
+        return LogUtil::registerError(__('No such item found.', $dom));
+    }
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
-		return LogUtil::registerPermissionError();
-	}
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
-		// Here we don't set an error as this indicates that the user can't vote in this poll
-		return false;
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
+        return LogUtil::registerPermissionError();
+    }
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
+        // Here we don't set an error as this indicates that the user can't vote in this poll
+        return false;
+    }
 
-	// get voting authorisation from item array
-	$voteauthtype = $item['voteauthtype'];
+    // get voting authorisation from item array
+    $voteauthtype = $item['voteauthtype'];
 
-	switch ($voteauthtype) {
-		case 1: //Free voting
-			// voting always allowed
-			return true;
-		case 2: //UID Voting
-			// extract user id from session variables
-			$uid = DataUtil::formatForStore(pnUserGetVar('uid'));
+    switch ($voteauthtype) {
+        case 1: //Free voting
+            // voting always allowed
+            return true;
+        case 2: //UID Voting
+            // extract user id from session variables
+            $uid = DataUtil::formatForStore(pnUserGetVar('uid'));
 
             // get all the matching votes
             $where = "WHERE pn_uid = '{$uid}' AND pn_pollid = '{$args['pollid']}'";
             $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
 
-			if (isset($votes[$args['pollid']])) {
-				return false;
-			} else {
-				return true;
-			}
-		case 3: //Cookie voting
-			// check for existance of session variable (cookie)
-			// if set then vote is invalid otherwise set session variable
-			// and return valid
-			if (SessionUtil::getVar("advanced_polls_voted{$args['pollid']}")) {
-				return false;
-			} else {
-				return true;
-			}
-		case 4: //IP address voting
-			// extract ip from http headers
-			$ip = ServerUtil::getVar('REMOTE_ADDR');
+            if (isset($votes[$args['pollid']])) {
+                return false;
+            } else {
+                return true;
+            }
+        case 3: //Cookie voting
+            // check for existance of session variable (cookie)
+            // if set then vote is invalid otherwise set session variable
+            // and return valid
+            if (SessionUtil::getVar("advanced_polls_voted{$args['pollid']}")) {
+                return false;
+            } else {
+                return true;
+            }
+        case 4: //IP address voting
+            // extract ip from http headers
+            $ip = ServerUtil::getVar('REMOTE_ADDR');
 
             // get all the matching votes
             $where = "pn_ip = '{$ip}' AND pn_pollid = '{$args['pollid']}'";
             $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
 
-			//If there are no rows back from this query then this uid can vote
-			if ($votes) {
-				return true;
-			} else {
-				return false;
-			}
-		case 5: //Cookie + IP address voting
-			// possibly remove this voting style
-			return true;
-		default: //any other option - should never occur
-			return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
-	}
+            //If there are no rows back from this query then this uid can vote
+            if ($votes) {
+                return true;
+            } else {
+                return false;
+            }
+        case 5: //Cookie + IP address voting
+            // possibly remove this voting style
+            return true;
+        default: //any other option - should never occur
+            return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
+    }
 }
 
 /**
-* reset polls votes if poll is recurring poll
-* @param $args['pollid'] id of example item to get
-* @return bool true on reset success, false on vote failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_resetrecurring($args) 
+ * reset polls votes if poll is recurring poll
+ * @param $args['pollid'] id of example item to get
+ * @return bool true on reset success, false on vote failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_resetrecurring($args)
 {
-	// Get arguments from argument array
-	extract($args);
+    // Get arguments from argument array
+    extract($args);
 
-	// Argument check
-	if (!isset($pollid)) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($pollid)) {
+        return LogUtil::registerArgsError();
+    }
 
-	// The user API function is called. 
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    // The user API function is called.
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
-	// check for no such poll return from api function
-	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
-	}
+    // check for no such poll return from api function
+    if ($item == false) {
+        return LogUtil::registerError(__('No such item found.', $dom));
+    }
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
-		return LogUtil::registerPermissionError();
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	// convert recurring offset into unix timestamp format
-	$offset = $item['recurringoffset'] * 60 * 60;
-	$closetimewithoffset = $item['closedate'] + $offset;
+    // convert recurring offset into unix timestamp format
+    $offset = $item['recurringoffset'] * 60 * 60;
+    $closetimewithoffset = $item['closedate'] + $offset;
 
-	// if this poll is currently closed and poll it set to reoccur
-	// then update relevant db tables
-	// Doesn't call IsPollOpen API as this checks for both before
-	// poll open date and after poll close date
-	// We are only insterest in Poll cose date
-	if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
+    // if this poll is currently closed and poll it set to reoccur
+    // then update relevant db tables
+    // Doesn't call IsPollOpen API as this checks for both before
+    // poll open date and after poll close date
+    // We are only insterest in Poll cose date
+    if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
 
-		// get database connection
-		$dbconn = pnDBGetConn(true);
-		$pntable = pnDBGetTables();
+        // get database connection
+        $dbconn = pnDBGetConn(true);
+        $pntable = pnDBGetTables();
 
-		// define database tables
-		$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-		$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
-		$advanced_pollsdesctable = $pntable['advanced_polls_desc'];
-		$advanced_pollsdesccolumn = &$pntable['advanced_polls_desc_column'];
+        // define database tables
+        $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+        $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+        $advanced_pollsdesctable = $pntable['advanced_polls_desc'];
+        $advanced_pollsdesccolumn = &$pntable['advanced_polls_desc_column'];
 
-		// empty votes table for this poll
-		$sql = "DELETE FROM $advanced_pollsvotestable WHERE
-				$advanced_pollsvotescolumn[pollid]='" . (int)DataUtil::formatForStore($pollid) . "'";
-		$result = $dbconn->Execute($sql);
+        // empty votes table for this poll
+        $sql = "DELETE FROM $advanced_pollsvotestable WHERE
+        $advanced_pollsvotescolumn[pollid]='" . (int)DataUtil::formatForStore($pollid) . "'";
+        $result = $dbconn->Execute($sql);
 
-		// check for db errors
-		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
-		}
+        // check for db errors
+        if ($dbconn->ErrorNo()  != 0) {
+            return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
+        }
 
-		// set new opening and closing times
-		// calculate recurrance interval in seconds from db value in days
-		$recurranceinterval = $item['recurringinterval'] * 24 * 60 * 60;
+        // set new opening and closing times
+        // calculate recurrance interval in seconds from db value in days
+        $recurranceinterval = $item['recurringinterval'] * 24 * 60 * 60;
 
-		//new open is close time with offset calculated earlier in this function
-		$newopentime = $closetimewithoffset;
-		$newclosetime = $item['closedate'] + $recurranceinterval;
+        //new open is close time with offset calculated earlier in this function
+        $newopentime = $closetimewithoffset;
+        $newclosetime = $item['closedate'] + $recurranceinterval;
 
-		// close result set
-		$result->Close();
+        // close result set
+        $result->Close();
 
-		// update poll close and open times
-		$sql = "UPDATE $advanced_pollsdesctable SET
-				$advanced_pollsdesccolumn[opendate] = '".(int)DataUtil::formatForStore($newopentime)."',
-				$advanced_pollsdesccolumn[closedate] = '".(int)DataUtil::formatForStore($newclosetime)."'
-				WHERE
-				$advanced_pollsdesccolumn[pollid]= '" . (int)DataUtil::formatForStore($pollid) . "'";
-		$result = $dbconn->Execute($sql);
+        // update poll close and open times
+        $sql = "UPDATE $advanced_pollsdesctable SET
+        $advanced_pollsdesccolumn[opendate] = '".(int)DataUtil::formatForStore($newopentime)."',
+        $advanced_pollsdesccolumn[closedate] = '".(int)DataUtil::formatForStore($newclosetime)."'
+        WHERE
+        $advanced_pollsdesccolumn[pollid]= '" . (int)DataUtil::formatForStore($pollid) . "'";
+        $result = $dbconn->Execute($sql);
 
-		// check for db errors
-		if ($dbconn->ErrorNo()  != 0) {
-			return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
-		}
+        // check for db errors
+        if ($dbconn->ErrorNo()  != 0) {
+            return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
+        }
 
-		// close result set
-		$result->Close();
+        // close result set
+        $result->Close();
 
-	}
-	return true;
+    }
+    return true;
 }
 
 /**
-* get counts of votes in a poll leading vote and total vote count
-* @param $args['pollid'] id of example item to get
-* @return mixed voting array on success, false on failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_pollvotecount($args) 
+ * get counts of votes in a poll leading vote and total vote count
+ * @param $args['pollid'] id of example item to get
+ * @return mixed voting array on success, false on failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_pollvotecount($args)
 {
-	// Argument check
-	if (!isset($args['pollid'])) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($args['pollid'])) {
+        return LogUtil::registerArgsError();
+    }
 
-	// The user API function is called.
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
-	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
-	}
+    // The user API function is called.
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    if ($item == false) {
+        return LogUtil::registerError(__('No such item found.', $dom));
+    }
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerPermissionError();
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	// get database connection
-	$dbconn = pnDBGetConn(true);
-	$pntable = pnDBGetTables();
+    // get database connection
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
-	// define database tables
-	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+    // define database tables
+    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
-	if ($item['multipleselect'] == 0) {
-		//GPK  We have a NON-multiselect poll, so
-		// find the total number of votes in this poll
-		$sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid])
-			FROM $advanced_pollsvotestable WHERE
-			$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."'";
+    if ($item['multipleselect'] == 0) {
+        //GPK  We have a NON-multiselect poll, so
+        // find the total number of votes in this poll
+        $sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid])
+      FROM $advanced_pollsvotestable WHERE
+      $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."'";
 
-		$result = $dbconn->Execute($sql);
-		list($totalvotecount) = $result->fields;
-	} else {
-		//GPK  We have a multi-select poll, so we want to find out the largest
-		//GPK  number of votes cast for any item.  This will only work for
-		//GPK  sites which do not allow anonymous votes. 
-		$sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
-		FROM nuke_advanced_polls_votes WHERE
-		$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' GROUP BY pn_optionid ASC";
-		$result = $dbconn->Execute($sql);
-		//GPK We just need the first entry since that one will give us largest number of votes.
-		(list($optID, $totalvotecount) = $result->fields);
-		
-		//GPK For systems which allow anonymous we need to find out the number of anonymous votes
-		$sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
-		FROM nuke_advanced_polls_votes WHERE
-		$advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' AND
-		pn_uid = 0 GROUP BY pn_optionid DESC";
-		$result = $dbconn->Execute($sql);
+      $result = $dbconn->Execute($sql);
+      list($totalvotecount) = $result->fields;
+    } else {
+        //GPK  We have a multi-select poll, so we want to find out the largest
+        //GPK  number of votes cast for any item.  This will only work for
+        //GPK  sites which do not allow anonymous votes.
+        $sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
+    FROM nuke_advanced_polls_votes WHERE
+    $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' GROUP BY pn_optionid ASC";
+    $result = $dbconn->Execute($sql);
+    //GPK We just need the first entry since that one will give us largest number of votes.
+    (list($optID, $totalvotecount) = $result->fields);
 
-		$anonymousvotecount = 0;
-		
-		list($optID, $anonymousvotecount) = $result->fields;
-		$totalvotecount = $totalvotecount + $anonymousvotecount;
-	}
+    //GPK For systems which allow anonymous we need to find out the number of anonymous votes
+    $sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
+    FROM nuke_advanced_polls_votes WHERE
+    $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' AND
+    pn_uid = 0 GROUP BY pn_optionid DESC";
+    $result = $dbconn->Execute($sql);
 
-	$votecountarray = array();
-	$recordcount = 0;
+    $anonymousvotecount = 0;
 
-	// Set initial vote id
-	$leadingvotecount = 0;
-	$leadingvoteid = 0;
+    list($optID, $anonymousvotecount) = $result->fields;
+    $totalvotecount = $totalvotecount + $anonymousvotecount;
+    }
+
+    $votecountarray = array();
+    $recordcount = 0;
+
+    // Set initial vote id
+    $leadingvotecount = 0;
+    $leadingvoteid = 0;
 
     // for ease of backwards compatabilty lets check for a 0 option count
-	if ($item['optioncount'] == 0) {
-		$item['optioncount'] = pnModGetVar('advanced_polls', 'defaultoptioncount');
-	}
+    if ($item['optioncount'] == 0) {
+        $item['optioncount'] = pnModGetVar('advanced_polls', 'defaultoptioncount');
+    }
 
-	// now lets get all the vote counts
-	$sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid]),
-						$advanced_pollsvotescolumn[optionid]
-			FROM $advanced_pollsvotestable WHERE
-			$advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
-			GROUP BY $advanced_pollsvotescolumn[optionid]";
-	$result = $dbconn->Execute($sql);
+    // now lets get all the vote counts
+    $sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid]),
+    $advanced_pollsvotescolumn[optionid]
+      FROM $advanced_pollsvotestable WHERE
+      $advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
+      GROUP BY $advanced_pollsvotescolumn[optionid]";
+      $result = $dbconn->Execute($sql);
 
-	// Check for no rows found, and if so return
-	if ($result->EOF) {
-		return false;
-	}
+      // Check for no rows found, and if so return
+      if ($result->EOF) {
+          return false;
+      }
 
-    for (; !$result->EOF; $result->MoveNext()) {
-		list($count, $optionid) = $result->fields; 
-		$votecountarray[$optionid] = $count;
-	}
+      for (; !$result->EOF; $result->MoveNext()) {
+          list($count, $optionid) = $result->fields;
+          $votecountarray[$optionid] = $count;
+      }
 
-	for ($i = 1, $max = $item['optioncount']; $i <= $max; $i++) {
-		if (!isset($votecountarray[$i])) {
-			$votecountarray[$i] = 0;
-		}
-		if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
-			if ($item['tiebreakalg'] == 1) {
-				$leadingvoteid = pnModAPIFunc('advanced_polls', 'user',	'timecountback',
- 								array('pollid' => $args['pollid'], 'voteid1' => $leadingvoteid,	'voteid2' => $i));
-			}
-		}
+      for ($i = 1, $max = $item['optioncount']; $i <= $max; $i++) {
+          if (!isset($votecountarray[$i])) {
+              $votecountarray[$i] = 0;
+          }
+          if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
+              if ($item['tiebreakalg'] == 1) {
+                  $leadingvoteid = pnModAPIFunc('advanced_polls', 'user',	'timecountback',
+                  array('pollid' => $args['pollid'], 'voteid1' => $leadingvoteid,	'voteid2' => $i));
+              }
+          }
 
-		if ($votecountarray[$i] > $leadingvotecount) {
-			$leadingvotecount = $votecountarray[$i];
-			$leadingvoteid = $i;
-		}
-	}
+          if ($votecountarray[$i] > $leadingvotecount) {
+              $leadingvotecount = $votecountarray[$i];
+              $leadingvoteid = $i;
+          }
+      }
 
-	// Create the item array
-	$item = array('totalvotecount' => $totalvotecount,
-				  'leadingvoteid' => $leadingvoteid,
-				  'votecountarray' => $votecountarray );
+      // Create the item array
+      $item = array('totalvotecount' => $totalvotecount,
+          'leadingvoteid' => $leadingvoteid,
+          'votecountarray' => $votecountarray );
 
-	// Return the item array
-	return $item;
+      // Return the item array
+      return $item;
 }
 
 /**
-* Adds vote to db
-* @param $args['pollid'] id of example item to get
-* @param $args['voteid'] poll item to register vote for
-* @param $args['voterank'] ranking of vote in multiple select polls
-* @return bool true on success, false on failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_addvote($args) 
+ * Adds vote to db
+ * @param $args['pollid'] id of example item to get
+ * @param $args['voteid'] poll item to register vote for
+ * @param $args['voterank'] ranking of vote in multiple select polls
+ * @return bool true on success, false on failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_addvote($args)
 {
-	// Argument check
-	if (!isset($args['pollid']) || !isset($args['optionid']) || !isset($args['voterank'])) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($args['pollid']) || !isset($args['optionid']) || !isset($args['voterank'])) {
+        return LogUtil::registerArgsError();
+    }
 
-	// Security check
-	if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
+    // Security check
+    if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
         $args['ip'] = pnServerGetVar('REMOTE_ADDR');
-		$args['uid'] = pnUserGetVar('uid');
-		$args['time'] = time();
-		if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
-			return LogUtil::registerError (__('Failed to register vote', $dom));
-		}
+        $args['uid'] = pnUserGetVar('uid');
+        $args['time'] = time();
+        if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
+            return LogUtil::registerError (__('Failed to register vote', $dom));
+        }
 
-		//set cookie to indicate vote made in this poll
-		//used only with cookie based voting but set all the time
-		//in case admin changes voting regs.
-		SessionUtil::setVar("advanced_polls_voted{$args['pollid']}", 1);
+        //set cookie to indicate vote made in this poll
+        //used only with cookie based voting but set all the time
+        //in case admin changes voting regs.
+        SessionUtil::setVar("advanced_polls_voted{$args['pollid']}", 1);
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /**
-* Performs time count back on votes
-*
-* This function sums all the unix timestamps for two poll item ids 
-* and returns the item id with the lowest sum. This is used as a tiebreak
-* methodology
-*
-* @param $args['pollid'] id of example item to get
-* @param $args['voteid1'] first poll item id
-* @param $args['voteid2'] second poll item id
-* @return mixed integer $voteid or false on vote failure
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_timecountback($args) 
+ * Performs time count back on votes
+ *
+ * This function sums all the unix timestamps for two poll item ids
+ * and returns the item id with the lowest sum. This is used as a tiebreak
+ * methodology
+ *
+ * @param $args['pollid'] id of example item to get
+ * @param $args['voteid1'] first poll item id
+ * @param $args['voteid2'] second poll item id
+ * @return mixed integer $voteid or false on vote failure
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_timecountback($args)
 {
-	// Get arguments from argument array
-	extract($args);
+    // Get arguments from argument array
+    extract($args);
 
-	// Argument check
-	if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
-		return LogUtil::registerArgsError();
-	}
+    // Argument check
+    if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
+        return LogUtil::registerArgsError();
+    }
 
-	// get database connection
-	$dbconn = pnDBGetConn(true);
-	$pntable = pnDBGetTables();
+    // get database connection
+    $dbconn = pnDBGetConn(true);
+    $pntable = pnDBGetTables();
 
-	$advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-	$advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
-	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
-	// Security check
-	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
-		return LogUtil::registerPermissionError();
-	}
+    // Security check
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
+        return LogUtil::registerPermissionError();
+    }
 
-	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
-			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
-	$result = $dbconn->Execute($sql);
-	list($firstsum) = $result->fields;
+    $sql = "SELECT SUM($advanced_pollsvotescolumn[time])
+      FROM $advanced_pollsvotestable WHERE
+      (($advanced_pollsvotescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "') AND
+      ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
+    $result = $dbconn->Execute($sql);
+    list($firstsum) = $result->fields;
 
-	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
-			FROM $advanced_pollsvotestable WHERE
-			(($advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "') AND
-			($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
-	$result = $dbconn->Execute($sql);
-	list($secondsum) = $result->fields;
+    $sql = "SELECT SUM($advanced_pollsvotescolumn[time])
+      FROM $advanced_pollsvotestable WHERE
+      (($advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "') AND
+      ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
+    $result = $dbconn->Execute($sql);
+    list($secondsum) = $result->fields;
 
-	if ($firstsum < $secondsum) {
-		return $voteid1;
-	} else {
-		return $voteid2;
-	}
+    if ($firstsum < $secondsum) {
+        return $voteid1;
+    } else {
+        return $voteid2;
+    }
 }
 
 /**
-* Gets id of last poll to close
-* @return int id of last poll to close, 0 if no closed polls
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.05
-* @version 1.1
-*/
-function advanced_polls_userapi_getlastclosed($args) 
+ * Gets id of last poll to close
+ * @return int id of last poll to close, 0 if no closed polls
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.05
+ * @version 1.1
+ */
+function advanced_polls_userapi_getlastclosed($args)
 {
-	// The API function is called.
-	$items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    // The API function is called.
+    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
     // work out which poll has closed most recently
-	$lastclosed = 0;
-	$lastcloseddate = 0;
-	foreach ($items as $item) {
-		if ($item['opendate'] < time() && $item['closedate'] < time() && $item['closedate'] != 0 && $item['closedate'] >= $lastcloseddate) {
-			$lastclosed = $item['pollid'];
-			$lastcloseddate = $item['closedate'];
-		}
-	}
+    $lastclosed = 0;
+    $lastcloseddate = 0;
+    foreach ($items as $item) {
+        if ($item['opendate'] < time() && $item['closedate'] < time() && $item['closedate'] != 0 && $item['closedate'] >= $lastcloseddate) {
+            $lastclosed = $item['pollid'];
+            $lastcloseddate = $item['closedate'];
+        }
+    }
 
-	return $lastclosed;
+    return $lastclosed;
 }
 
 /**
-* Gets a random poll id
-* @return int id of poll
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2004 by Mark West
-* @since 1.0
-* @version 1.1
-*/
-function advanced_polls_userapi_getrandom() 
+ * Gets a random poll id
+ * @return int id of poll
+ * @author Mark West <mark@markwest.me.uk>
+ * @copyright (C) 2002-2004 by Mark West
+ * @since 1.0
+ * @version 1.1
+ */
+function advanced_polls_userapi_getrandom()
 {
-	// seed with microseconds
-	function make_seed() {
-		list($usec, $sec) = explode(' ', microtime());
-		return (float) $sec + ((float) $usec * 100000);
-	}
-	srand(make_seed());
-	
-	// The API function is called.
-	$items = pnModAPIFunc('advanced_polls',	'user', 'getall');
+    // seed with microseconds
+    function make_seed() {
+        list($usec, $sec) = explode(' ', microtime());
+        return (float) $sec + ((float) $usec * 100000);
+    }
+    srand(make_seed());
 
-	$randomitemid = array_rand($items , 1);
-	$randomitem = $items[$randomitemid];
-	$pollid = $randomitem['pollid'];
+    // The API function is called.
+    $items = pnModAPIFunc('advanced_polls',	'user', 'getall');
 
-	return $pollid;
+    $randomitemid = array_rand($items , 1);
+    $randomitem = $items[$randomitemid];
+    $pollid = $randomitem['pollid'];
+
+    return $pollid;
 }
 
 /**
@@ -756,7 +756,7 @@ function advanced_polls_userapi_encodeurl($args)
         }
         if (pnModGetVar('Polls', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
             $vars = $args['args']['cat'].'/'.$item['urltitle'];
-        } else { 
+        } else {
             $vars = $item['urltitle'];
         }
         if (isset($args['args']['page']) && $args['args']['page'] != 1) {
@@ -840,7 +840,7 @@ function advanced_polls_userapi_decodeurl($args)
  */
 function advanced_polls_userapi_getmodulemeta()
 {
-   return array('viewfunc'    => 'view',
+    return array('viewfunc'    => 'view',
                 'displayfunc' => 'display',
                 'newfunc'     => 'new',
                 'createfunc'  => 'create',

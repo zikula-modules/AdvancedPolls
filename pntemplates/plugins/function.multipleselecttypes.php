@@ -2,7 +2,7 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk> 
+ * @author Mark West <mark@markwest.me.uk>
  * @copyright (C) 2002-2010 by Mark West
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
@@ -30,11 +30,11 @@ function smarty_function_multipleselecttypes($params, &$smarty)
                                                  'selected'  => isset($selected) ? $selected : null,
                                                  'name'      => $name,
                                                  'id'        => isset($id) ? $id : null),
-                                                 $smarty);
+    $smarty);
 
-	if (isset($assign)) {
-		$smarty->assign($assign, $output);
-	} else {
-		return $output;
-	}
+    if (isset($assign)) {
+        $smarty->assign($assign, $output);
+    } else {
+        return $output;
+    }
 }
