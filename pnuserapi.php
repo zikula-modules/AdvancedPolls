@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -43,7 +41,7 @@ function advanced_polls_userapi_getall($args)
 
     if (!is_numeric($args['startnum']) ||
         !is_numeric($args['numitems'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
 	$items = array();
@@ -69,7 +67,7 @@ function advanced_polls_userapi_getall($args)
     $pollscolumn = $pntable['advanced_polls_desc_column'];
     $queryargs = array();
     if (pnConfigGetVar('multilingual') == 1 && $args['checkml']) {
-        $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' OR $pollscolumn[language]='')";
+        $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' OR $pollscolumn[language]='')";
     }
 
     $where = null;
@@ -91,14 +89,14 @@ function advanced_polls_userapi_getall($args)
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($items === false) {
-        return LogUtil::registerError (__('Error! Could not load items.', $dom));
+        return LogUtil::registerError (__('Error! Could not load polls.', $dom));
     }
 
     // need to do this here as the category expansion code can't know the
     // root category which we need to build the relative path component
      if ($items && isset($args['catregistry']) && $args['catregistry']) {
         if (!($class = Loader::loadClass ('CategoryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s]';, array('s' => 'CategoryUtil')));
 	    }
         ObjectUtil::postProcessExpandedObjectArrayCategories ($items, $args['catregistry']);
     }
@@ -130,7 +128,7 @@ function advanced_polls_userapi_get($args)
     // Argument check
     if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) &&
          !isset($args['title'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
 	// Security check
@@ -144,7 +142,7 @@ function advanced_polls_userapi_get($args)
     $pollscolumn = $pntable['advanced_polls_desc_column'];
     $queryargs = array();
     if (pnConfigGetVar('multilingual') == 1 && $args['checkml']) {
-        $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' OR $pollscolumn[language]='')";
+        $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' OR $pollscolumn[language]='')";
     }
 
     $where = null;
@@ -214,7 +212,7 @@ function advanced_polls_userapi_countitems($args)
 	// Check if we is an ML situation
 	$querylang = '';
 	if ($checkml && pnConfigGetVar('multilingual') == 1) {
-		$querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(pnUserGetLang()) . "' 
+		$querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' 
 					  OR $advanced_polls_desc_column[language]='' 
 					  OR $advanced_polls_desc_column[language] IS NULL)";
 	}
@@ -236,7 +234,7 @@ function advanced_polls_userapi_isopen($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// The user API function is called.
@@ -249,7 +247,7 @@ function advanced_polls_userapi_isopen($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[vpollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
 	//establish current date and time
@@ -282,7 +280,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// The user API function is called.
@@ -295,7 +293,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
 		// Here we don't set an error as this indicates that the user can't vote in this poll
@@ -369,7 +367,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// The user API function is called. 
@@ -382,7 +380,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
 	// convert recurring offset into unix timestamp format
@@ -460,7 +458,7 @@ function advanced_polls_userapi_pollvotecount($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// The user API function is called.
@@ -471,7 +469,7 @@ function advanced_polls_userapi_pollvotecount($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
 	// get database connection
@@ -586,7 +584,7 @@ function advanced_polls_userapi_addvote($args)
 {
 	// Argument check
 	if (!isset($args['pollid']) || !isset($args['optionid']) || !isset($args['voterank'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// Security check
@@ -632,7 +630,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	// Argument check
 	if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// get database connection
@@ -646,7 +644,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
 	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
@@ -733,7 +731,7 @@ function advanced_polls_userapi_encodeurl($args)
 {
     // check we have the required input
     if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // create an empty string ready for population
@@ -792,7 +790,7 @@ function advanced_polls_userapi_decodeurl($args)
 {
     // check we actually have some vars to work with...
     if (!isset($args['vars'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // define the available user functions

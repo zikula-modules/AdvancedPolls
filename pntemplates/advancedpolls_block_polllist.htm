@@ -1,5 +1,5 @@
 <ul>
-<!--[foreach from=$polls item=poll]-->
-<li><a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid]-->"><!--[$poll.title|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay]--></a></li>
-<!--[/foreach]-->
+    <!--[foreach from=$polls item=poll]-->
+    <li><a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid]-->"><!--[$poll.title|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay]--></a></li>
+    <!--[/foreach]-->
 </ul>

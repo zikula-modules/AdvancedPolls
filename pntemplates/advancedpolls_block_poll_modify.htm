@@ -1,20 +1,20 @@
-<div class="pn-adminformrow">
-	<label for="advancedpolls_pollid"><!--[gt text="Poll"]--></label>
-	<!--[html_options id="advancedpolls_pollid" name="pollid" options=$items selected=$blockvars.pollid]-->
+<div class="z-formrow">
+    <label for="advancedpolls_pollid"><!--[gt text="Poll" domain="module_advanced_polls"]--></label>
+    <!--[html_options id="advancedpolls_pollid" name="pollid" options=$items selected=$blockvars.pollid]-->
 </div>
-<div class="pn-adminformrow">
-	<label for="advancedpolls_polluse"><!--[gt text="Poll to Use (Latest and Random override individual poll selection)"]--></label>
-	<!--[html_options id="advancedpolls_polluse" name="polluse" options=$pollusevalues selected=$blockvars.polluse]-->
+<div class="z-formrow">
+    <label for="advancedpolls_polluse"><!--[gt text="Poll to Use (Latest and Random override individual poll selection)" domain="module_advanced_polls"]--></label>
+    <!--[html_options id="advancedpolls_polluse" name="polluse" options=$pollusevalues selected=$blockvars.polluse]-->
 </div>
-<div class="pn-adminformrow">
-	<label for="advancedpolls_ajaxvoting"><!--[gt text="Use ajax for voting form"]--></label>
+<div class="z-formrow">
+    <label for="advancedpolls_ajaxvoting"><!--[gt text="Use ajax for voting form" domain="module_advanced_polls"]--></label>
     <input id="advancedpolls_ajaxvoting" type="checkbox" name="ajaxvoting" value="1"<!--[if $ajaxvoting]--> checked="checked"<!--[/if]--> />
 </div>
-<div class="pn-adminformrow">
-	<label for="advancedpolls_pollopenclosebaseddisplay"><!--[gt text="Display Block based on Open/Close Dates"]--></label>
-	<!--[html_options id="advancedpolls_pollopenclosebaseddisplay" name="pollopenclosebaseddisplay" options=$yesno selected=$blockvars.pollopenclosebaseddisplay]-->
+<div class="z-formrow">
+    <label for="advancedpolls_pollopenclosebaseddisplay"><!--[gt text="Display Block based on Open/Close Dates" domain="module_advanced_polls"]--></label>
+    <!--[html_options id="advancedpolls_pollopenclosebaseddisplay" name="pollopenclosebaseddisplay" options=$yesno selected=$blockvars.pollopenclosebaseddisplay]-->
 </div>
-<div class="pn-adminformrow">
-	<label for="advancedpolls_polldisplayresults"><!--[gt text="Display Results Page after Vote"]--></label>
-	<!--[html_options id="advancedpolls_polldisplayresults" name="polldisplayresults" options=$yesno selected=$blockvars.polldisplayresults]-->
+<div class="z-formrow">
+    <label for="advancedpolls_polldisplayresults"><!--[gt text="Display Results Page after Vote" domain="module_advanced_polls"]--></label>
+    <!--[html_options id="advancedpolls_polldisplayresults" name="polldisplayresults" options=$yesno selected=$blockvars.polldisplayresults]-->
 </div>

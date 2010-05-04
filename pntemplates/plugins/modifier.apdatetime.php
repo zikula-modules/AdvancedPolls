@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 require_once $smarty->_get_plugin_filepath('shared','make_timestamp');

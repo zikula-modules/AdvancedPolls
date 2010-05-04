@@ -1,6 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
-<div class="pn-admincontainer">
+<div class="z-admincontainer">
 <h2><!--[gt text="Voting Statistics"]--></h2>
 <strong><!--[gt text="Name of Poll"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
 <strong><!--[gt text="Date and Time Poll Opens"]--></strong> : <!--[$item.opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
@@ -23,7 +23,7 @@
   <input type="submit" value="<!--[gt text="Sort Votes"]-->" />
   </div>
 </form>
-<table class="pn-admintable">
+<table class="z-admintable">
 <caption><!--[gt text="Vote History"]--></caption>
   <thead>
 	  <tr>
@@ -37,7 +37,7 @@
   </thead>
   <tbody>
   <!--[foreach from=$votes item=vote]-->  
-    <tr class="<!--[cycle values=pn-odd,pn-even]-->">
+    <tr class="<!--[cycle values=z-odd,z-even]-->">
       <td headers="col1"><!--[$vote.voteid|pnvarprepfordisplay]--></td>
       <td headers="col2"><!--[$vote.ip|pnvarprepfordisplay]--></td>
       <td headers="col3"><!--[$vote.time|apdatetime|pnvarprepfordisplay]--></td>
@@ -46,7 +46,7 @@
       <td headers="col6"><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
     </tr>
   <!--[foreachelse]-->
-    <tr class="pn-admintableempty"><td colspan="6"><!--[gt text="No items found."]--></td></tr>
+    <tr class="z-admintableempty"><td colspan="6"><!--[gt text="No items found."]--></td></tr>
   <!--[/foreach]-->
   </tbody>
 </table>

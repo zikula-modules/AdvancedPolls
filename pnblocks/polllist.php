@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -34,14 +32,16 @@ function advanced_polls_polllistblock_init()
 */
 function advanced_polls_polllistblock_info() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Values
-	return array('text_type' => 'Polllist',
-				 'module' => 'advanced_polls',
-				 'text_type_long' => 'Display list of Open Polls',
+	return array('module'         => 'advanced_polls',
+	             'text_type'      => __('Poll list', $dom),
+				 'text_type_long' => __('Display list of Open Polls', $dom),
 				 'allow_multiple' => true,
-				 'form_content' => false,
-				 'form_refresh' => false,
-				 'show_preview' => true);
+				 'form_content'   => false,
+				 'form_refresh'   => false,
+				 'show_preview'   => true);
 }
 
 /**

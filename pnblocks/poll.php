@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -34,14 +32,16 @@ function advanced_polls_pollblock_init()
 */
 function advanced_polls_pollblock_info() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Values
-	return array('text_type' => 'Poll',
-				 'module' => 'advanced_polls',
-				 'text_type_long' => 'Show a Poll',
-				 'allow_multiple' => true,
-				 'form_content' => false,
-				 'form_refresh' => false,
-				 'show_preview' => true,
+	return array('module'          => 'advanced_polls',
+	             'text_type'       => __('Poll', $dom),
+				 'text_type_long'  => __('Show a poll', $dom),
+				 'allow_multiple'  => true,
+				 'form_content'    => false,
+				 'form_refresh'    => false,
+				 'show_preview'    => true,
 				 'admin_tableless' => true);
 }
 
@@ -104,9 +104,6 @@ function advanced_polls_pollblock_display($blockinfo)
 	if ($item == false) {
 		return false;
 	}
-
-	// load the user language file
-	pnModLangLoad('advanced_polls', 'user');
 
 	// check if we need to reset any poll votes
 	$resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring',	array('pollid' => $pollid));
@@ -195,6 +192,8 @@ function advanced_polls_pollblock_modify($blockinfo)
 	if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
 		return;
 	}
+
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
 
 	// Get current content
 	$vars = pnBlockVarsFromContent($blockinfo['content']);

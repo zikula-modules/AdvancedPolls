@@ -2,15 +2,15 @@
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="pn-admincontainer">
 <h2><!--[gt text="Reset Votes"]--></h2>
-<form class="pn-adminform" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="resetvotes"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="resetvotes"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
     <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-	<div class="pn-adminformrow">
+	<div class="z-formrow">
 	    <p><!--[gt text="Cofirm Reset of Votes"]--></p>
 	</div>
-    <div class="pn-adminformrow pn-adminformbuttons">
+    <div class="z-formbuttons">
 	    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Reset" __title="Reset"]-->
 	    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
     </div>

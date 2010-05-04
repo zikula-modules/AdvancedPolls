@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -21,6 +19,8 @@
 */
 function advanced_polls_init() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // create tables
     $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
     foreach ($tables as $table) {
@@ -59,6 +59,8 @@ function advanced_polls_init()
 */
 function advanced_polls_upgrade($oldversion) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // update tables
     $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
     foreach ($tables as $table) {
@@ -142,13 +144,15 @@ function advanced_polls_delete()
 */
 function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // load necessary classes
     Loader::loadClass('CategoryUtil');
     Loader::loadClassFromModule('Categories', 'Category');
     Loader::loadClassFromModule('Categories', 'CategoryRegistry');
 
     // get the language file
-    $lang = pnUserGetLang();
+    $lang = ZLanguage::getLanguageCode();
 
     // get the category path for which we're going to insert our place holder category
     $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules');

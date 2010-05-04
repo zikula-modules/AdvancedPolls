@@ -4,8 +4,8 @@
  *
  * @author Mark West <mark@markwest.me.uk>
  * @translation: Carsten Volmer (DEU)  
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_3rdParty_Modules
  * @subpackage Advanced_Polls

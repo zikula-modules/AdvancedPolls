@@ -4,12 +4,10 @@
  *
  * @author Mark West <mark@markwest.me.uk> 
  * @author Mats Kling
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -26,14 +24,16 @@ function advanced_polls_pollwarnblock_init()
 */
 function advanced_polls_pollwarnblock_info() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Values
-	return array('text_type' => 'Pollwarn',
-				'module' => 'advanced_polls',
-				'text_type_long' => 'Warns if Poll is unanswered',
-				'allow_multiple' => true,
-				'form_content' => false,
-				'form_refresh' => false,
-				'show_preview' => true);
+	return array('module'         => 'advanced_polls',
+	             'text_type'      => __('Poll warn', $dom),
+                 'text_type_long' => __('Warns if Poll is unanswered', $dom),
+                 'allow_multiple' => true,
+                 'form_content'   => false,
+                 'form_refresh'   => false,
+                 'show_preview'   => true);
 }
 
 /**

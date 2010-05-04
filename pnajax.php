@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
- * @version $Id: pnadmin.php 91 2008-07-07 19:06:23Z markwest $
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
+ * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -21,6 +19,8 @@
  */
 function advanced_polls_ajax_vote()
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     $pollid = FormUtil::getPassedValue('pollid', null, 'POST');
     $title  = FormUtil::getPassedValue('title', null, 'POST');
 	$results = FormUtil::getPassedValue('results', null, 'POST');
@@ -29,15 +29,12 @@ function advanced_polls_ajax_vote()
 	$optioncount =  FormUtil::getPassedValue('optioncount', null, 'POST');
 
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$title::$pollid", ACCESS_COMMENT)) {
-        AjaxUtil::error(__('Sorry! No authorization to access this module.', $dom));
+        AjaxUtil::error(__('Error! No authorization to access this module.', $dom));
     }
 
     if (!SecurityUtil::confirmAuthKey()) {
         AjaxUtil::error(__('Invalid 'authkey':  this probably means that you pressed the 'Back' button, or that the page 'authkey' expired. Please refresh the page and try again.', $dom));
     }
-
-    // load the language file
-    pnModLangLoad('advanced_polls', 'user');
 
 	// call api function to establish if poll is currently open
 	$ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));

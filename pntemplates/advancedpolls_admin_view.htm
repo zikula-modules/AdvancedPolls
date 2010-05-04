@@ -32,7 +32,7 @@
     </div>
 </form>
 <!--[/if]-->
-<table class="pn-admintable">
+<table class="z-admintable">
 <caption><!--[gt text="View Polls"]--></caption>
 	<thead>
 		<tr>
@@ -65,12 +65,12 @@
 			<td headers="col4">
 				<!--[assign var="options" value=$poll.options]-->
 				<!--[section name=options loop=$options]-->
-				<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image __alt=$options[options].title]--></a>
+				<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image alt=$options[options].title]--></a>
 				<!--[/section]-->
 			</td>
 	    </tr>
 	<!--[foreachelse]-->
-	    <tr class="pn-admintableempty"><td <!--[if $enablecategorization]-->colspan="4"<!--[else]-->colspan="3"<!--[/if]-->><!--[gt text="No items found."]--></td></tr>
+	    <tr class="z-admintableempty"><td <!--[if $enablecategorization]-->colspan="4"<!--[else]-->colspan="3"<!--[/if]-->><!--[gt text="No items found."]--></td></tr>
 	<!--[/foreach]-->
 	</tbody>
 </table>

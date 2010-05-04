@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -57,7 +55,7 @@ function advanced_polls_admin_new()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories ('advanced_polls', 'advanced_polls_desc');
         
@@ -80,6 +78,8 @@ function advanced_polls_admin_new()
 */
 function advanced_polls_admin_create() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     $poll = FormUtil::getPassedValue('poll', isset($args['poll']) ? $args['poll'] : null, 'POST');
     $poll['startDay'] = FormUtil::getPassedValue('startDay', isset($args['startDay']) ? $args['startDay'] : null, 'POST');
     $poll['startMonth'] = FormUtil::getPassedValue('startMonth', isset($args['startMonth']) ? $args['startMonth'] : null, 'POST');
@@ -123,6 +123,8 @@ function advanced_polls_admin_create()
 */
 function advanced_polls_admin_modify() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    
 	// Get parameters from whatever input we need.
     $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
 	 
@@ -149,7 +151,7 @@ function advanced_polls_admin_modify()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('advanced_polls', 'advanced_polls_desc');
         
@@ -175,6 +177,8 @@ function advanced_polls_admin_modify()
 */
 function advanced_polls_admin_update() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    
     $poll = FormUtil::getPassedValue('poll', isset($args['poll']) ? $args['poll'] : null, 'POST');
     $poll['startDay'] = FormUtil::getPassedValue('startDay', isset($args['startDay']) ? $args['startDay'] : null, 'POST');
     $poll['startMonth'] = FormUtil::getPassedValue('startMonth', isset($args['startMonth']) ? $args['startMonth'] : null, 'POST');
@@ -212,6 +216,8 @@ function advanced_polls_admin_update()
 */
 function advanced_polls_admin_delete() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    
     $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'REQUEST');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
     $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
@@ -277,6 +283,8 @@ function advanced_polls_admin_view()
 		return LogUtil::registerPermissionError();
 	}
 
+	$dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Get parameters from whatever input we need.
     $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
     $property = FormUtil::getPassedValue('advanced_polls_property', isset($args['advanced_polls_property']) ? $args['advanced_polls_property'] : null, 'POST');
@@ -293,7 +301,7 @@ function advanced_polls_admin_view()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories('advanced_polls', 'advanced_polls_desc');
         $properties = array_keys($catregistry);
@@ -361,7 +369,7 @@ function advanced_polls_admin_view()
     $renderer->assign($modvars);
 
     // Assign the default language
-    $renderer->assign('lang', pnUserGetLang());
+    $renderer->assign('lang', ZLanguage::getLanguageCode());
 
     // Assign the categories information if enabled
     if ($modvars['enablecategorization']) {
@@ -396,6 +404,8 @@ function advanced_polls_admin_modifyconfig()
 		return LogUtil::registerPermissionError();
 	}
 
+	$dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Create output object
 	$renderer = pnRender::getInstance('advanced_polls', false);
 	$renderer->assign(pnModGetVar('advanced_polls'));
@@ -426,6 +436,8 @@ function advanced_polls_admin_updateconfig()
 	if (!SecurityUtil::confirmAuthKey()) {
 		return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'admin', 'view'));
 	}
+
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     $config = FormUtil::getPassedValue('config', isset($args['config']) ? $args['config'] : null, 'POST');
 
@@ -614,6 +626,8 @@ function advanced_polls_admin_adminstats()
 */
 function advanced_polls_admin_duplicate() 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'REQUEST');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
     $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');

@@ -3,12 +3,10 @@
  * Advanced Polls module for Zikula
  *
  * @author Mark West <mark@markwest.me.uk> 
- * @copyright (C) 2002-2007 by Mark West
- * @link http://www.markwest.me.uk Advanced Polls Support Site
+ * @copyright (C) 2002-2010 by Mark West
+ * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_3rdParty_Modules
- * @subpackage Advanced_Polls
  */
 
 /**
@@ -21,14 +19,16 @@
 */
 function advanced_polls_adminapi_create($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Argument check
     if (!isset($args['title']) || !isset($args['description']) || !isset($args['optioncount'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::", ACCESS_ADD)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
     // defaults
@@ -75,9 +75,11 @@ function advanced_polls_adminapi_create($args)
 */
 function advanced_polls_adminapi_delete($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Argument check
     if (!isset($args['pollid'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
     // Get the poll
@@ -89,18 +91,18 @@ function advanced_polls_adminapi_delete($args)
  
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_DELETE)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
     // Delete the object
     if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
+        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
     }
     if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
+        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
     }
     if (!DBUtil::deleteObjectByID('advanced_polls_desc', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
+        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
     }
 
 	return true;
@@ -138,10 +140,12 @@ function advanced_polls_adminapi_delete($args)
 */
 function advanced_polls_adminapi_update($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Argument check
     if (!isset($args['pollid']) || !isset($args['title']) || 
         !isset($args['description']) || !isset($args['optioncount'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerArgsError();
     }
 
 	// The user API function is called
@@ -155,10 +159,10 @@ function advanced_polls_adminapi_update($args)
 	// Note that at this stage we have two sets of item information, the
 	// pre-modification and the post-modification.
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	}
 
     // defaults
@@ -213,9 +217,11 @@ function advanced_polls_adminapi_update($args)
 */
 function advanced_polls_adminapi_resetvotes($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 	
 	// The user API function is called.
@@ -228,7 +234,7 @@ function advanced_polls_adminapi_resetvotes($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	} else {
 		if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
 			return LogUtil::registerError (__('Vote reset failed', $dom));
@@ -252,9 +258,11 @@ function advanced_polls_adminapi_resetvotes($args)
 */
 function advanced_polls_adminapi_getvotes($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// Optional arguments.
@@ -265,7 +273,7 @@ function advanced_polls_adminapi_getvotes($args)
 		$args['numitems'] = -1;
 	}
 	if ((!isset($args['startnum']))  || (!isset($args['numitems']))) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	if (!isset($args['sortorder'])) {
@@ -285,7 +293,7 @@ function advanced_polls_adminapi_getvotes($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	} else {
 		// get database setup
 		$pntable = pnDBGetTables();
@@ -343,9 +351,11 @@ function advanced_polls_adminapi_getvotes($args)
 */
 function advanced_polls_adminapi_duplicate($args) 
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerArgsError();
 	}
 
 	// The user API function is called.
@@ -358,7 +368,7 @@ function advanced_polls_adminapi_duplicate($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerPermissionError();
 	} else {
 		// The API function is called.
 		$pid = pnModAPIFunc('advanced_polls', 'admin', 'create',
@@ -435,9 +445,9 @@ function advanced_polls_adminapi_duplicate($args)
  */
 function advanced_polls_adminapi_getlinks()
 {
-    $links = array();
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
 
-    pnModLangLoad('advanced_polls', 'admin');
+    $links = array();
 
     if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_READ)) {
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => __('View Polls', $dom));

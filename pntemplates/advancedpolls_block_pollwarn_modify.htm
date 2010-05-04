@@ -1,31 +1,31 @@
 <tr>
-    <td><label for="advancedpolls_pollid"><!--[gt text="Poll"]--></label></td>
-	<td>
-		<select id="advancedpolls_pollid" name="pollid" /><!--[html_options options=$items selected=$blockvars.pollid]--></select>
-	</td>
+    <td><label for="advancedpolls_pollid"><!--[gt text="Poll" domain="module_advanced_polls"]--></label></td>
+    <td>
+        <select id="advancedpolls_pollid" name="pollid" /><!--[html_options options=$items selected=$blockvars.pollid]--></select>
+    </td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_polluse"><!--[gt text="Poll to Use (Latest and Random override individual poll selection)"]--></label></td>
-	<td>
-		<select id="advancedpolls_polluse" name="polluse">
-			<option value="0" <!--[if $vars.polluse eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="Individual Selection"]--></option>
-			<option value="1" <!--[if $vars.polluse eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="Latest Poll"]--></option>
-			<option value="2" <!--[if $vars.polluse eq 2]-->selected="selected"<!--[/if]-->><!--[gt text="Random Poll"]--></option>
-		</select>
-	</td>
+    <td><label for="advancedpolls_polluse"><!--[gt text="Poll to Use (Latest and Random override individual poll selection)" domain="module_advanced_polls"]--></label></td>
+    <td>
+        <select id="advancedpolls_polluse" name="polluse">
+            <option value="0" <!--[if $vars.polluse eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="Individual Selection" domain="module_advanced_polls"]--></option>
+            <option value="1" <!--[if $vars.polluse eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="Latest Poll" domain="module_advanced_polls"]--></option>
+            <option value="2" <!--[if $vars.polluse eq 2]-->selected="selected"<!--[/if]-->><!--[gt text="Random Poll" domain="module_advanced_polls"]--></option>
+        </select>
+    </td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_pollopenclosebaseddisplay"><!--[gt text="Display Block based on Open/Close Dates"]--></label></td>
-	<td>
-		<select id="advancedpolls_pollopenclosebaseddisplay" name="pollopenclosebaseddisplay">
-			<option value="0" <!--[if $vars.pollopenclosebaseddisplay eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="No"]--></option>
-			<option value="1" <!--[if $vars.pollopenclosebaseddisplay eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="Yes"]--></option>
-		</select>
-	</td>
+    <td><label for="advancedpolls_pollopenclosebaseddisplay"><!--[gt text="Display Block based on Open/Close Dates" domain="module_advanced_polls"]--></label></td>
+    <td>
+        <select id="advancedpolls_pollopenclosebaseddisplay" name="pollopenclosebaseddisplay">
+            <option value="0" <!--[if $vars.pollopenclosebaseddisplay eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="No" domain="module_advanced_polls"]--></option>
+            <option value="1" <!--[if $vars.pollopenclosebaseddisplay eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="Yes" domain="module_advanced_polls"]--></option>
+        </select>
+    </td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_backgroundcolor"><!--[gt text="Background Color"]--></label></td>
-	<td>
-		<input id="advancedpolls_backgroundcolor" type="text" name="backgroundcolor" size="7" maxsize="7" value="<!--[$blockvars.backgroundcolor|pnvarprepfordisplay]-->" />
-	</td>
+    <td><label for="advancedpolls_backgroundcolor"><!--[gt text="Background Color" domain="module_advanced_polls"]--></label></td>
+    <td>
+        <input id="advancedpolls_backgroundcolor" type="text" name="backgroundcolor" size="7" maxsize="7" value="<!--[$blockvars.backgroundcolor|pnvarprepfordisplay]-->" />
+    </td>
 </tr>
