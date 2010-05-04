@@ -31,7 +31,7 @@ function advanced_polls_init()
 
     // create our default category
     if (!_advanced_polls_createdefaultcategory()) {
-        return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+        return LogUtil::registerError (_CREATEFAILED);
     }
 
 	// Set up an initial value for each module variable
@@ -92,14 +92,14 @@ function advanced_polls_upgrade($oldversion)
             $shorturlsep = pnConfigGetVar('shorturlsseparator');            
             $sql  = "UPDATE $tables[advanced_polls_desc] SET pn_urltitle = REPLACE(pn_title, ' ', '{$shorturlsep}')";
             if (!DBUtil::executeSQL($sql)) {
-                return LogUtil::registerError (__('Error! Table update failed.', $dom));
+                return LogUtil::registerError (_UPDATETABLEFAILED);
             }
 			// setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
             if (!_advanced_polls_createdefaultcategory()) {
-                return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
+                return LogUtil::registerError (_UPDATEFAILED);
             }
 			return advanced_polls_upgrade(2.0);
 	}
@@ -159,8 +159,8 @@ function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/G
         $cat = new PNCategory ();
         $cat->setDataField('parent_id', $rootcat['id']);
         $cat->setDataField('name', 'Advanced Polls');
-        $cat->setDataField('display_name', array($lang => _ADVANCEDPOLLS__('Name', $dom)));
-        $cat->setDataField('display_desc', array($lang => _ADVANCEDPOLLS_CATEGORY__('Description', $dom)));
+        $cat->setDataField('display_name', array($lang => _ADVANCEDPOLLS_NAME));
+        $cat->setDataField('display_desc', array($lang => _ADVANCEDPOLLS_CATEGORY_DESCRIPTION));
         if (!$cat->validate('admin')) {
             return false;
         }

@@ -43,7 +43,7 @@ function advanced_polls_userapi_getall($args)
 
     if (!is_numeric($args['startnum']) ||
         !is_numeric($args['numitems'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerError (_MODARGSERROR);
     }
 
 	$items = array();
@@ -91,14 +91,14 @@ function advanced_polls_userapi_getall($args)
     // Check for an error with the database code, and if so set an appropriate
     // error message and return
     if ($items === false) {
-        return LogUtil::registerError (__('Error! Could not load items.', $dom));
+        return LogUtil::registerError (_GETFAILED);
     }
 
     // need to do this here as the category expansion code can't know the
     // root category which we need to build the relative path component
      if ($items && isset($args['catregistry']) && $args['catregistry']) {
         if (!($class = Loader::loadClass ('CategoryUtil'))) {
-            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryUtil')));
+            pn_exit (pnML('_UNABLETOLOADCLASS', array('s' => 'CategoryUtil')));
 	    }
         ObjectUtil::postProcessExpandedObjectArrayCategories ($items, $args['catregistry']);
     }
@@ -130,7 +130,7 @@ function advanced_polls_userapi_get($args)
     // Argument check
     if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) &&
          !isset($args['title'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerError (_MODARGSERROR);
     }
 
 	// Security check
@@ -236,7 +236,7 @@ function advanced_polls_userapi_isopen($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
@@ -244,12 +244,12 @@ function advanced_polls_userapi_isopen($args)
 
 	// no such item is db
 	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[vpollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	//establish current date and time
@@ -282,7 +282,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
@@ -290,12 +290,12 @@ function advanced_polls_userapi_isvoteallowed($args)
 
 	// no such item in db
 	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
 		// Here we don't set an error as this indicates that the user can't vote in this poll
@@ -369,7 +369,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// Argument check
 	if (!isset($pollid)) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called. 
@@ -377,12 +377,12 @@ function advanced_polls_userapi_resetrecurring($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// convert recurring offset into unix timestamp format
@@ -460,18 +460,18 @@ function advanced_polls_userapi_pollvotecount($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// The user API function is called.
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 	if ($item == false) {
-		return LogUtil::registerError(__('No such item found.', $dom));
+		return LogUtil::registerError(_NOSUCHITEM);
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	// get database connection
@@ -586,7 +586,7 @@ function advanced_polls_userapi_addvote($args)
 {
 	// Argument check
 	if (!isset($args['pollid']) || !isset($args['optionid']) || !isset($args['voterank'])) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// Security check
@@ -632,7 +632,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	// Argument check
 	if (!isset($pollid) || !isset($voteid1) || !isset($voteid2)) {
-		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+		return LogUtil::registerError (_MODARGSERROR);
 	}
 
 	// get database connection
@@ -646,7 +646,7 @@ function advanced_polls_userapi_timecountback($args)
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
-		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
+		return LogUtil::registerError(_MODULENOAUTH);
 	}
 
 	$sql = "SELECT SUM($advanced_pollsvotescolumn[time])
@@ -733,7 +733,7 @@ function advanced_polls_userapi_encodeurl($args)
 {
     // check we have the required input
     if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerError (_MODARGSERROR);
     }
 
     // create an empty string ready for population
@@ -792,7 +792,7 @@ function advanced_polls_userapi_decodeurl($args)
 {
     // check we actually have some vars to work with...
     if (!isset($args['vars'])) {
-        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
+        return LogUtil::registerError (_MODARGSERROR);
     }
 
     // define the available user functions

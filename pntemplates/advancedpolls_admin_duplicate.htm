@@ -1,18 +1,18 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[gt text="_ADVANCEDPOLLSDUPLICATE"]--></h2>
+<h2><!--[pnml name="_ADVANCEDPOLLSDUPLICATE"]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="duplicate"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
     <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
 	<div class="pn-adminformrow">
-	    <p><!--[gt text="_ADVANCEDPOLLSCONFIRMDUPLICATE"]--></p>
+	    <p><!--[pnml name="_ADVANCEDPOLLSCONFIRMDUPLICATE"]--></p>
 	</div>
     <div class="pn-adminformrow pn-adminformbuttons">
-	    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="_ADVANCEDPOLLSDUPLICATE" __title="_ADVANCEDPOLLSDUPLICATE"]-->
-	    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
+	    <!--[pnbutton src=button_ok.gif set=icons/small alt="_ADVANCEDPOLLSDUPLICATE" title="_ADVANCEDPOLLSDUPLICATE"]-->
+	    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
     </div>
 </div>
 </form>

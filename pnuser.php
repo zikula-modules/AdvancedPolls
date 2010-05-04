@@ -110,7 +110,7 @@ function advanced_polls_user_view()
 				}
 				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
-									   'title' => __('Edit', $dom));
+									   'title' => _EDIT);
 				}
 
 				if ($fullitem['closedate'] == 0) {
@@ -243,7 +243,7 @@ function advanced_polls_user_display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (__('No such item found.', $dom), 404);
+        return LogUtil::registerError (_NOSUCHITEM, 404);
     }
 
     // Create output object

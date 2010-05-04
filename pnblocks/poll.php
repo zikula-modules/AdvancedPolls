@@ -238,8 +238,8 @@ function advanced_polls_pollblock_modify($blockinfo)
 										      2 => 'Random'));
 
 	// yes/no array
-	$renderer->assign('yesno', array( 0 => __('No', $dom),
-									  1 => __('Yes', $dom)));
+	$renderer->assign('yesno', array( 0 => _NO,
+									  1 => _YES));
 
 	// Return output
 	return $renderer->fetch('advancedpolls_block_poll_modify.htm');

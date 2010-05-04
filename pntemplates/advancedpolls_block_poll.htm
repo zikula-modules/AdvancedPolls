@@ -30,16 +30,16 @@
 			<!--[/if]-->
 		<!--[/if]-->
 		<!--[if $blockvars.ajaxvoting]-->
-			<input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="<!--[gt text="_ADVANCEDPOLLSADDVOTE"]-->" />
+			<input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
 		<!--[else]-->
-			<input name="submit" type="submit" value="<!--[gt text="_ADVANCEDPOLLSADDVOTE"]-->" />
+			<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
 		<!--[/if]-->
 		</div>
 	</form>
 	<!--[if $blockvars.ajaxvoting]-->
 		<div id="advancedpollsvoteinfo">&nbsp;</div>
 		<script type="text/javascript">
-		    var recordingvote  = '<!--[gt text="_ADVANCEDPOLLSRECORDINGVOTE"]-->';
+		    var recordingvote  = '<!--[pnml name=_ADVANCEDPOLLSRECORDINGVOTE]-->';
 		</script>
 	<!--[/if]-->
 <!--[else]-->
@@ -49,17 +49,17 @@
 <!--[else]-->
     <!--[if $ispollopen]-->
 		<!--[if $votecounts.totalvotecount > 0]-->
-			<p><strong><!--[gt text="_ADVANCEDPOLLSCURRENTLEADER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong></p>
+			<p><strong><!--[pnml name="_ADVANCEDPOLLSCURRENTLEADER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong></p>
 			<!--[if $item.pollnoclosedate neq 0]-->
-			<p><!--[gt text="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.closedate|apdatetime]--></p>
+			<p><!--[pnml name="_ADVANCEDPOLLSCLOSEDATE"]--> : <!--[$item.closedate|apdatetime]--></p>
 			<!--[/if]-->
 		<!--[/if]-->
 	<!--[else]-->
 		<!--[if $votecounts.totalvotecount > 0]-->
-			<p><!--[gt text="_ADVANCEDPOLLSWINNER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></p>
+			<p><!--[pnml name="_ADVANCEDPOLLSWINNER"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></p>
 		<!--[/if]-->
 	<!--[/if]-->
 <!--[/if]-->
-<p><!--[gt text="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.totalvotecount|default:0]--></p>
-<a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[gt text="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
+<p><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--> : <!--[$votecounts.totalvotecount|default:0]--></p>
+<a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
 </div>

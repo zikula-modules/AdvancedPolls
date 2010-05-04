@@ -29,11 +29,11 @@ function advanced_polls_ajax_vote()
 	$optioncount =  FormUtil::getPassedValue('optioncount', null, 'POST');
 
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$title::$pollid", ACCESS_COMMENT)) {
-        AjaxUtil::error(__('Sorry! No authorization to access this module.', $dom));
+        AjaxUtil::error(_MODULENOAUTH);
     }
 
     if (!SecurityUtil::confirmAuthKey()) {
-        AjaxUtil::error(__('Invalid 'authkey':  this probably means that you pressed the 'Back' button, or that the page 'authkey' expired. Please refresh the page and try again.', $dom));
+        AjaxUtil::error(_BADAUTHKEY);
     }
 
     // load the language file

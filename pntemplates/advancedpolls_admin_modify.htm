@@ -1,64 +1,64 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
-<!--[pnajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true]-->
-<!--[gt text="_ADVANCEDPOLLSEDIT" assign=templatetitle]-->
+<!--[ pnajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true ]-->
+<!--[pnml name="_ADVANCEDPOLLSEDIT" assign=templatetitle]-->
 <div class="pn-admincontainer">
-<div class="pn-adminpageicon"><!--[pnimg modname='core' src='edit.gif' set='icons/large' __alt=$templatetitle]--></div>
+<div class="pn-adminpageicon"><!--[pnimg modname=core src=edit.gif set=icons/large alt=$templatetitle]--></div>
 <h2><!--[$templatetitle]--></h2>
 <form class="pn-adminform" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="update"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
 	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 	<input type="hidden" name="poll[pollid]" value="<!--[$pollid|pnvarprepfordisplay]-->" />
 	<fieldset>
-		<legend><!--[gt text="_ADVANCEDPOLLSBASICINFO"]--></legend>
+		<legend><!--[pnml name=_ADVANCEDPOLLSBASICINFO]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_title"><!--[gt text="_ADVANCEDPOLLSNAME"]--></label>
+			<label for="advancedpolls_title"><!--[pnml name="_ADVANCEDPOLLSNAME"]--></label>
 			<input id="advancedpolls_title" name="poll[title]" type="text" size="50" maxlength="100" value="<!--[$title|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_urltitle"><!--[gt text="PermaLink URL title"]--></label>
+			<label for="advancedpolls_urltitle"><!--[pnml name="_PERMALINKTITLE"]--></label>
 			<input id="advancedpolls_urltitle" name="poll[urltitle]" type="text" size="50" maxlength="120" value="<!--[$urltitle|pnvarprepfordisplay]-->" />
-			<span class="pn-sub"><!--[gt text="(Blank = auto-generate)"]--></span>
+			<span class="pn-sub"><!--[pnml name=_PERMALINKTITLEBLANK]--></span>
 		</div>
         <!--[if $enablecategorization]-->
         <div class="pn-adminformrow">
-            <label for="advancedpolls_categories"><!--[gt text="Category"]--></label>
-            <!--[pnml assign="lblDef" name="Choose Category"]-->
+            <label for="advancedpolls_categories"><!--[pnml name="_CATEGORY"]--></label>
+            <!--[ pnml assign="lblDef" name="_CHOOSECATEGORY" ]-->
             <!--[nocache]-->
             <ul id="advancedpolls_categories" class="selector_category">
             <!--[foreach from=$catregistry key=property item=category]-->
-                <!--[array_field_isset array=$_Categories__ field=$property assign="catExists"]-->
+                <!--[array_field_isset array=$__CATEGORIES__ field=$property assign="catExists"]-->
                 <!--[if $catExists]-->
-                    <!--[array_field_isset array=$_Categories__.$property field="id" returnValue=1 assign="selectedValue"]-->
+                    <!--[array_field_isset array=$__CATEGORIES__.$property field="id" returnValue=1 assign="selectedValue"]-->
                 <!--[else]-->
                     <!--[assign var="selectedValue" value="0"]-->
                 <!--[/if]-->
-                <li><!--[selector_category category=$category name="poll[_Categories__][$property]" field="id" selectedValue=$selectedValue defaultValue="0" defaultText=$lblDef]--></li>
+                <li><!--[selector_category category=$category name="poll[__CATEGORIES__][$property]" field="id" selectedValue=$selectedValue defaultValue="0" defaultText=$lblDef]--></li>
             <!--[/foreach]-->
             </ul>
             <!--[/nocache]-->
         </div>
         <!--[/if]-->
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_description"><!--[gt text="_ADVANCEDPOLLSDESCRIPTION"]--></label>
+			<label for="advancedpolls_description"><!--[pnml name="_ADVANCEDPOLLSDESCRIPTION"]--></label>
 			<textarea id="advancedpolls_description" name="poll[description]" rows="10" cols="50"><!--[$description|pnvarprephtmldisplay]--></textarea>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_language"><!--[gt text="Language"]--> </label>
+			<label for="advancedpolls_language"><!--[pnml name="_LANGUAGE"]--> </label>
 			<!--[html_select_languages id="advancedpolls_language" name="poll[language]" installed=true all=true selected=$language]-->
 		</div>
 	</fieldset>
 	<fieldset>
-		<legend><!--[gt text="_ADVANCEDPOLLSTIMING"]--></legend>
+		<legend><!--[pnml name=_ADVANCEDPOLLSTIMING]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_startdate"><!--[gt text="_ADVANCEDPOLLSDATETIMESTART"]--></label>
+			<label for="advancedpolls_startdate"><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></label>
 			<div id="advancedpolls_startdate" style="white-space:nowrap">
 				<!--[html_select_date year_as_text=true prefix="start" time=$opendate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="start" time=$opendate]-->
 			</div>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_noclosedate"><!--[gt text="_ADVANCEDPOLLSNOCLOSE"]--></label>
+			<label for="advancedpolls_noclosedate"><!--[pnml name="_ADVANCEDPOLLSNOCLOSE"]--></label>
 			<!--[if $closedate eq 0]-->
 				<input type="checkbox" id="advancedpolls_noclosedate" name="poll[noclosedate]" value="1" checked="checked" />
 			<!--[else]-->
@@ -66,72 +66,72 @@
 			<!--[/if]-->
 		</div>
 		<div id="advancedpolls_closedate_container" class="pn-adminformrow">
-			<label for="advancedpolls_closedate"><!--[gt text="_ADVANCEDPOLLSDATETIMECLOSE"]--></label>
+			<label for="advancedpolls_closedate"><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></label>
 			<div id="advancedpolls_closedate" style="white-space:nowrap">
 				<!--[html_select_date year_as_text=true prefix="close" time=$closedate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="close" time=$closedate]-->
 			</div>
 		</div>
 	</fieldset>
 	<fieldset>
-		<legend><!--[gt text="_ADVANCEDPOLLSREGULATIONS"]--></legend>
+		<legend><!--[pnml name=_ADVANCEDPOLLSREGULATIONS]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_voteauthtype"><!--[gt text="_ADVANCEDPOLLSAUTHTYPE"]--> </label>
+			<label for="advancedpolls_voteauthtype"><!--[pnml name="_ADVANCEDPOLLSAUTHTYPE"]--> </label>
 			<select id="advancedpolls_voteauthtype" name="poll[voteauthtype]">
 				<!--[votingtypes selected=$voteauthtype]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_tiebreak"><!--[gt text="_ADVANCEDPOLLSTIEBREAK"]--> </label>
+			<label for="advancedpolls_tiebreak"><!--[pnml name="_ADVANCEDPOLLSTIEBREAK"]--> </label>
 			<select id="advancedpolls_tiebreak" name="poll[tiebreak]">
 				<!--[tiebreaktypes selected=$tiebreakalg]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_multipleselect"><!--[gt text="_ADVANCEDPOLLSMULTIPLESELECT"]--> </label>
+			<label for="advancedpolls_multipleselect"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECT"]--> </label>
 			<select id="advancedpolls_multipleselect" name="poll[multipleselect]">
 				<!--[multipleselecttypes selected=$multipleselect]-->
 			</select>
 		</div>
 		<div id="advancedpolls_multipleselect_container">
-			<p><!--[gt text="_ADVANCEDPOLLSONLYMULTIPLESELECT"]--></p>
+			<p><!--[pnml name=_ADVANCEDPOLLSONLYMULTIPLESELECT]--></p>
 			<div class="pn-adminformrow">
-				<label for="advancedpolls_multipleselectcount"><!--[gt text="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--></label>
-				<input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="<!--[$multipleselectcount|pnvarprepfordisplay]-->" /> <!--[gt text="_ADVANCEDPOLLSMULTIPLESELECTCOUNTUNLIMITED"]-->
+				<label for="advancedpolls_multipleselectcount"><!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--></label>
+				<input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="<!--[$multipleselectcount|pnvarprepfordisplay]-->" /> <!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNTUNLIMITED"]-->
 			</div>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_recurring"><!--[gt text="_ADVANCEDPOLLSRECURRING"]--> </label>
+			<label for="advancedpolls_recurring"><!--[pnml name="_ADVANCEDPOLLSRECURRING"]--> </label>
 			<select id="advancedpolls_recurring" name="poll[recurring]">
 				<!--[if $recurring eq 0]-->
-					<option value="0" selected="selected"><!--[gt text="No"]--></option>
-					<option value="1"><!--[gt text="Yes"]--></option>
+					<option value="0" selected="selected"><!--[pnml name="_NO"]--></option>
+					<option value="1"><!--[pnml name="_YES"]--></option>
 				<!--[else]-->
-					<option value="0"><!--[gt text="No"]--></option>
-					<option value="1" selected="selected"><!--[gt text="Yes"]--></option>
+					<option value="0"><!--[pnml name="_NO"]--></option>
+					<option value="1" selected="selected"><!--[pnml name="_YES"]--></option>
 				<!--[/if]-->
 			</select>
 		</div>
 		<div id="advancedpolls_recurring_container">
-			<p><!--[gt text="_ADVANCEDPOLLSONLYRECURRING"]--></p>
+			<p><!--[pnml name=_ADVANCEDPOLLSONLYRECURRING]--></p>
 			<div class="pn-adminformrow">
-				<label for="advancedpolls_recurringoffset"><!--[gt text="_ADVANCEDPOLLSRECURRINGOFFSET"]--></label>
+				<label for="advancedpolls_recurringoffset"><!--[pnml name="_ADVANCEDPOLLSRECURRINGOFFSET"]--></label>
 				<input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="<!--[$recurringoffset|pnvarprepfordisplay]-->" />
 			</div>
 			<div class="pn-adminformrow">
-				<label for="advancedpolls_recurringinterval"><!--[gt text="_ADVANCEDPOLLSRECURRINGINTERVAL"]--></label>
+				<label for="advancedpolls_recurringinterval"><!--[pnml name="_ADVANCEDPOLLSRECURRINGINTERVAL"]--></label>
 				<input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="<!--[$recurringinterval|pnvarprepfordisplay]-->" />
 			</div>
 		</div>
 	</fieldset>
 	<fieldset>
 		<!--[assign var="polloptions" value=$options]-->
-		<legend><!--[gt text="_ADVANCEDPOLLSOPTIONS"]--></legend>
+		<legend><!--[pnml name=_ADVANCEDPOLLSOPTIONS]--></legend>
 		<!--[section name=polloptions loop=$polloptions]-->
 		<!--[assign var="rowcount" value=$smarty.section.polloptions.rownum]-->
 		<!--[assign var="arraycount" value=$rowcount-1]-->
 		<div class="pn-adminformrow">
 			<div style="white-space:nowrap">
-				<label for="advancedpolls_option<!--[$rowcount]-->"><!--[gt text="_ADVANCEDPOLLSOPTION"]--> <!--[$rowcount]--></label>
+				<label for="advancedpolls_option<!--[$rowcount]-->"><!--[pnml name="_ADVANCEDPOLLSOPTION"]--> <!--[$rowcount]--></label>
 				<input id="advancedpolls_option<!--[$rowcount]-->" type="text" name="poll[options][<!--[$rowcount]-->][optiontext]" size="50" maxlength="255" value="<!--[$polloptions.$arraycount.optiontext|pnvarprepfordisplay]-->" />
 				<input id="advancedpolls_option<!--[$rowcount]-->color" type="text" name="poll[options][<!--[$rowcount]-->][optioncolor]" size="7" maxlength="7" value="<!--[$polloptions.$arraycount.optioncolour|pnvarprepfordisplay]-->" />
 				<a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['advancedpolls_option<!--[$rowcount]-->color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
@@ -139,25 +139,25 @@
 		</div>
 		<!--[/section]-->
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_optioncount"><!--[gt text="_ADVANCEDPOLLSOPTIONCOUNT"]--></label>
+			<label for="advancedpolls_optioncount"><!--[pnml name="_ADVANCEDPOLLSOPTIONCOUNT"]--></label>
 			<input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="<!--[$optioncount|pnvarprepfordisplay]-->" />
 		</div>
 	</fieldset>
     <fieldset>
-        <legend><!--[gt text="Meta data"]--></legend>
+        <legend><!--[pnml name=_META]--></legend>
         <ul>
             <!--[pnusergetvar name=uname uid=$cr_uid assign=username]-->
-            <li><!--[gt text="Created by %username% username=$username"]--></li>
-            <li><!--[gt text="Created on %date% date=$cr_date|pndate_format"]--></li>
+            <li><!--[pnml name=_CREATEDBY username=$username]--></li>
+            <li><!--[pnml name=_CREATEDON date=$cr_date|pndate_format]--></li>
             <!--[pnusergetvar name=uname uid=$lu_uid assign=username]-->
-            <li><!--[gt text="Last updated by %username% username=$username"]--></li>
-            <li><!--[gt text="Updated on %date% date=$lu_date|pndate_format"]--></li>
+            <li><!--[pnml name=_UPDATEDBY username=$username]--></li>
+            <li><!--[pnml name=_UPDATEDON date=$lu_date|pndate_format]--></li>
         </ul>
     </fieldset>
     <!--[pnmodcallhooks hookobject=item hookaction=modify hookid=$pollid module=Polls]-->
     <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Update" __title="Update"]-->
-    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
+    <!--[pnbutton src=button_ok.gif set=icons/small alt="_UPDATE" title="_UPDATE"]-->
+    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
     </div>
 </div>
 </form>
