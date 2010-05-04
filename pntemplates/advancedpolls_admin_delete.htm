@@ -1,8 +1,8 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
-<!--[pnml name="_ADVANCEDPOLLSDELETE" assign=templatetitle]-->
+<!--[gt text="Delete Poll" assign=templatetitle]-->
 <div class="pn-admincontainer">
-<div class="pn-adminpageicon"><!--[pnimg modname=core src=editdelete.gif set=icons/large alt=$templatetitle]--></div>
+<div class="pn-adminpageicon"><!--[pnimg modname='core' src='editdelete.gif' set='icons/large' __alt=$templatetitle]--></div>
 <h2><!--[$templatetitle]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="delete"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
@@ -10,11 +10,11 @@
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
 	<div class="pn-adminformrow">
-	    <p><!--[pnml name="_ADVANCEDPOLLSCONFIRMDELETE"]--></p>
+	    <p><!--[gt text="Confirm deletion of Poll"]--></p>
 	</div>
     <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[pnbutton src=button_ok.gif set=icons/small alt="_CONFIRMDELETE" title="_CONFIRMDELETE"]-->
-    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
+    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Confirm deletion?" __title="Confirm deletion?"]-->
+    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
     </div>
 </div>
 </form>

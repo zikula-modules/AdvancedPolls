@@ -1,12 +1,12 @@
-<strong><!--[pnml name="_ADVANCEDPOLLSRANKEDMULTIPLESELECT"]--> <!--[pnml name="_ADVANCEDPOLLSMULTIPLESELECTCOUNT"]--> <!--[$multiplecount|pnvarprephtmldisplay]--> <!--[pnml name=_ADVANCEDPOLLSRANKEDMULTIPLESELECTCOUNTOPTIONS]--></strong>
+<strong><!--[gt text="This is a Ranked Multiple Selection Poll."]--> <!--[gt text="You may select "]--> <!--[$multiplecount|pnvarprephtmldisplay]--> <!--[gt text=" options ranked in order. "]--></strong>
 <br /><br />
 <table>
 <!--[counter name=counter print=false start=1 assign=optioncounter]-->
 <!--[section name=multiloop loop=$multiplecount]-->
 	<tr>
-		<td><label for="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--> <!--[$optioncounter]-->"><!--[pnml name="_ADVANCEDPOLLSCHOICE"]--> <!--[$optioncounter]--></label> :</td>
+		<td><label for="<!--[gt text="Choice"]--> <!--[$optioncounter]-->"><!--[gt text="Choice"]--> <!--[$optioncounter]--></label> :</td>
 		<td>
-			<select id="<!--[pnml name=_ADVANCEDPOLLSCHOICE]--><!--[$optioncounter]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
+			<select id="<!--[gt text="Choice"]--><!--[$optioncounter]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
 				<!--[foreach from=$item.options option=option]-->
 					<option value="<!--[$option.id|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></option>
 				<!--[/foreach]-->

@@ -20,7 +20,7 @@ function smarty_function_sortordertypes($params, &$smarty)
     unset($params['selected']);
     unset($params['type']);
 
-    $options = array('0' => _ADVANCEDPOLLSSORTASCENDING, '1' => _ADVANCEDPOLLSSORTDESCENDING);
+    $options = array('0' => __('Ascending', $dom), '1' => __('Descending', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $smarty->_get_plugin_filepath('function','html_options');

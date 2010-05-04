@@ -20,7 +20,7 @@ function smarty_function_multipleselecttypes($params, &$smarty)
     unset($params['selected']);
     unset($params['type']);
 
-    $options = array('0' => _ADVANCEDPOLLSSINGLE, '1' => _ADVANCEDPOLLSMULTIPLE, '3' => _ADVANCEDPOLLSRANKED);
+    $options = array('0' => __('Single', $dom), '1' => __('Multiple', $dom), '3' => __('Ranked', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $smarty->_get_plugin_filepath('function','html_options');

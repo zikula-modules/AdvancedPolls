@@ -1,6 +1,6 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2><!--[pnml name=_ADVANCEDPOLLSCURRENT]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
+<h2><!--[gt text="Current Poll"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
 <div style="text-align:center;">
 <!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--><br />
 <form name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
@@ -24,7 +24,7 @@
 			<!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
 		<!--[/if]-->
 	<!--[/if]-->
-	<input name="submit" type="submit" value="<!--[pnml name="_ADVANCEDPOLLSADDVOTE"]-->" />
+	<input name="submit" type="submit" value="<!--[gt text="Vote"]-->" />
 	</div>
 </form>
 </div>

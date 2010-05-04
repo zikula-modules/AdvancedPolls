@@ -57,7 +57,7 @@ function advanced_polls_admin_new()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (pnML('_UNABLETOLOADCLASS', array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories ('advanced_polls', 'advanced_polls_desc');
         
@@ -105,7 +105,7 @@ function advanced_polls_admin_create()
 	// The return value of the function is checked
 	if ($pollid  != false) {
 		// Success
-		LogUtil::registerStatus( _ADVANCEDPOLLSCREATED);
+		LogUtil::registerStatus( __('Poll created', $dom));
 	}
 
 	// redirect the user to an appropriate page
@@ -129,7 +129,7 @@ function advanced_polls_admin_modify()
 	// Get the poll from the API function
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check.
@@ -149,7 +149,7 @@ function advanced_polls_admin_modify()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (pnML('_UNABLETOLOADCLASS', array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('advanced_polls', 'advanced_polls_desc');
         
@@ -197,7 +197,7 @@ function advanced_polls_admin_update()
 	// The API function is called.
 	if (pnModAPIFunc('advanced_polls','admin','update', $poll)) {
 		// Success
-		LogUtil::registerStatus( _ADVANCEDPOLLSUPDATED);
+		LogUtil::registerStatus( __('Poll updated', $dom));
 	}
 
 	// redirect the user to an appropriate page
@@ -223,7 +223,7 @@ function advanced_polls_admin_delete()
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     if ($item == false) {
-        return LogUtil::registerError (_NOSUCHITEM, 404);
+        return LogUtil::registerError (__('No such item found.', $dom), 404);
     }
 
 	// Security check.
@@ -256,7 +256,7 @@ function advanced_polls_admin_delete()
 	// The API function is called.
 	if (pnModAPIFunc('advanced_polls', 'admin', 'delete', array('pollid' => $pollid))) {
 		// Success
-		LogUtil::registerStatus( _ADVANCEDPOLLSDELETED);
+		LogUtil::registerStatus( __('Poll deleted', $dom));
 	}
 
 	return pnRedirect(pnModURL('advanced_polls', 'admin', 'view'));
@@ -293,7 +293,7 @@ function advanced_polls_admin_view()
     if ($modvars['enablecategorization']) {
         // load the category registry util
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
-            pn_exit (pnML('_UNABLETOLOADCLASS', array('s' => 'CategoryRegistryUtil')));
+            pn_exit (__f('Error! Unable to load class [%s%]';, array('s' => 'CategoryRegistryUtil')));
         }
         $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories('advanced_polls', 'advanced_polls_desc');
         $properties = array_keys($catregistry);
@@ -334,21 +334,21 @@ function advanced_polls_admin_view()
 		if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
                                'image' => 'xedit.gif',
-							   'title' => _EDIT);
+							   'title' => __('Edit', $dom));
 			if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_DELETE)) {
 				$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'delete', array('pollid' => $item['pollid'])),
                                    'image' => '14_layer_deletelayer.gif',
-								   'title' => _DELETE);
+								   'title' => __('Delete', $dom));
 			}
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'resetvotes', array('pollid' => $item['pollid'])),
                                'image' => 'undo.gif',
-							   'title' => _ADVANCEDPOLLSRESETVOTES);
+							   'title' => __('Reset Votes', $dom));
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'duplicate', array('pollid' => $item['pollid'])),
                                'image' => 'editcopy.gif',
-							   'title' => _ADVANCEDPOLLSDUPLICATE);
+							   'title' => __('Duplicate Poll', $dom));
 			$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'adminstats', array('pollid' => $item['pollid'])),
                                'image' => 'smallcal.gif',
-							   'title' => _ADVANCEDPOLLSADMINSTATS);
+							   'title' => __('Voting Statistics', $dom));
 		}
 		$items[$key]['options'] = $options;
 	}
@@ -399,9 +399,9 @@ function advanced_polls_admin_modifyconfig()
     // Create output object
 	$renderer = pnRender::getInstance('advanced_polls', false);
 	$renderer->assign(pnModGetVar('advanced_polls'));
-	$renderer->assign('dateformats', array('_DATELONG' => ml_ftime(_DATELONG,time()),
-                                           '_DATETIMEBRIEF' => ml_ftime(_DATETIMEBRIEF, time()),
-                                           '_DATETIMELONG' => ml_ftime(_DATETIMELONG, time())));
+	$renderer->assign('dateformats', array('_DATELONG' => ml_ftime(__('%A, %B %d, %Y', $dom),time()),
+                                           '_DATETIMEBRIEF' => ml_ftime(__('%b %d, %Y - %I:%M %p', $dom), time()),
+                                           '_DATETIMELONG' => ml_ftime(__('%A, %B %d, %Y - %I:%M %p', $dom), time())));
 	
 	// Return the output that has been generated by this function
 	return $renderer->fetch('advancedpolls_admin_modifyconfig.htm');
@@ -475,7 +475,7 @@ function advanced_polls_admin_updateconfig()
     pnModCallHooks('module', 'updateconfig', 'advanced_polls', array('module' => 'advanced_polls'));
 
     // the module configuration has been updated successfuly
-    LogUtil::registerStatus (_CONFIGUPDATED);
+    LogUtil::registerStatus (__('Done! Module configuration updated.', $dom));
 
 	// redirect the user to an appropriate page
 	return pnRedirect(pnModURL('advanced_polls', 'admin', 'view'));
@@ -625,7 +625,7 @@ function advanced_polls_admin_duplicate()
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check
@@ -658,7 +658,7 @@ function advanced_polls_admin_duplicate()
 	// The API function is called
 	if (pnModAPIFunc('advanced_polls', 'admin', 'duplicate', array('pollid' => $pollid))) {
 		// Success
-		LogUtil::registerStatus( _ADVANCEDPOLLSDUPLICATED);
+		LogUtil::registerStatus( __('Poll Duplicated', $dom));
 	}
 
 	// redirect the user to an appropriate page

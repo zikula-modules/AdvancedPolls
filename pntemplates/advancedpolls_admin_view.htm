@@ -4,8 +4,8 @@
 <!--[if $enablecategorization and $numproperties gt 0]-->
 <form action="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->" method="post" enctype="application/x-www-form-urlencoded">
     <div id="advanced_polls_multicategory_filter">
-        <label for="advanced_polls_property"><!--[pnml name=_CATEGORY]--></label>
-        <!--[pnml assign="lblDef" name="_CHOOSEONE"]-->
+        <label for="advanced_polls_property"><!--[gt text="Category"]--></label>
+        <!--[pnml assign="lblDef" name="Choose One"]-->
         <!--[nocache]-->
             <!--[if $numproperties gt 1]-->
                 <!--[html_options id="advanced_polls_property" name="advanced_polls_property" options=$properties selected=$property]-->
@@ -27,22 +27,22 @@
             <!--[/foreach]-->
             </div>
         <!--[/nocache]-->
-        <input name="submit" type="submit" value="<!--[pnml name="_FILTER"]-->" />
-        <input name="clear" type="submit" value="<!--[pnml name="_RESET"]-->" />
+        <input name="submit" type="submit" value="<!--[gt text="Filter"]-->" />
+        <input name="clear" type="submit" value="<!--[gt text="Reset"]-->" />
     </div>
 </form>
 <!--[/if]-->
 <table class="pn-admintable">
-<caption><!--[pnml name="_ADVANCEDPOLLSVIEW"]--></caption>
+<caption><!--[gt text="View Polls"]--></caption>
 	<thead>
 		<tr>
-			<th id="col1"><!--[pnml name="_ADVANCEDPOLLSNAME"]--></th>
-			<th id="col2"><!--[pnml name="_ADVANCEDPOLLSNUMBER"]--></th>
-			<th id="col3"><!--[pnml name="_ADVANCEDPOLLSISOPEN"]--></th>
+			<th id="col1"><!--[gt text="Name of Poll"]--></th>
+			<th id="col2"><!--[gt text="Poll ID"]--></th>
+			<th id="col3"><!--[gt text="Is poll open?"]--></th>
 			<!--[if $enablecategorization]-->
-			<th><!--[pnml name="_CATEGORY"]--></th>
+			<th><!--[gt text="Category"]--></th>
 			<!--[/if]-->
-			<th id="col4"><!--[pnml name="_ADVANCEDPOLLSOPTIONS"]--></th>
+			<th id="col4"><!--[gt text="Options"]--></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -54,23 +54,23 @@
 			<!--[if $enablecategorization]-->
 			<td>
 				<ul>
-				<!--[ foreach from=$poll.__CATEGORIES__ item=cat ]-->
+				<!--[foreach from=$poll._Categories__ item=cat]-->
 					<!--[array_field_isset assign="catname" array=$cat.display_name field=$lang returnValue=1]-->
 					<!--[if $catname eq '']--><!--[assign var="catname" value=$cat.name]--><!--[/if]-->
 					<li><!--[$catname]--></li>
-				<!--[ /foreach ]-->
+				<!--[/foreach]-->
 				</ul>
 			</td>
 			<!--[/if]-->
 			<td headers="col4">
 				<!--[assign var="options" value=$poll.options]-->
 				<!--[section name=options loop=$options]-->
-				<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname=core set=icons/extrasmall src=$options[options].image alt=$options[options].title]--></a>
+				<a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image __alt=$options[options].title]--></a>
 				<!--[/section]-->
 			</td>
 	    </tr>
 	<!--[foreachelse]-->
-	    <tr class="pn-admintableempty"><td <!--[if $enablecategorization]-->colspan="4"<!--[else]-->colspan="3"<!--[/if]-->><!--[pnml name=_NOITEMSFOUND]--></td></tr>
+	    <tr class="pn-admintableempty"><td <!--[if $enablecategorization]-->colspan="4"<!--[else]-->colspan="3"<!--[/if]-->><!--[gt text="No items found."]--></td></tr>
 	<!--[/foreach]-->
 	</tbody>
 </table>

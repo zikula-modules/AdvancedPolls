@@ -1,18 +1,18 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_ADVANCEDPOLLSRESETVOTESCONFIRM"]--></h2>
+<h2><!--[gt text="Reset Votes"]--></h2>
 <form class="pn-adminform" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="resetvotes"]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
     <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
     <input type="hidden" name="confirmation" value="1" />
     <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
 	<div class="pn-adminformrow">
-	    <p><!--[pnml name="_ADVANCEDPOLLSCONFIRMVOTESRESET"]--></p>
+	    <p><!--[gt text="Cofirm Reset of Votes"]--></p>
 	</div>
     <div class="pn-adminformrow pn-adminformbuttons">
-	    <!--[pnbutton src=button_ok.gif set=icons/small alt="_RESET" title="_RESET"]-->
-	    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
+	    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Reset" __title="Reset"]-->
+	    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
     </div>
 </div>
 </form>

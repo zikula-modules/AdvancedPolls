@@ -1,20 +1,20 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
-<div class="pn-adminpageicon"><!--[pnimg modname=core src=configure.gif set=icons/large alt='_MODIFYCONFIG' altml=true]--></div>
+<div class="pn-adminpageicon"><!--[pnimg modname='core' src='configure.gif' set='icons/large' __alt='Settings' ]--></div>
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_MODIFYCONFIG"]--></h2>
+<h2><!--[gt text="Settings"]--></h2>
 <form class="pn-adminform" id="advanced_polls_admin_modifyconfig" action="<!--[pnmodurl modname=advanced_polls type=admin func=updateconfig]-->" method="post" enctype="application/x-www-form-urlencoded">
 <div>
 	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
 	<fieldset>
-		<legend><!--[pnml name=_ADVANCEDPOLLSGENERAL]--></legend>
+		<legend><!--[gt text="General settings"]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_enablecategorization"><!--[pnml name="_ENABLECATEGORIZATION"]--></label>
+			<label for="advancedpolls_enablecategorization"><!--[gt text="Enable categorization"]--></label>
 			<input id="advancedpolls_enablecategorization" type="checkbox" name="config[enablecategorization]"<!--[if $enablecategorization]--> checked="checked"<!--[/if]--> />
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_usereversedns"><!--[pnml name="_ADVANCEDPOLLSUSEREVERSEDNS"]--></label>
+			<label for="advancedpolls_usereversedns"><!--[gt text="Use Reverse DNS for IP Addresses"]--></label>
 			<!--[if $usereversedns eq 1]-->
 				<input id="advancedpolls_usereversedns" name="config[usereversedns]" type="checkbox" value="1" checked="checked" />
 			<!--[else]-->
@@ -22,53 +22,53 @@
 			<!--[/if]-->
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_scalingfactor"><!--[pnml name="_ADVANCEDPOLLSSCALINGFACTOR"]--></label>
+			<label for="advancedpolls_scalingfactor"><!--[gt text="Scaling Factor for Poll Results Bar"]--></label>
 			<input id="advancedpolls_scalingfactor" type="text" name="config[scalingfactor]" size="3" value="<!--[$scalingfactor|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_defaultoptioncount"><!--[pnml name="_ADVANCEDPOLLSDEFAULTOPTIONCOUNT"]--></label>
+			<label for="advancedpolls_defaultoptioncount"><!--[gt text="Default number of options in a poll"]--></label>
 			<input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
 		</div>
 	</fieldset>
 	<fieldset>
-		<legend><!--[pnml name=_ADVANCEDPOLLSINTERFACE]--></legend>
+		<legend><!--[gt text="Interface settings"]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_adminitemsperpage"><!--[pnml name="_ADVANCEDPOLLSADMINITEMSPERPAGE"]--></label>
+			<label for="advancedpolls_adminitemsperpage"><!--[gt text="Items per page in admin interface"]--></label>
 			<input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_useritemsperpage"><!--[pnml name="_ADVANCEDPOLLSUSERITEMSPERPAGE"]--></label>
+			<label for="advancedpolls_useritemsperpage"><!--[gt text="Items per page in user interface"]--></label>
 			<input id="advancedpolls_useritemsperpage" type="text" name="config[useritemsperpage]" size="3" value="<!--[$useritemsperpage|pnvarprepfordisplay]-->" />
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_admindateformat"><!--[pnml name="_ADVANCEDPOLLSADMINDATEFORMAT"]--></label>
+			<label for="advancedpolls_admindateformat"><!--[gt text="Date format for Admin Interface"]--></label>
 			<select id="advancedpolls_admindateformat" name="config[admindateformat]" size="1">
 				<!--[html_options options=$dateformats selected=$admindateformat]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_userdateformat"><!--[pnml name="_ADVANCEDPOLLSUSERDATEFORMAT"]--></label>
+			<label for="advancedpolls_userdateformat"><!--[gt text="Date format for User Interface"]--></label>
 			<select id="advancedpolls_userdateformat" name="config[userdateformat]" size="1">
 				<!--[html_options options=$dateformats selected=$userdateformat]-->
 			</select>
 		</div>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_defaultcolor"><!--[pnml name="_ADVANCEDPOLLSDEFAULTCOLOUR"]--></label>
+			<label for="advancedpolls_defaultcolor"><!--[gt text="Default colour"]--></label>
 			<input id="advancedpolls_defaultcolor" type="text" name="config[defaultcolour]" size="7" maxlength="7" value="<!--[$defaultcolour|pnvarprepfordisplay]-->" />
 			<a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
 		</div>
 	</fieldset>
 	<fieldset>
-		<legend><!--[pnml name=_PERMALINKS]--></legend>
+		<legend><!--[gt text="PermaLinks"]--></legend>
 		<div class="pn-adminformrow">
-			<label for="advancedpolls_addcategorytitletopermalink"><!--[pnml name="_ADDCATEGORYTITLETOPERMALINK"]--></label>
+			<label for="advancedpolls_addcategorytitletopermalink"><!--[gt text="Add category title to PermaLink"]--></label>
 			<input id="advancedpolls_addcategorytitletopermalink" type="checkbox" name="config[addcategorytitletopermalink]"<!--[if $addcategorytitletopermalink]--> checked="checked"<!--[/if]--> />
 		</div>
 	</fieldset>
     <!--[pnmodcallhooks hookobject=module hookaction=modifyconfig module=advanced_polls]-->
     <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[pnbutton src=button_ok.gif set=icons/small alt="_UPDATECONFIG" title="_UPDATECONFIG"]-->
-    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
+    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Update Configuration" __title="Update Configuration"]-->
+    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
     </div>
 </div>
 </form>

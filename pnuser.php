@@ -102,19 +102,19 @@ function advanced_polls_user_view()
 				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					if ($isvoteallowed == true) {
 						$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-										   'title' => _ADVANCEDPOLLSVOTE);
+										   'title' => __('Vote', $dom));
 					} else {
 						$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
-							               'title' => _ADVANCEDPOLLSRESULTS);
+							               'title' => __('Results', $dom));
 					}
 				}
 				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
-									   'title' => _EDIT);
+									   'title' => __('Edit', $dom));
 				}
 
 				if ($fullitem['closedate'] == 0) {
-					$closedate = _ADVANCEDPOLLSNOCLOSEDATE;
+					$closedate = __('No Close Date', $dom);
 				} else {
 					$closedate = ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['closedate']);
 				}
@@ -153,7 +153,7 @@ function advanced_polls_user_view()
 				$options = array();
 				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-						               'title' => _ADVANCEDPOLLSPREVIEW);
+						               'title' => __('Preview', $dom));
 				}
 				$futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 					                   'title' => $item['title'],
@@ -197,7 +197,7 @@ function advanced_polls_user_view()
 				$options = array();
 				if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
 					$options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-						               'title' => _ADVANCEDPOLLSRESULTS);
+						               'title' => __('Results', $dom));
 				}
                 $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
 					                   'title' => $item['title'],
@@ -243,7 +243,7 @@ function advanced_polls_user_display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (_NOSUCHITEM, 404);
+        return LogUtil::registerError (__('No such item found.', $dom), 404);
     }
 
     // Create output object
