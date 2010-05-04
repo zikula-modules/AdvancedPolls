@@ -1,38 +1,38 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="pn-admincontainer">
-<h2><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICS"]--></h2>
-<strong><!--[pnml name="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
-<strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay|default:'0']--><br />
+<h2><!--[gt text="_ADVANCEDPOLLSADMINVOTINGSTATISTICS"]--></h2>
+<strong><!--[gt text="_ADVANCEDPOLLSNAME"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
+<strong><!--[gt text="_ADVANCEDPOLLSDATETIMESTART"]--></strong> : <!--[$item.opendate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[gt text="_ADVANCEDPOLLSDATETIMECLOSE"]--></strong> : <!--[$item.closedate|apdatetime:"admin"|pnvarprepfordisplay]--><br />
+<strong><!--[gt text="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecount|pnvarprepfordisplay|default:'0']--><br />
 </div>
 <div style="float:right;">
 <form action="<!--[pnmodurl modname="advanced_polls" type="admin" func="adminstats"]-->" method="post" enctype="application/x-www-form-urlencoded">
   <div>
   <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
   <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-  <label for="advancedpolls_sortby"><!--[pnml name=_ADVANCEDPOLLSSORTVOTESBY"]--></label>
+  <label for="advancedpolls_sortby"><!--[gt text="_ADVANCEDPOLLSSORTVOTESBY"]--></label>
   <select id="advancedpolls_sortby" name="sortby">
     <!--[sortbytypes selected=$sortby]-->
   </select>
-  <label for="advancedpolls_sortorder"><!--[pnml name="_ADVANCEDPOLLSSORTVOTESORDER"]--></label>
+  <label for="advancedpolls_sortorder"><!--[gt text="_ADVANCEDPOLLSSORTVOTESORDER"]--></label>
   <select id="advancedpolls_sortorder" name="sortorder">
     <!--[sortordertypes selected=$sortorder]-->
   </select>
-  <input type="submit" value="<!--[pnml name="_ADVANCEDPOLLSSORTVOTES"]-->" />
+  <input type="submit" value="<!--[gt text="_ADVANCEDPOLLSSORTVOTES"]-->" />
   </div>
 </form>
 <table class="pn-admintable">
-<caption><!--[pnml name="_ADVANCEDPOLLSADMINVOTINGSTATISTICSTABLE"]--></caption>
+<caption><!--[gt text="_ADVANCEDPOLLSADMINVOTINGSTATISTICSTABLE"]--></caption>
   <thead>
 	  <tr>
-		  <th id="col1"><!--[pnml name="_ADVANCEDPOLLSVOTEID"]--></th>
-		  <th id="col2"><!--[pnml name="_ADVANCEDPOLLSVOTEIP"]--></th>
-		  <th id="col3"><!--[pnml name="_ADVANCEDPOLLSVOTETIME"]--></th>
-		  <th id="col4"><!--[pnml name="_ADVANCEDPOLLSVOTEUID"]--></th>
-		  <th id="col5"><!--[pnml name="_ADVANCEDPOLLSVOTERANK"]--></th>
-		  <th id="col6"><!--[pnml name="_ADVANCEDPOLLSVOTEOPTIONID"]--></th>
+		  <th id="col1"><!--[gt text="_ADVANCEDPOLLSVOTEID"]--></th>
+		  <th id="col2"><!--[gt text="_ADVANCEDPOLLSVOTEIP"]--></th>
+		  <th id="col3"><!--[gt text="_ADVANCEDPOLLSVOTETIME"]--></th>
+		  <th id="col4"><!--[gt text="_ADVANCEDPOLLSVOTEUID"]--></th>
+		  <th id="col5"><!--[gt text="_ADVANCEDPOLLSVOTERANK"]--></th>
+		  <th id="col6"><!--[gt text="_ADVANCEDPOLLSVOTEOPTIONID"]--></th>
 	  </tr>
   </thead>
   <tbody>
@@ -46,7 +46,7 @@
       <td headers="col6"><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
     </tr>
   <!--[foreachelse]-->
-    <tr class="pn-admintableempty"><td colspan="6"><!--[pnml name=_NOITEMSFOUND]--></td></tr>
+    <tr class="pn-admintableempty"><td colspan="6"><!--[gt text="No items found."]--></td></tr>
   <!--[/foreach]-->
   </tbody>
 </table>

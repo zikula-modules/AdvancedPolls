@@ -1,11 +1,11 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2><!--[pnml name="_ADVANCEDPOLLSFUTURE"]--> - <!--[$item.pn_title|pnvarprephtmldisplay]--></h2>
+<h2><!--[gt text="_ADVANCEDPOLLSFUTURE"]--> - <!--[$item.pn_title|pnvarprephtmldisplay]--></h2>
 <div style="width:50%;text-align:center;">
 <!--[section name=options loop=$options]-->
-  <span style="float:left"><!--[pnml name="_ADVANCEDPOLLSCHOICE"]-->&nbsp;<!--[$smarty.section.options.iteration]--></span><span style="float:right;"><!--[$options[options].title|pnvarprepfordisplay]--></span><br />
+  <span style="float:left"><!--[gt text="_ADVANCEDPOLLSCHOICE"]-->&nbsp;<!--[$smarty.section.options.iteration]--></span><span style="float:right;"><!--[$options[options].title|pnvarprepfordisplay]--></span><br />
 <!--[/section]-->
 </div>
 <br />
-<!--[pnml name="_ADVANCEDPOLLSOPENS"]--> <!--[$item.pn_opendate|apdatetime|pnvarprepfordisplay]-->
+<!--[gt text="_ADVANCEDPOLLSOPENS"]--> <!--[$item.pn_opendate|apdatetime|pnvarprepfordisplay]-->
 <!--[$hooks]-->

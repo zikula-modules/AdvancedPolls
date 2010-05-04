@@ -1,7 +1,7 @@
 <h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
 <!--[include file="advancedpolls_block_poll_results.htm"]-->
 <ul>
-<li><strong><!--[pnml name="_ADVANCEDPOLLSWINNER"]--></strong> : <!--[$votecounts.leadingvotename]--></li>
-<li><strong><!--[pnml name="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecounts.totalvotecount]--></li>
+<li><strong><!--[gt text="_ADVANCEDPOLLSWINNER"]--></strong> : <!--[$votecounts.leadingvotename]--></li>
+<li><strong><!--[gt text="_ADVANCEDPOLLSVOTECOUNT"]--></strong> : <!--[$votecounts.totalvotecount]--></li>
 </ul>
-<a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[pnml name="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>
+<a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[gt text="_ADVANCEDPOLLSDETAILEDRESULTS"]--></a>

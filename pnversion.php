@@ -11,9 +11,9 @@
  * @subpackage Advanced_Polls
  */
 
-$modversion['name'] = _ADVANCEDPOLLS_NAME;
+$modversion['name'] = _ADVANCEDPOLLS__('Name', $dom);
 $modversion['displayname'] = _ADVANCEDPOLLS_DISPLAYNAME;
-$modversion['description'] = _ADVANCEDPOLLS_DESCRIPTION;
+$modversion['description'] = _ADVANCEDPOLLS__('Description', $dom);
 $modversion['version'] = '2.0';
 $modversion['credits'] = 'pndocs/credits.txt';
 $modversion['help'] = 'pndocs/help.txt';

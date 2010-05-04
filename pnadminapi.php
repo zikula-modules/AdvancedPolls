@@ -23,12 +23,12 @@ function advanced_polls_adminapi_create($args)
 {
     // Argument check
     if (!isset($args['title']) || !isset($args['description']) || !isset($args['optioncount'])) {
-        return LogUtil::registerError (_MODARGSERROR);
+        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::", ACCESS_ADD)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	}
 
     // defaults
@@ -49,7 +49,7 @@ function advanced_polls_adminapi_create($args)
 	}
 
     if (!DBUtil::insertObject($args, 'advanced_polls_desc', 'pollid')) {
-        return LogUtil::registerError (_CREATEFAILED);
+        return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
     }
 
     // Let any hooks know that we have created a new item.
@@ -77,30 +77,30 @@ function advanced_polls_adminapi_delete($args)
 {
     // Argument check
     if (!isset($args['pollid'])) {
-        return LogUtil::registerError (_MODARGSERROR);
+        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
     // Get the poll
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
     if ($item == false) {
-        return LogUtil::registerError (_NOSUCHITEM);
+        return LogUtil::registerError (__('No such item found.', $dom));
     }
  
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_DELETE)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	}
 
     // Delete the object
     if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (_DELETEFAILED);
+        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
     }
     if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (_DELETEFAILED);
+        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
     }
     if (!DBUtil::deleteObjectByID('advanced_polls_desc', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (_DELETEFAILED);
+        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
     }
 
 	return true;
@@ -141,13 +141,13 @@ function advanced_polls_adminapi_update($args)
     // Argument check
     if (!isset($args['pollid']) || !isset($args['title']) || 
         !isset($args['description']) || !isset($args['optioncount'])) {
-        return LogUtil::registerError (_MODARGSERROR);
+        return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
     }
 
 	// The user API function is called
 	$item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check
@@ -155,10 +155,10 @@ function advanced_polls_adminapi_update($args)
 	// Note that at this stage we have two sets of item information, the
 	// pre-modification and the post-modification.
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	}
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	}
 
     // defaults
@@ -180,12 +180,12 @@ function advanced_polls_adminapi_update($args)
 
     // update the object
     if (!DBUtil::updateObject($args, 'advanced_polls_desc', '', 'pollid')) {
-        return LogUtil::registerError (_UPDATEFAILED);
+        return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
     }
 
     // first delete the poll options before reinserting them
     if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (_DELETEFAILED);
+        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
     }
     for ($count = 1; $count <= $args['optioncount']; $count++) {
         $items[] = array('pollid' => $args['pollid'],
@@ -194,7 +194,7 @@ function advanced_polls_adminapi_update($args)
                          'optionid' => $count);
     }
     if (!DBUtil::insertObjectArray($items, 'advanced_polls_data')) {
-        return LogUtil::registerError (_UPDATEFAILED);
+        return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
     }
 
 	// Let the calling process know that we have finished successfully
@@ -215,7 +215,7 @@ function advanced_polls_adminapi_resetvotes($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (_MODARGSERROR);
+		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
 	}
 	
 	// The user API function is called.
@@ -223,12 +223,12 @@ function advanced_polls_adminapi_resetvotes($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	} else {
 		if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
 			return LogUtil::registerError (_ADVANCEDPOLLSVOTESRESETFAILED);
@@ -254,7 +254,7 @@ function advanced_polls_adminapi_getvotes($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (_MODARGSERROR);
+		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
 	}
 
 	// Optional arguments.
@@ -265,7 +265,7 @@ function advanced_polls_adminapi_getvotes($args)
 		$args['numitems'] = -1;
 	}
 	if ((!isset($args['startnum']))  || (!isset($args['numitems']))) {
-		return LogUtil::registerError (_MODARGSERROR);
+		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
 	}
 
 	if (!isset($args['sortorder'])) {
@@ -280,12 +280,12 @@ function advanced_polls_adminapi_getvotes($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	} else {
 		// get database setup
 		$pntable = pnDBGetTables();
@@ -324,7 +324,7 @@ function advanced_polls_adminapi_getvotes($args)
 		// Check for an error with the database code, and if so set an appropriate
 		// error message and return
 		if ($votes === false) {
-			return LogUtil::registerError (_GETFAILED);
+			return LogUtil::registerError (__('Error! Could not load items.', $dom));
 		}
 	}
 
@@ -345,7 +345,7 @@ function advanced_polls_adminapi_duplicate($args)
 {
 	// Argument check
 	if (!isset($args['pollid'])) {
-		return LogUtil::registerError (_MODARGSERROR);
+		return LogUtil::registerError (__('Error! Could not do what you wanted. Please check your input.', $dom));
 	}
 
 	// The user API function is called.
@@ -353,12 +353,12 @@ function advanced_polls_adminapi_duplicate($args)
 
 	// check for no such poll return from api function
 	if ($item == false) {
-		return LogUtil::registerError(_NOSUCHITEM);
+		return LogUtil::registerError(__('No such item found.', $dom));
 	}
 
 	// Security check
 	if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
-		return LogUtil::registerError(_MODULENOAUTH);
+		return LogUtil::registerError(__('Sorry! No authorization to access this module.', $dom));
 	} else {
 		// The API function is called.
 		$pid = pnModAPIFunc('advanced_polls', 'admin', 'create',
@@ -446,7 +446,7 @@ function advanced_polls_adminapi_getlinks()
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => _ADVANCEDPOLLSNEW);
     }
     if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => _MODIFYCONFIG);
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => __('Settings', $dom));
     }
 
     return $links;

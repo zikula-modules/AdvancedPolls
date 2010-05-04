@@ -1,30 +1,30 @@
 <tr>
-    <td><label for="advancedpolls_pollid"><!--[pnml name="_ADVANCEDPOLLSID"]--></label></td>
+    <td><label for="advancedpolls_pollid"><!--[gt text="_ADVANCEDPOLLSID"]--></label></td>
 	<td>
 		<select id="advancedpolls_pollid" name="pollid" /><!--[html_options options=$items selected=$blockvars.pollid]--></select>
 	</td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_polluse"><!--[pnml name="_ADVANCEDPOLLSUSE"]--></label></td>
+	<td><label for="advancedpolls_polluse"><!--[gt text="_ADVANCEDPOLLSUSE"]--></label></td>
 	<td>
 		<select id="advancedpolls_polluse" name="polluse">
-			<option value="0" <!--[if $vars.polluse eq 0]-->selected="selected"<!--[/if]-->><!--[pnml name="_ADVANCEDPOLLSWARNINDIVIDUALSELECTION]--></option>
-			<option value="1" <!--[if $vars.polluse eq 1]-->selected="selected"<!--[/if]-->><!--[pnml name="_ADVANCEDPOLLSWARNLATEST]--></option>
-			<option value="2" <!--[if $vars.polluse eq 2]-->selected="selected"<!--[/if]-->><!--[pnml name="_ADVANCEDPOLLSWARNRANDOM]--></option>
+			<option value="0" <!--[if $vars.polluse eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="_ADVANCEDPOLLSWARNINDIVIDUALSELECTION"]--></option>
+			<option value="1" <!--[if $vars.polluse eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="_ADVANCEDPOLLSWARNLATEST"]--></option>
+			<option value="2" <!--[if $vars.polluse eq 2]-->selected="selected"<!--[/if]-->><!--[gt text="_ADVANCEDPOLLSWARNRANDOM"]--></option>
 		</select>
 	</td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_pollopenclosebaseddisplay"><!--[pnml name="_ADVANCEDPOLLSOPENCLOSEBASEDDISPLAY"]--></label></td>
+	<td><label for="advancedpolls_pollopenclosebaseddisplay"><!--[gt text="_ADVANCEDPOLLSOPENCLOSEBASEDDISPLAY"]--></label></td>
 	<td>
 		<select id="advancedpolls_pollopenclosebaseddisplay" name="pollopenclosebaseddisplay">
-			<option value="0" <!--[if $vars.pollopenclosebaseddisplay eq 0]-->selected="selected"<!--[/if]-->><!--[pnml name="_NO]--></option>
-			<option value="1" <!--[if $vars.pollopenclosebaseddisplay eq 1]-->selected="selected"<!--[/if]-->><!--[pnml name="_YES]--></option>
+			<option value="0" <!--[if $vars.pollopenclosebaseddisplay eq 0]-->selected="selected"<!--[/if]-->><!--[gt text="No"]--></option>
+			<option value="1" <!--[if $vars.pollopenclosebaseddisplay eq 1]-->selected="selected"<!--[/if]-->><!--[gt text="Yes"]--></option>
 		</select>
 	</td>
 </tr>
 <tr>
-	<td><label for="advancedpolls_backgroundcolor"><!--[pnml name="_ADVANCEDPOLLSBACKGROUNDCOLOR"]--></label></td>
+	<td><label for="advancedpolls_backgroundcolor"><!--[gt text="_ADVANCEDPOLLSBACKGROUNDCOLOR"]--></label></td>
 	<td>
 		<input id="advancedpolls_backgroundcolor" type="text" name="backgroundcolor" size="7" maxsize="7" value="<!--[$blockvars.backgroundcolor|pnvarprepfordisplay]-->" />
 	</td>
