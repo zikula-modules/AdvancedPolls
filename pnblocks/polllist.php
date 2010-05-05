@@ -122,7 +122,7 @@ function advanced_polls_polllistblock_modify($blockinfo)
  */
 function advanced_polls_polllistblock_update($blockinfo)
 {
-    $vars['pollid'] = pnVarCleanFromInput('pollid');
+    $vars['pollid']       = FormUtil::getPassedValue('pollid');
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;

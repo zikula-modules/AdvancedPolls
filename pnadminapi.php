@@ -86,7 +86,7 @@ function advanced_polls_adminapi_delete($args)
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
     if ($item == false) {
-        return LogUtil::registerError (__('No such item found.', $dom));
+        return LogUtil::registerError (__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -151,7 +151,7 @@ function advanced_polls_adminapi_update($args)
     // The user API function is called
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -189,7 +189,7 @@ function advanced_polls_adminapi_update($args)
 
     // first delete the poll options before reinserting them
     if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Sorry! Deletion attempt failed.', $dom));
+        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
     }
     for ($count = 1; $count <= $args['optioncount']; $count++) {
         $items[] = array('pollid' => $args['pollid'],
@@ -229,7 +229,7 @@ function advanced_polls_adminapi_resetvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -237,7 +237,7 @@ function advanced_polls_adminapi_resetvotes($args)
         return LogUtil::registerPermissionError();
     } else {
         if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
-            return LogUtil::registerError (__('Vote reset failed', $dom));
+            return LogUtil::registerError (__('Error! Vote reset failed.', $dom));
         }
     }
 
@@ -288,7 +288,7 @@ function advanced_polls_adminapi_getvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -325,6 +325,8 @@ function advanced_polls_adminapi_getvotes($args)
         if ($args['sortorder'] == 1 ) {
             $sortstring = $sortstring . ' DESC';
         }
+
+        $where = "pn_pollid = '{$args['pollid']}'";
 
         // get the objects from the db
         $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring);
@@ -363,7 +365,7 @@ function advanced_polls_adminapi_duplicate($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -428,10 +430,10 @@ function advanced_polls_adminapi_duplicate($args)
         // The return value of the function is checked
         if ($result != false) {
             // Success
-            LogUtil::registerStatus( __('Poll created', $dom));
+            LogUtil::registerStatus( __('Done! Poll created.', $dom));
         } else {
-            // Failiure
-            LogUtil::registerStatus( _ADVANCEDPOLLSFAILEDCREATE);
+            // Failure
+            LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
         }
         return (bool)$result;
     }
@@ -450,10 +452,10 @@ function advanced_polls_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => __('View Polls', $dom));
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => __('View polls', $dom));
     }
     if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => __('New Poll', $dom));
+        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => __('Create new poll', $dom));
     }
     if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => __('Settings', $dom));

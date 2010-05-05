@@ -1,11 +1,13 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2><!--[gt text="Future Poll"]--> - <!--[$item.pn_title|pnvarprephtmldisplay]--></h2>
-<div style="width:50%;text-align:center;">
+<h3><!--[gt text="Future poll"]-->: <!--[$item.pn_title|pnvarprephtmldisplay]--></h3>
+<p><!--[gt text="This poll opens on %s" tag1=$item.pn_opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--></p>
+
 <!--[section name=options loop=$options]-->
-  <span style="float:left"><!--[gt text="Choice"]-->&nbsp;<!--[$smarty.section.options.iteration]--></span><span style="float:right;"><!--[$options[options].title|pnvarprepfordisplay]--></span><br />
-<!--[/section]-->
+<div class="z-formrow">
+    <span class="z-label"><!--[gt text="Choice %s" tag1=$smarty.section.options.iteration]--></span>
+    <span><!--[$options[options].title|pnvarprepfordisplay]--></span>
 </div>
-<br />
-<!--[gt text="This poll opens on "]--> <!--[$item.pn_opendate|apdatetime|pnvarprepfordisplay]-->
+<!--[/section]-->
+
 <!--[$hooks]-->

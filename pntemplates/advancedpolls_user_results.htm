@@ -1,43 +1,38 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2>
-<!--[if $ispollopen eq 1]-->
-<!--[gt text="Current Poll"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
-<!--[else]-->
-<!--[gt text="Previous Poll"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
-<!--[/if]-->
-</h2>
+<h3>
+    <!--[if $ispollopen eq 1]-->
+    <!--[gt text="Current poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
+    <!--[else]-->
+    <!--[gt text="Previous poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
+    <!--[/if]-->
+</h3>
 <p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
-<table class="pn-datatable">
-	<tbody>
-	<!--[foreach from=$item.options item=option]-->
-	<tr>
-		<td>
-			<!--[if $option.optioncolour neq '']-->
-				<span style="color:<!--[$option.optioncolour]-->;">
-					<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
-				</span>
-			<!--[else]-->
-				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
-			<!--[/if]-->
-		</td>
-		<td>
-			<!--[if $option.percent gt 0]-->
-				<!--[pnimg src="leftbar.gif" height="15" width="7" __alt=$option.percent]--><!--[pnimg src="mainbar.gif" height="15" width=$option.percentintscaled __alt=$option.percent]--><!--[pnimg src="rightbar.gif" height="15" width="7" __alt=$option.percent]-->
-			<!--[else]-->
-				<!--[pnimg src="leftbar.gif" height="15" width="7" __alt=$option.percent]--><!--[pnimg src="mainbar.gif" height="15" width="3" __alt=$option.percent]--><!--[pnimg src="rightbar.gif" height="15" width="7" __alt=$option.percent]-->
-			<!--[/if]-->
-		</td>
-		<td>
-			<!--[$option.votecount|pnvarprepfordisplay]-->
-			<!--[if $option.votecount eq 1]-->
-				<!--[gt text="Vote"]-->
-			<!--[else]-->
-				<!--[gt text="Votes"]-->
-			<!--[/if]-->
-		</td>
-	</tr>
-	<!--[/foreach]-->
-	</tbody>
+<table class="z-datatable">
+    <tbody>
+        <!--[foreach from=$item.options item=option]-->
+        <tr class="<!--[cycle values="z-odd,z-even"]-->">
+            <td>
+                <!--[if $option.optioncolour neq '']-->
+                <span style="color:<!--[$option.optioncolour]-->;">
+                    <!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
+                </span>
+                <!--[else]-->
+                <!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
+                <!--[/if]-->
+            </td>
+            <td>
+                <!--[if $option.percent gt 0]-->
+                <!--[pnimg src="leftbar.gif" height="15" width="7" alt=$option.percent]--><!--[pnimg src="mainbar.gif" height="15" width=$option.percentintscaled alt=$option.percent]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$option.percent]-->
+                <!--[else]-->
+                <!--[pnimg src="leftbar.gif" height="15" width="7" alt=$option.percent]--><!--[pnimg src="mainbar.gif" height="15" width="3" alt=$option.percent]--><!--[pnimg src="rightbar.gif" height="15" width="7" alt=$option.percent]-->
+                <!--[/if]-->
+            </td>
+            <td>
+                <!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]-->
+            </td>
+        </tr>
+        <!--[/foreach]-->
+    </tbody>
 </table>
 <!--[$hooks]-->

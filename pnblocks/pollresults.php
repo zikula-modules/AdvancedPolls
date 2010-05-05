@@ -145,8 +145,7 @@ function advanced_polls_pollresultsblock_modify($blockinfo)
  */
 function advanced_polls_pollresultsblock_update($blockinfo)
 {
-    $vars['numitems'] = pnVarCleanFromInput('numitems');
-
+    $vars['numitems']     = FormUtil::getPassedValue('numitems');
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;

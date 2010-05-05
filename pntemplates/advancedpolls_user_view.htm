@@ -1,83 +1,85 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2><!--[gt text="View Polls"]--></h2>
-<table class="pn-datatable" width="100%">
-<caption><!--[gt text="Currently Open Polls"]--></caption>
-  <thead>
-	  <tr>
-		  <th style="width:20%"><!--[gt text="Poll Title"]--></th>
-		  <th><!--[gt text="Poll Close Date"]--></th>
-		  <th style="width:20%"></th>
-	  </tr>
-  </thead>
-  <tbody>
-  <!--[section name=polls loop=$activepolls]-->  
-    <tr>
-      <td><a href="<!--[$activepolls[polls].url|pnvarprepfordisplay]-->"><!--[$activepolls[polls].title|pnvarprephtmldisplay]--></a></td>
-	  <td><!--[$activepolls[polls].closedate|pnvarprepfordisplay]--></td>
-	  <td>
-	    <!--[assign var="options" value=$activepolls[polls].options]-->
-        <!--[section name=options loop=$options]-->
-	    <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+<h3><!--[gt text="View polls"]--></h3>
+<h4><!--[gt text="Currently open polls"]--></h4>
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <th style="width:20%"><!--[gt text="Poll title"]--></th>
+            <th><!--[gt text="Poll close date"]--></th>
+            <th style="width:20%">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--[section name=polls loop=$activepolls]-->
+        <tr class="<!--[cycle values="z-odd,z-even"]-->">
+            <td><a href="<!--[$activepolls[polls].url|pnvarprepfordisplay]-->"><!--[$activepolls[polls].title|pnvarprephtmldisplay]--></a></td>
+            <td><!--[$activepolls[polls].closedate|pnvarprepfordisplay]--></td>
+            <td>
+                <!--[assign var="options" value=$activepolls[polls].options]-->
+                <!--[section name=options loop=$options]-->
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <!--[/section]-->
+            </td>
+        </tr>
+        <!--[sectionelse]-->
+        <tr class="z-datatableempty"><td colspan="3"><!--[gt text="No polls found."]--></td></tr>
         <!--[/section]-->
-      </td>
-    </tr>
-  <!--[sectionelse]-->
-  	<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <!--[/section]-->
-  </tbody>
+    </tbody>
 </table>
-<br />
-<table class="pn-datatable" width="100%">
-<caption><!--[gt text="Upcoming Polls"]--></caption>
-  <thead>
-	  <tr>
-		  <th style="width:20%"><!--[gt text="Poll Title"]--></th>
-		  <th><!--[gt text="Poll Open Date"]--></th>
-		  <th style="width:20%"></th>
-	  </tr>
-  </thead>
-  <tbody>
-  <!--[section name=polls loop=$futurepolls]-->  
-    <tr>
-      <td><a href="<!--[$futurepolls[polls].url|pnvarprepfordisplay]-->"><!--[$futurepolls[polls].title|pnvarprephtmldisplay]--></a></td>
-	  <td><!--[$futurepolls[polls].opendate|pnvarprepfordisplay]--></td>
-	  <td>
-	    <!--[assign var="options" value=$futurepolls[polls].options]-->
-        <!--[section name=options loop=$options]-->
-	    <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+
+<!--[cycle print=false reset=true]-->
+<h4><!--[gt text="Upcoming polls"]--></h4>
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <th style="width:20%"><!--[gt text="Poll title"]--></th>
+            <th><!--[gt text="Poll open date"]--></th>
+            <th style="width:20%">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--[section name=polls loop=$futurepolls]-->
+        <tr class="<!--[cycle values="z-odd,z-even"]-->">
+            <td><a href="<!--[$futurepolls[polls].url|pnvarprepfordisplay]-->"><!--[$futurepolls[polls].title|pnvarprephtmldisplay]--></a></td>
+            <td><!--[$futurepolls[polls].opendate|pnvarprepfordisplay]--></td>
+            <td>
+                <!--[assign var="options" value=$futurepolls[polls].options]-->
+                <!--[section name=options loop=$options]-->
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <!--[/section]-->
+            </td>
+        </tr>
+        <!--[sectionelse]-->
+        <tr class="z-datatableempty"><td colspan="3"><!--[gt text="No polls found."]--></td></tr>
         <!--[/section]-->
-      </td>
-    </tr>
-  <!--[sectionelse]-->
-  	<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <!--[/section]-->
-  </tbody>
+    </tbody>
 </table>
-<br />
-<table class="pn-datatable" width="100%">
-<caption><!--[gt text="Previous Polls"]--></caption>
-  <thead>
-	  <tr>
-		  <th style="width:20%"><!--[gt text="Poll Title"]--></th>
-		  <th><!--[gt text="Poll Close Date"]--></th>
-		  <th style="width:20%"></th>
-	  </tr>
-  </thead>
-  <tbody>
-  <!--[section name=polls loop=$closedpolls]-->  
-    <tr>
-      <td><a href="<!--[$closedpolls[polls].url|pnvarprepfordisplay]-->"><!--[$closedpolls[polls].title|pnvarprephtmldisplay]--></a></td>
-	  <td><!--[$closedpolls[polls].opendate|pnvarprepfordisplay]--></td>
-	  <td>
-	    <!--[assign var="options" value=$closedpolls[polls].options]-->
-        <!--[section name=options loop=$options]-->
-	    <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+
+<!--[cycle print=false reset=true]-->
+<h4><!--[gt text="Previous polls"]--></h4>
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <th style="width:20%"><!--[gt text="Poll title"]--></th>
+            <th><!--[gt text="Poll close date"]--></th>
+            <th style="width:20%">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--[section name=polls loop=$closedpolls]-->
+        <tr class="<!--[cycle values="z-odd,z-even"]-->">
+            <td><a href="<!--[$closedpolls[polls].url|pnvarprepfordisplay]-->"><!--[$closedpolls[polls].title|pnvarprephtmldisplay]--></a></td>
+            <td><!--[$closedpolls[polls].opendate|pnvarprepfordisplay]--></td>
+            <td>
+                <!--[assign var="options" value=$closedpolls[polls].options]-->
+                <!--[section name=options loop=$options]-->
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <!--[/section]-->
+            </td>
+        </tr>
+        <!--[sectionelse]-->
+        <tr class="z-datatableempty"><td colspan="3"><!--[gt text="No polls found."]--></td></tr>
         <!--[/section]-->
-      </td>
-    </tr>
-  <!--[sectionelse]-->
-  	<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <!--[/section]-->
-  </tbody>
+    </tbody>
 </table>

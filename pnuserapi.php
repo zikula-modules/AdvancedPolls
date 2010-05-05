@@ -126,8 +126,7 @@ function advanced_polls_userapi_get($args)
     }
 
     // Argument check
-    if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) &&
-    !isset($args['title'])) {
+    if ((!isset($args['pollid']) || !is_numeric($args['pollid'])) && !isset($args['title'])) {
         return LogUtil::registerArgsError();
     }
 
@@ -163,15 +162,14 @@ function advanced_polls_userapi_get($args)
     } else {
         $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['title'], 'urltitle', '', $permFilter);
     }
+
     $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', 'pn_pollid=\''.DataUtil::formatForStore($poll['pollid']).'\'', 'optionid');
 
     // pad the array to the correct number of poll options
     if (count($poll['options']) < $poll['optioncount']) {
         for($counter = 0; $counter < $poll['optioncount']; $counter++) {
             if (!isset($poll['options'][$counter])) {
-                $poll['options'][$counter] = array('voteid' => $counter,
-                               'optiontext' => '',
-                               'optioncolour' => '');
+                $poll['options'][$counter] = array('voteid' => $counter, 'optiontext' => '', 'optioncolour' => '');
             }
         }
     }
@@ -242,7 +240,7 @@ function advanced_polls_userapi_isopen($args)
 
     // no such item is db
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -288,7 +286,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 
     // no such item in db
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -347,7 +345,7 @@ function advanced_polls_userapi_isvoteallowed($args)
             // possibly remove this voting style
             return true;
         default: //any other option - should never occur
-            return LogUtil::registerError(_ADVANCEDPOLLSNOAUTHTYPE);
+            return LogUtil::registerError(__('Error! No poll authorisation method', $dom));
     }
 }
 
@@ -375,7 +373,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such item found.', $dom));
     }
 
     // Security check
@@ -411,7 +409,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
         // check for db errors
         if ($dbconn->ErrorNo()  != 0) {
-            return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
+            return LogUtil::registerError(__('Error! Reset failed.', $dom));
         }
 
         // set new opening and closing times
@@ -435,7 +433,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
         // check for db errors
         if ($dbconn->ErrorNo()  != 0) {
-            return LogUtil::registerError(_ADVANCEDPOLLSRESETFAILED);
+            return LogUtil::registerError(__('Error! Reset failed.', $dom));
         }
 
         // close result set
@@ -593,7 +591,7 @@ function advanced_polls_userapi_addvote($args)
         $args['uid'] = pnUserGetVar('uid');
         $args['time'] = time();
         if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
-            return LogUtil::registerError (__('Failed to register vote', $dom));
+            return LogUtil::registerError (__('Error! Failed to register vote.', $dom));
         }
 
         //set cookie to indicate vote made in this poll

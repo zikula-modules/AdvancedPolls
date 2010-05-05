@@ -185,10 +185,10 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
 function advanced_polls_pollwarnblock_update($blockinfo)
 {
     // get the input
-    $vars['pollid'] = pnVarCleanFromInput('pollid');
-    $vars['pollopenclosebaseddisplay'] = pnVarCleanFromInput('pollopenclosebaseddisplay');
-    $vars['polluse'] = pnVarCleanFromInput('polluse');
-    $vars['backgroundcolor'] = pnVarCleanFromInput('backgroundcolor');
+    $vars['pollid']                    = FormUtil::getPassedValue('pollid');
+    $vars['pollopenclosebaseddisplay'] = FormUtil::getPassedValue('pollopenclosebaseddisplay');
+    $vars['polluse']                   = FormUtil::getPassedValue('polluse');
+    $vars['backgroundcolor']           = FormUtil::getPassedValue('backgroundcolor');
 
     // generate the block array
     $blockinfo['content'] = pnBlockVarsToContent($vars);

@@ -51,7 +51,7 @@
     <!--[if $votecounts.totalvotecount > 0]-->
     <p><strong><!--[gt text="The Current Leader in this poll is" domain="module_advanced_polls"]--> : <!--[$votecounts.leadingvotename|pnvarprephtmldisplay]--></strong></p>
     <!--[if $item.pollnoclosedate neq 0]-->
-    <p><!--[gt text="Poll Close Date" domain="module_advanced_polls"]--> : <!--[$item.closedate|apdatetime]--></p>
+    <p><!--[gt text="Poll Close Date" domain="module_advanced_polls"]--> : <!--[$item.closedate|pndate_format:datetimebrief]--></p>
     <!--[/if]-->
     <!--[/if]-->
     <!--[else]-->
@@ -61,5 +61,5 @@
     <!--[/if]-->
     <!--[/if]-->
     <p><!--[gt text="Total Number of Votes" domain="module_advanced_polls"]--> : <!--[$votecounts.totalvotecount|default:0]--></p>
-    <a class="pn-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[gt text="Detailed Results" domain="module_advanced_polls"]--></a>
+    <a class="z-sub" href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[gt text="Detailed Results" domain="module_advanced_polls"]--></a>
 </div>

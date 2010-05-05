@@ -254,12 +254,12 @@ function advanced_polls_pollblock_modify($blockinfo)
  */
 function advanced_polls_pollblock_update($blockinfo)
 {
-    $vars['pollid'] = pnVarCleanFromInput('pollid');
-    $vars['pollopenclosebaseddisplay'] = pnVarCleanFromInput('pollopenclosebaseddisplay');
-    $vars['polluse'] = pnVarCleanFromInput('polluse');
-    $vars['polldisplayresults'] = pnVarCleanFromInput('polldisplayresults');
-    $vars['ajaxvoting'] = pnVarCleanFromInput('ajaxvoting');
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $vars['pollid']                    = FormUtil::getPassedValue('pollid');
+    $vars['pollopenclosebaseddisplay'] = FormUtil::getPassedValue('pollopenclosebaseddisplay');
+    $vars['polluse']                   = FormUtil::getPassedValue('polluse');
+    $vars['polldisplayresults']        = FormUtil::getPassedValue('polldisplayresults');
+    $vars['ajaxvoting']                = FormUtil::getPassedValue('ajaxvoting');
+    $blockinfo['content']              = FormUtil::getPassedValue($vars);
 
     return $blockinfo;
 }

@@ -52,8 +52,10 @@ function advanced_polls_user_main()
  */
 function advanced_polls_user_view()
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Get parameters from whatever input we need.
-    $startnum = pnVarCleanFromInput('startnum');
+    $startnum = FormUtil::getPassedValue('startnum');
 
     // Create output object
     $renderer = pnRender::getInstance('advanced_polls');
@@ -68,7 +70,7 @@ function advanced_polls_user_view()
 
     // The return value of the function is checked
     if ($items == false) {
-        return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSITEMFAILED);
+        return LogUtil::registerError(__('Error! No polls found.', $dom));
     }
 
     //----------------------------------------------------------------------------
@@ -99,27 +101,21 @@ function advanced_polls_user_view()
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
                     if ($isvoteallowed == true) {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                       'title' => __('Vote', $dom));
+                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Vote', $dom));
                     } else {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
-                             'title' => __('Results', $dom));
+                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)), 'title' => __('Results', $dom));
                     }
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
-                     'title' => __('Edit', $dom));
+                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])), 'title' => __('Edit', $dom));
                 }
 
                 if ($fullitem['closedate'] == 0) {
-                    $closedate = __('No Close Date', $dom);
+                    $closedate = __('No close date', $dom);
                 } else {
-                    $closedate = ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['closedate']);
+                    $closedate = DateUtil::formatDatetime($fullitem['closedate'], 'datetimebrief');
                 }
-                $activepolls[]=  array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                             'title' => $item['title'],
-                     'closedate' => $closedate,
-                     'options' => $options);
+                $activepolls[]=  array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => $item['title'], 'closedate' => $closedate, 'options' => $options);
             }
         }
     }
@@ -150,13 +146,9 @@ function advanced_polls_user_view()
 
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                           'title' => __('Preview', $dom));
-                }
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Preview', $dom)); }
                 $futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                             'title' => $item['title'],
-                       'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
-                     'options' => $options);
+                             'title' => $item['title'], 'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'), 'options' => $options);
             }
         }
     }
@@ -199,7 +191,7 @@ function advanced_polls_user_view()
                 }
                 $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                              'title' => $item['title'],
-                     'opendate' => ml_ftime(constant(pnModGetVar('advanced_polls', 'userdateformat')), $fullitem['opendate']),
+                     'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
                      'options' => $options);
             }
         }
@@ -224,6 +216,8 @@ function advanced_polls_user_view()
  */
 function advanced_polls_user_display($args)
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
     $title = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
@@ -241,7 +235,7 @@ function advanced_polls_user_display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (__('No such item found.', $dom), 404);
+        return LogUtil::registerError (__('Error! No such item found.', $dom), 404);
     }
 
     // Create output object
@@ -321,7 +315,7 @@ function advanced_polls_user_display($args)
             // close results table out
             $template = 'advancedpolls_user_futurepoll';
         } else {
-            return pnVarPrepHTMLDisplay(_ADVANCEDPOLLSNOTEMPLATESELECTED);
+            return LogUtil::registerError(__('Error! No template selected.', $dom));
         }
     } else {
         return LogUtil::registerPermissionError();
@@ -359,14 +353,14 @@ function advanced_polls_user_display($args)
 function advanced_polls_user_vote($args)
 {
     // get variables submitted from form
-    $pollid = pnVarCleanFromInput('pollid');
-    $results = pnVarCleanFromInput('results');
-    $multiple = pnVarCleanFromInput('multiple');
-    $multiplecount = pnVarCleanFromInput('multiplecount');
-    $title = pnVarCleanFromInput('title');
-    $optioncount =  pnVarCleanFromInput('optioncount');
-    $polldisplayresults = pnVarCleanFromInput('polldisplayresults');
-    $returnurl = pnVarCleanFromInput('returnurl');
+    $pollid             = FormUtil::getPassedValue('pollid');
+    $results            = FormUtil::getPassedValue('results');
+    $multiple           = FormUtil::getPassedValue('multiple');
+    $multiplecount      = FormUtil::getPassedValue('multiplecount');
+    $title              = FormUtil::getPassedValue('title');
+    $optioncount        = FormUtil::getPassedValue('optioncount');
+    $polldisplayresults = FormUtil::getPassedValue('polldisplayresults');
+    $returnurl          = FormUtil::getPassedValue('returnurl');
     extract($args);
 
     if (!isset($results)) {
@@ -392,32 +386,23 @@ function advanced_polls_user_vote($args)
                         if ($multiplecount == -1) {
                             $max = $optioncount;
                             for ($i = 1; $i <= $max; $i++) {
-                                $optionid = pnVarCleanFromInput('option' . ($i));
+                                $optionid = FormUtil::getPassedValue('option' . ($i));
                                 if ($optionid != null) {
                                     $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
-                                    array('pollid' => $pollid,
-                                  'title' => $title,
-                                  'optionid' => $optionid,
-                                  'voterank' => 1));
+                                    array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => 1));
                                 }
                             }
                         } else {
                             for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
-                                $optionid = pnVarCleanFromInput('option' . ($i));
+                                $optionid = FormUtil::getPassedValue('option' . ($i));
                                 $result = pnModAPIFunc('advanced_polls','user','addvote',
-                                array('pollid' => $pollid,
-                      'title' => $title,
-                      'optionid' => $optionid,
-                      'voterank' => $i));
+                                array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => $i));
                             }
                         }
                     } else {
-                        $optionid = pnVarCleanFromInput('option'.$pollid);
+                        $optionid = FormUtil::getPassedValue('option'.$pollid);
                         $result = pnModAPIFunc('advanced_polls','user','addvote',
-                        array('pollid' => $pollid,
-                  'title' => $title,
-                  'optionid' => $optionid,
-                  'voterank' => 1));
+                        array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => 1));
                     }
                 }
             }
@@ -427,8 +412,6 @@ function advanced_polls_user_vote($args)
     if (($polldisplayresults == 0) && isset($polldisplayresults) && isset($returnurl)) {
         return pnRedirect($returnurl);
     } else {
-        return pnRedirect(pnModURL('advanced_polls','user','display',
-        array('pollid' => $pollid,
-                   'results' => $results)));
+        return pnRedirect(pnModURL('advanced_polls','user','display', array('pollid' => $pollid, 'results' => $results)));
     }
 }

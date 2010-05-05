@@ -19,5 +19,5 @@ define('_ADVANCEDPOLLSOPENCLOSEBASEDDISPLAY', 'Display Block based on Open/Close
 define('_ADVANCEDPOLLSDISPLAYRESULTS', 'Display Results Page after Vote');
 define('_ADVANCEDPOLLSID','Poll');
 define('_ADVANCEDPOLLSUSE','Poll to Use (Latest and Random override individual poll selection)');
-define('_ADVANCEDPOLLSNOCLOSEDATE', 'No Close Date');
+define('_ADVANCEDPOLLSNOCLOSEDATE', 'No close date');
 define('_ADVANCEDPOLLSRECORDINGVOTE', 'Recording vote');

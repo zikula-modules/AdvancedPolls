@@ -1,12 +1,12 @@
-<table>
 <!--[foreach from=$item.options item=option]-->
-	<tr>
-	<!--[if $option.optioncolor neq '']-->		  
-		<td><span style="color:<!--[$option.optioncolor]-->;"><label for="<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></label></span></td>
-	<!--[else]-->
-		<td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
-	<!--[/if]-->
-	<td><input id="option<!--[$option.optionid|pnvarprephtmldisplay]-->" type="radio" name="option<!--[$pollid|pnvarprepfordisplay]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" /></td>
-	</tr>
+<div class="z-formrow">
+    <!--[if $option.optioncolor neq '']-->
+    <span style="color:<!--[$option.optioncolor]-->;">
+        <label for="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></label>
+    </span>
+    <!--[else]-->
+    <label for="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
+    <!--[/if]-->
+    <input id="option<!--[$option.optionid|pnvarprephtmldisplay]-->" type="radio" name="option<!--[$pollid|pnvarprepfordisplay]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" />
+</div>
 <!--[/foreach]-->
-</table>

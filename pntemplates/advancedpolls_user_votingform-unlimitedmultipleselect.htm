@@ -1,20 +1,20 @@
-<strong><!--[gt text="This is an Unlimited Multiple Selection Poll."]--> <!--[gt text="You may select any number of options."]--></strong>
-<br /><br />
-<table>
+<p class="z-informationmsg">
+    <!--[gt text="This is an unlimited multiple selection poll."]-->
+    <!--[gt text="You may select any number of options."]-->
+</p>
+
 <!--[counter name=counter print=false start=0]-->
 <!--[foreach from=$item.options item=option]-->
-	<tr>
-		<td><input id="<!--[$option.optiontext|pnvarprephtmldisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->"></td>
-		<td>
-			<!--[if $option.optioncolor neq '']-->		  
-				<span style="color:<!--[$option.optioncolor]-->;">
-					<label id="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
-				</span>
-			<!--[else]-->
-				<!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
-			<!--[/if]-->
-		</td>
-	</tr>
+<div class="z-formrow">
+    <!--[if $option.optioncolor neq '']-->
+    <span style="color:<!--[$option.optioncolor]-->;">
+        <label id="option<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
+    </span>
+    <!--[else]-->
+    <label for="option<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
+    <!--[/if]-->
+    <input id="option<!--[$option.optiontext|pnvarprephtmldisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->">
+</div>
 <!--[/foreach]-->
-</table>
+
 <input type="hidden" name="optioncount" value="<!--[$smarty.section.options.iteration-1]-->" />

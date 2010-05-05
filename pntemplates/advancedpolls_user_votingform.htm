@@ -1,31 +1,35 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h2><!--[gt text="Current Poll"]--> - <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
-<div style="text-align:center;">
-<!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--><br />
-<form name="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
-	<div>
-	<input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
-	<input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-	<input type="hidden" name="title" value="<!--[$item.title|pnvarprephtmldisplay]-->" />
-	<input type="hidden" name="results" value="1" />
-	<!--[if $polltype eq 0]-->
-		<!--[include file="advancedpolls_user_votingform-singleoptionselect.htm"]-->
-	<!--[else]-->
-		<input type="hidden" name="multiple" value="1" />
-		<input type="hidden" name="multiplecount" value="<!--[$multiplecount]-->" />
-		<!--[if $polltype eq 1]-->
-			<!--[if $multiplecount eq -1]-->
-				<!--[include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"]-->
-			<!--[else]-->
-				<!--[include file="advancedpolls_user_votingform-multipleselect.htm"]-->
-			<!--[/if]-->
-		<!--[else]-->
-			<!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
-		<!--[/if]-->
-	<!--[/if]-->
-	<input name="submit" type="submit" value="<!--[gt text="Vote"]-->" />
-	</div>
+<h3><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h3>
+<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
+<form class="z-form" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <div>
+        <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
+        <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+        <input type="hidden" name="title" value="<!--[$item.title|pnvarprephtmldisplay]-->" />
+        <input type="hidden" name="results" value="1" />
+        <fieldset>
+            <legend><!--[gt text="Current poll"]--></legend>
+            <!--[if $polltype eq 0]-->
+            <!--[include file="advancedpolls_user_votingform-singleoptionselect.htm"]-->
+            <!--[else]-->
+            <input type="hidden" name="multiple" value="1" />
+            <input type="hidden" name="multiplecount" value="<!--[$multiplecount]-->" />
+            <!--[if $polltype eq 1]-->
+            <!--[if $multiplecount eq -1]-->
+            <!--[include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"]-->
+            <!--[else]-->
+            <!--[include file="advancedpolls_user_votingform-multipleselect.htm"]-->
+            <!--[/if]-->
+            <!--[else]-->
+            <!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
+            <!--[/if]-->
+            <!--[/if]-->
+        </fieldset>
+        <div class="z-formbuttons">
+            <input name="submit" type="submit" value="<!--[gt text="Vote"]-->" />
+        </div>
+    </div>
 </form>
-</div>
+
 <!--[$hooks]-->

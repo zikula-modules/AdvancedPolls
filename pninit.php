@@ -35,8 +35,6 @@ function advanced_polls_init()
     }
 
     // Set up an initial value for each module variable
-    pnModSetVar('advanced_polls', 'admindateformat', '_DATETIMEBRIEF');
-    pnModSetVar('advanced_polls', 'userdateformat', '_DATETIMEBRIEF');
     pnModSetVar('advanced_polls', 'usereversedns', 0);
     pnModSetVar('advanced_polls', 'scalingfactor', 4);
     pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
@@ -99,6 +97,8 @@ function advanced_polls_upgrade($oldversion)
             // setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
+            pnModDelVar('advanced_polls', 'admindateformat');
+            pnModDelVar('advanced_polls', 'userdateformat');
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
             if (!_advanced_polls_createdefaultcategory()) {
                 return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
