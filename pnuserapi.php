@@ -560,8 +560,8 @@ function advanced_polls_userapi_pollvotecount($args)
 
       // Create the item array
       $item = array('totalvotecount' => $totalvotecount,
-          'leadingvoteid' => $leadingvoteid,
-          'votecountarray' => $votecountarray );
+                    'leadingvoteid'  => $leadingvoteid,
+                    'votecountarray' => $votecountarray );
 
       // Return the item array
       return $item;
@@ -838,7 +838,7 @@ function advanced_polls_userapi_decodeurl($args)
  */
 function advanced_polls_userapi_getmodulemeta()
 {
-    return array('viewfunc'    => 'view',
+    return array('viewfunc'   => 'view',
                 'displayfunc' => 'display',
                 'newfunc'     => 'new',
                 'createfunc'  => 'create',

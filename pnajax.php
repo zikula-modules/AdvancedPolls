@@ -21,12 +21,12 @@ function advanced_polls_ajax_vote()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
-    $pollid = FormUtil::getPassedValue('pollid', null, 'POST');
-    $title  = FormUtil::getPassedValue('title', null, 'POST');
-    $results = FormUtil::getPassedValue('results', null, 'POST');
-    $multiple = FormUtil::getPassedValue('multiple', null, 'POST');
+    $pollid        = FormUtil::getPassedValue('pollid', null, 'POST');
+    $title         = FormUtil::getPassedValue('title', null, 'POST');
+    $results       = FormUtil::getPassedValue('results', null, 'POST');
+    $multiple      = FormUtil::getPassedValue('multiple', null, 'POST');
     $multiplecount = FormUtil::getPassedValue('multiplecount', null, 'POST');
-    $optioncount =  FormUtil::getPassedValue('optioncount', null, 'POST');
+    $optioncount   =  FormUtil::getPassedValue('optioncount', null, 'POST');
 
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$title::$pollid", ACCESS_COMMENT)) {
         AjaxUtil::error(__('Error! No authorization to access this module.', $dom));
@@ -52,29 +52,29 @@ function advanced_polls_ajax_vote()
                         $optionid = FormUtil::getPassedValue('option' . ($i), null, 'POST');
                         if ($optionid != null) {
                             $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
-                            array('pollid' => $pollid,
-                              'title' => $title,
-                              'optionid' => $optionid,
-                              'voterank' => 1));
+                            array('pollid'   => $pollid,
+                                  'title'    => $title,
+                                  'optionid' => $optionid,
+                                  'voterank' => 1));
                         }
                     }
                 } else {
                     for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
                         $optionid = FormUtil::getPassedValue('option' . ($i), null, 'POST');
                         $result = pnModAPIFunc('advanced_polls','user','addvote',
-                        array('pollid' => $pollid,
-                  'title' => $title,
-                  'optionid' => $optionid,
-                  'voterank' => $i));
+                        array('pollid'   => $pollid,
+                              'title'    => $title,
+                              'optionid' => $optionid,
+                              'voterank' => $i));
                     }
                 }
             } else {
                 $optionid = FormUtil::getPassedValue('option'.$pollid, null, 'POST');
                 $result = pnModAPIFunc('advanced_polls','user','addvote',
-                array('pollid' => $pollid,
-              'title' => $title,
-              'optionid' => $optionid,
-              'voterank' => 1));
+                array('pollid'   => $pollid,
+                      'title'    => $title,
+                      'optionid' => $optionid,
+                      'voterank' => 1));
             }
         }
     }

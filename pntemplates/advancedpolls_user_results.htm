@@ -35,4 +35,5 @@
         <!--[/foreach]-->
     </tbody>
 </table>
-<!--[$hooks]-->
+<!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
+<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->

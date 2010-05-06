@@ -1,13 +1,17 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h3><!--[gt text="Future poll"]-->: <!--[$item.pn_title|pnvarprephtmldisplay]--></h3>
-<p><!--[gt text="This poll opens on %s" tag1=$item.pn_opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--></p>
-
-<!--[section name=options loop=$options]-->
-<div class="z-formrow">
-    <span class="z-label"><!--[gt text="Choice %s" tag1=$smarty.section.options.iteration]--></span>
-    <span><!--[$options[options].title|pnvarprepfordisplay]--></span>
+<p class="z-informationmsg"><!--[gt text="This poll opens on %s" tag1=$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--></p>
+<h3><!--[gt text="Future poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h3>
+<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
+<div class="z-form">
+    <div class="z-fieldset">
+        <!--[foreach from=$item.options name=option item=option]-->
+        <div class="z-formrow">
+            <span class="z-label"><!--[gt text="Choice %s" tag1=$smarty.foreach.option.iteration]-->:</span>
+            <span><!--[$option.optiontext|pnvarprepfordisplay]--></span>
+        </div>
+        <!--[/foreach]-->
+    </div>
 </div>
-<!--[/section]-->
-
-<!--[$hooks]-->
+<!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
+<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->

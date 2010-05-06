@@ -108,7 +108,7 @@ function advanced_polls_pollresultsblock_display($blockinfo) {
                 $percent = 0;
             }
             $percentages[$key] = array('percent' => (int)$percent,
-                     'percentintscaled' => (int)$percent * 4);
+                                       'percentintscaled' => (int)$percent * 4);
         }
     }
     $votecounts['percentages'] = $percentages;

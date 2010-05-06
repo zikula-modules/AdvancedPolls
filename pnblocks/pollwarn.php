@@ -68,7 +68,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
     $polluse = $vars['polluse'];
 
     if ($polluse == 1) {
-        $items = pnModAPIFunc('advanced_polls',	'user',	'getall', array('startnum' => 0));
+        $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0));
         $item = $items[0];
         $pollid = $item['pollid'];
     }
@@ -79,9 +79,9 @@ function advanced_polls_pollwarnblock_display($blockinfo)
     }
 
     // get full details on this poll from api
-    $item = pnModAPIFunc('advanced_polls',	'user',	'get',	array('pollid' => $pollid,
-                                      'titlename' => 'name',
-                                  'idname' => 'id'));
+    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid,
+                                                                'titlename' => 'name',
+                                                                'idname' => 'id'));
     if ($item == false) {
         return false;
     }
@@ -157,7 +157,7 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
     }
 
     //  get all items from the module
-    $items = pnModAPIFunc('advanced_polls',	'user',	'getall');
+    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {

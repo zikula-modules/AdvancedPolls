@@ -20,8 +20,10 @@ function smarty_function_votingtypes($params, &$smarty)
     unset($params['selected']);
     unset($params['type']);
 
-    $options = array('1' => __('Free', $dom),   '2' => __('User ID', $dom),
-                     '3' => __('Cookie', $dom), '4' => __('IP Address', $dom));
+    $options = array('1' => __('Free', $dom),
+                     '2' => __('User ID', $dom),
+                     '3' => __('Cookie', $dom),
+                     '4' => __('IP Address', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $smarty->_get_plugin_filepath('function','html_options');

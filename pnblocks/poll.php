@@ -233,12 +233,12 @@ function advanced_polls_pollblock_modify($blockinfo)
 
     // poll use values
     $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
-    1 => 'Latest',
-    2 => 'Random'));
+                                              1 => 'Latest',
+                                              2 => 'Random'));
 
     // yes/no array
     $renderer->assign('yesno', array( 0 => __('No', $dom),
-    1 => __('Yes', $dom)));
+                                      1 => __('Yes', $dom)));
 
     // Return output
     return $renderer->fetch('advancedpolls_block_poll_modify.htm');

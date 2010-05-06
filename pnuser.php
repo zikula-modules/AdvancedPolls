@@ -66,7 +66,7 @@ function advanced_polls_user_view()
     }
 
     // The API function is called.
-    $items = pnModAPIFunc('advanced_polls',	'user',	'getall', array('startnum' => $startnum));
+    $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => $startnum));
 
     // The return value of the function is checked
     if ($items == false) {
@@ -85,7 +85,7 @@ function advanced_polls_user_view()
         $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $fullitem['pollid']));
 
         // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls',	'user', 'isvoteallowed', array('pollid' => $fullitem['pollid']));
+        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $fullitem['pollid']));
 
         if ($fullitem['opendate'] > time()) {
             $notyetopen = true;
@@ -120,6 +120,7 @@ function advanced_polls_user_view()
         }
     }
     $renderer->assign('activepolls', $activepolls);
+
     //----------------------------------------------------------------------------
     // Output Polls that have not opened yet
     //----------------------------------------------------------------------------
@@ -132,7 +133,7 @@ function advanced_polls_user_view()
         $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
 
         // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $item['pollid']));
+        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
 
         if ($fullitem['opendate'] > time()) {
             $notyetopen = true;
@@ -147,7 +148,7 @@ function advanced_polls_user_view()
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Preview', $dom)); }
-                $futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                    $futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                              'title' => $item['title'], 'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'), 'options' => $options);
             }
         }
@@ -186,13 +187,13 @@ function advanced_polls_user_view()
 
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                           'title' => __('Results', $dom));
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Results', $dom));
                 }
-                $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                             'title' => $item['title'],
-                     'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
-                     'options' => $options);
+                $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display',
+                                       array('pollid' => $item['pollid'])),
+                                             'title' => $item['title'],
+                                             'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
+                                             'options' => $options);
             }
         }
     }
@@ -303,16 +304,6 @@ function advanced_polls_user_display($args)
             //----------------------------------------------------------------------------
             // Output details of poll if poll is not open yet
             //----------------------------------------------------------------------------
-            $votecount = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
-
-            // display poll results
-            $options = array();
-            for ($i = 0, $max = count($polloptionarray); $i < $max; $i++) {
-                $options[] = array('optiontext' => $polloptionarray[$i]['name']);
-            }
-            $renderer->assign('options', $options);
-
-            // close results table out
             $template = 'advancedpolls_user_futurepoll';
         } else {
             return LogUtil::registerError(__('Error! No template selected.', $dom));
@@ -324,15 +315,6 @@ function advanced_polls_user_display($args)
     // assign the full poll info
     $renderer->assign('pollid', $pollid);
     $renderer->assign('item', $item);
-
-    // Let any hooks know that we are displaying an item.
-    $renderer->assign('hooks' ,pnModCallHooks('item',
-                                              'display',
-    $pollid,
-    pnModURL('advanced_polls',
-                                                       'user',
-                                                       'display',
-    array('pollid' => $pollid))));
 
     // Return the output that has been generated by this function
     if ($renderer->template_exists($template.$pollid.'.htm')) {
