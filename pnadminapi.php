@@ -41,11 +41,20 @@ function advanced_polls_adminapi_create($args)
         $args['urltitle'] = DataUtil::formatPermalink($args['title']);
     }
 
-    $args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);
-    if (!$args['noclosedate']) {
-        $args['closedate'] = mktime($args['closeHour'], $args['closeMinute'], 0, $args['closeMonth'], $args['closeDay'], $args['closeYear']);
+    if (isset($args['unixopendate'])) {
+        $args['opendate'] = $args['unixopendate'];
     } else {
-        $args['closedate'] = 0;
+        $args['opendate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['startYear'], $args['startMonth'], $args['startDay'], $args['startHour'], $args['startMinute'], 0));
+    }
+
+    if (isset($args['unixclosedate'])) {
+        $args['closedate'] = $args['unixclosedate'];
+    } else {
+        if (!$args['noclosedate']) {
+            $args['closedate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['closeYear'], $args['closeMonth'], $args['closeDay'], $args['closeHour'], $args['closeMinute'], 0));
+        } else {
+            $args['closedate'] = 0;
+        }
     }
 
     if (!DBUtil::insertObject($args, 'advanced_polls_desc', 'pollid')) {
@@ -114,16 +123,6 @@ function advanced_polls_adminapi_delete($args)
  * @param $args['title'] the name of the poll to be updated
  * @param $args['description'] the name of the poll to be updated
  * @param $args['language'] the number of the item to be updated
- * @param $args['opendid'] the day component of the poll open date
- * @param $args['openmid'] the month component of the poll open date
- * @param $args['openyid'] the year component of the poll open date
- * @param $args['openhid'] the hour component of the poll open time
- * @param $args['openminid'] the minute component of the poll open time
- * @param $args['closedid'] the day component of the poll close date
- * @param $args['closemid'] the month component of the poll close date
- * @param $args['closeyid'] the year component of the poll close date
- * @param $args['closehid'] the hour component of the poll close time
- * @param $args['closeminid'] the minute component of the poll close time
  * @param $args['tiebreak'] the tiebreak methodlogy to use
  * @param $args['voteauthtype'] vote authorisation type to use
  * @param $args['multipleselect'] type of poll selection
@@ -175,11 +174,20 @@ function advanced_polls_adminapi_update($args)
         $args['urltitle'] = DataUtil::formatPermalink($args['title']);
     }
 
-    $args['opendate'] = mktime($args['startHour'], $args['startMinute'], 0, $args['startMonth'], $args['startDay'], $args['startYear']);
-    if (!$args['noclosedate']) {
-        $args['closedate'] = mktime($args['closeHour'], $args['closeMinute'], 0, $args['closeMonth'], $args['closeDay'], $args['closeYear']);
+    if (isset($args['unixopendate'])) {
+        $args['opendate'] = $args['unixopendate'];
     } else {
-        $args['closedate'] = 0;
+        $args['opendate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['startYear'], $args['startMonth'], $args['startDay'], $args['startHour'], $args['startMinute'], 0));
+    }
+
+    if (isset($args['unixclosedate'])) {
+        $args['closedate'] = $args['unixclosedate'];
+    } else {
+        if (!$args['noclosedate']) {
+            $args['closedate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['closeYear'], $args['closeMonth'], $args['closeDay'], $args['closeHour'], $args['closeMinute'], 0));
+        } else {
+            $args['closedate'] = 0;
+        }
     }
 
     // update the object
@@ -374,65 +382,47 @@ function advanced_polls_adminapi_duplicate($args)
     } else {
         // The API function is called.
         $pid = pnModAPIFunc('advanced_polls', 'admin', 'create',
-        array('title' => $item['title'],
-          'description' => $item['description'],
-          'language' => $item['language'],
-          'opendid' => date("d", $item['opendate']),
-          'openmid' => date("n", $item['opendate']),
-          'openyid' => date("Y", $item['opendate']),
-          'openhid' => date("H", $item['opendate']),
-          'openminid' => date("i", $item['opendate']),
-          'closedid' => date("d", $item['closedate']),
-          'closemid' => date("n", $item['closedate']),
-          'closeyid' => date("Y", $item['closedate']),
-          'closehid' => date("H", $item['closedate']),
-          'closeminid' => date("i", $item['closedate']),
-          'tiebreak' => $item['tiebreakalg'],
-          'voteauthtype' => $item['voteauthtype'],
-          'multipleselect' => $item['multipleselect'],
-          'multipleselectcount' => $item['multipleselectcount'],
-          'recurring' => $item['recurring'],
-          'recurringoffset' => $item['recurringoffset'],
-          'recurringinterval' => $item['recurringinterval'],
-          'optioncount' => $item['optioncount']));
+        array('title'               => $item['title'],
+              'urltitle'            => $item['urltitle'],
+              'description'         => $item['description'],
+              'language'            => $item['language'],
+              'unixopendate'        => $item['opendate'],
+              'unixclosedate'       => $item['closedate'],
+              'tiebreak'            => $item['tiebreakalg'],
+              'voteauthtype'        => $item['voteauthtype'],
+              'multipleselect'      => $item['multipleselect'],
+              'multipleselectcount' => $item['multipleselectcount'],
+              'recurring'           => $item['recurring'],
+              'recurringoffset'     => $item['recurringoffset'],
+              'recurringinterval'   => $item['recurringinterval'],
+              'optioncount'         => $item['optioncount']));
 
         if ($pid != false) {
             // Once the poll is created we call the modify function to add
             // the poll options
             $result = pnModAPIFunc('advanced_polls', 'admin', 'update',
-            array('pollid' => $pid,
-            'title' => $item['title'],
-            'description' => $item['description'],
-            'optioncount' => $item['optioncount'],
-            'language' => $item['language'],
-            'opendid' => date("d", $item['opendate']),
-            'openmid' => date("n", $item['opendate']),
-            'openyid' => date("Y", $item['opendate']),
-            'openhid' => date("H", $item['opendate']),
-            'openminid' => date("i", $item['opendate']),
-            'closedid' => date("d", $item['closedate']),
-            'closemid' => date("n", $item['closedate']),
-            'closeyid' => date("Y", $item['closedate']),
-            'closehid' => date("H", $item['closedate']),
-            'closeminid' => date("i", $item['closedate']),
-            'tiebreak' => $item['tiebreakalg'],
-            'voteauthtype' => $item['voteauthtype'],
-            'multipleselect' => $item['multipleselect'],
-            'multipleselectcount' => $item['multipleselectcount'],
-            'recurring' => $item['recurring'],
-            'recurringoffset' => $item['recurringoffset'],
-            'recurringinterval' => $item['recurringinterval'],
-            'options' => $item['optionarray']));
+            array('pollid'              => $pid,
+                  'title'               => $item['title'],
+                  'urltitle'            => $item['urltitle']. $pid,
+                  'description'         => $item['description'],
+                  'optioncount'         => $item['optioncount'],
+                  'language'            => $item['language'],
+                  'unixopendate'        => $item['opendate'],
+                  'unixclosedate'       => $item['closedate'],
+                  'tiebreak'            => $item['tiebreakalg'],
+                  'voteauthtype'        => $item['voteauthtype'],
+                  'multipleselect'      => $item['multipleselect'],
+                  'multipleselectcount' => $item['multipleselectcount'],
+                  'recurring'           => $item['recurring'],
+                  'recurringoffset'     => $item['recurringoffset'],
+                  'recurringinterval'   => $item['recurringinterval'],
+                  'options'             => $item['optionarray']));
         } else {
             $result = false;
         }
 
         // The return value of the function is checked
-        if ($result != false) {
-            // Success
-            LogUtil::registerStatus( __('Done! Poll created.', $dom));
-        } else {
-            // Failure
+        if ($result = false) {
             LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
         }
         return (bool)$result;

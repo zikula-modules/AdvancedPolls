@@ -86,7 +86,6 @@ function advanced_polls_user_view()
 
         // is this user/ip etc. allowed to vote under voting regulations
         $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $fullitem['pollid']));
-
         if ($fullitem['opendate'] > time()) {
             $notyetopen = true;
         } else {
