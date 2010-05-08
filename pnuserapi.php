@@ -329,7 +329,7 @@ function advanced_polls_userapi_isvoteallowed($args)
             }
         case 4: //IP address voting
             // extract ip from http headers
-            $ip = ServerUtil::getVar('REMOTE_ADDR');
+            $ip = pnServerGetVar('REMOTE_ADDR');
 
             // get all the matching votes
             $where = "pn_ip = '{$ip}' AND pn_pollid = '{$args['pollid']}'";
@@ -392,24 +392,8 @@ function advanced_polls_userapi_resetrecurring($args)
     // We are only insterest in Poll cose date
     if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
 
-        // get database connection
-        $dbconn = pnDBGetConn(true);
-        $pntable = pnDBGetTables();
-
-        // define database tables
-        $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-        $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
-        $advanced_pollsdesctable = $pntable['advanced_polls_desc'];
-        $advanced_pollsdesccolumn = &$pntable['advanced_polls_desc_column'];
-
-        // empty votes table for this poll
-        $sql = "DELETE FROM $advanced_pollsvotestable WHERE
-        $advanced_pollsvotescolumn[pollid]='" . (int)DataUtil::formatForStore($pollid) . "'";
-        $result = $dbconn->Execute($sql);
-
-        // check for db errors
-        if ($dbconn->ErrorNo()  != 0) {
-            return LogUtil::registerError(__('Error! Reset failed.', $dom));
+        if (!DBUtil::deleteObjectById('advanced_polls_votes', $pollid)) {
+            return LogUtil::registerError (__('Error! Reset failed.', $dom));
         }
 
         // set new opening and closing times
@@ -420,24 +404,14 @@ function advanced_polls_userapi_resetrecurring($args)
         $newopentime = $closetimewithoffset;
         $newclosetime = $item['closedate'] + $recurranceinterval;
 
-        // close result set
-        $result->Close();
-
         // update poll close and open times
-        $sql = "UPDATE $advanced_pollsdesctable SET
-        $advanced_pollsdesccolumn[opendate] = '".(int)DataUtil::formatForStore($newopentime)."',
-        $advanced_pollsdesccolumn[closedate] = '".(int)DataUtil::formatForStore($newclosetime)."'
-        WHERE
-        $advanced_pollsdesccolumn[pollid]= '" . (int)DataUtil::formatForStore($pollid) . "'";
-        $result = $dbconn->Execute($sql);
+        $obj = array('pollid'    => $pollid,
+                     'opendate'  => $newopentime,
+                     'closedate' => $newclosetime);
 
-        // check for db errors
-        if ($dbconn->ErrorNo()  != 0) {
-            return LogUtil::registerError(__('Error! Reset failed.', $dom));
+        if (!DBUtil::updateObject($obj, 'advanced_polls_desc')) {
+            return LogUtil::registerError (__('Error! Reset failed.', $dom));
         }
-
-        // close result set
-        $result->Close();
 
     }
     return true;
@@ -470,46 +444,7 @@ function advanced_polls_userapi_pollvotecount($args)
         return LogUtil::registerPermissionError();
     }
 
-    // get database connection
-    $dbconn = pnDBGetConn(true);
-    $pntable = pnDBGetTables();
-
-    // define database tables
-    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
-
-    if ($item['multipleselect'] == 0) {
-        //GPK  We have a NON-multiselect poll, so
-        // find the total number of votes in this poll
-        $sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid])
-      FROM $advanced_pollsvotestable WHERE
-      $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."'";
-
-      $result = $dbconn->Execute($sql);
-      list($totalvotecount) = $result->fields;
-    } else {
-        //GPK  We have a multi-select poll, so we want to find out the largest
-        //GPK  number of votes cast for any item.  This will only work for
-        //GPK  sites which do not allow anonymous votes.
-        $sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
-    FROM nuke_advanced_polls_votes WHERE
-    $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' GROUP BY pn_optionid ASC";
-    $result = $dbconn->Execute($sql);
-    //GPK We just need the first entry since that one will give us largest number of votes.
-    (list($optID, $totalvotecount) = $result->fields);
-
-    //GPK For systems which allow anonymous we need to find out the number of anonymous votes
-    $sql = "SELECT $advanced_pollsvotescolumn[optionid], COUNT(*) AS total_votes
-    FROM nuke_advanced_polls_votes WHERE
-    $advanced_pollsvotescolumn[pollid]='".(int)DataUtil::formatForStore($args['pollid'])."' AND
-    pn_uid = 0 GROUP BY pn_optionid DESC";
-    $result = $dbconn->Execute($sql);
-
-    $anonymousvotecount = 0;
-
-    list($optID, $anonymousvotecount) = $result->fields;
-    $totalvotecount = $totalvotecount + $anonymousvotecount;
-    }
+    $totalvotecount = DBUtil::selectObjectCountByID('advanced_polls_votes', $args['pollid'], 'pollid');
 
     $votecountarray = array();
     $recordcount = 0;
@@ -523,48 +458,53 @@ function advanced_polls_userapi_pollvotecount($args)
         $item['optioncount'] = pnModGetVar('advanced_polls', 'defaultoptioncount');
     }
 
+    // get database connection
+    $pntable = pnDBGetTables();
+    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
+    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+
     // now lets get all the vote counts
     $sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid]),
     $advanced_pollsvotescolumn[optionid]
-      FROM $advanced_pollsvotestable WHERE
-      $advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
-      GROUP BY $advanced_pollsvotescolumn[optionid]";
-      $result = $dbconn->Execute($sql);
+    FROM $advanced_pollsvotestable WHERE
+    $advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
+    GROUP BY $advanced_pollsvotescolumn[optionid]";
+    $res = DBUtil::executeSQL($sql);
+    $colarray = array('optioncount', 'optionid');
+    $result = DBUtil::marshallObjects($res, $colarray);
 
-      // Check for no rows found, and if so return
-      if ($result->EOF) {
-          return false;
-      }
+    if (is_array($result) && !empty($result)) {
+        foreach ($result as $row) {
+            $votecountarray[$row['optionid']] = $row['optioncount'];
+        }
+    }
 
-      for (; !$result->EOF; $result->MoveNext()) {
-          list($count, $optionid) = $result->fields;
-          $votecountarray[$optionid] = $count;
-      }
+    for ($i = 1, $max = $item['optioncount']; $i <= $max; $i++) {
+        if (!isset($votecountarray[$i])) {
+            $votecountarray[$i] = 0;
+        }
+        if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
+            if ($item['tiebreakalg'] == 1) {
+                $leadingvoteid = pnModAPIFunc('advanced_polls', 'user', 'timecountback',
+                array('pollid'  => $args['pollid'],
+                      'voteid1' => $leadingvoteid,
+                      'voteid2' => $i));
+            }
+        }
 
-      for ($i = 1, $max = $item['optioncount']; $i <= $max; $i++) {
-          if (!isset($votecountarray[$i])) {
-              $votecountarray[$i] = 0;
-          }
-          if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
-              if ($item['tiebreakalg'] == 1) {
-                  $leadingvoteid = pnModAPIFunc('advanced_polls', 'user',	'timecountback',
-                  array('pollid' => $args['pollid'], 'voteid1' => $leadingvoteid,	'voteid2' => $i));
-              }
-          }
+        if ($votecountarray[$i] > $leadingvotecount) {
+            $leadingvotecount = $votecountarray[$i];
+            $leadingvoteid = $i;
+        }
+    }
 
-          if ($votecountarray[$i] > $leadingvotecount) {
-              $leadingvotecount = $votecountarray[$i];
-              $leadingvoteid = $i;
-          }
-      }
+    // Create the item array
+    $item = array('totalvotecount' => $totalvotecount,
+                  'leadingvoteid'  => $leadingvoteid,
+                  'votecountarray' => $votecountarray);
 
-      // Create the item array
-      $item = array('totalvotecount' => $totalvotecount,
-                    'leadingvoteid'  => $leadingvoteid,
-                    'votecountarray' => $votecountarray );
-
-      // Return the item array
-      return $item;
+    // Return the item array
+    return $item;
 }
 
 /**
@@ -632,9 +572,7 @@ function advanced_polls_userapi_timecountback($args)
     }
 
     // get database connection
-    $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
-
     $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
     $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
 
@@ -649,15 +587,13 @@ function advanced_polls_userapi_timecountback($args)
       FROM $advanced_pollsvotestable WHERE
       (($advanced_pollsvotescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "') AND
       ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
-    $result = $dbconn->Execute($sql);
-    list($firstsum) = $result->fields;
+    $firstsum = DBUtil::executeSQL($sql);
 
     $sql = "SELECT SUM($advanced_pollsvotescolumn[time])
       FROM $advanced_pollsvotestable WHERE
       (($advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "') AND
       ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
-    $result = $dbconn->Execute($sql);
-    list($secondsum) = $result->fields;
+    $secondsum = DBUtil::executeSQL($sql);
 
     if ($firstsum < $secondsum) {
         return $voteid1;
@@ -710,7 +646,7 @@ function advanced_polls_userapi_getrandom()
     srand(make_seed());
 
     // The API function is called.
-    $items = pnModAPIFunc('advanced_polls',	'user', 'getall');
+    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
 
     $randomitemid = array_rand($items , 1);
     $randomitem = $items[$randomitemid];
@@ -839,12 +775,12 @@ function advanced_polls_userapi_decodeurl($args)
 function advanced_polls_userapi_getmodulemeta()
 {
     return array('viewfunc'   => 'view',
-                'displayfunc' => 'display',
-                'newfunc'     => 'new',
-                'createfunc'  => 'create',
-                'modifyfunc'  => 'modify',
-                'updatefunc'  => 'update',
-                'deletefunc'  => 'delete',
-                'titlefield'  => 'title',
-                'itemid'      => 'pollid');
+                 'displayfunc' => 'display',
+                 'newfunc'     => 'new',
+                 'createfunc'  => 'create',
+                 'modifyfunc'  => 'modify',
+                 'updatefunc'  => 'update',
+                 'deletefunc'  => 'delete',
+                 'titlefield'  => 'title',
+                 'itemid'      => 'pollid');
 }

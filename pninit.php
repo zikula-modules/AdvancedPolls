@@ -67,26 +67,25 @@ function advanced_polls_upgrade($oldversion)
         }
     }
 
-    // Upgrade dependent on old version number
     switch($oldversion) {
-        case 1.0:
+        case '1.0':
             // Version 1.0 Didn't have the Module variables
             pnModSetVar('advanced_polls', 'admindateformat', 'r');
             pnModSetVar('advanced_polls', 'userdateformat', 'r');
             pnModSetVar('advanced_polls', 'usereversedns', 0);
             pnModSetVar('advanced_polls', 'scalingfactor', 4);
-            return advanced_polls_upgrade(1.1);
-        case 1.1:
+            return advanced_polls_upgrade('1.1');
+        case '1.1':
             // Add additional module variables in this version
             pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
             pnModSetVar('advanced_polls', 'useritemsperpage', 25);
             pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
             pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
-            return advanced_polls_upgrade(1.5);
-        case 1.5:
+            return advanced_polls_upgrade('1.5');
+        case '1.5':
             // all changes in this release are covered by the table change
-            return advanced_polls_upgrade(1.51);
-        case 1.51:
+            return advanced_polls_upgrade('1.51');
+        case '1.51':
             // populate permalinks for existing content
             $tables = pnDBGetTables();
             $shorturlsep = pnConfigGetVar('shorturlsseparator');
@@ -101,9 +100,15 @@ function advanced_polls_upgrade($oldversion)
             pnModDelVar('advanced_polls', 'userdateformat');
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
             if (!_advanced_polls_createdefaultcategory()) {
-                return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
+                return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
             }
-            return advanced_polls_upgrade(2.0);
+            if (!_advanced_polls_updatePollsLanguages()) {
+                return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
+            }
+            return advanced_polls_upgrade('2.0.0');
+        case '2.0.0':
+            // future upgrade routines
+            break;
     }
 
     // Update successful
@@ -184,6 +189,27 @@ function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/G
         $registry->insert();
     } else {
         return false;
+    }
+
+    return true;
+}
+
+
+function _advanced_polls_updatePollsLanguages()
+{
+    $obj = DBUtil::selectObjectArray('advanced_polls_desc');
+
+    if (count($obj) == 0) {
+        // nothing to do
+        return;
+    }
+
+    foreach ($obj as $pollid) {
+        // translate l3 -> l2
+        if ($l2 = ZLanguage::translateLegacyCode($pollid['language'])) {
+            $pollid['language'] = $l2;
+        }
+        DBUtil::updateObject($pollid, 'advanced_polls_desc', '', 'pollid', true);
     }
 
     return true;

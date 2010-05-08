@@ -278,7 +278,7 @@ function advanced_polls_user_display($args)
             $renderer->assign('polltype', $item['multipleselect']);
             $renderer->assign('multiplecount', $item['multipleselectcount']);
             $template = 'advancedpolls_user_votingform';
-        } elseif ($displayresults)  {
+        } elseif ($displayresults) {
             //----------------------------------------------------------------------------
             // Output results graph if poll has closed/ is not open yet or
             // if results have been spefifically requested

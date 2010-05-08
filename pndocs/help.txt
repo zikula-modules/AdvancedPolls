@@ -1,11 +1,11 @@
-Advanced Polls Module v1.51
+Advanced Polls Module v2.0.0
 
 Description
 -----------
-A rewrite of the core Postnuke polling module to be pnAPI compliant and 
-introduce extended functionality. 
+A rewrite of the core Postnuke polling module to be pnAPI compliant and
+introduce extended functionality.
 
-This module is independant to the standard Postnuke polling module and the 
+This module is independant to the standard Postnuke polling module and the
 two modules will happily coincide with each other.
 
 Download
@@ -23,12 +23,12 @@ Mark West - support@markwest.me.uk
 Licence
 -------
 
-This module is released under the GPL. Please see 
+This module is released under the GPL. Please see
 http://www.gnu.org/copyleft/gpl.html  for details.
 
 Supported Platforms
 -------------------
-Zikula v1.0 or later
+Zikula v1.2 or later
 
 Feature List
 ------------
@@ -75,8 +75,8 @@ permissions in this module are as follow
 1 Core Module
 
 In addition to the voting regulations in each poll permissions can be used to
-restrict voting to specific groups of users. To restrict the poll 'A Sample 
-Poll' with a Poll ID of 5 from a group called 'Non Voting Users' set these 
+restrict voting to specific groups of users. To restrict the poll 'A Sample
+Poll' with a Poll ID of 5 from a group called 'Non Voting Users' set these
 permissions
 
 Group - Non Voting Users
@@ -86,7 +86,7 @@ Permissions Level - None
 
 2 Poll Block
 
-To disallow unregistered users from seeing the a poll block titled 'A Sample 
+To disallow unregistered users from seeing the a poll block titled 'A Sample
 Poll' set these permissions
 
 Group - Unregistered
@@ -96,7 +96,7 @@ Permissions Level - None
 
 3 PollList Block
 
-To disallow unregistered users from seeing the a polllist block titled 'Voting 
+To disallow unregistered users from seeing the a polllist block titled 'Voting
 Booth' set these permissions
 
 Group - Unregistered
@@ -108,7 +108,7 @@ All permissions examples can be equally applied to user based permissions.
 
 Support andFeedback
 -------------------
-Support can be obtained via http://www.markwest.me.uk or via the PN support forums on 
+Support can be obtained via http://www.markwest.me.uk or via the PN support forums on
 http://commmunity.zikula.org.
 
 Feedback can be provided via http://www.markwest.me.uk

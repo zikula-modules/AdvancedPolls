@@ -2,10 +2,10 @@
 <!--[include file="advancedpolls_admin_menu.htm"]-->
 <div class="z-admincontainer">
     <h2><!--[gt text="Voting Statistics"]--></h2>
-    <strong><!--[gt text="Name of poll"]--></strong> : <!--[$item.title|pnvarprephtmldisplay]--><br />
-    <strong><!--[gt text="Date and time poll opens"]--></strong> : <!--[$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
-    <strong><!--[gt text="Date and time poll closes"]--></strong> : <!--[$item.closedate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
-    <strong><!--[gt text="Total number of votes"]--></strong> : <!--[$votecount|pnvarprepfordisplay|default:'0']--><br />
+    <strong><!--[gt text="Name of poll"]-->:</strong> <!--[$item.title|pnvarprephtmldisplay]--><br />
+    <strong><!--[gt text="Date and time poll opens"]-->:</strong> <!--[$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
+    <strong><!--[gt text="Date and time poll closes"]-->:</strong> <!--[$item.closedate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
+    <strong><!--[gt text="Total number of votes"]-->:</strong> <!--[$votecount|pnvarprepfordisplay|default:'0']--><br />
 
     <form class="z-form" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="adminstats"]-->" method="post" enctype="application/x-www-form-urlencoded">
         <div>

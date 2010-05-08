@@ -21,7 +21,7 @@ function smarty_function_tiebreaktypes($params, &$smarty)
     unset($params['type']);
 
     $options = array('0' => __('None', $dom),
-                     '1' => __('Vote Time Count Back', $dom), 
+                     '1' => __('Vote time count back', $dom), 
                      '3' => __('Alphabetical', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin

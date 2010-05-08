@@ -13,18 +13,18 @@ $dom = ZLanguage::getModuleDomain('advanced_polls');
 $modversion['name']            = 'advanced_polls';
 $modversion['displayname']     = __('Advanced Polls', $dom);
 $modversion['description']     = __('A comprehensive single question polling module', $dom);
-$modversion['url']             = __('advanced_polls', $dom);
-$modversion['version']         = '2.0';
+$modversion['url']             = __('advancedpolls', $dom);
+$modversion['version']         = '2.0.0';
 $modversion['credits']         = 'pndocs/credits.txt';
 $modversion['help']            = 'pndocs/help.txt';
 $modversion['changelog']       = 'pndocs/changelog.txt';
 $modversion['license']         = 'pndocs/license.txt';
 $modversion['official']        = 0;
-$modversion['author']          = 'Mark West';
-$modversion['contact']         = 'http://www.markwest.me.uk/';
+$modversion['author']          = 'Mark West, Carsten Volmer';
+$modversion['contact']         = 'http://code.zikula.org/advancedpolls/';
 $modversion['admin']           = 1;
 $modversion['securityschema']  = array('advanced_polls::item' => 'Poll Title::Poll ID',
-                                      'advanced_polls::' => '::');
+                                       'advanced_polls::' => '::');
 $modversion['dependencies']    = array(array('modname'    => 'EZComments',
                                              'minversion' => '1.1',
                                              'maxversion' => '',

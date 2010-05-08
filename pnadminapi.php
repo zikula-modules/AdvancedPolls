@@ -42,12 +42,14 @@ function advanced_polls_adminapi_create($args)
     }
 
     if (isset($args['unixopendate'])) {
+        // used for duplication a poll
         $args['opendate'] = $args['unixopendate'];
     } else {
         $args['opendate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['startYear'], $args['startMonth'], $args['startDay'], $args['startHour'], $args['startMinute'], 0));
     }
 
     if (isset($args['unixclosedate'])) {
+        // used for duplication a poll
         $args['closedate'] = $args['unixclosedate'];
     } else {
         if (!$args['noclosedate']) {
@@ -123,7 +125,7 @@ function advanced_polls_adminapi_delete($args)
  * @param $args['title'] the name of the poll to be updated
  * @param $args['description'] the name of the poll to be updated
  * @param $args['language'] the number of the item to be updated
- * @param $args['tiebreak'] the tiebreak methodlogy to use
+ * @param $args['tiebreakalg'] the tiebreak methodlogy to use
  * @param $args['voteauthtype'] vote authorisation type to use
  * @param $args['multipleselect'] type of poll selection
  * @param $args['multipleselectcount'] number of selections allowed
@@ -175,12 +177,14 @@ function advanced_polls_adminapi_update($args)
     }
 
     if (isset($args['unixopendate'])) {
+        // used for duplication a poll
         $args['opendate'] = $args['unixopendate'];
     } else {
         $args['opendate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['startYear'], $args['startMonth'], $args['startDay'], $args['startHour'], $args['startMinute'], 0));
     }
 
     if (isset($args['unixclosedate'])) {
+        // used for duplication a poll
         $args['closedate'] = $args['unixclosedate'];
     } else {
         if (!$args['noclosedate']) {
@@ -388,7 +392,7 @@ function advanced_polls_adminapi_duplicate($args)
               'language'            => $item['language'],
               'unixopendate'        => $item['opendate'],
               'unixclosedate'       => $item['closedate'],
-              'tiebreak'            => $item['tiebreakalg'],
+              'tiebreakalg'         => $item['tiebreakalg'],
               'voteauthtype'        => $item['voteauthtype'],
               'multipleselect'      => $item['multipleselect'],
               'multipleselectcount' => $item['multipleselectcount'],
@@ -409,7 +413,7 @@ function advanced_polls_adminapi_duplicate($args)
                   'language'            => $item['language'],
                   'unixopendate'        => $item['opendate'],
                   'unixclosedate'       => $item['closedate'],
-                  'tiebreak'            => $item['tiebreakalg'],
+                  'tiebreakalg'         => $item['tiebreakalg'],
                   'voteauthtype'        => $item['voteauthtype'],
                   'multipleselect'      => $item['multipleselect'],
                   'multipleselectcount' => $item['multipleselectcount'],

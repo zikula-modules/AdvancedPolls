@@ -26,7 +26,7 @@ function advanced_polls_ajax_vote()
     $results       = FormUtil::getPassedValue('results', null, 'POST');
     $multiple      = FormUtil::getPassedValue('multiple', null, 'POST');
     $multiplecount = FormUtil::getPassedValue('multiplecount', null, 'POST');
-    $optioncount   =  FormUtil::getPassedValue('optioncount', null, 'POST');
+    $optioncount   = FormUtil::getPassedValue('optioncount', null, 'POST');
 
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$title::$pollid", ACCESS_COMMENT)) {
         AjaxUtil::error(__('Error! No authorization to access this module.', $dom));
