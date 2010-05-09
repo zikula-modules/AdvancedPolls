@@ -29,23 +29,23 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th id="col1"><!--[gt text="Vote ID"]--></th>
-                <th id="col2"><!--[gt text="IP address"]--></th>
-                <th id="col3"><!--[gt text="Time"]--></th>
-                <th id="col4"><!--[gt text="Username"]--></th>
-                <th id="col5"><!--[gt text="Vote rank"]--></th>
-                <th id="col6"><!--[gt text="Option"]--></th>
+                <th><!--[gt text="Vote ID"]--></th>
+                <th><!--[gt text="IP address"]--></th>
+                <th><!--[gt text="Time"]--></th>
+                <th><!--[gt text="Username"]--></th>
+                <th><!--[gt text="Vote rank"]--></th>
+                <th><!--[gt text="Option"]--></th>
             </tr>
         </thead>
         <tbody>
             <!--[foreach from=$votes item=vote]-->
             <tr class="<!--[cycle values=z-odd,z-even]-->">
-                <td headers="col1"><!--[$vote.voteid|pnvarprepfordisplay]--></td>
-                <td headers="col2"><!--[$vote.ip|pnvarprepfordisplay]--></td>
-                <td headers="col3"><!--[$vote.time|pndate_format:datetimebrief|pnvarprepfordisplay]--></td>
-                <td headers="col4"><!--[$vote.user|pnvarprepfordisplay]--></td>
-                <td headers="col5"><!--[$vote.voterank|pnvarprepfordisplay]--></td>
-                <td headers="col6"><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.voteid|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.ip|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.time|pndate_format:datetimebrief|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.user|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.voterank|pnvarprepfordisplay]--></td>
+                <td><!--[$vote.optiontext|pnvarprepfordisplay]--></td>
             </tr>
             <!--[foreachelse]-->
             <tr class="z-admintableempty"><td colspan="6"><!--[gt text="No votes found."]--></td></tr>

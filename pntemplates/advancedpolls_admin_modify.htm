@@ -42,7 +42,7 @@
                     <textarea id="advancedpolls_description" name="poll[description]" rows="10" cols="50"><!--[$description|pnvarprephtmldisplay]--></textarea>
                 </div>
                 <div class="z-formrow">
-                    <label for="advancedpolls_language"><!--[gt text="Language"]--> </label>
+                    <label for="advancedpolls_language"><!--[gt text="Language"]--></label>
                     <!--[html_select_languages id="advancedpolls_language" name="poll[language]" installed=true all=true selected=$language]-->
                 </div>
             </fieldset>
@@ -63,7 +63,7 @@
                     <!--[/if]-->
                 </div>
                 <div id="advancedpolls_closedate_container" class="z-formrow">
-                    <label for="advancedpolls_closedate"><!--[gt text="Date and Time Poll Closes"]--></label>
+                    <label for="advancedpolls_closedate"><!--[gt text="Date and time poll closes"]--></label>
                     <div id="advancedpolls_closedate" style="white-space:nowrap">
                         <!--[html_select_date year_as_text=true prefix="close" time=$closedate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="close" time=$closedate]-->
                     </div>
@@ -72,19 +72,19 @@
             <fieldset>
                 <legend><!--[gt text="Voting regulations"]--></legend>
                 <div class="z-formrow">
-                    <label for="advancedpolls_voteauthtype"><!--[gt text="Poll Authorisation Method"]--> </label>
+                    <label for="advancedpolls_voteauthtype"><!--[gt text="Poll authorisation method"]--></label>
                     <select id="advancedpolls_voteauthtype" name="poll[voteauthtype]">
                         <!--[votingtypes selected=$voteauthtype]-->
                     </select>
                 </div>
                 <div class="z-formrow">
-                    <label for="advancedpolls_tiebreakalg"><!--[gt text="Tiebreak Method"]--> </label>
+                    <label for="advancedpolls_tiebreakalg"><!--[gt text="Tiebreak method"]--></label>
                     <select id="advancedpolls_tiebreakalg" name="poll[tiebreakalg]">
                         <!--[tiebreaktypes selected=$tiebreakalg]-->
                     </select>
                 </div>
                 <div class="z-formrow">
-                    <label for="advancedpolls_multipleselect"><!--[gt text="This is a Multiple Selection Poll."]--> </label>
+                    <label for="advancedpolls_multipleselect"><!--[gt text="Selection method"]--></label>
                     <select id="advancedpolls_multipleselect" name="poll[multipleselect]">
                         <!--[multipleselecttypes selected=$multipleselect]-->
                     </select>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="z-formrow">
-                    <label for="advancedpolls_recurring"><!--[gt text="Recurring poll?"]--> </label>
+                    <label for="advancedpolls_recurring"><!--[gt text="Recurring poll?"]--></label>
                     <select id="advancedpolls_recurring" name="poll[recurring]">
                         <!--[if $recurring eq 0]-->
                         <option value="0" selected="selected"><!--[gt text="No"]--></option>
@@ -128,10 +128,10 @@
                 <!--[assign var="rowcount" value=$smarty.section.polloptions.rownum]-->
                 <!--[assign var="arraycount" value=$rowcount-1]-->
                 <div class="z-formrow">
-                    <label for="advancedpolls_option<!--[$rowcount]-->"><!--[gt text="Poll Option"]--> <!--[$rowcount]--></label>
+                    <label for="advancedpolls_option<!--[$rowcount]-->"><!--[gt text="Poll option"]--> <!--[$rowcount]--></label>
                     <div>
                         <input id="advancedpolls_option<!--[$rowcount]-->" type="text" name="poll[options][<!--[$rowcount]-->][optiontext]" size="50" maxlength="255" value="<!--[$polloptions.$arraycount.optiontext|pnvarprepfordisplay]-->" />
-                        <input id="advancedpolls_option<!--[$rowcount]-->color" type="text" name="poll[options][<!--[$rowcount]-->][optioncolor]" size="7" maxlength="7" value="<!--[$polloptions.$arraycount.optioncolour|pnvarprepfordisplay]-->" />
+                        <input id="advancedpolls_option<!--[$rowcount]-->color" type="text" name="poll[options][<!--[$rowcount]-->][optioncolour]" size="7" maxlength="7" value="<!--[$polloptions.$arraycount.optioncolour|pnvarprepfordisplay]-->" />
                         <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['advancedpolls_option<!--[$rowcount]-->color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
                     </div>
                 </div>

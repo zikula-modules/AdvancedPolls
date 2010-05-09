@@ -19,7 +19,7 @@
 function advanced_polls_pollresultsblock_init()
 {
     // Security
-    pnSecAddSchema('advanced_polls:pollresultsblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('advanced_polls:pollresultsblock:', 'Block title::');
 }
 
 /**
@@ -37,11 +37,12 @@ function advanced_polls_pollresultsblock_info()
     // Values
     return array('module'         => 'advanced_polls',
                  'text_type'      => __('Poll results', $dom),
-                 'text_type_long' => __('Show Results of the Most Recently Closed Poll', $dom),
+                 'text_type_long' => __('Show results of the most recently closed poll', $dom),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
-                 'show_preview'   => true);
+                 'show_preview'   => true,
+                 'admin_tableless' => true);
 }
 
 /**
@@ -146,6 +147,8 @@ function advanced_polls_pollresultsblock_modify($blockinfo)
 function advanced_polls_pollresultsblock_update($blockinfo)
 {
     $vars['numitems']     = FormUtil::getPassedValue('numitems');
+
+    // generate the block array
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;

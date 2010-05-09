@@ -19,7 +19,7 @@
             <td>
                 <!--[assign var="options" value=$activepolls[polls].options]-->
                 <!--[section name=options loop=$options]-->
-                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title]--></a>
                 <!--[/section]-->
             </td>
         </tr>
@@ -47,7 +47,7 @@
             <td>
                 <!--[assign var="options" value=$futurepolls[polls].options]-->
                 <!--[section name=options loop=$options]-->
-                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title]--></a>
                 <!--[/section]-->
             </td>
         </tr>
@@ -75,7 +75,7 @@
             <td>
                 <!--[assign var="options" value=$closedpolls[polls].options]-->
                 <!--[section name=options loop=$options]-->
-                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[$options[options].title|pnvarprepfordisplay]--></a>
+                <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title]--></a>
                 <!--[/section]-->
             </td>
         </tr>

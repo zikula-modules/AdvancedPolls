@@ -19,7 +19,7 @@
 function advanced_polls_polllistblock_init()
 {
     // Security
-    pnSecAddSchema('advanced_polls:polllistblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('advanced_polls:polllistblock:', 'Block title::');
 }
 
 /**
@@ -37,11 +37,12 @@ function advanced_polls_polllistblock_info()
     // Values
     return array('module'         => 'advanced_polls',
                  'text_type'      => __('Poll list', $dom),
-                 'text_type_long' => __('Display list of Open Polls', $dom),
+                 'text_type_long' => __('Display list of open polls', $dom),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
-                 'show_preview'   => true);
+                 'show_preview'   => true,
+                 'admin_tableless' => true);
 }
 
 /**
@@ -123,6 +124,8 @@ function advanced_polls_polllistblock_modify($blockinfo)
 function advanced_polls_polllistblock_update($blockinfo)
 {
     $vars['pollid']       = FormUtil::getPassedValue('pollid');
+
+    // generate the block array
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 
     return $blockinfo;

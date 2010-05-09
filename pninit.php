@@ -38,7 +38,6 @@ function advanced_polls_init()
     pnModSetVar('advanced_polls', 'usereversedns', 0);
     pnModSetVar('advanced_polls', 'scalingfactor', 4);
     pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-    pnModSetVar('advanced_polls', 'useritemsperpage', 25);
     pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
     pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
     pnModSetVar('advanced_polls', 'enablecategorization', true);
@@ -98,6 +97,7 @@ function advanced_polls_upgrade($oldversion)
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
             pnModDelVar('advanced_polls', 'admindateformat');
             pnModDelVar('advanced_polls', 'userdateformat');
+            pnModDelVar('advanced_polls', 'useritemsperpage');
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
             if (!_advanced_polls_createdefaultcategory()) {
                 return LogUtil::registerError (__('Error! Could not create the default category.', $dom));

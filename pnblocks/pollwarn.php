@@ -16,7 +16,7 @@
 function advanced_polls_pollwarnblock_init()
 {
     // Security
-    pnSecAddSchema('advanced_polls:pollblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('advanced_polls:pollblock:', 'Block title::');
 }
 
 /**
@@ -29,11 +29,12 @@ function advanced_polls_pollwarnblock_info()
     // Values
     return array('module'         => 'advanced_polls',
                  'text_type'      => __('Poll warn', $dom),
-                 'text_type_long' => __('Warns if Poll is unanswered', $dom),
+                 'text_type_long' => __('Warns if poll is unanswered', $dom),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
-                 'show_preview'   => true);
+                 'show_preview'   => true,
+                 'admin_tableless' => true);
 }
 
 /**
@@ -58,27 +59,26 @@ function advanced_polls_pollwarnblock_display($blockinfo)
         $vars['pollopenclosebaseddisplay'] = 0;
     }
 
-    if (empty($vars['polluse'])) {
+    if (!isset($vars['polluse'])) {
         $vars['polluse'] = 0;
     }
 
     //extract poll variables from block variables
-    $pollid = $vars['pollid'];
     $pollopenclosebaseddisplay = $vars['pollopenclosebaseddisplay'];
-    $polluse = $vars['polluse'];
 
-    if ($polluse == 1) {
-        $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0));
-        $item = $items[0];
-        $pollid = $item['pollid'];
+    switch ($vars['polluse']) {
+        case 1:
+            $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $item = $items[0];
+            $pollid = $item['pollid'];
+            break;
+        case 2:
+            $pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
+            break;
+        default:
+            $pollid = $vars['pollid'];
     }
 
-    if ($polluse == 2) {
-        $pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
-        //$pollid = $item['pollid'];
-    }
-
-    // get full details on this poll from api
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid,
                                                                 'titlename' => 'name',
                                                                 'idname' => 'id'));
@@ -110,7 +110,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
     }
 
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // check if the person can vote on this poll
     if ((!$ispollopen == true) and (!$isvoteallowed == true)) {
@@ -123,6 +123,12 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 
     // assign content to the template
     $renderer->assign('blockvars', $vars);
+
+    // poll use values
+    $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
+    1 => 'Latest',
+    2 => 'Random'));
+
     $renderer->assign('item', $item);
 
     // Populate block info and pass to theme
@@ -156,24 +162,30 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
         $vars['polluse'] = 0;
     }
 
-    //  get all items from the module
+    // Create output object
+    $renderer = pnRender::getInstance('advanced_polls', false);
+
+    // get a full list of available polls
     $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {
-            $polls[$item['pollid']] = $item['polltitle'];
+            $polls[$item['pollid']] = $item['title'];
         }
     }
-
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls');
+    $renderer->assign('items', $polls);
 
     // Assign the block variables
     $renderer->assign('blockvars', $vars);
 
-    // assign the items
-    $renderer->assign('items', $polls);
+    // poll use values
+    $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
+    1 => 'Latest',
+    2 => 'Random'));
+
+    // yes/no array
+    $renderer->assign('yesno', array( 0 => __('No', $dom),
+    1 => __('Yes', $dom)));
 
     // Return output
     return $renderer->fetch('advancedpolls_block_pollwarn_modify.htm');

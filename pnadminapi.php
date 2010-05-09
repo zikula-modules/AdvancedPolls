@@ -206,7 +206,7 @@ function advanced_polls_adminapi_update($args)
     for ($count = 1; $count <= $args['optioncount']; $count++) {
         $items[] = array('pollid' => $args['pollid'],
                          'optiontext' => $args['options'][$count]['optiontext'],
-                         'optioncolour' => $args['options'][$count]['optioncolor'],
+                         'optioncolour' => $args['options'][$count]['optioncolour'],
                          'optionid' => $count);
     }
     if (!DBUtil::insertObjectArray($items, 'advanced_polls_data')) {

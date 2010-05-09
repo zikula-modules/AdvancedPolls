@@ -311,12 +311,12 @@ function advanced_polls_userapi_isvoteallowed($args)
 
             // get all the matching votes
             $where = "WHERE pn_uid = '{$uid}' AND pn_pollid = '{$args['pollid']}'";
-            $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
+            $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
 
-            if (isset($votes[$args['pollid']])) {
-                return false;
-            } else {
+            if ($votes == 0) {
                 return true;
+            } else {
+                return false;
             }
         case 3: //Cookie voting
             // check for existance of session variable (cookie)
@@ -333,10 +333,10 @@ function advanced_polls_userapi_isvoteallowed($args)
 
             // get all the matching votes
             $where = "pn_ip = '{$ip}' AND pn_pollid = '{$args['pollid']}'";
-            $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, 'pollid', -1, -1, 'pollid');
+            $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
 
             //If there are no rows back from this query then this uid can vote
-            if ($votes) {
+            if ($votes == 0) {
                 return true;
             } else {
                 return false;

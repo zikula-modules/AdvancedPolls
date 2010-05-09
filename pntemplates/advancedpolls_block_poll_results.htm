@@ -1,10 +1,10 @@
-<table>
+<!--[if $item.options]-->
+<dl class="adv_voteresults">
     <!--[foreach from=$item.options key=key item=option]-->
     <!--[if $option.optiontext neq '']-->
-    <tr>
-        <td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
-        <td><!--[$votecounts.percentages.$key.percent|pnvarprepfordisplay]-->%</td>
-    </tr>
+    <dt><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></dt>
+    <dd><!--[$votecounts.percentages.$key.percent|pnvarprepfordisplay]-->%</dd>
     <!--[/if]-->
     <!--[/foreach]-->
-</table>
+</dl>
+<!--[/if]-->

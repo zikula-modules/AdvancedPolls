@@ -449,10 +449,6 @@ function advanced_polls_admin_updateconfig()
         $config['adminitemsperpage'] = 25;
     }
     pnModSetVar('advanced_polls', 'adminitemsperpage', $config['adminitemsperpage']);
-    if (!isset($config['useritemsperpage'])) {
-        $config['useritemsperpage'] = 25;
-    }
-    pnModSetVar('advanced_polls', 'useritemsperpage', $config['useritemsperpage']);
     if (!isset($config['defaultcolour'])) {
         $config['defaultcolour'] = '#000000';
     }
@@ -543,6 +539,11 @@ function advanced_polls_admin_adminstats()
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
+    }
+
+    // Confirm authorisation code.
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'admin', 'adminstats'));
     }
 
     // Get parameters

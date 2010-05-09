@@ -98,15 +98,21 @@ function advanced_polls_user_view()
                 //and ($isvoteallowed == true))
 
                 $options = array();
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
                     if ($isvoteallowed == true) {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Vote', $dom));
+                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                           'image' => 'demo.gif',
+                                           'title' => __('Vote', $dom));
                     } else {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)), 'title' => __('Results', $dom));
+                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
+                                           'image' => 'smallcal.gif',
+                                           'title' => __('Results', $dom));
                     }
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])), 'title' => __('Edit', $dom));
+                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                                       'image' => 'xedit.gif',
+                                       'title' => __('Edit', $dom));
                 }
 
                 if ($fullitem['closedate'] == 0) {
@@ -114,7 +120,10 @@ function advanced_polls_user_view()
                 } else {
                     $closedate = DateUtil::formatDatetime($fullitem['closedate'], 'datetimebrief');
                 }
-                $activepolls[]=  array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => $item['title'], 'closedate' => $closedate, 'options' => $options);
+                $activepolls[]=  array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                       'title' => $item['title'],
+                                       'closedate' => $closedate,
+                                       'options' => $options);
             }
         }
     }
@@ -146,9 +155,18 @@ function advanced_polls_user_view()
 
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Preview', $dom)); }
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                       'image' => '14_layer_visible.gif',
+                                       'title' => __('Preview', $dom)); }
+                    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+                        $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                                       'image' => 'xedit.gif',
+                                       'title' => __('Edit', $dom));
+                    }
                     $futurepolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                             'title' => $item['title'], 'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'), 'options' => $options);
+                                           'title' => $item['title'],
+                                           'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
+                                           'options' => $options);
             }
         }
     }
@@ -167,10 +185,10 @@ function advanced_polls_user_view()
 
         // is this user/ip etc. allowed to vote under voting regulations
         // show all closed polls in the previous poll list
-        //$isvoteallowed = pnModAPIFunc('advanced_polls',
-        //	'user',
-        //	'isvoteallowed',
-        //	array('pollid' => $item['pollid']));
+        // $isvoteallowed = pnModAPIFunc('advanced_polls',
+        // 'user',
+        // 'isvoteallowed',
+        // array('pollid' => $item['pollid']));
 
         if ($fullitem['opendate'] > time()) {
             $notyetopen = true;
@@ -186,13 +204,19 @@ function advanced_polls_user_view()
 
                 $options = array();
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])), 'title' => __('Results', $dom));
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                       'image' => 'smallcal.gif',
+                                       'title' => __('Results', $dom));
                 }
-                $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display',
-                                       array('pollid' => $item['pollid'])),
-                                             'title' => $item['title'],
-                                             'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
-                                             'options' => $options);
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                                       'image' => 'xedit.gif',
+                                       'title' => __('Edit', $dom));
+                }
+                $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                       'title' => $item['title'],
+                                       'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
+                                       'options' => $options);
             }
         }
     }
@@ -333,6 +357,8 @@ function advanced_polls_user_display($args)
  */
 function advanced_polls_user_vote($args)
 {
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // get variables submitted from form
     $pollid             = FormUtil::getPassedValue('pollid');
     $results            = FormUtil::getPassedValue('results');
@@ -343,6 +369,11 @@ function advanced_polls_user_vote($args)
     $polldisplayresults = FormUtil::getPassedValue('polldisplayresults');
     $returnurl          = FormUtil::getPassedValue('returnurl');
     extract($args);
+
+    // Confirm authorisation code.
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'user', 'view'));
+    }
 
     if (!isset($results)) {
         $results = 0;
@@ -369,26 +400,34 @@ function advanced_polls_user_vote($args)
                             for ($i = 1; $i <= $max; $i++) {
                                 $optionid = FormUtil::getPassedValue('option' . ($i));
                                 if ($optionid != null) {
-                                    $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
-                                    array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => 1));
+                                    $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                                                                                                      'title' => $title,
+                                                                                                      'optionid' => $optionid,
+                                                                                                      'voterank' => 1));
                                 }
                             }
                         } else {
                             for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
                                 $optionid = FormUtil::getPassedValue('option' . ($i));
-                                $result = pnModAPIFunc('advanced_polls','user','addvote',
-                                array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => $i));
+                                $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                                                                                                  'title' => $title,
+                                                                                                  'optionid' => $optionid,
+                                                                                                  'voterank' => $i));
                             }
                         }
                     } else {
                         $optionid = FormUtil::getPassedValue('option'.$pollid);
-                        $result = pnModAPIFunc('advanced_polls','user','addvote',
-                        array('pollid' => $pollid, 'title' => $title, 'optionid' => $optionid, 'voterank' => 1));
+                        $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                                                                                          'title' => $title,
+                                                                                          'optionid' => $optionid,
+                                                                                          'voterank' => 1));
                     }
                 }
             }
         }
     }
+
+    LogUtil::registerStatus( __('Done! Vote added.', $dom));
 
     if (($polldisplayresults == 0) && isset($polldisplayresults) && isset($returnurl)) {
         return pnRedirect($returnurl);

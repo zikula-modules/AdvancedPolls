@@ -5,15 +5,15 @@
 
 <!--[counter name=counter print=false start=0]-->
 <!--[foreach from=$item.options item=option]-->
-<div class="z-formrow">
-    <!--[if $option.optioncolor neq '']-->
-    <span style="color:<!--[$option.optioncolor]-->;">
+<div class="z-formnote">
+    <input id="option<!--[$option.optiontext|pnvarprephtmldisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" />
+    <!--[if $option.optioncolour neq '']-->
+    <span style="color:<!--[$option.optioncolour]-->;">
         <label id="option<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
     </span>
     <!--[else]-->
     <label for="option<!--[$option.optiontext|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
     <!--[/if]-->
-    <input id="option<!--[$option.optiontext|pnvarprephtmldisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->">
 </div>
 <!--[/foreach]-->
 

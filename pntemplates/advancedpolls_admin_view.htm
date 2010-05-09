@@ -34,21 +34,23 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th id="col1"><!--[gt text="Name of poll"]--></th>
-                <th id="col2"><!--[gt text="Poll ID"]--></th>
-                <th id="col3"><!--[gt text="Is poll open?"]--></th>
+                <th><!--[gt text="Name of poll"]--></th>
+                <th><!--[gt text="Poll ID"]--></th>
+                <th><!--[gt text="Is poll open?"]--></th>
                 <!--[if $enablecategorization]-->
                 <th><!--[gt text="Category"]--></th>
                 <!--[/if]-->
-                <th id="col4"><!--[gt text="Options"]--></th>
+                <th><!--[gt text="Options"]--></th>
             </tr>
         </thead>
         <tbody>
             <!--[foreach from=$polls item=poll]-->
             <tr class="<!--[cycle values=z-odd,z-even]-->">
-                <td headers="col1"><!--[$poll.title|pnvarprepfordisplay]--></td>
-                <td headers="col2"><!--[$poll.pollid|pnvarprepfordisplay]--></td>
-                <td headers="col3"><!--[$poll.isopen|yesno]--></td>
+                <td>
+                    <a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid]-->"><!--[$poll.title|pnvarprepfordisplay]--></a>
+                </td>
+                <td><!--[$poll.pollid|pnvarprepfordisplay]--></td>
+                <td><!--[$poll.isopen|yesno]--></td>
                 <!--[if $enablecategorization]-->
                 <td>
                     <!--[foreach from=$poll.__CATEGORIES__ name=cat item=cat]-->
@@ -59,7 +61,7 @@
                     <!--[/foreach]-->
                 </td>
                 <!--[/if]-->
-                <td headers="col4">
+                <td class="z-nowrap">
                     <!--[assign var="options" value=$poll.options]-->
                     <!--[section name=options loop=$options]-->
                     <a href="<!--[$options[options].url|pnvarprepfordisplay]-->"><!--[pnimg modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title]--></a>

@@ -19,7 +19,7 @@
 function advanced_polls_pollblock_init()
 {
     // Security
-    pnSecAddSchema('advanced_polls:pollblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('advanced_polls:pollblock:', 'Block title::');
 }
 
 /**
@@ -85,7 +85,7 @@ function advanced_polls_pollblock_display($blockinfo)
 
     switch ($vars['polluse']) {
         case 1:
-            $items = pnModAPIFunc('advanced_polls', 'user',	'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
             $item = $items[0];
             $pollid = $item['pollid'];
             break;
@@ -122,7 +122,7 @@ function advanced_polls_pollblock_display($blockinfo)
     $renderer = pnRender::getInstance('advanced_polls', false);
 
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = pnModAPIFunc('advanced_polls',	'user',	'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // get current vote counts
     $votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
@@ -219,7 +219,7 @@ function advanced_polls_pollblock_modify($blockinfo)
     $renderer = pnRender::getInstance('advanced_polls', false);
 
     // get a full list of available polls
-    $items = pnModAPIFunc('advanced_polls',	'user',	'getall');
+    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {
@@ -233,12 +233,12 @@ function advanced_polls_pollblock_modify($blockinfo)
 
     // poll use values
     $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
-                                              1 => 'Latest',
-                                              2 => 'Random'));
+    1 => 'Latest',
+    2 => 'Random'));
 
     // yes/no array
     $renderer->assign('yesno', array( 0 => __('No', $dom),
-                                      1 => __('Yes', $dom)));
+    1 => __('Yes', $dom)));
 
     // Return output
     return $renderer->fetch('advancedpolls_block_poll_modify.htm');
@@ -259,7 +259,9 @@ function advanced_polls_pollblock_update($blockinfo)
     $vars['polluse']                   = FormUtil::getPassedValue('polluse');
     $vars['polldisplayresults']        = FormUtil::getPassedValue('polldisplayresults');
     $vars['ajaxvoting']                = FormUtil::getPassedValue('ajaxvoting');
-    $blockinfo['content']              = FormUtil::getPassedValue($vars);
+
+    // generate the block array
+    $blockinfo['content']              = pnBlockVarsToContent($vars);
 
     return $blockinfo;
 }
