@@ -541,11 +541,6 @@ function advanced_polls_admin_adminstats()
         return LogUtil::registerPermissionError();
     }
 
-    // Confirm authorisation code.
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'admin', 'adminstats'));
-    }
-
     // Get parameters
     $pollid    = FormUtil::getPassedValue('pollid');
     $sortorder = FormUtil::getPassedValue('sortorder');

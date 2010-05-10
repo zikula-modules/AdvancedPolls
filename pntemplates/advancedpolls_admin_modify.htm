@@ -49,7 +49,7 @@
             <fieldset>
                 <legend><!--[gt text="Timing"]--></legend>
                 <div class="z-formrow">
-                    <label for="advancedpolls_startdate"><!--[gt text="Date and Time Poll Opens"]--></label>
+                    <label for="advancedpolls_startdate"><!--[gt text="Date and time poll opens"]--></label>
                     <div id="advancedpolls_startdate" style="white-space:nowrap">
                         <!--[html_select_date year_as_text=true prefix="start" time=$opendate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="start" time=$opendate]-->
                     </div>
@@ -66,6 +66,31 @@
                     <label for="advancedpolls_closedate"><!--[gt text="Date and time poll closes"]--></label>
                     <div id="advancedpolls_closedate" style="white-space:nowrap">
                         <!--[html_select_date year_as_text=true prefix="close" time=$closedate]--><!--[html_select_time use_24_hours=true display_seconds=false prefix="close" time=$closedate]-->
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="advancedpolls_recurring"><!--[gt text="Recurring poll?"]--></label>
+                    <select id="advancedpolls_recurring" name="poll[recurring]">
+                        <!--[if $recurring eq 0]-->
+                        <option value="0" selected="selected"><!--[gt text="No"]--></option>
+                        <option value="1"><!--[gt text="Yes"]--></option>
+                        <!--[else]-->
+                        <option value="0"><!--[gt text="No"]--></option>
+                        <option value="1" selected="selected"><!--[gt text="Yes"]--></option>
+                        <!--[/if]-->
+                    </select>
+                </div>
+                <div id="advancedpolls_recurring_container">
+                    <p class="z-formnote z-informationmsg"><!--[gt text="The following options are only relevant if a recurring poll is selected."]--></p>
+                    <div class="z-formrow">
+                        <label for="advancedpolls_recurringoffset"><!--[gt text="Recurring offset"]--></label>
+                        <input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="<!--[$recurringoffset|pnvarprepfordisplay]-->" />
+                        <em class="z-sub z-formnote"><!--[gt text="Number of hours after the close date the poll reopens"]--></em>
+                    </div>
+                    <div class="z-formrow">
+                        <label for="advancedpolls_recurringinterval"><!--[gt text="Recurrence interval"]--></label>
+                        <input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="<!--[$recurringinterval|pnvarprepfordisplay]-->" />
+                        <em class="z-sub z-formnote"><!--[gt text="Number of days the poll will recur"]--></em>
                     </div>
                 </div>
             </fieldset>
@@ -95,29 +120,6 @@
                         <label for="advancedpolls_multipleselectcount"><!--[gt text="You may select "]--></label>
                         <input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="<!--[$multipleselectcount|pnvarprepfordisplay]-->" />
                         <em class="z-formnote z-sub"><!--[gt text="(-1 for Unlimited selections)"]--></em>
-                    </div>
-                </div>
-                <div class="z-formrow">
-                    <label for="advancedpolls_recurring"><!--[gt text="Recurring poll?"]--></label>
-                    <select id="advancedpolls_recurring" name="poll[recurring]">
-                        <!--[if $recurring eq 0]-->
-                        <option value="0" selected="selected"><!--[gt text="No"]--></option>
-                        <option value="1"><!--[gt text="Yes"]--></option>
-                        <!--[else]-->
-                        <option value="0"><!--[gt text="No"]--></option>
-                        <option value="1" selected="selected"><!--[gt text="Yes"]--></option>
-                        <!--[/if]-->
-                    </select>
-                </div>
-                <div id="advancedpolls_recurring_container">
-                    <p class="z-formnote z-informationmsg"><!--[gt text="Following option only relevant if a recurring poll is selected"]--></p>
-                    <div class="z-formrow">
-                        <label for="advancedpolls_recurringoffset"><!--[gt text="Number of hours poll reopens after"]--></label>
-                        <input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="<!--[$recurringoffset|pnvarprepfordisplay]-->" />
-                    </div>
-                    <div class="z-formrow">
-                        <label for="advancedpolls_recurringinterval"><!--[gt text="Number of days poll will recur after"]--></label>
-                        <input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="<!--[$recurringinterval|pnvarprepfordisplay]-->" />
                     </div>
                 </div>
             </fieldset>

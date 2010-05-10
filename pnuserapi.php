@@ -135,20 +135,6 @@ function advanced_polls_userapi_get($args)
         return false;
     }
 
-    // populate an array with each part of the where clause and then implode the array if there is a need.
-    // credit to Jorg Napp for this technique - markwest
-    $pntable = pnDBGetTables();
-    $pollscolumn = $pntable['advanced_polls_desc_column'];
-    $queryargs = array();
-    if (pnConfigGetVar('multilingual') == 1 && $args['checkml']) {
-        $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' OR $pollscolumn[language]='')";
-    }
-
-    $where = null;
-    if (count($queryargs) > 0) {
-        $where = ' WHERE ' . implode(' AND ', $queryargs);
-    }
-
     // define the permission filter to apply
     $permFilter = array(array('realm'           => 0,
                               'component_left'  => 'advanced_polls',
@@ -163,7 +149,10 @@ function advanced_polls_userapi_get($args)
         $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['title'], 'urltitle', '', $permFilter);
     }
 
-    $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', 'pn_pollid=\''.DataUtil::formatForStore($poll['pollid']).'\'', 'optionid');
+    $pntable = pnDBGetTables();
+    $datacolumn  = $pntable['advanced_polls_data_column'];
+    $where = "$datacolumn[pollid]='" . (int)DataUtil::formatForStore($poll['pollid']) . "'";
+    $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', $where, 'optionid');
 
     // pad the array to the correct number of poll options
     if (count($poll['options']) < $poll['optioncount']) {
@@ -205,14 +194,14 @@ function advanced_polls_userapi_countitems($args)
     }
 
     $pntable = pnDBGetTables();
-    $advanced_polls_desc_column = $pntable['advanced_polls_desc_column'];
+    $desccolumn = $pntable['advanced_polls_desc_column'];
 
     // Check if we is an ML situation
     $querylang = '';
     if ($checkml && pnConfigGetVar('multilingual') == 1) {
-        $querylang = "WHERE ($advanced_polls_desc_column[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "'
-            OR $advanced_polls_desc_column[language]=''
-            OR $advanced_polls_desc_column[language] IS NULL)";
+        $querylang = "WHERE ($desccolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "'
+            OR $desccolumn[language]=''
+            OR $desccolumn[language] IS NULL)";
     }
 
     // Return the number of items
@@ -306,11 +295,12 @@ function advanced_polls_userapi_isvoteallowed($args)
             // voting always allowed
             return true;
         case 2: //UID Voting
-            // extract user id from session variables
-            $uid = DataUtil::formatForStore(pnUserGetVar('uid'));
-
+            // // extract user id from session variables
+            $uid = pnUserGetVar('uid');
             // get all the matching votes
-            $where = "WHERE pn_uid = '{$uid}' AND pn_pollid = '{$args['pollid']}'";
+            $pntable = pnDBGetTables();
+            $votescolumn  = $pntable['advanced_polls_votes_column'];
+            $where = "$votescolumn[uid]='" . (int)DataUtil::formatForStore($uid) . "' AND $votescolumn[pollid]='" . (int)DataUtil::formatForStore($args['pollid']) . "'";
             $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
 
             if ($votes == 0) {
@@ -332,7 +322,9 @@ function advanced_polls_userapi_isvoteallowed($args)
             $ip = pnServerGetVar('REMOTE_ADDR');
 
             // get all the matching votes
-            $where = "pn_ip = '{$ip}' AND pn_pollid = '{$args['pollid']}'";
+            $pntable = pnDBGetTables();
+            $votescolumn  = $pntable['advanced_polls_votes_column'];
+            $where = "$votescolumn[ip]='" . DataUtil::formatForStore($ip) . "' AND $votescolumn[pollid]='" . (int)DataUtil::formatForStore($args['pollid']) . "'";
             $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
 
             //If there are no rows back from this query then this uid can vote
@@ -389,11 +381,11 @@ function advanced_polls_userapi_resetrecurring($args)
     // then update relevant db tables
     // Doesn't call IsPollOpen API as this checks for both before
     // poll open date and after poll close date
-    // We are only insterest in Poll cose date
+    // We are only insterest in Poll close date
     if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
 
-        if (!DBUtil::deleteObjectById('advanced_polls_votes', $pollid)) {
-            return LogUtil::registerError (__('Error! Reset failed.', $dom));
+        if (!DBUtil::deleteObjectById('advanced_polls_votes', $pollid, 'pollid')) {
+            return LogUtil::registerError (__('Error! Reseting the votes of a recurring poll failed.', $dom));
         }
 
         // set new opening and closing times
@@ -409,8 +401,8 @@ function advanced_polls_userapi_resetrecurring($args)
                      'opendate'  => $newopentime,
                      'closedate' => $newclosetime);
 
-        if (!DBUtil::updateObject($obj, 'advanced_polls_desc')) {
-            return LogUtil::registerError (__('Error! Reset failed.', $dom));
+        if (!DBUtil::updateObject($obj, 'advanced_polls_desc', '', 'pollid')) {
+            return LogUtil::registerError (__('Error! Reseting the dates of a recurring poll failed.', $dom));
         }
 
     }
@@ -458,17 +450,17 @@ function advanced_polls_userapi_pollvotecount($args)
         $item['optioncount'] = pnModGetVar('advanced_polls', 'defaultoptioncount');
     }
 
-    // get database connection
+    // get database tables
     $pntable = pnDBGetTables();
-    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+    $votestable = $pntable['advanced_polls_votes'];
+    $votescolumn = &$pntable['advanced_polls_votes_column'];
 
     // now lets get all the vote counts
-    $sql = "SELECT COUNT($advanced_pollsvotescolumn[optionid]),
-    $advanced_pollsvotescolumn[optionid]
-    FROM $advanced_pollsvotestable WHERE
-    $advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
-    GROUP BY $advanced_pollsvotescolumn[optionid]";
+    $sql = "SELECT COUNT($votescolumn[optionid]), $votescolumn[optionid]
+            FROM $votestable
+            WHERE $votescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
+            GROUP BY $votescolumn[optionid]";
+
     $res = DBUtil::executeSQL($sql);
     $colarray = array('optioncount', 'optionid');
     $result = DBUtil::marshallObjects($res, $colarray);
@@ -571,10 +563,10 @@ function advanced_polls_userapi_timecountback($args)
         return LogUtil::registerArgsError();
     }
 
-    // get database connection
+    // get database tables
     $pntable = pnDBGetTables();
-    $advanced_pollsvotestable = $pntable['advanced_polls_votes'];
-    $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+    $votestable = $pntable['advanced_polls_votes'];
+    $votescolumn = &$pntable['advanced_polls_votes_column'];
 
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
@@ -583,16 +575,18 @@ function advanced_polls_userapi_timecountback($args)
         return LogUtil::registerPermissionError();
     }
 
-    $sql = "SELECT SUM($advanced_pollsvotescolumn[time])
-      FROM $advanced_pollsvotestable WHERE
-      (($advanced_pollsvotescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "') AND
-      ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
+    $sql = "SELECT SUM($votescolumn[time])
+            FROM $votestable
+            WHERE (($votescolumn[pollid] = '". (int)DataUtil::formatForStore($pollid) . "')
+            AND ($votescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid1) . "'))";
+
     $firstsum = DBUtil::executeSQL($sql);
 
-    $sql = "SELECT SUM($advanced_pollsvotescolumn[time])
-      FROM $advanced_pollsvotestable WHERE
-      (($advanced_pollsvotescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "') AND
-      ($advanced_pollsvotescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
+    $sql = "SELECT SUM($votescolumn[time])
+            FROM $votestable
+            WHERE (($votescolumn[pollid] = '" . (int)DataUtil::formatForStore($pollid) . "')
+            AND ($votescolumn[optionid] = '" . (int)DataUtil::formatForStore($voteid2) . "'))";
+
     $secondsum = DBUtil::executeSQL($sql);
 
     if ($firstsum < $secondsum) {
@@ -682,7 +676,7 @@ function advanced_polls_userapi_encodeurl($args)
         if (isset($args['args']['objectid'])) {
             $args['args']['pollid'] = $args['args']['objectid'];
         }
-        // get the item (will be cached by DBUtil)
+        // get the item
         if (isset($args['args']['pollid'])) {
             $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['args']['pollid']));
         } else {

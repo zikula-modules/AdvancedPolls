@@ -309,26 +309,26 @@ function advanced_polls_adminapi_getvotes($args)
     } else {
         // get database setup
         $pntable = pnDBGetTables();
-        $advanced_pollsvotescolumn = &$pntable['advanced_polls_votes_column'];
+        $votescolumn = &$pntable['advanced_polls_votes_column'];
 
         switch ($args['sortby']) {
             case 1:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['voteid']}";
+                $sortstring = " ORDER BY {$votescolumn['voteid']}";
                 break;
             case 2:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['ip']}";
+                $sortstring = " ORDER BY {$votescolumn['ip']}";
                 break;
             case 3:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['time']}";
+                $sortstring = " ORDER BY {$votescolumn['time']}";
                 break;
             case 4:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['uid']}";
+                $sortstring = " ORDER BY {$votescolumn['uid']}";
                 break;
             case 5:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['voterank']}";
+                $sortstring = " ORDER BY {$votescolumn['voterank']}";
                 break;
             case 6:
-                $sortstring = " ORDER BY {$advanced_pollsvotescolumn['optionid']}";
+                $sortstring = " ORDER BY {$votescolumn['optionid']}";
                 break;
             default:
                 $sortstring = '';
@@ -338,7 +338,7 @@ function advanced_polls_adminapi_getvotes($args)
             $sortstring = $sortstring . ' DESC';
         }
 
-        $where = "pn_pollid = '{$args['pollid']}'";
+        $where = "WHERE $votescolumn[pollid] = '" . DataUtil::formatForStore($args['pollid']) . "'";
 
         // get the objects from the db
         $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring);

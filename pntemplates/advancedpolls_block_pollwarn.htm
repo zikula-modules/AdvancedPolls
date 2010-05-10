@@ -1,8 +1,6 @@
 <div <!--[if $blockvars.backgroundcolor neq '']-->style="background-color:<!--[$blockvars.backgroundcolor]-->;"<!--[/if]-->>
-    <p>
-        <!--[gt text="You have not voted in the poll" domain="module_advanced_polls"]-->:
-        <strong>
-            <a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[$item.title|pnvarprephtmldisplay]--></a>
-        </strong>
-    </p>
+    <!--[gt text="You have not voted in the poll" domain="module_advanced_polls"]-->:
+    <strong>
+        <a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[$item.title|pnvarprephtmldisplay]--></a>
+    </strong>
 </div>

@@ -86,12 +86,15 @@ function advanced_polls_upgrade($oldversion)
             return advanced_polls_upgrade('1.51');
         case '1.51':
             // populate permalinks for existing content
-            $tables = pnDBGetTables();
+            $pntable = pnDBGetTables();
+            $desctable = $pntable['advanced_polls_desc'];
+            $desccolumn = &$pntable['advanced_polls_desc_column'];
             $shorturlsep = pnConfigGetVar('shorturlsseparator');
-            $sql  = "UPDATE $tables[advanced_polls_desc] SET pn_urltitle = REPLACE(pn_title, ' ', '{$shorturlsep}')";
+            $sql  = "UPDATE $desctable SET $desccolumn[urltitle] = REPLACE($desccolumn[title], ' ', '{$shorturlsep}')";
             if (!DBUtil::executeSQL($sql)) {
                 return LogUtil::registerError (__('Error! Table update failed.', $dom));
             }
+
             // setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);

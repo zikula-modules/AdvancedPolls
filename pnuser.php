@@ -215,7 +215,7 @@ function advanced_polls_user_view()
                 }
                 $closedpolls[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                        'title' => $item['title'],
-                                       'opendate' => DateUtil::formatDatetime($fullitem['opendate'], 'datetimebrief'),
+                                       'opendate' => DateUtil::formatDatetime($fullitem['closedate'], 'datetimebrief'),
                                        'options' => $options);
             }
         }
