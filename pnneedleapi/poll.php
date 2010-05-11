@@ -14,7 +14,7 @@
  * @param $args['nid'] needle id
  * @return array()
  */
-function advanced_polls_needleapi_polls($args)
+function advanced_polls_needleapi_poll($args)
 {
     // Get arguments from argument array
     $nid = $args['nid'];

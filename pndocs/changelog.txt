@@ -14,6 +14,7 @@ based on a good preparation of Mark West
 + Ajax voting
 + Improved templates and interface
 + Multihook needle support #8
++ Added simple content plugin #8
 + Improved recurrence and DBUtil usage
 + Fixed blocks and authorisation methods
 + Fixed duplicate function
@@ -28,6 +29,7 @@ http://www.markwest.me.uk
 - Support for polls with more than 12 options
 - New Poll description field
 - New Color Picker for poll option text
+
 
 v1.1 B1
 Mark West

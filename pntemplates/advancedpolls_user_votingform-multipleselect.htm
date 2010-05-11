@@ -1,12 +1,12 @@
 <p class="z-informationmsg">
-    <!--[gt text="This is a multiple selection poll."]-->
-    <!--[gt text="You may select %s options." tag1=$multiplecount|pnvarprepfordisplay]-->
+    <!--[gt text="This is a multiple selection poll." domain="module_advanced_polls"]-->
+    <!--[gt text="You may select %s options." tag1=$multiplecount|pnvarprepfordisplay domain="module_advanced_polls"]-->
 </p>
 
 <!--[counter name=counter print=false start=1 assign=optioncounter]-->
 <!--[section name=multiloop loop=$multiplecount]-->
 <div class="z-formrow">
-    <label for="choice<!--[$optioncounter|pnvarprepfordisplay]-->"><!--[gt text="Choice %s" tag1=$optioncounter|pnvarprepfordisplay]--></label>
+    <label for="choice<!--[$optioncounter|pnvarprepfordisplay]-->"><!--[gt text="Choice %s" tag1=$optioncounter|pnvarprepfordisplay domain="module_advanced_polls"]--></label>
     <select id="choice<!--[$optioncounter|pnvarprepfordisplay]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
         <!--[foreach from=$item.options item=option]-->
         <option value="<!--[$option.optionid|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></option>

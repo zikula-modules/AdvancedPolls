@@ -1,10 +1,9 @@
-<!--[*  $Id$  *]-->
-<!--[include file="advancedpolls_user_menu.htm"]-->
+<!--[* $Id$ *]-->
 <h3>
     <!--[if $ispollopen eq 1]-->
-    <!--[gt text="Current poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
+    <!--[gt text="Current poll" domain="module_advanced_polls"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
     <!--[else]-->
-    <!--[gt text="Previous poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
+    <!--[gt text="Previous poll" domain="module_advanced_polls"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
     <!--[/if]-->
 </h3>
 <p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
@@ -29,11 +28,9 @@
                 <!--[/if]-->
             </td>
             <td>
-                <!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]-->
+                <!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount domain="module_advanced_polls"]-->
             </td>
         </tr>
         <!--[/foreach]-->
     </tbody>
 </table>
-<!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
-<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->
