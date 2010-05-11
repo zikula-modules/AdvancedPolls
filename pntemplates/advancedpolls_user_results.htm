@@ -14,19 +14,13 @@
         <tr class="<!--[cycle values="z-odd,z-even"]-->">
             <td>
                 <!--[if $option.optioncolour neq '']-->
-                <span style="color:<!--[$option.optioncolour]-->;">
-                    <!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
-                </span>
+                <span style="color:<!--[$option.optioncolour]-->;"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></span>
                 <!--[else]-->
                 <!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
                 <!--[/if]-->
             </td>
-            <td>
-                <!--[if $option.percent gt 0]-->
-                <!--[pnimg modname="advanced_polls" src="leftbar.gif" height="15" width="7" alt=$option.percent]--><!--[pnimg modname="advanced_polls" src="mainbar.gif" height="15" width=$option.percentintscaled alt=$option.percent]--><!--[pnimg modname="advanced_polls" src="rightbar.gif" height="15" width="7" alt=$option.percent]-->
-                <!--[else]-->
-                <!--[pnimg modname="advanced_polls" src="leftbar.gif" height="15" width="7" alt=$option.percent]--><!--[pnimg modname="advanced_polls" src="mainbar.gif" height="15" width="3" alt=$option.percent]--><!--[pnimg modname="advanced_polls" src="rightbar.gif" height="15" width="7" alt=$option.percent]-->
-                <!--[/if]-->
+            <td class="adv_value">
+                <!--[pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent]-->
             </td>
             <td>
                 <!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]-->
