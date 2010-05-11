@@ -2,23 +2,25 @@ Advanced Polls Module v2.0.0
 
 Description
 -----------
-A rewrite of the core Postnuke polling module to be pnAPI compliant and
+A rewrite of the core polling module to be pnAPI compliant and
 introduce extended functionality.
 
-This module is independant to the standard Postnuke polling module and the
+This module is independant to the old standard polling module and the
 two modules will happily coincide with each other.
 
 Download
 --------
-http://www.markwest.me.uk
+http://code.zikula.org/advancedpolls/
+http://community.zikula.org/module-Extensions.htm
 
 Demo
 ----
-http://www.markwest.me.uk
+http://demo.zikula.de
 
 Author
 ------
 Mark West - support@markwest.me.uk
+Carsten Volmer - carsten@zikula.org
 
 Licence
 -------
@@ -68,7 +70,7 @@ Upgrade Procedure
 
 Permissions
 -----------
-The Postnuke permissions system can be used to restrict access to both the
+The Zikula permissions system can be used to restrict access to both the
 administrative and user features of this module. Examples of the usage of
 permissions in this module are as follow
 
@@ -106,13 +108,8 @@ Permissions Level - None
 
 All permissions examples can be equally applied to user based permissions.
 
-Support andFeedback
+Support and Feedback
 -------------------
-Support can be obtained via http://www.markwest.me.uk or via the PN support forums on
-http://commmunity.zikula.org.
+Support can be obtained via http://code.zikula.org/advancedpolls/ or via 
+forums on http://commmunity.zikula.org.
 
-Feedback can be provided via http://www.markwest.me.uk
-
-Future Features
----------------
-See the project status page on http://www.markwest.me.uk

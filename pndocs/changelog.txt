@@ -1,31 +1,45 @@
-Changelog 
+Advanced Polls - Changelog
+==========================================================================
 
-v2.0
-Updated for Zikula v1.0 including the following
-Category support
-permalink support
-meta data support
-ajax voting
-improved templates and interface
+v2.0.0  -  May 2010
+Carsten Volmer <carsten@zikula.org>
+http://carsten-volmer.de
+based on a good preparation of Mark West
+--------------------------------------------------------------------------
++ Updated for Zikula v1.2
++ Gettext conversion
++ Category support
++ Permalink support
++ Meta data support
++ Ajax voting
++ Improved templates and interface
++ Multihook needle support #8
++ Improved recurrence and DBUtil usage
++ Fixed blocks and authorisation methods
++ Fixed duplicate function
+
 
 v1.51
-All module output fully templated using pnRender
-Support for HTML in poll options and titles (e.g.image based polls)
-Support for polls with more than 12 options
-New Poll description field
-New Color Picker for poll option text
+Mark West
+http://www.markwest.me.uk
+--------------------------------------------------------------------------
+- All module output fully templated using pnRender
+- Support for HTML in poll options and titles (e.g.image based polls)
+- Support for polls with more than 12 options
+- New Poll description field
+- New Color Picker for poll option text
 
 v1.1 B1
-
-Moved declaration of time arrays to functions to remove a large amount of duplication (pnadmin.php in now 20k smaller!!)
-Used loop to display poll options
-Used loop to extract poll option vars
-Added _POLLOPTION constant to lang\eng\admin.php for use in loops
-Removed _POLLOPTION1 - _POLLOPTION12
-Fixed _POLLDATETIMECLOSE bug in pnadmin.php line 1531
-Fixed offset bug in admin stats
-Various E_ALL Fixes
-Added redirection to either results page or calling page
-Added default user start function
-
-
+Mark West
+http://www.markwest.me.uk
+--------------------------------------------------------------------------
+- Moved declaration of time arrays to functions to remove a large amount of duplication (pnadmin.php in now 20k smaller!!)
+- Used loop to display poll options
+- Used loop to extract poll option vars
+- Added _POLLOPTION constant to lang\eng\admin.php for use in loops
+- Removed _POLLOPTION1 - _POLLOPTION12
+- Fixed _POLLDATETIMECLOSE bug in pnadmin.php line 1531
+- Fixed offset bug in admin stats
+- Various E_ALL Fixes
+- Added redirection to either results page or calling page
+- Added default user start function
