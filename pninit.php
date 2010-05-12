@@ -85,16 +85,6 @@ function advanced_polls_upgrade($oldversion)
             // all changes in this release are covered by the table change
             return advanced_polls_upgrade('1.51');
         case '1.51':
-            // populate permalinks for existing content
-            $pntable = pnDBGetTables();
-            $desctable = $pntable['advanced_polls_desc'];
-            $desccolumn = &$pntable['advanced_polls_desc_column'];
-            $shorturlsep = pnConfigGetVar('shorturlsseparator');
-            $sql  = "UPDATE $desctable SET $desccolumn[urltitle] = REPLACE($desccolumn[title], ' ', '{$shorturlsep}')";
-            if (!DBUtil::executeSQL($sql)) {
-                return LogUtil::registerError (__('Error! Table update failed.', $dom));
-            }
-
             // setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
@@ -102,9 +92,18 @@ function advanced_polls_upgrade($oldversion)
             pnModDelVar('advanced_polls', 'userdateformat');
             pnModDelVar('advanced_polls', 'useritemsperpage');
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
+            
+            // populate permalinks for existing content
+            if (!_advanced_polls_createPermalinks()) {
+                return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
+            }
+
+            // create the default category
             if (!_advanced_polls_createdefaultcategory()) {
                 return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
             }
+
+            // convert language codes
             if (!_advanced_polls_updatePollsLanguages()) {
                 return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
             }
@@ -216,4 +215,31 @@ function _advanced_polls_updatePollsLanguages()
     }
 
     return true;
+}
+
+function _advanced_polls_createPermalinks()
+{
+    // get all the ID and permalink of the table
+    $data = DBUtil::selectObjectArray('advanced_polls_desc', '', '', -1, -1, 'pollid', null, null, array('pollid', 'title', 'urltitle'));
+
+    // loop the data searching for non equal permalinks
+    $perma = '';
+    foreach (array_keys($data) as $pollid) {
+        $perma = DataUtil::formatPermalink($data[$pollid]['title']);
+        if ($data[$pollid]['urltitle'] != $perma) {
+            $data[$pollid]['urltitle'] = $perma;
+        } else {
+            unset($data[$pollid]);
+        }
+    }
+
+    if (empty($data)) {
+        return true;
+        // store the modified permalinks
+    } elseif (DBUtil::updateObjectArray($data, 'advanced_polls_desc', 'pollid')) {
+        // let the calling process know that we have finished successfully
+        return true;
+    } else {
+        return false;
+    }
 }
