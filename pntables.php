@@ -63,8 +63,7 @@ function advanced_polls_pntables()
                                                    'multipleselectcount' => 'pn_multipleselectcount',
                                                    'voteauthtype'        => 'pn_voteauthtype',
                                                    'tiebreakalg'         => 'pn_tiebreakalg',
-                                                   'language'            => 'pn_language',
-                                                   'votingmethod'        => 'pn_votingmethod');
+                                                   'language'            => 'pn_language');
     $pntable['advanced_polls_desc_column_def'] = array('pollid'              => 'I AUTOINCREMENT PRIMARY',
                                                        'title'               => "C(100) NOTNULL DEFAULT ''",
                                                        'urltitle'            => "C(120) NOTNULL DEFAULT ''",
@@ -77,10 +76,9 @@ function advanced_polls_pntables()
                                                        'recurringinterval'   => "I NOTNULL DEFAULT '0'",
                                                        'multipleselect'      => "I NOTNULL DEFAULT '0'",
                                                        'multipleselectcount' => "I NOTNULL DEFAULT '0'",
-                                                       'voteauthtype'        => "I NOTNULL DEFAULT '1'",
+                                                       'voteauthtype'        => "I NOTNULL DEFAULT '0'",
                                                        'tiebreakalg'         => "I NOTNULL DEFAULT '0'",
-                                                       'language'            => "C(30) NOTNULL DEFAULT ''",
-                                                       'votingmethod'        => "I NOTNULL DEFAULT '0'");
+                                                       'language'            => "C(30) NOTNULL DEFAULT ''");
 
     // Enable categorization services
     $pntable['advanced_polls_desc_db_extra_enable_categorization'] = pnModGetVar('advanced_polls', 'enablecategorization');

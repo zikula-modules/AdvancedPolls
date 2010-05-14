@@ -95,7 +95,12 @@ function advanced_polls_upgrade($oldversion)
             pnModDelVar('advanced_polls', 'userdateformat');
             pnModDelVar('advanced_polls', 'useritemsperpage');
             pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
-            
+
+            //change table: remove votingmethod column
+            if (!DBUtil::changeTable('advanced_polls_desc')) {
+                return LogUtil::registerError (__('Error! Could not change the advanced polls tables.', $dom));
+            }
+
             // populate permalinks for existing content
             if (!_advanced_polls_createPermalinks()) {
                 return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
