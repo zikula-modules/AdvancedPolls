@@ -291,6 +291,7 @@ function advanced_polls_userapi_isvoteallowed($args)
     $voteauthtype = $item['voteauthtype'];
 
     switch ($voteauthtype) {
+        case 0: //Legacy - should not be used
         case 1: //Free voting
             // voting always allowed
             return true;

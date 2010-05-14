@@ -77,7 +77,7 @@ function advanced_polls_pntables()
                                                        'recurringinterval'   => "I NOTNULL DEFAULT '0'",
                                                        'multipleselect'      => "I NOTNULL DEFAULT '0'",
                                                        'multipleselectcount' => "I NOTNULL DEFAULT '0'",
-                                                       'voteauthtype'        => "I NOTNULL DEFAULT '0'",
+                                                       'voteauthtype'        => "I NOTNULL DEFAULT '1'",
                                                        'tiebreakalg'         => "I NOTNULL DEFAULT '0'",
                                                        'language'            => "C(30) NOTNULL DEFAULT ''",
                                                        'votingmethod'        => "I NOTNULL DEFAULT '0'");
