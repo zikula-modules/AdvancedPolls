@@ -1,3 +1,15 @@
 td.adv_value img {
     vertical-align: middle;
 }
+
+div.progress-container {
+    border: 1px solid #ccc;
+    margin: 2px 5px;
+    padding: 1px;
+    background: white;
+}
+
+div.progress-container > div {
+    background-color: #ACE97C;
+    height: 1em;
+}

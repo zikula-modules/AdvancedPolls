@@ -441,26 +441,37 @@ function advanced_polls_admin_updateconfig()
         $config['usereversedns'] = 0;
     }
     pnModSetVar('advanced_polls', 'usereversedns', $config['usereversedns']);
+
     if (!isset($config['scalingfactor'])) {
         $config['scalingfactor'] = 4;
     }
     pnModSetVar('advanced_polls', 'scalingfactor', $config['scalingfactor']);
+
+    if (!isset($config['cssbars'])) {
+        $config['cssbars'] = 0;
+    }
+    pnModSetVar('advanced_polls', 'cssbars', $config['cssbars']);
+
     if (!isset($config['adminitemsperpage'])) {
         $config['adminitemsperpage'] = 25;
     }
     pnModSetVar('advanced_polls', 'adminitemsperpage', $config['adminitemsperpage']);
+
     if (!isset($config['defaultcolour'])) {
         $config['defaultcolour'] = '#000000';
     }
     pnModSetVar('advanced_polls', 'defaultcolour', $config['defaultcolour']);
+
     if (!isset($config['defaultoptioncount'])) {
         $config['defaultoptioncount'] = '12';
     }
     pnModSetVar('advanced_polls', 'defaultoptioncount', $config['defaultoptioncount']);
+
     if (!isset($config['enablecategorization'])) {
         $config['enablecategorization'] = false;
     }
     pnModSetVar('advanced_polls', 'enablecategorization', $config['enablecategorization']);
+
     if (!isset($config['addcategorytitletopermalink'])) {
         $config['addcategorytitletopermalink'] = false;
     }

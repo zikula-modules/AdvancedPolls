@@ -11,23 +11,27 @@
 <table class="z-datatable">
     <tbody>
         <!--[foreach from=$item.options item=option]-->
+        <!--[if $option.optiontext]-->
         <tr class="<!--[cycle values="z-odd,z-even"]-->">
-            <td>
-                <!--[if $option.optioncolour neq '']-->
-                <span style="color:<!--[$option.optioncolour]-->;"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></span>
+            <td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
+            <td class="adv_value">
+                <!--[if $modvars.cssbars eq 1]-->
+                <div class="progress-container">
+                    <div style="width: <!--[$option.percentintscaled]-->px; background-color: <!--[if $option.optioncolour neq '']--><!--[$option.optioncolour]--><!--[else]--><!--[$modvars.defaultcolour]--><!--[/if]-->;"></div>
+                </div>
                 <!--[else]-->
-                <!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]-->
+                <!--[pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent]-->
                 <!--[/if]-->
             </td>
-            <td class="adv_value">
-                <!--[pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent]-->
-            </td>
-            <td>
-                <!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]-->
-            </td>
+            <td class="z-w15"><!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]--></td>
+            <td class="z-w10"><!--[$option.percent|formatnumber:2]-->%</td>
         </tr>
+        <!--[/if]-->
         <!--[/foreach]-->
     </tbody>
 </table>
+
+<p><!--[gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"]--></p>
+
 <!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
 <!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->

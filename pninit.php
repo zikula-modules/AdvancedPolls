@@ -37,8 +37,9 @@ function advanced_polls_init()
     // Set up an initial value for each module variable
     pnModSetVar('advanced_polls', 'usereversedns', 0);
     pnModSetVar('advanced_polls', 'scalingfactor', 4);
+    pnModSetVar('advanced_polls', 'cssbars', 1);
     pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-    pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
+    pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
     pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
     pnModSetVar('advanced_polls', 'enablecategorization', true);
     pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
@@ -88,6 +89,8 @@ function advanced_polls_upgrade($oldversion)
             // setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
             pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
+            pnModSetVar('advanced_polls', 'cssbars', 1);
+            pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
             pnModDelVar('advanced_polls', 'admindateformat');
             pnModDelVar('advanced_polls', 'userdateformat');
             pnModDelVar('advanced_polls', 'useritemsperpage');

@@ -22,19 +22,23 @@
                     <!--[/if]-->
                 </div>
                 <div class="z-formrow">
-                    <label for="advancedpolls_scalingfactor"><!--[gt text="Scaling Factor for Poll Results Bar"]--></label>
+                    <label for="advancedpolls_adminitemsperpage"><!--[gt text="Items per page in admin interface"]--></label>
+                    <input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend><!--[gt text="Poll settings"]--></legend>
+                <div class="z-formrow">
+                    <label for="advancedpolls_cssbars"><!--[gt text="Use css poll results bars"]--></label>
+                    <input id="advancedpolls_cssbars" type="checkbox" value="1" name="config[cssbars]"<!--[if $cssbars]--> checked="checked"<!--[/if]--> />
+                </div>
+                <div class="z-formrow">
+                    <label for="advancedpolls_scalingfactor"><!--[gt text="Scaling factor for poll results bars"]--></label>
                     <input id="advancedpolls_scalingfactor" type="text" name="config[scalingfactor]" size="3" value="<!--[$scalingfactor|pnvarprepfordisplay]-->" />
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_defaultoptioncount"><!--[gt text="Default number of options in a poll"]--></label>
                     <input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="<!--[$defaultoptioncount|pnvarprepfordisplay]-->" />
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend><!--[gt text="Interface settings"]--></legend>
-                <div class="z-formrow">
-                    <label for="advancedpolls_adminitemsperpage"><!--[gt text="Items per page in admin interface"]--></label>
-                    <input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="<!--[$adminitemsperpage|pnvarprepfordisplay]-->" />
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_defaultcolor"><!--[gt text="Default colour"]--></label>

@@ -18,6 +18,7 @@ based on a good preparation of Mark West
 + Improved recurrence and DBUtil usage
 + Fixed blocks and authorisation methods
 + Fixed duplicate function
++ Improved results bars style
 
 
 v1.51

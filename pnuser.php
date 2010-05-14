@@ -267,6 +267,7 @@ function advanced_polls_user_display($args)
 
     // get theme name
     $renderer->assign('theme', pnUserGetTheme());
+    $renderer->assign('modvars', pnModGetVar('advanced_polls'));
 
     // check if we need to reset any poll votes
     $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
@@ -307,10 +308,11 @@ function advanced_polls_user_display($args)
             // Output results graph if poll has closed/ is not open yet or
             // if results have been spefifically requested
             //----------------------------------------------------------------------------
+            $scalingfactor = pnModGetVar('advanced_polls', 'scalingfactor');
             $renderer->assign('ispollopen', $ispollopen);
+            $renderer->assign('votecount', $votecount);
 
             // display poll results
-            $scalingfactor = pnModGetVar('advanced_polls', 'scalingfactor');
             $pollresults = array();
             foreach ($item['options'] as $key => $option) {
                 if ($votecount['votecountarray'][$key+1]  != 0) {
