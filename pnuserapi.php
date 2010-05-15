@@ -683,7 +683,7 @@ function advanced_polls_userapi_encodeurl($args)
         } else {
             $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
         }
-        if (pnModGetVar('Polls', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
+        if (pnModGetVar('advanced_polls', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
             $vars = $args['args']['cat'].'/'.$item['urltitle'];
         } else {
             $vars = $item['urltitle'];

@@ -1,12 +1,14 @@
 <!--[*  $Id$  *]-->
+<!--[if $ispollopen eq 1]-->
+<!--[gt text="Current poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
+<!--[else]-->
+<!--[gt text="Previous poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
+<!--[/if]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h3>
-    <!--[if $ispollopen eq 1]-->
-    <!--[gt text="Current poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
-    <!--[else]-->
-    <!--[gt text="Previous poll"]-->: <!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]-->
-    <!--[/if]-->
-</h3>
+<h3><!--[$templatetitle]--></h3>
+<!--[if $item.__CATEGORIES__.Main.display_name.$lang]-->
+<h4><!--[gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay]--></h4>
+<!--[/if]-->
 <p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
 <table class="z-datatable">
     <tbody>

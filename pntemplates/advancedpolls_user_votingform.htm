@@ -1,6 +1,11 @@
 <!--[*  $Id$  *]-->
+<!--[gt text="Voting booth: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
 <!--[include file="advancedpolls_user_menu.htm"]-->
-<h3><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h3>
+
+<h3><!--[$templatetitle]--></h3>
+<!--[if $item.__CATEGORIES__.Main.display_name.$lang]-->
+<h4><!--[gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay]--></h4>
+<!--[/if]-->
 <p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
 <form class="z-form" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
     <div>

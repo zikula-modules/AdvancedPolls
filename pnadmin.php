@@ -467,12 +467,16 @@ function advanced_polls_admin_updateconfig()
     }
     pnModSetVar('advanced_polls', 'defaultoptioncount', $config['defaultoptioncount']);
 
-    if (!isset($config['enablecategorization'])) {
+    if (isset($config['enablecategorization'])) {
+        $config['enablecategorization'] = true;
+    } else {
         $config['enablecategorization'] = false;
     }
     pnModSetVar('advanced_polls', 'enablecategorization', $config['enablecategorization']);
 
-    if (!isset($config['addcategorytitletopermalink'])) {
+    if (isset($config['addcategorytitletopermalink'])) {
+        $config['addcategorytitletopermalink'] = true;
+    } else {
         $config['addcategorytitletopermalink'] = false;
     }
     pnModSetVar('advanced_polls', 'addcategorytitletopermalink', $config['addcategorytitletopermalink']);

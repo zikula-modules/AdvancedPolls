@@ -268,6 +268,7 @@ function advanced_polls_user_display($args)
     // get theme name
     $renderer->assign('theme', pnUserGetTheme());
     $renderer->assign('modvars', pnModGetVar('advanced_polls'));
+    $renderer->assign('lang', ZLanguage::getLanguageCode());
 
     // check if we need to reset any poll votes
     $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
