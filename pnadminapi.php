@@ -341,7 +341,7 @@ function advanced_polls_adminapi_getvotes($args)
         $where = "WHERE $votescolumn[pollid] = '" . DataUtil::formatForStore($args['pollid']) . "'";
 
         // get the objects from the db
-        $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring);
+        $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring, $args['startnum']-1, $args['numitems']);
 
         // Check for an error with the database code, and if so set an appropriate
         // error message and return
