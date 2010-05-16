@@ -14,9 +14,9 @@
         <tr class="<!--[cycle values="z-odd,z-even"]-->">
             <td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
             <td class="adv_value">
-                <!--[if $modvars.cssbars eq 1]-->
+                <!--[if $cssbars eq 1]-->
                 <div class="progress-container">
-                    <div style="width: <!--[$option.percentintscaled]-->px; background-color: <!--[if $option.optioncolour neq '']--><!--[$option.optioncolour]--><!--[else]--><!--[$modvars.defaultcolour]--><!--[/if]-->;"></div>
+                    <div style="width: <!--[$option.percentintscaled]-->px; background-color: <!--[if $option.optioncolour neq '']--><!--[$option.optioncolour]--><!--[else]--><!--[$defaultcolour]--><!--[/if]-->;"></div>
                 </div>
                 <!--[else]-->
                 <!--[pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent]-->

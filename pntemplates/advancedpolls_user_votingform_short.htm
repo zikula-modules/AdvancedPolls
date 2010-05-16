@@ -2,7 +2,7 @@
 
 <h3><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h3>
 <p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
-<form class="z-form" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname='advanced_polls' type='user' func='vote']-->" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
         <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />

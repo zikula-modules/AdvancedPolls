@@ -36,10 +36,11 @@
             <tr>
                 <th><!--[gt text="Poll ID"]--></th>
                 <th><!--[gt text="Name of poll"]--></th>
-                <th><!--[gt text="Is poll open?"]--></th>
                 <!--[if $enablecategorization]-->
                 <th><!--[gt text="Category"]--></th>
                 <!--[/if]-->
+                <th><!--[gt text="Poll open date"]--></th>
+                <th><!--[gt text="Is poll open?"]--></th>
                 <th><!--[gt text="Options"]--></th>
             </tr>
         </thead>
@@ -50,7 +51,6 @@
                 <td>
                     <a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid]-->"><!--[$poll.title|pnvarprepfordisplay]--></a>
                 </td>
-                <td><!--[$poll.isopen|yesno]--></td>
                 <!--[if $enablecategorization]-->
                 <td>
                     <!--[foreach from=$poll.__CATEGORIES__ name=cat item=cat]-->
@@ -61,6 +61,8 @@
                     <!--[/foreach]-->
                 </td>
                 <!--[/if]-->
+                <td><!--[$poll.opendate|pndate_format:datetimebrief]--></td>
+                <td><!--[$poll.isopen|yesno]--></td>
                 <td class="z-nowrap">
                     <!--[assign var="options" value=$poll.options]-->
                     <!--[section name=options loop=$options]-->
@@ -69,7 +71,7 @@
                 </td>
             </tr>
             <!--[foreachelse]-->
-            <tr class="z-admintableempty"><td <!--[if $enablecategorization]-->colspan="5"<!--[else]-->colspan="4"<!--[/if]-->><!--[gt text="No polls found."]--></td></tr>
+            <tr class="z-admintableempty"><td colspan="<!--[if $enablecategorization]-->6<!--[else]-->5"<!--[/if]-->"><!--[gt text="No polls found."]--></td></tr>
             <!--[/foreach]-->
         </tbody>
     </table>
