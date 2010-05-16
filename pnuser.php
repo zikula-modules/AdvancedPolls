@@ -100,7 +100,7 @@ function advanced_polls_user_view()
         $renderer->assign('numproperties', count($propArray));
         $renderer->assign('properties', $propArray);
         $renderer->assign('property', $property);
-        $renderer->assign("category", $category);
+        $renderer->assign('category', $category);
     }
 
     // get all matching polls
@@ -231,7 +231,7 @@ function advanced_polls_user_display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such item found.', $dom), 404);
+        return LogUtil::registerError (__('Error! No such poll found.', $dom), 404);
     }
 
     // Create output object

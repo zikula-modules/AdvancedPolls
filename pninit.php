@@ -172,7 +172,7 @@ function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/G
         $cat = new PNCategory ();
         $cat->setDataField('parent_id', $rootcat['id']);
         $cat->setDataField('name', 'Advanced Polls');
-        $cat->setDataField('display_name', array($lang => __('advanced_polls', $dom)));
+        $cat->setDataField('display_name', array($lang => __('Advanced Polls', $dom)));
         $cat->setDataField('display_desc', array($lang => __('Polls', $dom)));
         if (!$cat->validate('admin')) {
             return false;

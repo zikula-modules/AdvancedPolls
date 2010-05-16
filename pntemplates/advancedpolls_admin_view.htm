@@ -6,7 +6,7 @@
     <!--[if $enablecategorization and $numproperties gt 0]-->
     <form class="z-form" action="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset id="advanced_polls_multicategory_filter">
-            <label for="advanced_polls_property"><!--[gt text="Category"]--></label>
+            <label for="advanced_polls_<!--[$property]-->_category"><!--[gt text="Category"]--></label>
             <!--[nocache]-->
             <!--[if $numproperties gt 1]-->
             <!--[html_options id="advanced_polls_property" name="advanced_polls_property" options=$properties selected=$property]-->

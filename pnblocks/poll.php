@@ -220,9 +220,9 @@ function advanced_polls_pollblock_modify($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
-                                             1 => 'Latest',
-                                             2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
+                                             1 => __('Latest', $dom),
+                                             2 => __('Random', $dom)));
 
     // yes/no array
     $renderer->assign('yesno', array(0 => __('No', $dom),

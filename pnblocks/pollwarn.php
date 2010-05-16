@@ -46,6 +46,8 @@ function advanced_polls_pollwarnblock_display($blockinfo)
         return;
     }
 
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
+
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
@@ -124,9 +126,9 @@ function advanced_polls_pollwarnblock_display($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
-                                             1 => 'Latest',
-                                             2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
+                                             1 => __('Latest', $dom),
+                                             2 => __('Random', $dom)));
 
     $renderer->assign('item', $item);
 
@@ -144,6 +146,8 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
     if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
+
+    $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
@@ -178,9 +182,9 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
-                                             1 => 'Latest',
-                                             2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
+                                             1 => __('Latest', $dom),
+                                             2 => __('Random', $dom)));
 
     // yes/no array
     $renderer->assign('yesno', array(0 => __('No', $dom),

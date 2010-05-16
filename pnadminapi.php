@@ -90,7 +90,7 @@ function advanced_polls_adminapi_delete($args)
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such item found.', $dom));
+        return LogUtil::registerError (__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -141,7 +141,7 @@ function advanced_polls_adminapi_update($args)
     // The user API function is called
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -226,7 +226,7 @@ function advanced_polls_adminapi_resetvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -281,7 +281,7 @@ function advanced_polls_adminapi_getvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -327,7 +327,7 @@ function advanced_polls_adminapi_getvotes($args)
         // Check for an error with the database code, and if so set an appropriate
         // error message and return
         if ($votes === false) {
-            return LogUtil::registerError (__('Error! Could not load items.', $dom));
+            return LogUtil::registerError (__('Error! Could not load votes.', $dom));
         }
     }
 
@@ -354,7 +354,7 @@ function advanced_polls_adminapi_duplicate($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check

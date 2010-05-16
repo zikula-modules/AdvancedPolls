@@ -1,11 +1,11 @@
 <div class="z-formrow">
-    <label for="advancedpolls_pollid"><!--[gt text="Poll" domain="module_advanced_polls"]--></label>
+    <label for="advancedpolls_pollid"><!--[gt text="Individual selection" domain="module_advanced_polls"]--></label>
     <!--[html_options id="advancedpolls_pollid" name="pollid" options=$items selected=$blockvars.pollid]-->
+    <em class="z-sub z-formnote"><!--[gt text="The selection method 'Latest' and 'Random' override this individual poll selection"]--></em>
 </div>
 <div class="z-formrow">
     <label for="advancedpolls_polluse"><!--[gt text="Poll to use" domain="module_advanced_polls"]--></label>
     <!--[html_options id="advancedpolls_polluse" name="polluse" options=$pollusevalues selected=$blockvars.polluse]-->
-    <em class="z-sub z-formnote"><!--[gt text="Latest and random override individual poll selection"]--></em>
 </div>
 <div class="z-formrow">
     <label for="advancedpolls_ajaxvoting"><!--[gt text="Use ajax for voting form" domain="module_advanced_polls"]--></label>

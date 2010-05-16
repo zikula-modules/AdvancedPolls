@@ -113,7 +113,7 @@ function advanced_polls_admin_modify()
     // Get the poll from the API function
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check.
@@ -204,7 +204,7 @@ function advanced_polls_admin_delete()
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such item found.', $dom), 404);
+        return LogUtil::registerError (__('Error! No such poll found.', $dom), 404);
     }
 
     // Security check.
@@ -344,7 +344,7 @@ function advanced_polls_admin_view()
         $renderer->assign('numproperties', count($propArray));
         $renderer->assign('properties', $propArray);
         $renderer->assign('property', $property);
-        $renderer->assign("category", $category);
+        $renderer->assign('category', $category);
     }
 
     // Assign the values for the smarty plugin to produce a pager in case of there
@@ -576,7 +576,7 @@ function advanced_polls_admin_duplicate()
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check

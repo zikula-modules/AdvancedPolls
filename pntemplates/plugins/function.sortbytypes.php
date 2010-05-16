@@ -21,10 +21,10 @@ function smarty_function_sortbytypes($params, &$smarty)
     unset($params['type']);
 
     $options = array('1' => __('Vote ID', $dom),
-                     '2' => __('IP Address', $dom),
+                     '2' => __('IP address', $dom),
                      '3' => __('Time', $dom),
                      '4' => __('Username', $dom),
-                     '5' => __('Vote Rank', $dom),
+                     '5' => __('Vote rank', $dom),
                      '6' => __('Option', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin

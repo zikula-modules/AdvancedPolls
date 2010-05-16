@@ -213,7 +213,7 @@ function advanced_polls_userapi_isopen($args)
 
     // no such item is db
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -255,7 +255,7 @@ function advanced_polls_userapi_isvoteallowed($args)
 
     // no such item in db
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -318,7 +318,7 @@ function advanced_polls_userapi_isvoteallowed($args)
             // possibly remove this voting style
             return true;
         default: //any other option - should never occur
-            return LogUtil::registerError(__('Error! No poll authorisation method', $dom));
+            return LogUtil::registerError(__('Error! No poll authorisation method.', $dom));
     }
 }
 
@@ -342,7 +342,7 @@ function advanced_polls_userapi_resetrecurring($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check
@@ -401,7 +401,7 @@ function advanced_polls_userapi_pollvotecount($args)
     // The user API function is called.
     $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
-        return LogUtil::registerError(__('No such item found.', $dom));
+        return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
 
     // Security check

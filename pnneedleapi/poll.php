@@ -40,7 +40,7 @@ function advanced_polls_needleapi_poll($args)
                 $title = DataUtil::formatForDisplay($obj['title']);
                 $cache[$nid] = '<a href="' . $url . '" title="' . $title . '">' . $title . '</a>';
             } else {
-                $cache[$nid] = '<em>' . __f("Error! Database contains no poll with the ID '%s'.", $nid, $dom) . '</em>';
+                $cache[$nid] = '<em>' . __f("Error! Poll ID '%s' not found.", $nid, $dom) . '</em>';
             }
         }
         $result = $cache[$nid];
