@@ -102,7 +102,7 @@ msgstr "Ungültiger Authentifizierungsschlüssel ('AuthKey'): Möglichweise wurd
 #: pninit.php:175
 #: pntemplates/advancedpolls_user_menu.htm:3
 msgid "Advanced Polls"
-msgstr "Umfragen"
+msgstr "Erweiterte Umfragen"
 
 #: pnversion.php:15
 msgid "A comprehensive single question polling module"
