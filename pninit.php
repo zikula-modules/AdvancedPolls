@@ -2,8 +2,8 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -15,7 +15,6 @@
  * module instance
  *
  * @return bool true on success, false on failure
- * @since 1.0
  */
 function advanced_polls_init()
 {
@@ -42,18 +41,16 @@ function advanced_polls_init()
     pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
     pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
     pnModSetVar('advanced_polls', 'enablecategorization', true);
-    pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
 
     // Initialisation successful
     return true;
 }
 
 /**
- * upgrade  the Advanced Polls module from an old version
+ * Upgrade  the Advanced Polls module from an old version
  * This function can be called multiple times
  *
  * @return bool true on success, false on failure
- * @since 1.0
  */
 function advanced_polls_upgrade($oldversion)
 {
@@ -88,7 +85,6 @@ function advanced_polls_upgrade($oldversion)
         case '1.51':
             // setup categorisation
             pnModSetVar('advanced_polls', 'enablecategorization', true);
-            pnModSetVar('advanced_polls', 'addcategorytitletopermalink', true);
             pnModSetVar('advanced_polls', 'cssbars', 1);
             pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
             pnModDelVar('advanced_polls', 'admindateformat');
@@ -127,12 +123,11 @@ function advanced_polls_upgrade($oldversion)
 }
 
 /**
- * delete the t the Advanced Polls module
+ * Delete the t the Advanced Polls module
  * This function is only ever called once during the lifetime of a particular
  * module instance
  *
  * @return bool true on success, false on failure
- * @since 1.0
  */
 function advanced_polls_delete()
 {
@@ -152,10 +147,9 @@ function advanced_polls_delete()
 }
 
 /**
- * create the category placeholder
+ * Create the category placeholder
  *
  * @return bool true on success, false on failure
- * @since 2.0
  */
 function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
@@ -224,6 +218,7 @@ function _advanced_polls_updatePollsLanguages()
 
     return true;
 }
+
 
 function _advanced_polls_createPermalinks()
 {

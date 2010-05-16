@@ -2,8 +2,8 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -20,7 +20,7 @@ function smarty_function_sortordertypes($params, &$smarty)
     unset($params['selected']);
     unset($params['type']);
 
-    $options = array('0' => __('Ascending', $dom), 
+    $options = array('0' => __('Ascending', $dom),
                      '1' => __('Descending', $dom));
 
     // we'll make use of the html_options plugin to simplfiy this plugin

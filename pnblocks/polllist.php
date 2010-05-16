@@ -2,19 +2,15 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
- * initialise block
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * Initialise block
  */
 function advanced_polls_polllistblock_init()
 {
@@ -23,12 +19,8 @@ function advanced_polls_polllistblock_init()
 }
 
 /**
- * get information on block
+ * Get information on block
  * @returns block info array
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_polllistblock_info()
 {
@@ -46,12 +38,8 @@ function advanced_polls_polllistblock_info()
 }
 
 /**
- * display block
+ * Display block
  * @returns HTML output or false if no work to do
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_polllistblock_display($blockinfo)
 {
@@ -101,12 +89,8 @@ function advanced_polls_polllistblock_display($blockinfo)
 }
 
 /**
- * modify block settings
+ * Modify block settings
  * @returns HTML output or false if no work to do
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_polllistblock_modify($blockinfo)
 {
@@ -114,12 +98,8 @@ function advanced_polls_polllistblock_modify($blockinfo)
 }
 
 /**
- * update block settings
+ * Update block settings
  * @returns block info array
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_polllistblock_update($blockinfo)
 {

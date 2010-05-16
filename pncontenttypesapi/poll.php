@@ -1,4 +1,14 @@
 <?php
+/**
+ * Advanced Polls module for Zikula
+ *
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @link http://code.zikula.org/advancedpolls
+ * @version $Id$
+ * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ */
+
 class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
 {
     var $pollid;

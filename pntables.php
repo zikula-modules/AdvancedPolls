@@ -2,8 +2,8 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -12,8 +12,6 @@
 /**
  * This function is called internally by the core whenever the module is
  * loaded.  It adds in the information
- *
- * @since 1.0
  */
 function advanced_polls_pntables()
 {

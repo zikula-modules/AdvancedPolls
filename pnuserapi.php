@@ -2,24 +2,20 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
- * get all poll items
+ * Get all poll items
  * @param $args['startnum'] starting poll id
  * @param $args['numitems'] number of polls to get
  * @param $args['checkml'] flag to check ml status
  * @param $args['desc'] array title key name
  * @return mixed array of items, or false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_getall($args)
 {
@@ -113,10 +109,6 @@ function advanced_polls_userapi_getall($args)
  * @param $args['color'] array color key name
  * @param $args['checkml'] flag to check ml status
  * @return mixed item array, or false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_get($args)
 {
@@ -168,13 +160,9 @@ function advanced_polls_userapi_get($args)
 }
 
 /**
- * utility function to count the number of items held by this module
+ * Utility function to count the number of items held by this module
  * @param $args['checkml'] flag to check ml status
  * @return integer number of items held by this module
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_countitems($args)
 {
@@ -209,13 +197,9 @@ function advanced_polls_userapi_countitems($args)
 }
 
 /**
- * check if poll is open
+ * Check if poll is open
  * @param $args['pollid'] id of example item to get
  * @return bool false if closed, true if open
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_isopen($args)
 {
@@ -255,13 +239,9 @@ function advanced_polls_userapi_isopen($args)
 }
 
 /**
- * check if user has voted in poll
+ * Check if user has voted in poll
  * @param $args['pollid'] id of poll item to get
  * @return bool true on vote allowed, false on vote not allowed
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_isvoteallowed($args)
 {
@@ -343,13 +323,9 @@ function advanced_polls_userapi_isvoteallowed($args)
 }
 
 /**
- * reset polls votes if poll is recurring poll
+ * Reset polls votes if poll is recurring poll
  * @param $args['pollid'] id of example item to get
  * @return bool true on reset success, false on vote failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_resetrecurring($args)
 {
@@ -411,13 +387,9 @@ function advanced_polls_userapi_resetrecurring($args)
 }
 
 /**
- * get counts of votes in a poll leading vote and total vote count
+ * Get counts of votes in a poll leading vote and total vote count
  * @param $args['pollid'] id of example item to get
  * @return mixed voting array on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_pollvotecount($args)
 {
@@ -506,10 +478,6 @@ function advanced_polls_userapi_pollvotecount($args)
  * @param $args['voteid'] poll item to register vote for
  * @param $args['voterank'] ranking of vote in multiple select polls
  * @return bool true on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_addvote($args)
 {
@@ -549,10 +517,6 @@ function advanced_polls_userapi_addvote($args)
  * @param $args['voteid1'] first poll item id
  * @param $args['voteid2'] second poll item id
  * @return mixed integer $voteid or false on vote failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_timecountback($args)
 {
@@ -600,10 +564,6 @@ function advanced_polls_userapi_timecountback($args)
 /**
  * Gets id of last poll to close
  * @return int id of last poll to close, 0 if no closed polls
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.05
- * @version 1.1
  */
 function advanced_polls_userapi_getlastclosed($args)
 {
@@ -626,10 +586,6 @@ function advanced_polls_userapi_getlastclosed($args)
 /**
  * Gets a random poll id
  * @return int id of poll
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_userapi_getrandom()
 {
@@ -651,9 +607,8 @@ function advanced_polls_userapi_getrandom()
 }
 
 /**
- * form custom url string
+ * Form custom url string
  *
- * @author Mark West
  * @return string custom url string
  */
 function advanced_polls_userapi_encodeurl($args)
@@ -683,11 +638,7 @@ function advanced_polls_userapi_encodeurl($args)
         } else {
             $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
         }
-        if (pnModGetVar('advanced_polls', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
-            $vars = $args['args']['cat'].'/'.$item['urltitle'];
-        } else {
-            $vars = $item['urltitle'];
-        }
+        $vars = $item['urltitle'];
         if (isset($args['args']['page']) && $args['args']['page'] != 1) {
             $vars .= '/page/'.$args['args']['page'];
         }
@@ -710,9 +661,8 @@ function advanced_polls_userapi_encodeurl($args)
 }
 
 /**
- * decode the custom url string
+ * Decode the custom url string
  *
- * @author Mark West
  * @return bool true if successful, false otherwise
  */
 function advanced_polls_userapi_decodeurl($args)
@@ -747,12 +697,6 @@ function advanced_polls_userapi_decodeurl($args)
         // get rid of unused vars
         $args['vars'] = array_slice($args['vars'], $nextvar);
         $nextvar = 0;
-        if (pnModGetVar('advanced_polls', 'addcategorytitletopermalink') && !empty($args['vars'][$nextvar+1])) {
-            $varscount = count($args['vars']);
-            $category = array_slice($args['vars'], 0, $varscount - 1);
-            pnQueryStringSetVar('cat', implode('/', $category));
-            array_splice($args['vars'], 0,  $varscount - 1);
-        }
         if (is_numeric($args['vars'][$nextvar])) {
             pnQueryStringSetVar('pollid', $args['vars'][$nextvar]);
         } else {
@@ -761,21 +705,4 @@ function advanced_polls_userapi_decodeurl($args)
     }
 
     return true;
-}
-
-/**
- * get meta data for the module
- *
- */
-function advanced_polls_userapi_getmodulemeta()
-{
-    return array('viewfunc'   => 'view',
-                 'displayfunc' => 'display',
-                 'newfunc'     => 'new',
-                 'createfunc'  => 'create',
-                 'modifyfunc'  => 'modify',
-                 'updatefunc'  => 'update',
-                 'deletefunc'  => 'delete',
-                 'titlefield'  => 'title',
-                 'itemid'      => 'pollid');
 }

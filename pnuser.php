@@ -2,8 +2,8 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -18,7 +18,7 @@
  * function (often this is the view() function)
  * @returns HTML output
  * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -38,8 +38,7 @@ function advanced_polls_user_main()
  * This is a standard function to provide an overview of all of the items
  * available from the module.
  * @returns HTML output
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -115,10 +114,10 @@ function advanced_polls_user_view()
         return LogUtil::registerError(__('Error! No polls found.', $dom));
     }
 
-    //----------------------------------------------------------------------------
-    // display polls that are currently active
-    //----------------------------------------------------------------------------
     $activepolls = array();
+    $futurepolls = array();
+    $closedpolls = array();
+
     foreach ($items as $item) {
 
         // is this poll currently open for voting
@@ -133,21 +132,22 @@ function advanced_polls_user_view()
             $notyetopen = false;
         }
 
+        $item['isopen'] = $ispollopen;
+        $item['isvoteallowed'] = $isvoteallowed;
+        $item['notyetopen'] = $notyetopen;
+        $options = array();
+
         if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
-
             if ($ispollopen == true) {
-
-                $options = array();
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
-                    if ($isvoteallowed == true) {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
-                                           'image' => 'demo.gif',
-                                           'title' => __('Vote', $dom));
-                    } else {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
-                                           'image' => 'smallcal.gif',
-                                           'title' => __('Results', $dom));
-                    }
+                // display polls that are currently active
+                if ($isvoteallowed == true) {
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                                       'image' => 'demo.gif',
+                                       'title' => __('Vote', $dom));
+                } else {
+                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
+                                       'image' => 'smallcal.gif',
+                                       'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
@@ -156,39 +156,9 @@ function advanced_polls_user_view()
                 }
 
                 $item['options'] = $options;
-                $item['isopen'] = $ispollopen;
-                $item['isvoteallowed'] = $isvoteallowed;
-                $item['notyetopen'] = $notyetopen;
                 $activepolls[] = $item;
-
-            }
-        }
-    }
-    $renderer->assign('activepolls', $activepolls);
-
-    //----------------------------------------------------------------------------
-    // Output Polls that have not opened yet
-    //----------------------------------------------------------------------------
-    $futurepolls = array();
-    foreach ($items as $item) {
-
-        // is this poll currently open for voting
-        $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
-
-        // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
-
-        if ($item['opendate'] > time()) {
-            $notyetopen = true;
-        } else {
-            $notyetopen = false;
-        }
-
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
-
-            if (($ispollopen == false) and ($notyetopen == true)) {
-
-                $options = array();
+            } elseif (($ispollopen == false) and ($notyetopen == true)) {
+                // Polls that have not opened yet
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => '14_layer_visible.gif',
@@ -199,41 +169,9 @@ function advanced_polls_user_view()
                                        'title' => __('Edit', $dom));
                     }
                     $item['options'] = $options;
-                    $item['isopen'] = $ispollopen;
-                    $item['isvoteallowed'] = $isvoteallowed;
-                    $item['notyetopen'] = $notyetopen;
                     $futurepolls[] = $item;
-            }
-        }
-    }
-    $renderer->assign('futurepolls', $futurepolls);
-
-
-    //----------------------------------------------------------------------------
-    // Output Polls that have closed
-    //----------------------------------------------------------------------------
-    $closedpolls = array();
-    foreach ($items as $item) {
-
-        // is this poll currently open for voting
-        $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
-
-        // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
-
-        if ($item['opendate'] > time()) {
-            $notyetopen = true;
-        } else {
-            $notyetopen = false;
-        }
-
-        // Security check
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
-
-            //if (($ispollopen == false) and ($isvoteallowed == true) and ($notyetopen == false)) {
-            if (($ispollopen == false) and ($notyetopen == false)) {
-
-                $options = array();
+            } elseif (($ispollopen == false) and ($notyetopen == false)) {
+                // Polls that have closed
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => 'smallcal.gif',
@@ -245,13 +183,13 @@ function advanced_polls_user_view()
                                        'title' => __('Edit', $dom));
                 }
                 $item['options'] = $options;
-                $item['isopen'] = $ispollopen;
-                $item['isvoteallowed'] = $isvoteallowed;
-                $item['notyetopen'] = $notyetopen;
                 $closedpolls[] = $item;
             }
         }
     }
+
+    $renderer->assign('activepolls', $activepolls);
+    $renderer->assign('futurepolls', $futurepolls);
     $renderer->assign('closedpolls', $closedpolls);
 
     // Return the output that has been generated by this function
@@ -265,8 +203,7 @@ function advanced_polls_user_view()
  * @param $args['pollid'] Poll id to display
  * @param $args['results'] 1 to show results components 0 otherwise
  * @returns HTML output
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -395,8 +332,7 @@ function advanced_polls_user_display($args)
 /**
  * Process voting form
  * @returns HTML output
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */

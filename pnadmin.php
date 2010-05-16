@@ -2,20 +2,15 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
- * the main administration function
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * The main administration function
  */
 function advanced_polls_admin_main()
 {
@@ -32,12 +27,7 @@ function advanced_polls_admin_main()
 }
 
 /**
- * add new item
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * Add new item
  */
 function advanced_polls_admin_new()
 {
@@ -71,12 +61,7 @@ function advanced_polls_admin_new()
 }
 
 /**
- * create a poll
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * Create a poll
  */
 function advanced_polls_admin_create()
 {
@@ -117,10 +102,6 @@ function advanced_polls_admin_create()
  * Modify a Poll
  *
  * @param 'pollid' the id of the item to be modified
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_admin_modify()
 {
@@ -169,11 +150,6 @@ function advanced_polls_admin_modify()
 
 /**
  * Update a poll
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_admin_update()
 {
@@ -208,7 +184,7 @@ function advanced_polls_admin_update()
 }
 
 /**
- * delete a poll
+ * Delete a poll
  *
  * @param 'pollid' the id of the item to be deleted
  * @param 'confirmation' confirmation that this item can be deleted
@@ -268,11 +244,6 @@ function advanced_polls_admin_delete()
 
 /**
  * Main admin function to view a full list of polls
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_admin_view()
 {
@@ -388,11 +359,6 @@ function advanced_polls_admin_view()
 
 /**
  * Modify module configuration
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_admin_modifyconfig()
 {
@@ -412,12 +378,7 @@ function advanced_polls_admin_modifyconfig()
 }
 
 /**
- * update module configuration
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * Update module configuration
  */
 function advanced_polls_admin_updateconfig()
 {
@@ -473,13 +434,6 @@ function advanced_polls_admin_updateconfig()
     }
     pnModSetVar('advanced_polls', 'enablecategorization', $config['enablecategorization']);
 
-    if (isset($config['addcategorytitletopermalink'])) {
-        $config['addcategorytitletopermalink'] = true;
-    } else {
-        $config['addcategorytitletopermalink'] = false;
-    }
-    pnModSetVar('advanced_polls', 'addcategorytitletopermalink', $config['addcategorytitletopermalink']);
-
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module', 'updateconfig', 'advanced_polls', array('module' => 'advanced_polls'));
 
@@ -492,11 +446,6 @@ function advanced_polls_admin_updateconfig()
 
 /**
  * Reset the votes on a poll
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_admin_resetvotes()
 {
@@ -542,11 +491,6 @@ function advanced_polls_admin_resetvotes()
 
 /**
  * Display voting statistics to admin
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_admin_adminstats()
 {
@@ -616,11 +560,6 @@ function advanced_polls_admin_adminstats()
 
 /**
  * Duplicate poll
- *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_admin_duplicate()
 {

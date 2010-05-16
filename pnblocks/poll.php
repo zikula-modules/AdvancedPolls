@@ -2,19 +2,15 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
- * initialise block
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
+ * Initialise block
  */
 function advanced_polls_pollblock_init()
 {
@@ -26,7 +22,7 @@ function advanced_polls_pollblock_init()
  * get information on block
  * @returns block info array
  * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -46,12 +42,8 @@ function advanced_polls_pollblock_info()
 }
 
 /**
- * display block
+ * Display block
  * @returns HTML output or false if no work to do
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_pollblock_display($blockinfo)
 {
@@ -106,7 +98,7 @@ function advanced_polls_pollblock_display($blockinfo)
     }
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring',	array('pollid' => $pollid));
+    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // is this poll currently open for voting
     $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
@@ -153,7 +145,7 @@ function advanced_polls_pollblock_display($blockinfo)
                             $percent = 0;
                         }
                         $percentages[$key] = array('percent' => (int)$percent,
-                                        'percentintscaled' => (int)$percent * 4);
+                                                   'percentintscaled' => (int)$percent * 4);
                     }
                 }
                 $votecounts['percentages'] = $percentages;
@@ -179,12 +171,8 @@ function advanced_polls_pollblock_display($blockinfo)
 }
 
 /**
- * modify block settings
+ * Modify block settings
  * @returns pnHMTL object output
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_pollblock_modify($blockinfo)
 {
@@ -232,25 +220,21 @@ function advanced_polls_pollblock_modify($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
-    1 => 'Latest',
-    2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
+                                             1 => 'Latest',
+                                             2 => 'Random'));
 
     // yes/no array
-    $renderer->assign('yesno', array( 0 => __('No', $dom),
-    1 => __('Yes', $dom)));
+    $renderer->assign('yesno', array(0 => __('No', $dom),
+                                     1 => __('Yes', $dom)));
 
     // Return output
     return $renderer->fetch('advancedpolls_block_poll_modify.htm');
 }
 
 /**
- * update block settings
+ * Update block settings
  * @returns block info array
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_pollblock_update($blockinfo)
 {

@@ -2,8 +2,8 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -13,9 +13,6 @@
  * Create a new Poll item
  *
  * @return int poll item ID on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2008 by Mark West
- * @since 1.0
  */
 function advanced_polls_adminapi_create($args)
 {
@@ -75,14 +72,10 @@ function advanced_polls_adminapi_create($args)
 }
 
 /**
- * delete a Poll item
+ * Delete a Poll item
  * @param $args['pollid'] ID of the item
  * @returns bool
  * @return true on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_adminapi_delete($args)
 {
@@ -120,7 +113,7 @@ function advanced_polls_adminapi_delete($args)
 }
 
 /**
- * update a poll
+ * Update a poll
  * @param $args['pollid'] the ID of the item
  * @param $args['title'] the name of the poll to be updated
  * @param $args['description'] the name of the poll to be updated
@@ -134,10 +127,6 @@ function advanced_polls_adminapi_delete($args)
  * @param $args['recurringinterval'] interval to add for recurring polls
  * @param $args['optioncount'] number of options for this poll
  * @return bool true on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.0
- * @version 1.1
  */
 function advanced_polls_adminapi_update($args)
 {
@@ -222,10 +211,6 @@ function advanced_polls_adminapi_update($args)
  * @param $args['pollid'] poll id for vote reset
  * @returns bool
  * @return true on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_adminapi_resetvotes($args)
 {
@@ -263,10 +248,6 @@ function advanced_polls_adminapi_resetvotes($args)
  * @param $args['sortby'] sort field
  * @returns array
  * @return array of items, or false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_adminapi_getvotes($args)
 {
@@ -358,10 +339,6 @@ function advanced_polls_adminapi_getvotes($args)
  * @param $args['pollid'] poll id to duplicate
  * @returns bool
  * @return true on success, false on failure
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2004 by Mark West
- * @since 1.1
- * @version 1.1
  */
 function advanced_polls_adminapi_duplicate($args)
 {
@@ -434,9 +411,8 @@ function advanced_polls_adminapi_duplicate($args)
 }
 
 /**
- * get available admin panel links
+ * Get available admin panel links
  *
- * @author Mark West
  * @return array array of admin links
  */
 function advanced_polls_adminapi_getlinks()

@@ -2,16 +2,15 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West <mark@markwest.me.uk>
- * @author Mats Kling
- * @copyright (C) 2002-2010 by Mark West
+ * @author Mark West, Carsten Volmer
+ * @copyright (C) 2002-2010 by Advanced Polls Development Team
  * @link http://code.zikula.org/advancedpolls
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
- * initialise block
+ * Initialise block
  */
 function advanced_polls_pollwarnblock_init()
 {
@@ -38,7 +37,7 @@ function advanced_polls_pollwarnblock_info()
 }
 
 /**
- * display block
+ * Display block
  */
 function advanced_polls_pollwarnblock_display($blockinfo)
 {
@@ -125,9 +124,9 @@ function advanced_polls_pollwarnblock_display($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
-    1 => 'Latest',
-    2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
+                                             1 => 'Latest',
+                                             2 => 'Random'));
 
     $renderer->assign('item', $item);
 
@@ -137,7 +136,7 @@ function advanced_polls_pollwarnblock_display($blockinfo)
 }
 
 /**
- * modify block settings
+ * Modify block settings
  */
 function advanced_polls_pollwarnblock_modify($blockinfo)
 {
@@ -179,20 +178,20 @@ function advanced_polls_pollwarnblock_modify($blockinfo)
     $renderer->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array( 0 => 'Individual Selection',
-    1 => 'Latest',
-    2 => 'Random'));
+    $renderer->assign('pollusevalues', array(0 => 'Individual Selection',
+                                             1 => 'Latest',
+                                             2 => 'Random'));
 
     // yes/no array
-    $renderer->assign('yesno', array( 0 => __('No', $dom),
-    1 => __('Yes', $dom)));
+    $renderer->assign('yesno', array(0 => __('No', $dom),
+                                     1 => __('Yes', $dom)));
 
     // Return output
     return $renderer->fetch('advancedpolls_block_pollwarn_modify.htm');
 }
 
 /**
- * update block settings
+ * Update block settings
  */
 function advanced_polls_pollwarnblock_update($blockinfo)
 {
