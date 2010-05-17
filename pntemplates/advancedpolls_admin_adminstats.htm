@@ -1,7 +1,9 @@
 <!--[*  $Id$  *]-->
 <!--[include file="advancedpolls_admin_menu.htm"]-->
+<!--[gt text="Voting Statistics" assign=templatetitle]-->
 <div class="z-admincontainer">
-    <h2><!--[gt text="Voting Statistics"]--></h2>
+    <div class="z-adminpageicon"><!--[pnimg modname='core' src='agt_business.gif' set='icons/large' alt=$templatetitle ]--></div>
+    <h2><!--[$templatetitle]--></h2>
     <strong><!--[gt text="Name of poll"]-->:</strong> <!--[$item.title|pnvarprephtmldisplay]--><br />
     <strong><!--[gt text="Date and time poll opens"]-->:</strong> <!--[$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
     <strong><!--[gt text="Date and time poll closes"]-->:</strong> <!--[$item.closedate|pndate_format:datetimebrief|pnvarprepfordisplay]--><br />
