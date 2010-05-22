@@ -31,7 +31,7 @@ function smarty_function_votingtypes($params, &$smarty)
     // get the formatted list
     $output = smarty_function_html_options(array('options'   => $options,
                                                  'selected'  => isset($selected) ? $selected : null,
-                                                 'name'      => $name,
+                                                 'name'      => isset($name) ? $name : null,
                                                  'id'        => isset($id) ? $id : null),
                                                  $smarty);
 

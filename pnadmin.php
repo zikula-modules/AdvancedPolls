@@ -306,11 +306,11 @@ function advanced_polls_admin_view()
         // check if poll is open
         $items[$key]['isopen'] = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
         $options = array();
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
             $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
                                'image' => 'xedit.gif',
                                'title' => __('Edit', $dom));
-            if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_DELETE)) {
+            if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_DELETE)) {
                 $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'delete', array('pollid' => $item['pollid'])),
                                'image' => '14_layer_deletelayer.gif',
                                'title' => __('Delete', $dom));

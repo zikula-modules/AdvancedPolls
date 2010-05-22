@@ -75,7 +75,7 @@ function advanced_polls_userapi_getall($args)
     $permFilter = array(array('realm'           => 0,
                               'component_left'  => 'advanced_polls',
                               'component_right' => 'item',
-                              'instance_left'   => 'polltitle',
+                              'instance_left'   => 'title',
                               'instance_right'  => 'pollid',
                               'level'           => ACCESS_READ));
 
@@ -131,7 +131,7 @@ function advanced_polls_userapi_get($args)
     $permFilter = array(array('realm'           => 0,
                               'component_left'  => 'advanced_polls',
                               'component_right' => 'item',
-                              'instance_left'   => 'polltitle',
+                              'instance_left'   => 'title',
                               'instance_right'  => 'pollid',
                               'level'           => ACCESS_READ));
 
@@ -217,7 +217,7 @@ function advanced_polls_userapi_isopen($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[vpollid]", ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -429,7 +429,7 @@ function advanced_polls_userapi_pollvotecount($args)
     $votescolumn = &$pntable['advanced_polls_votes_column'];
 
     // now lets get all the vote counts
-    $sql = "SELECT COUNT($votescolumn[optionid]), $votescolumn[optionid]
+    $sql = "SELECT COUNT($votescolumn[optionid]) as optioncount, $votescolumn[optionid] as optionid
             FROM $votestable
             WHERE $votescolumn[pollid] = '" . (int)DataUtil::formatForStore($args['pollid']) . "'
             GROUP BY $votescolumn[optionid]";

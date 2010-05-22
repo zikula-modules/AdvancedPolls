@@ -137,7 +137,7 @@ function advanced_polls_user_view()
         $item['notyetopen'] = $notyetopen;
         $options = array();
 
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
             if ($ispollopen == true) {
                 // display polls that are currently active
                 if ($isvoteallowed == true) {
@@ -149,7 +149,7 @@ function advanced_polls_user_view()
                                        'image' => 'smallcal.gif',
                                        'title' => __('Results', $dom));
                 }
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
@@ -159,11 +159,11 @@ function advanced_polls_user_view()
                 $activepolls[] = $item;
             } elseif (($ispollopen == false) and ($notyetopen == true)) {
                 // Polls that have not opened yet
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => '14_layer_visible.gif',
                                        'title' => __('Preview', $dom)); }
-                    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+                    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                         $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
@@ -172,12 +172,12 @@ function advanced_polls_user_view()
                     $futurepolls[] = $item;
             } elseif (($ispollopen == false) and ($notyetopen == false)) {
                 // Polls that have closed
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_COMMENT)) {
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => 'smallcal.gif',
                                        'title' => __('Results', $dom));
                 }
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[polltitle]::$item[pollid]", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
@@ -211,8 +211,9 @@ function advanced_polls_user_display($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
-    $pollid = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
-    $title = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
+    $pollid   = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
+    $title    = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
+    $results  = FormUtil::getPassedValue('results', isset($args['results']) ? $args['results'] : null, 'GET');
     $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
     if (!empty($objectid)) {
         $pollid = $objectid;
@@ -263,6 +264,8 @@ function advanced_polls_user_display($args)
             $notyetopen = false;
         }
 
+        $displayvotingform = false;
+        $displayresults = false;
         // Now lets work out which view to display
         if ($results) { $displayresults = true; }
         if ($ispollopen && $isvoteallowed) { $displayvotingform = true;}
