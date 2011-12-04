@@ -9,7 +9,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
-class MUTicket_Base_Installer extends Zikula_AbstractInstaller {
+class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
 /**
  * Initialise the Advanced Polls module
@@ -31,7 +31,7 @@ class MUTicket_Base_Installer extends Zikula_AbstractInstaller {
     	}
 
     	// create our default category
-    	if (!_advanced_polls_createdefaultcategory()) {
+    	if (!$this->createdefaultcategory()) {
         	return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
     	}
 
@@ -100,20 +100,20 @@ public function upgrade($oldversion)
             }
 
             // populate permalinks for existing content
-            if (!_advanced_polls_createPermalinks()) {
+            if (!$this->createPermalinks()) {
                 return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
             }
 
             // create the default category
-            if (!_advanced_polls_createdefaultcategory()) {
+            if (!$this->createdefaultcategory()) {
                 return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
             }
 
             // convert language codes
-            if (!_advanced_polls_updatePollsLanguages()) {
+            if (!$this->updatePollsLanguages()) {
                 return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
             }
-            return advanced_polls_upgrade('2.0.0');
+            return $this->upgrade('2.0.0');
         case '2.0.0':
             // future upgrade routines
             break;
@@ -131,7 +131,7 @@ public function upgrade($oldversion)
  *
  * @return bool true on success, false on failure
  */
-public function delete()
+public function uninstall()
 {
     // delete tables
     $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');

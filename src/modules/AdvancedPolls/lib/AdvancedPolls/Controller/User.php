@@ -9,7 +9,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
-class AdvancedPolls_User_Controller extends Zikula_AbstractController {
+class AdvancedPolls_Controller_User extends Zikula_AbstractController {
 
 /**
  * the main user function

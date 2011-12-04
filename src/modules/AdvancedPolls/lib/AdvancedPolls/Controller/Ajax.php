@@ -9,7 +9,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
-class MUTicket_Api_Base_Ajax extends Zikula_AbstractApi {
+class AdvacedPolls_Api_Ajax extends Zikula_AbstractApi {
 
 /**
  * Log a vote and display the results form

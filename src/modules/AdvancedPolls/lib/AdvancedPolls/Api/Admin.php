@@ -1,6 +1,6 @@
 <?php
 
- class AdvancedPolls_Admin_Api extends Zikula_AbstractApi {
+ class AdvancedPolls_Api_Admin extends Zikula_AbstractApi {
 
 /**
  * Advanced Polls module for Zikula
@@ -365,7 +365,7 @@ function duplicate($args)
         return LogUtil::registerPermissionError();
     } else {
         // The API function is called.
-        $pid = pnModAPIFunc('advanced_polls', 'admin', 'create',
+        $pid = ModUtil::apiFunc('advanced_polls', 'admin', 'create',
         array('title'               => $item['title'],
               'urltitle'            => $item['urltitle'],
               'description'         => $item['description'],
@@ -384,7 +384,7 @@ function duplicate($args)
         if ($pid != false) {
             // Once the poll is created we call the modify function to add
             // the poll options
-            $result = pnModAPIFunc('advanced_polls', 'admin', 'update',
+            $result = ModUtil::apiFunc('advanced_polls', 'admin', 'update',
             array('pollid'              => $pid,
                   'title'               => $item['title'],
                   'urltitle'            => $item['urltitle']. $pid,
@@ -418,20 +418,22 @@ function duplicate($args)
  *
  * @return array array of admin links
  */
-function advanced_polls_adminapi_getlinks()
+public function getlinks()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     $links = array();
 
-    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'view'), 'text' => __('View polls', $dom));
-    }
-    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'new'), 'text' => __('Create new poll', $dom));
-    }
-    if (SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('advanced_polls', 'admin', 'modifyconfig'), 'text' => __('Settings', $dom));
+    if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
+        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'view'),
+                         'text' => $this->__('View Polls'));
+    } 
+    if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
+        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'newitem'),
+                         'text' => $this->__('Create new poll'));
+    } 
+    if (SecurityUtil::checkPermission($this->name, '::', ACCESS_ADMIN)) {
+        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'modifyconfig'),
+        				 'text' => $this->__('Settings'));
     }
 
     return $links;

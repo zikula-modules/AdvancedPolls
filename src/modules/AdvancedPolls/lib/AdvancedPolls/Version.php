@@ -13,7 +13,7 @@
  * 
  */
 
-class MUTicket_Base_Version extends Zikula_AbstractVersion {
+class AdvancedPolls_Version extends Zikula_AbstractVersion {
 	
 	public function getMetaData() {	
 
@@ -38,5 +38,6 @@ class MUTicket_Base_Version extends Zikula_AbstractVersion {
                                              	'maxversion' => '',
                                              	'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));
 
+		return $meta;
 }
 }
