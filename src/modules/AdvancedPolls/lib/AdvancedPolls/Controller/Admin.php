@@ -9,10 +9,12 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
+class AdvancedPolls_Admin_Controller extends Zikula_AbstractController {
+
 /**
  * The main administration function
  */
-function advanced_polls_admin_main()
+public function main()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::item', '::', ACCESS_EDIT)) {
@@ -63,7 +65,7 @@ function advanced_polls_admin_new()
 /**
  * Create a poll
  */
-function advanced_polls_admin_create()
+public function create()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -103,7 +105,7 @@ function advanced_polls_admin_create()
  *
  * @param 'pollid' the id of the item to be modified
  */
-function advanced_polls_admin_modify()
+public function modify()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -151,7 +153,7 @@ function advanced_polls_admin_modify()
 /**
  * Update a poll
  */
-function advanced_polls_admin_update()
+public function update()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -189,7 +191,7 @@ function advanced_polls_admin_update()
  * @param 'pollid' the id of the item to be deleted
  * @param 'confirmation' confirmation that this item can be deleted
  */
-function advanced_polls_admin_delete()
+public function delete()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -245,7 +247,7 @@ function advanced_polls_admin_delete()
 /**
  * Main admin function to view a full list of polls
  */
-function advanced_polls_admin_view()
+public function view()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::item', '::', ACCESS_EDIT)) {
@@ -360,7 +362,7 @@ function advanced_polls_admin_view()
 /**
  * Modify module configuration
  */
-function advanced_polls_admin_modifyconfig()
+public function modifyconfig()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
@@ -380,7 +382,7 @@ function advanced_polls_admin_modifyconfig()
 /**
  * Update module configuration
  */
-function advanced_polls_admin_updateconfig()
+public function updateconfig()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
@@ -447,7 +449,7 @@ function advanced_polls_admin_updateconfig()
 /**
  * Reset the votes on a poll
  */
-function advanced_polls_admin_resetvotes()
+public function resetvotes()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -492,7 +494,7 @@ function advanced_polls_admin_resetvotes()
 /**
  * Display voting statistics to admin
  */
-function advanced_polls_admin_adminstats()
+public function adminstats()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_ADMIN)) {
@@ -561,7 +563,7 @@ function advanced_polls_admin_adminstats()
 /**
  * Duplicate poll
  */
-function advanced_polls_admin_duplicate()
+public function duplicate()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -613,4 +615,5 @@ function advanced_polls_admin_duplicate()
 
     // redirect the user to an appropriate page
     return pnRedirect(pnModURL('advanced_polls', 'admin', 'view'));
+}
 }

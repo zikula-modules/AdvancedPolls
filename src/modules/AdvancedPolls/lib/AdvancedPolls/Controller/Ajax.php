@@ -9,6 +9,8 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
+class MUTicket_Api_Base_Ajax extends Zikula_AbstractApi {
+
 /**
  * Log a vote and display the results form
  *
@@ -16,7 +18,7 @@
  * @param voteid the option to vote on
  * @return string updated display for the block
  */
-function advanced_polls_ajax_vote()
+public function vote()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -127,4 +129,5 @@ function advanced_polls_ajax_vote()
 
     // return the new content for the block
     return array('result' => $result);
+}
 }
