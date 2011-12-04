@@ -13,7 +13,7 @@
  * This function is called internally by the core whenever the module is
  * loaded.  It adds in the information
  */
-function advanced_polls_pntables()
+function advancedpolls_tables()
 {
     $pntable = array();
 

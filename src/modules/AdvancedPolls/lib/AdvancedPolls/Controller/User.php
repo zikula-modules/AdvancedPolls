@@ -9,6 +9,8 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
+class AdvancedPolls_Controller_User extends Zikula_AbstractController {
+
 /**
  * the main user function
  * This function is the default function, and is called whenever the module is
@@ -22,7 +24,7 @@
  * @since 1.0
  * @version 1.1
  */
-function advanced_polls_user_main()
+public function main()
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
@@ -42,7 +44,7 @@ function advanced_polls_user_main()
  * @since 1.0
  * @version 1.1
  */
-function advanced_polls_user_view()
+public function view()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -207,7 +209,7 @@ function advanced_polls_user_view()
  * @since 1.0
  * @version 1.1
  */
-function advanced_polls_user_display($args)
+public function display($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -339,7 +341,7 @@ function advanced_polls_user_display($args)
  * @since 1.0
  * @version 1.1
  */
-function advanced_polls_user_vote($args)
+public function vote($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -418,4 +420,5 @@ function advanced_polls_user_vote($args)
     } else {
         return pnRedirect(pnModURL('advanced_polls', 'user', 'display', array('pollid' => $pollid, 'results' => $results)));
     }
+}
 }
