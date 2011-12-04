@@ -9,6 +9,8 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
+class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
+
 /**
  * Initialise the Advanced Polls module
  * This function is only ever called once during the lifetime of a particular
@@ -16,35 +18,35 @@
  *
  * @return bool true on success, false on failure
  */
-function advanced_polls_init()
-{
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+	public function install()
+	{
+    	$dom = ZLanguage::getModuleDomain('advanced_polls');
 
-    // create tables
-    $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
-    foreach ($tables as $table) {
-        if (!DBUtil::createTable($table)) {
-            return false;
-        }
-    }
+    	// create tables
+    	$tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
+    	foreach ($tables as $table) {
+        	if (!DBUtil::createTable($table)) {
+            	return false;
+        	}
+    	}
 
-    // create our default category
-    if (!_advanced_polls_createdefaultcategory()) {
-        return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
-    }
+    	// create our default category
+    	if (!$this->createdefaultcategory()) {
+        	return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+    	}
 
-    // Set up an initial value for each module variable
-    pnModSetVar('advanced_polls', 'usereversedns', 0);
-    pnModSetVar('advanced_polls', 'scalingfactor', 4);
-    pnModSetVar('advanced_polls', 'cssbars', 1);
-    pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-    pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
-    pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
-    pnModSetVar('advanced_polls', 'enablecategorization', true);
+    	// Set up an initial value for each module variable
+    	pnModSetVar('advanced_polls', 'usereversedns', 0);
+    	pnModSetVar('advanced_polls', 'scalingfactor', 4);
+    	pnModSetVar('advanced_polls', 'cssbars', 1);
+    	pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
+    	pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
+    	pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
+    	pnModSetVar('advanced_polls', 'enablecategorization', true);
 
-    // Initialisation successful
-    return true;
-}
+    	// Initialisation successful
+    	return true;
+	}
 
 /**
  * Upgrade  the Advanced Polls module from an old version
@@ -52,7 +54,7 @@ function advanced_polls_init()
  *
  * @return bool true on success, false on failure
  */
-function advanced_polls_upgrade($oldversion)
+public function upgrade($oldversion)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -98,20 +100,20 @@ function advanced_polls_upgrade($oldversion)
             }
 
             // populate permalinks for existing content
-            if (!_advanced_polls_createPermalinks()) {
+            if (!$this->createPermalinks()) {
                 return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
             }
 
             // create the default category
-            if (!_advanced_polls_createdefaultcategory()) {
+            if (!$this->createdefaultcategory()) {
                 return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
             }
 
             // convert language codes
-            if (!_advanced_polls_updatePollsLanguages()) {
+            if (!$this->updatePollsLanguages()) {
                 return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
             }
-            return advanced_polls_upgrade('2.0.0');
+            return $this->upgrade('2.0.0');
         case '2.0.0':
             // future upgrade routines
             break;
@@ -129,7 +131,7 @@ function advanced_polls_upgrade($oldversion)
  *
  * @return bool true on success, false on failure
  */
-function advanced_polls_delete()
+public function uninstall()
 {
     // delete tables
     $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
@@ -151,7 +153,7 @@ function advanced_polls_delete()
  *
  * @return bool true on success, false on failure
  */
-function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
+public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -199,7 +201,7 @@ function _advanced_polls_createdefaultcategory($regpath = '/__SYSTEM__/Modules/G
 }
 
 
-function _advanced_polls_updatePollsLanguages()
+public function updatePollsLanguages()
 {
     $obj = DBUtil::selectObjectArray('advanced_polls_desc');
 
@@ -220,7 +222,7 @@ function _advanced_polls_updatePollsLanguages()
 }
 
 
-function _advanced_polls_createPermalinks()
+public function createPermalinks()
 {
     // get all the ID and permalink of the table
     $data = DBUtil::selectObjectArray('advanced_polls_desc', '', '', -1, -1, 'pollid', null, null, array('pollid', 'title', 'urltitle'));
@@ -245,4 +247,5 @@ function _advanced_polls_createPermalinks()
     } else {
         return false;
     }
+}
 }
