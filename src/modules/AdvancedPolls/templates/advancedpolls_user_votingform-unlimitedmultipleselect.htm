@@ -1,20 +1,20 @@
 <p class="z-informationmsg">
-    <!--[gt text="This is an unlimited multiple selection poll." domain="module_advanced_polls"]-->
-    <!--[gt text="You may select any number of options." domain="module_advanced_polls"]-->
+    {gt text="This is an unlimited multiple selection poll." domain="module_advanced_polls"}
+    {gt text="You may select any number of options." domain="module_advanced_polls"}
 </p>
 
-<!--[counter name=counter print=false start=0]-->
-<!--[foreach from=$item.options item=option]-->
+{counter name=counter print=false start=0}
+{foreach from=$item.options item=option}
 <div class="z-formnote">
-    <input id="option<!--[$option.optionid|pnvarprepfordisplay]-->" type="checkbox" name="option<!--[counter]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" />
-    <!--[if $option.optioncolour neq '']-->
-    <span style="color:<!--[$option.optioncolour]-->;">
-        <label id="option<!--[$option.optionid|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
+    <input id="option{$option.optionid|pnvarprepfordisplay}" type="checkbox" name="option{counter}" value="{$option.optionid|pnvarprepfordisplay}" />
+    {if $option.optioncolour neq ''}
+    <span style="color:{$option.optioncolour};">
+        <label id="option{$option.optionid|pnvarprepfordisplay}">{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</label>
     </span>
-    <!--[else]-->
-    <label for="option<!--[$option.optionid|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
-    <!--[/if]-->
+    {else}
+    <label for="option{$option.optionid|pnvarprepfordisplay}">{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</label>
+    {/if}
 </div>
-<!--[/foreach]-->
+{/foreach}
 
-<input type="hidden" name="optioncount" value="<!--[$smarty.section.options.iteration-1]-->" />
+<input type="hidden" name="optioncount" value="{$smarty.section.options.iteration-1}" />

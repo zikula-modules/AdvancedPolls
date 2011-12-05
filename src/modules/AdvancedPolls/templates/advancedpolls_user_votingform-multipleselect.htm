@@ -1,17 +1,17 @@
 <p class="z-informationmsg">
-    <!--[gt text="This is a multiple selection poll." domain="module_advanced_polls"]-->
-    <!--[gt text="You may select %s option." plural="You may select %s options." count=$multiplecount|pnvarprepfordisplay tag1=$multiplecount|pnvarprepfordisplay domain="module_advanced_polls"]-->
+    {gt text="This is a multiple selection poll." domain="module_advanced_polls"}
+    {gt text="You may select %s option." plural="You may select %s options." count=$multiplecount|pnvarprepfordisplay tag1=$multiplecount|pnvarprepfordisplay domain="module_advanced_polls"}
 </p>
 
-<!--[counter name=counter print=false start=1 assign=optioncounter]-->
-<!--[section name=multiloop loop=$multiplecount]-->
+{counter name=counter print=false start=1 assign=optioncounter}
+{section name=multiloop loop=$multiplecount}
 <div class="z-formrow">
-    <label for="choice<!--[$optioncounter|pnvarprepfordisplay]-->"><!--[gt text="Choice %s" tag1=$optioncounter|pnvarprepfordisplay domain="module_advanced_polls"]--></label>
-    <select id="choice<!--[$optioncounter|pnvarprepfordisplay]-->" name="option<!--[$optioncounter|pnvarprepfordisplay]-->">
-        <!--[foreach from=$item.options item=option]-->
-        <option value="<!--[$option.optionid|pnvarprepfordisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></option>
-        <!--[/foreach]-->
+    <label for="choice{$optioncounter|pnvarprepfordisplay}">{gt text="Choice %s" tag1=$optioncounter|pnvarprepfordisplay domain="module_advanced_polls"}</label>
+    <select id="choice{$optioncounter|pnvarprepfordisplay}" name="option{$optioncounter|pnvarprepfordisplay}">
+        {foreach from=$item.options item=option}
+        <option value="{$option.optionid|pnvarprepfordisplay}">{$option.optiontext|pnvarprephtmldisplay}</option>
+        {/foreach}
     </select>
 </div>
-<!--[counter name=counter print=false]-->
-<!--[/section]-->
+{counter name=counter print=false}
+{/section}

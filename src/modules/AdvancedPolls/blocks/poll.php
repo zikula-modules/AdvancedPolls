@@ -53,7 +53,7 @@ function advanced_polls_pollblock_display($blockinfo)
     }
 
     // Get variables from content block
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // set some defaults
     if (!isset($vars['pollid'])) {

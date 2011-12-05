@@ -1,12 +1,12 @@
-<!--[foreach from=$item.options item=option]-->
+{foreach from=$item.options item=option}
 <div class="z-formnote">
-    <input id="option<!--[$option.optionid|pnvarprephtmldisplay]-->" type="radio" name="option<!--[$pollid|pnvarprepfordisplay]-->" value="<!--[$option.optionid|pnvarprepfordisplay]-->" />
-    <!--[if $option.optioncolour neq '']-->
-    <span style="color:<!--[$option.optioncolour]-->;">
-        <label for="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnvarprephtmldisplay]--></label>
+    <input id="option{$option.optionid|pnvarprephtmldisplay}" type="radio" name="option{$pollid|pnvarprepfordisplay}" value="{$option.optionid|pnvarprepfordisplay}" />
+    {if $option.optioncolour neq ''}
+    <span style="color:{$option.optioncolour};">
+        <label for="option{$option.optionid|pnvarprephtmldisplay}">{$option.optiontext|pnvarprephtmldisplay}</label>
     </span>
-    <!--[else]-->
-    <label for="option<!--[$option.optionid|pnvarprephtmldisplay]-->"><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></label>
-    <!--[/if]-->
+    {else}
+    <label for="option{$option.optionid|pnvarprephtmldisplay}">{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</label>
+    {/if}
 </div>
-<!--[/foreach]-->
+{/foreach}

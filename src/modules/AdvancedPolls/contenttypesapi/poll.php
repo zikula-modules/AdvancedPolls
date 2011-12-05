@@ -34,7 +34,7 @@ class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
 
     function display()
     {
-        $poll = pnModFunc('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
+        $poll = ModUtil::func('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
         return $poll;
     }
 
@@ -43,7 +43,7 @@ class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
         $dom = ZLanguage::getModuleDomain('advanced_polls');
         if (!empty($this->pollid))
         {
-            return pnModFunc('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
+            return ModUtil::func('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
         }
         return __('No poll selected', $dom);
     }

@@ -1,20 +1,20 @@
-<!--[*  $Id$  *]-->
-<!--[include file="advancedpolls_admin_menu.htm"]-->
-<!--[gt text="Reset votes" assign=templatetitle]-->
+{*  $Id$  *}
+{include file="advancedpolls_admin_menu.htm"}
+{gt text="Reset votes" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon"><!--[pnimg modname='core' src='editdelete.gif' set='icons/large' alt=$templatetitle]--></div>
-    <h2><!--[$templatetitle]--></h2>
-    <p class="z-warningmsg"><!--[gt text="Do you really want to reset the votes?"]--></p>
-    <form class="z-form" action="<!--[pnmodurl modname="advanced_polls" type="admin" func="resetvotes"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="z-adminpageicon">{pnimg modname='core' src='editdelete.gif' set='icons/large' alt=$templatetitle}</div>
+    <h2>{$templatetitle}</h2>
+    <p class="z-warningmsg">{gt text="Do you really want to reset the votes?"}</p>
+    <form class="z-form" action="{pnmodurl modname="advanced_polls" type="admin" func="resetvotes"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
+            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
+            <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
             <fieldset>
-                <legend><!--[gt text="Confirmation prompt"]--></legend>
+                <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">
-                    <!--[pnbutton src='button_ok.gif' set='icons/small' __alt="Reset" __title="Reset"]-->
-                    <a href="<!--[pnmodurl modname=advanced_polls type=admin func=view]-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"]--></a>
+                    {pnbutton src='button_ok.gif' set='icons/small' __alt="Reset" __title="Reset"}
+                    <a href="{pnmodurl modname=advanced_polls type=admin func=view}">{pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
                 </div>
             </fieldset>
         </div>
