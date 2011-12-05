@@ -17,7 +17,7 @@
  *
  * @return int poll item ID on success, false on failure
  */
-function create($args)
+public function create($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -60,11 +60,11 @@ function create($args)
     }
 
     if (!DBUtil::insertObject($args, 'advanced_polls_desc', 'pollid')) {
-        return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+        return LogUtil::registerError ($this->__('Error! Creation attempt failed.', $dom));
     }
 
     // Let any hooks know that we have created a new item.
-    pnModCallHooks('item', 'create', $args['pollid'], array('module' => 'advanced_polls'));
+    ModUtil::callHooks('item', 'create', $args['pollid'], array('module' => 'advanced_polls'));
 
     // An item was created, so we clear all cached pages of the items list.
     $renderer = pnRender::getInstance('advanced_polls');
@@ -80,7 +80,7 @@ function create($args)
  * @returns bool
  * @return true on success, false on failure
  */
-function delete($args)
+public function delete($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -90,7 +90,7 @@ function delete($args)
     }
 
     // Get the poll
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     if ($item == false) {
         return LogUtil::registerError (__('Error! No such poll found.', $dom));
@@ -131,7 +131,7 @@ function delete($args)
  * @param $args['optioncount'] number of options for this poll
  * @return bool true on success, false on failure
  */
-function update($args)
+public function update($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -142,7 +142,7 @@ function update($args)
     }
 
     // The user API function is called
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name , 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
@@ -215,7 +215,7 @@ function update($args)
  * @returns bool
  * @return true on success, false on failure
  */
-function resetvotes($args)
+public function resetvotes($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -225,7 +225,7 @@ function resetvotes($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -252,7 +252,7 @@ function resetvotes($args)
  * @returns array
  * @return array of items, or false on failure
  */
-function getvotes($args)
+public function getvotes($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -280,7 +280,7 @@ function getvotes($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -292,7 +292,7 @@ function getvotes($args)
         return LogUtil::registerPermissionError();
     } else {
         // get database setup
-        $pntable = pnDBGetTables();
+        $pntable = DBUtil::getTables();
         $votescolumn = &$pntable['advanced_polls_votes_column'];
 
         switch ($args['sortby']) {
@@ -343,7 +343,7 @@ function getvotes($args)
  * @returns bool
  * @return true on success, false on failure
  */
-function duplicate($args)
+public function duplicate($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -353,7 +353,7 @@ function duplicate($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // check for no such poll return from api function
     if ($item == false) {

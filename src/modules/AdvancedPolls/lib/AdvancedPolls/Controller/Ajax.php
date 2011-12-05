@@ -38,12 +38,12 @@ public function vote()
     }
 
     // call api function to establish if poll is currently open
-    $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
+    $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $pollid));
 
     // if the poll is open then start to add the current vote
     if ($ispollopen == true) {
         // is this vote allowed under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+        $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $pollid));
         // if vote is allowed then add vote to db tables
         if ($isvoteallowed == true) {
             if ($multiple == 1) {
@@ -52,7 +52,7 @@ public function vote()
                     for ($i = 1; $i <= $max; $i++) {
                         $optionid = FormUtil::getPassedValue('option' . ($i), null, 'POST');
                         if ($optionid != null) {
-                            $result = pnModAPIFunc('advanced_polls', 'user', 'addvote',
+                            $result = ModUtil::apiFunc($this->name, 'user', 'addvote',
                             array('pollid'   => $pollid,
                                   'title'    => $title,
                                   'optionid' => $optionid,
@@ -62,7 +62,7 @@ public function vote()
                 } else {
                     for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
                         $optionid = FormUtil::getPassedValue('option' . ($i), null, 'POST');
-                        $result = pnModAPIFunc('advanced_polls','user','addvote',
+                        $result = ModUtil::apiFunc('advanced_polls','user','addvote',
                         array('pollid'   => $pollid,
                               'title'    => $title,
                               'optionid' => $optionid,
@@ -71,7 +71,7 @@ public function vote()
                 }
             } else {
                 $optionid = FormUtil::getPassedValue('option'.$pollid, null, 'POST');
-                $result = pnModAPIFunc('advanced_polls','user','addvote',
+                $result = ModUtil::apiFunc('advanced_polls','user','addvote',
                 array('pollid'   => $pollid,
                       'title'    => $title,
                       'optionid' => $optionid,
@@ -81,10 +81,10 @@ public function vote()
     }
 
     // Get the poll
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     // get current vote counts
-    $votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = ModUtil::apiFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // don't show block if we failed to get any results
     if ($votecounts == false) {

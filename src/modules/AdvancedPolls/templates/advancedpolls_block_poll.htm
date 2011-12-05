@@ -1,77 +1,77 @@
 <div id="advancedpollblockcontent">
-    <h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
-    <p><!--[$item.description|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay]--></p>
+    <h2>{$item.title|pnmodcallhooks|pnvarprephtmldisplay}</h2>
+    <p>{$item.description|pnmodcallhooks:advanced_polls|pnvarprephtmldisplay}</p>
 
-    <!--[if $ispollopen and $isvoteallowed]-->
+    {if $ispollopen and $isvoteallowed}
 
-    <!--[if $blockvars.ajaxvoting]-->
-    <!--[pnajaxheader modname=advanced_polls filename=advancedpolls.js]-->
-    <!--[/if]-->
+    {if $blockvars.ajaxvoting}
+    {pnajaxheader modname=advanced_polls filename=advancedpolls.js}
+    {/if}
 
-    <form id="advancedpollsvoteform" class="z-form" action="<!--[pnmodurl modname="advanced_polls" type="user" func="vote"]-->" method="post" enctype="application/x-www-form-urlencoded">
+    <form id="advancedpollsvoteform" class="z-form" action="{pnmodurl modname="advanced_polls" type="user" func="vote"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
-            <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-            <input type="hidden" name="title" value="<!--[$item.title|pnvarprephtmldisplay]-->" />
+            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
+            <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
+            <input type="hidden" name="title" value="{$item.title|pnvarprephtmldisplay}" />
             <input type="hidden" name="results" value="1" />
-            <input type="hidden" name="polldisplayresults" value="<!--[$blockvars.polldisplayresults|pnvarprepfordisplay]-->" />
-            <input type="hidden" name="returnurl" value="<!--[$returnurl|pnvarprepfordisplay]-->" />
+            <input type="hidden" name="polldisplayresults" value="{$blockvars.polldisplayresults|pnvarprepfordisplay}" />
+            <input type="hidden" name="returnurl" value="{$returnurl|pnvarprepfordisplay}" />
             <fieldset>
-                <legend><!--[gt text="Poll options"]--></legend>
-                <!--[if $polltype eq 0]-->
-                <!--[include file="advancedpolls_user_votingform-singleoptionselect.htm"]-->
-                <!--[else]-->
+                <legend>{gt text="Poll options"}</legend>
+                {if $polltype eq 0}
+                {include file="advancedpolls_user_votingform-singleoptionselect.htm"}
+                {else}
                 <input type="hidden" name="multiple" value="1" />
-                <input type="hidden" name="multiplecount" value="<!--[$multiplecount]-->" />
-                <!--[if $polltype eq 1]-->
-                <!--[if $multiplecount eq -1]-->
-                <!--[include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"]-->
-                <!--[else]-->
-                <!--[include file="advancedpolls_user_votingform-multipleselect.htm"]-->
-                <!--[/if]-->
-                <!--[else]-->
-                <!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
-                <!--[/if]-->
-                <!--[/if]-->
+                <input type="hidden" name="multiplecount" value="{$multiplecount}" />
+                {if $polltype eq 1}
+                {if $multiplecount eq -1}
+                {include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"}
+                {else}
+                {include file="advancedpolls_user_votingform-multipleselect.htm"}
+                {/if}
+                {else}
+                {include file="advancedpolls_user_votingform-rankedmultipleselect.htm"}
+                {/if}
+                {/if}
             </fieldset>
             <div class="z-formbuttons">
-                <!--[if $blockvars.ajaxvoting]-->
-                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="<!--[gt text="Vote" domain="module_advanced_polls"]-->" />
-                <!--[else]-->
-                <input name="submit" type="submit" value="<!--[gt text="Vote" domain="module_advanced_polls"]-->" />
-                <!--[/if]-->
+                {if $blockvars.ajaxvoting}
+                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text="Vote" domain="module_advanced_polls"}" />
+                {else}
+                <input name="submit" type="submit" value="{gt text="Vote" domain="module_advanced_polls"}" />
+                {/if}
             </div>
         </div>
     </form>
 
-    <!--[if $blockvars.ajaxvoting]-->
+    {if $blockvars.ajaxvoting}
     <div id="advancedpollsvoteinfo" style="color:red;">&nbsp;</div>
     <script type="text/javascript">
-        var recordingvote  = '<!--[gt text="Recording vote" domain="module_advanced_polls"]-->';
+        var recordingvote  = '{gt text="Recording vote" domain="module_advanced_polls"}';
     </script>
-    <!--[/if]-->
+    {/if}
 
-    <!--[else]-->
-    <!--[include file="advancedpolls_block_poll_results.htm"]-->
-    <!--[/if]-->
+    {else}
+    {include file="advancedpolls_block_poll_results.htm"}
+    {/if}
 
     <ul class="adv_polldetails">
-        <!--[if $ispollopen and $isvoteallowed]-->
-        <!--[else]-->
-        <!--[if $ispollopen]-->
-        <!--[if $votecounts.totalvotecount > 0]-->
-        <li><strong><!--[gt text="The current leader in this poll is %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"]--></strong></li>
-        <!--[if $item.pollnoclosedate neq 0]-->
-        <li><!--[gt text="Poll close date: %s" tag1=$item.closedate|pndate_format:datetimebrief domain="module_advanced_polls"]--></li>
-        <!--[/if]-->
-        <!--[/if]-->
-        <!--[else]-->
-        <!--[if $votecounts.totalvotecount > 0]-->
-        <li><!--[gt text="Winner: %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"]--></li>
-        <!--[/if]-->
-        <!--[/if]-->
-        <!--[/if]-->
-        <li><!--[gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount|default:0 domain="module_advanced_polls"]--></li>
-        <li><a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid]-->"><!--[gt text="Detailed results" domain="module_advanced_polls"]--></a></li>
+        {if $ispollopen and $isvoteallowed}
+        {else}
+        {if $ispollopen}
+        {if $votecounts.totalvotecount > 0}
+        <li><strong>{gt text="The current leader in this poll is %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"}</strong></li>
+        {if $item.pollnoclosedate neq 0}
+        <li>{gt text="Poll close date: %s" tag1=$item.closedate|pndate_format:datetimebrief domain="module_advanced_polls"}</li>
+        {/if}
+        {/if}
+        {else}
+        {if $votecounts.totalvotecount > 0}
+        <li>{gt text="Winner: %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"}</li>
+        {/if}
+        {/if}
+        {/if}
+        <li>{gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount|default:0 domain="module_advanced_polls"}</li>
+        <li><a href="{pnmodurl modname="advanced_polls" type="user" func="display" pollid=$pollid}">{gt text="Detailed results" domain="module_advanced_polls"}</a></li>
     </ul>
 </div>
