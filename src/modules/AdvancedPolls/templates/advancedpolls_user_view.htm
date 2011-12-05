@@ -47,7 +47,7 @@
     <tbody>
         {foreach from=$activepolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
+            <td><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
             <td>
                 {if $poll.closedate}
                 {$poll.closedate|pndate_format:datetimebrief}
@@ -68,7 +68,7 @@
             <td>
                 {assign var="options" value=$poll.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|pnvarprepfordisplay}">{pnimg modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|pnvarprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>

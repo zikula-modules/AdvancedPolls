@@ -9,13 +9,13 @@
 {if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang}
 <h4>{gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay}</h4>
 {/if}
-<p>{$item.description|pnmodcallhooks|pnvarprephtmldisplay}</p>
+<p>{$item.description|pnvarprephtmldisplay}</p>
 <table class="z-datatable">
     <tbody>
         {foreach from=$item.options item=option}
         {if $option.optiontext}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td>{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</td>
+            <td>{$option.optiontext|pnvarprephtmldisplay}</td>
             <td class="adv_value">
                 {if $cssbars eq 1}
                 <div class="progress-container">
@@ -35,5 +35,5 @@
 
 <p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"}</p>
 
-{modurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl}
+{modurl modname='advancedpolls' func='display' pollid=$pollid assign=returnurl}
 {* {pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl} *}

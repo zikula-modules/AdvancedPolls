@@ -5,7 +5,7 @@
     <div class="z-adminpageicon">{img modname='core' src='windowlist.png' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     {if $enablecategorization and $numproperties gt 0}
-    <form class="z-form" action="{pnmodurl modname=advanced_polls type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname=advancedpolls type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset id="advanced_polls_multicategory_filter">
             <label for="advanced_polls_{$property}_category">{gt text="Category"}</label>
             {nocache}
@@ -48,9 +48,9 @@
         <tbody>
             {foreach from=$polls item=poll}
             <tr class="{cycle values=z-odd,z-even}">
-                <td>{$poll.pollid|pnvarprepfordisplay}</td>
+                <td>{$poll.pollid|safetext}</td>
                 <td>
-                    <a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprepfordisplay}</a>
+                    <a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|safetext}</a>
                 </td>
                 {if $enablecategorization}
                 <td>
@@ -67,7 +67,7 @@
                 <td class="z-nowrap">
                     {assign var="options" value=$poll.options}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|pnvarprepfordisplay}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                    <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                     {/section}
                 </td>
             </tr>

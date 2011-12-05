@@ -8,11 +8,11 @@
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
-
+class AdvancedPolls_Block_Poll extends Zikula_Controller_AbstractBlock {
 /**
  * Initialise block
  */
-function advanced_polls_pollblock_init()
+public function init()
 {
     // Security
     SecurityUtil::registerPermissionSchema('advanced_polls:pollblock:', 'Block title::');
@@ -26,7 +26,7 @@ function advanced_polls_pollblock_init()
  * @since 1.0
  * @version 1.1
  */
-function advanced_polls_pollblock_info()
+public function info()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -45,7 +45,7 @@ function advanced_polls_pollblock_info()
  * Display block
  * @returns HTML output or false if no work to do
  */
-function advanced_polls_pollblock_display($blockinfo)
+public function display($blockinfo)
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
@@ -73,23 +73,23 @@ function advanced_polls_pollblock_display($blockinfo)
     }
 
     // set return url
-    $returnurl = 'http://' .pnServerGetVar('HTTP_HOST') . pnServerGetVar('SCRIPT_NAME');
+    $returnurl = 'http://' . System::serverGetVar('HTTP_HOST') . System::serverGetVar('SCRIPT_NAME');
 
     switch ($vars['polluse']) {
         case 1:
-            $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $items = ModUtil::apiFunc($this->name, 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
             $item = $items[0];
             $pollid = $item['pollid'];
             break;
         case 2:
-            $pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
+            $pollid = ModUtil::apiFunc($this->name, 'user', 'getrandom');
             break;
         default:
             $pollid = $vars['pollid'];
     }
 
     // get full details on this poll from api
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // If we've failed to get the item then this pollid doesn't exist or some other problem has
     // occured so we're return no content.
@@ -98,10 +98,10 @@ function advanced_polls_pollblock_display($blockinfo)
     }
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // is this poll currently open for voting
-    $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
+    $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $pollid));
 
     // if the block is set to obey poll open and closing rules then return no
     // output if the poll is not open for voting
@@ -109,15 +109,11 @@ function advanced_polls_pollblock_display($blockinfo)
         return false;
     }
 
-    // Create output object - this object will store all of our output so that
-    // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls', false);
-
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // get current vote counts
-    $votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // set leading vote title
     if (isset($item['options'][$votecounts['leadingvoteid']-1])) {
@@ -133,8 +129,8 @@ function advanced_polls_pollblock_display($blockinfo)
             // if poll is open then display voting form otherwise
             // show results summary
             if (($ispollopen == true) and ($isvoteallowed == true)) {
-                $renderer->assign('polltype', $item['multipleselect']);
-                $renderer->assign('multiplecount', $item['multipleselectcount']);
+                $this->view->assign('polltype', $item['multipleselect']);
+                $this->view->assign('multiplecount', $item['multipleselectcount']);
             } else {
                 foreach ($item['options'] as $key => $option) {
                     if ($option['optiontext']) {
@@ -158,23 +154,23 @@ function advanced_polls_pollblock_display($blockinfo)
     }
 
     // assign the poll to the template
-    $renderer->assign('pollid', $pollid);
-    $renderer->assign('item', $item);
-    $renderer->assign('votecounts', $votecounts);
-    $renderer->assign('isvoteallowed', $isvoteallowed);
-    $renderer->assign('ispollopen', $ispollopen);
-    $renderer->assign('blockvars', $vars);
+    $this->view->assign('pollid', $pollid);
+    $this->view->assign('item', $item);
+    $this->view->assign('votecounts', $votecounts);
+    $this->view->assign('isvoteallowed', $isvoteallowed);
+    $this->view->assign('ispollopen', $ispollopen);
+    $this->view->assign('blockvars', $vars);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $renderer->fetch('advancedpolls_block_poll.htm');
-    return themesideblock($blockinfo);
+    $blockinfo['content'] = $this->view->fetch('advancedpolls_block_poll.htm');
+    return BlockUtil::themesideblock($blockinfo);
 }
 
 /**
  * Modify block settings
  * @returns pnHMTL object output
  */
-function advanced_polls_pollblock_modify($blockinfo)
+public function modify($blockinfo)
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
@@ -184,7 +180,7 @@ function advanced_polls_pollblock_modify($blockinfo)
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (!isset($vars['pollid'])) {
@@ -203,40 +199,37 @@ function advanced_polls_pollblock_modify($blockinfo)
         $vars['ajaxvoting'] = false;
     }
 
-    // Create output object
-    $renderer = pnRender::getInstance('advanced_polls', false);
-
     // get a full list of available polls
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {
             $polls[$item['pollid']] = $item['title'];
         }
     }
-    $renderer->assign('items', $polls);
+    $this->view->assign('items', $polls);
 
     // assign the block vars to the template
-    $renderer->assign('blockvars', $vars);
+    $this->view->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
+    $this->view->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
                                              1 => __('Latest', $dom),
                                              2 => __('Random', $dom)));
 
     // yes/no array
-    $renderer->assign('yesno', array(0 => __('No', $dom),
+    $this->view->assign('yesno', array(0 => __('No', $dom),
                                      1 => __('Yes', $dom)));
 
     // Return output
-    return $renderer->fetch('advancedpolls_block_poll_modify.htm');
+    return $this->view->fetch('advancedpolls_block_poll_modify.htm');
 }
 
 /**
  * Update block settings
  * @returns block info array
  */
-function advanced_polls_pollblock_update($blockinfo)
+public function update($blockinfo)
 {
     $vars['pollid']                    = FormUtil::getPassedValue('pollid');
     $vars['pollopenclosebaseddisplay'] = FormUtil::getPassedValue('pollopenclosebaseddisplay');
@@ -245,7 +238,8 @@ function advanced_polls_pollblock_update($blockinfo)
     $vars['ajaxvoting']                = FormUtil::getPassedValue('ajaxvoting');
 
     // generate the block array
-    $blockinfo['content']              = pnBlockVarsToContent($vars);
+    $blockinfo['content']              = BlockUtil::varsToContent($vars);
 
     return $blockinfo;
+}
 }

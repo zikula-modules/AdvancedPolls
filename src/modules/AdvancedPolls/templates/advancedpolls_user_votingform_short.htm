@@ -1,12 +1,12 @@
 {* $Id$ *}
 
-<h3>{$item.title|pnmodcallhooks|pnvarprephtmldisplay}</h3>
-<p>{$item.description|pnmodcallhooks|pnvarprephtmldisplay}</p>
-<form class="z-form" id="advanced_polls_admin_modify" action="{pnmodurl modname='advanced_polls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
+<h3>{$item.title|pnmodcallhooks|safehtml}</h3>
+<p>{$item.description|pnmodcallhooks|safehtml}</p>
+<form class="z-form" id="advanced_polls_admin_modify" action="{modurl modname='advancedpolls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
-        <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
-        <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
-        <input type="hidden" name="title" value="{$item.title|pnvarprephtmldisplay}" />
+        <input type="hidden" name="authid" value="{insert name=generateauthkey module="advancedpolls"}" />
+        <input type="hidden" name="pollid" value="{$pollid|safetext}" />
+        <input type="hidden" name="title" value="{$item.title|safehtml}" />
         <input type="hidden" name="results" value="1" />
         <fieldset>
             <legend>{gt text="Poll options" domain="module_advanced_polls"}</legend>
