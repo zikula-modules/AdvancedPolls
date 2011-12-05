@@ -254,7 +254,7 @@ public function isvoteallowed($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // no such item in db
     if ($item == false) {
@@ -402,7 +402,7 @@ public function pollvotecount($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
@@ -491,7 +491,7 @@ public function addvote($args)
 
     // Security check
     if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
-        $args['ip'] = System::serGetVar('REMOTE_ADDR');
+        $args['ip'] = System::getVar('REMOTE_ADDR');
         $args['uid'] = UserUtil::getVar('uid');
         $args['time'] = time();
         if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
@@ -599,7 +599,7 @@ public function getrandom() {
     srand(make_seed());
 
     // The API function is called.
-    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall');
 
     $randomitemid = array_rand($items , 1);
     $randomitem = $items[$randomitemid];

@@ -354,8 +354,8 @@ public function vote($args)
     extract($args);
 
     // Confirm authorisation code.
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (ModUtil::url($this->name, 'user', 'view'));
+    if (!SecurityUtil::generateCsrfToken()) {
+        return LogUtil::registerPermissionError (ModUtil::url($this->name, 'user', 'view'));
     }
 
     if (!isset($results)) {
@@ -413,9 +413,9 @@ public function vote($args)
     LogUtil::registerStatus( __('Done! Vote added.', $dom));
 
     if (($polldisplayresults == 0) && isset($polldisplayresults) && isset($returnurl)) {
-        return pnRedirect($returnurl);
+        return System::redirect($returnurl);
     } else {
-        return pnRedirect(pnModURL('advanced_polls', 'user', 'display', array('pollid' => $pollid, 'results' => $results)));
+        return System::redirect(ModUtil::url($this->name, 'user', 'display', array('pollid' => $pollid, 'results' => $results)));
     }
 }
 }

@@ -62,7 +62,7 @@ public function vote()
                 } else {
                     for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
                         $optionid = FormUtil::getPassedValue('option' . ($i), null, 'POST');
-                        $result = ModUtil::apiFunc('advanced_polls','user','addvote',
+                        $result = ModUtil::apiFunc($this->name,'user','addvote',
                         array('pollid'   => $pollid,
                               'title'    => $title,
                               'optionid' => $optionid,
@@ -71,7 +71,7 @@ public function vote()
                 }
             } else {
                 $optionid = FormUtil::getPassedValue('option'.$pollid, null, 'POST');
-                $result = ModUtil::apiFunc('advanced_polls','user','addvote',
+                $result = ModUtil::apiFunc($this->name,'user','addvote',
                 array('pollid'   => $pollid,
                       'title'    => $title,
                       'optionid' => $optionid,
@@ -81,10 +81,10 @@ public function vote()
     }
 
     // Get the poll
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // get current vote counts
-    $votecounts = ModUtil::apiFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // don't show block if we failed to get any results
     if ($votecounts == false) {
@@ -115,7 +115,7 @@ public function vote()
     $votecounts['percentages'] = $percentages;
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls', false);
+    $renderer = pnRender::getInstance('advancedpolls', false);
 
     // assign the item to template
     $renderer->assign('item', $item);

@@ -462,12 +462,12 @@ public function resetvotes()
     }
 
     // Confirm authorisation code
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (ModUtil::url($this->name, 'admin', 'view'));
+    if (!SecurityUtil::generateCsrfToken()) {
+        return LogUtil::registerpermissionError (ModUtil::url($this->name, 'admin', 'view'));
     }
 
     // Pass to API
-    if (ModUtil::apiFunc('advanced_polls', 'admin', 'resetvotes', array('pollid' => $pollid))) {
+    if (ModUtil::apiFunc($this->name, 'admin', 'resetvotes', array('pollid' => $pollid))) {
         LogUtil::registerStatus (__('Done! Votes reset.', $dom));
     }
 
@@ -500,7 +500,7 @@ public function adminstats()
     }
 
     // get all votes for this poll from api
-    $votes = ModUtil::apiFunc('advanced_polls', 'admin', 'getvotes',
+    $votes = ModUtil::apiFunc($this->name, 'admin', 'getvotes',
     array('pollid' => $pollid,
           'sortorder' => $sortorder,
           'sortby' => $sortby,
@@ -508,11 +508,11 @@ public function adminstats()
           'numitems' => ModUtil::getVar('advanced_polls', 'adminitemsperpage')));
 
     // get all votes for this poll from api
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     $this->view->assign('item', $item);
     $this->view->assign('pollid', $pollid);
-    $votecountarray = ModUtil::apiFunc('advanced_polls', 'user', 'pollvotecount', array('pollid'=>$pollid));
+    $votecountarray = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid'=>$pollid));
     $votecount = $votecountarray['totalvotecount'];
     $this->view->assign('votecount', $votecount);
     $this->view->assign('sortby', $sortby);
@@ -555,7 +555,7 @@ public function duplicate()
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such poll found.', $dom));
@@ -581,16 +581,16 @@ public function duplicate()
     // If we get here it means that the user has confirmed the action
 
     // Confirm authorisation code.
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (ModUtil::url('advanced_polls', 'admin', 'view'));
+    if (!SecurityUtil::generateCsrfToken()) {
+        return LogUtil::registerPermissionError (ModUtil::url('advanced_polls', 'admin', 'view'));
     }
 
     // The API function is called
-    if (ModUtil::apiFunc('advanced_polls', 'admin', 'duplicate', array('pollid' => $pollid))) {
+    if (ModUtil::apiFunc($this->name, 'admin', 'duplicate', array('pollid' => $pollid))) {
         LogUtil::registerStatus( __('Done! Poll duplicated.', $dom));
     }
 
     // redirect the user to an appropriate page
-    return System::redirect(ModUtil::url('advanced_polls', 'admin', 'view'));
+    return System::redirect(ModUtil::url($this->name, 'admin', 'view'));
 }
 }
