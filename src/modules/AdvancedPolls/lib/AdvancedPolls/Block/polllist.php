@@ -8,11 +8,11 @@
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
-
+class AdvancedPolls_Block_Polllist extends Zikula_Controller_AbstractBlock {
 /**
  * Initialise block
  */
-function advanced_polls_polllistblock_init()
+public function init()
 {
     // Security
     SecurityUtil::registerPermissionSchema('advanced_polls:polllistblock:', 'Block title::');
@@ -22,7 +22,7 @@ function advanced_polls_polllistblock_init()
  * Get information on block
  * @returns block info array
  */
-function advanced_polls_polllistblock_info()
+public function info()
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -41,7 +41,7 @@ function advanced_polls_polllistblock_info()
  * Display block
  * @returns HTML output or false if no work to do
  */
-function advanced_polls_polllistblock_display($blockinfo)
+public function display($blockinfo)
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls:polllistblock:', "$blockinfo[title]::", 	ACCESS_READ)) {
@@ -92,7 +92,7 @@ function advanced_polls_polllistblock_display($blockinfo)
  * Modify block settings
  * @returns HTML output or false if no work to do
  */
-function advanced_polls_polllistblock_modify($blockinfo)
+public function modify($blockinfo)
 {
     return;
 }
@@ -101,7 +101,7 @@ function advanced_polls_polllistblock_modify($blockinfo)
  * Update block settings
  * @returns block info array
  */
-function advanced_polls_polllistblock_update($blockinfo)
+public function update($blockinfo)
 {
     $vars['pollid']       = FormUtil::getPassedValue('pollid');
 
@@ -110,4 +110,5 @@ function advanced_polls_polllistblock_update($blockinfo)
 
     return $blockinfo;
 
+}
 }

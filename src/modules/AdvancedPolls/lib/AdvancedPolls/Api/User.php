@@ -254,7 +254,7 @@ public function isvoteallowed($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // no such item in db
     if ($item == false) {
@@ -341,7 +341,7 @@ public function resetrecurring($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -402,7 +402,7 @@ public function pollvotecount($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
@@ -491,7 +491,7 @@ public function addvote($args)
 
     // Security check
     if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
-        $args['ip'] = System::serGetVar('REMOTE_ADDR');
+        $args['ip'] = System::getVar('REMOTE_ADDR');
         $args['uid'] = UserUtil::getVar('uid');
         $args['time'] = time();
         if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
@@ -536,7 +536,7 @@ public function timecountback($args)
     $votestable = $pntable['advanced_polls_votes'];
     $votescolumn = &$pntable['advanced_polls_votes_column'];
 
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
@@ -571,7 +571,7 @@ public function timecountback($args)
 public function getlastclosed($args)
 {
     // The API function is called.
-    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall');
 
     // work out which poll has closed most recently
     $lastclosed = 0;
@@ -599,7 +599,7 @@ public function getrandom() {
     srand(make_seed());
 
     // The API function is called.
-    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall');
 
     $randomitemid = array_rand($items , 1);
     $randomitem = $items[$randomitemid];
@@ -636,9 +636,9 @@ public function encodeurl($args)
         }
         // get the item
         if (isset($args['args']['pollid'])) {
-            $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['args']['pollid']));
+            $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['args']['pollid']));
         } else {
-            $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
+            $item = ModUtil::apiFunc($this->name, 'user', 'get', array('title' => $args['args']['title']));
         }
         $vars = $item['urltitle'];
         if (isset($args['args']['page']) && $args['args']['page'] != 1) {

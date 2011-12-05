@@ -5,16 +5,16 @@
     <div class="z-adminpageicon">{pnimg modname='core' src='editcopy.gif' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <p class="z-informationmsg">{gt text="Please confirm duplication of poll."}</p>
-    <form class="z-form" action="{pnmodurl modname="advanced_polls" type="admin" func="duplicate"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="advancedpolls" type="admin" func="duplicate"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
+            <input type="hidden" name="authid" value="{insert name=csrftoken module="advancedpolls"}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formbuttons">
                     {pnbutton src='button_ok.gif' set='icons/small' __alt="Duplicate poll" __title="Duplicate poll"}
-                    <a href="{pnmodurl modname=advanced_polls type=admin func=view}">{pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+                    <a href="{modurl modname=advancedpolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

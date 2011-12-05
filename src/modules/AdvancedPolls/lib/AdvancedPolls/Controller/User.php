@@ -144,16 +144,16 @@ public function view($args)
                 // display polls that are currently active
                 if ($isvoteallowed == true) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => 'demo.gif',
+                                       'image' => 'demo.png',
                                        'title' => __('Vote', $dom));
                 } else {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
-                                       'image' => 'smallcal.gif',
+                                       'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                 }
 
@@ -163,11 +163,11 @@ public function view($args)
                 // Polls that have not opened yet
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => '14_layer_visible.gif',
+                                       'image' => '14_layer_visible.png',
                                        'title' => __('Preview', $dom)); }
                     if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                         $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                     }
                     $item['options'] = $options;
@@ -176,12 +176,12 @@ public function view($args)
                 // Polls that have closed
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => 'smallcal.gif',
+                                       'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                 }
                 $item['options'] = $options;
@@ -234,7 +234,7 @@ public function display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such poll found.', $dom), 404);
+        return LogUtil::registerError ($this->__('Error! No such poll found.'), 404);
     }
 
     // get theme name
@@ -354,8 +354,8 @@ public function vote($args)
     extract($args);
 
     // Confirm authorisation code.
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (ModUtil::url($this->name, 'user', 'view'));
+    if (!SecurityUtil::generateCsrfToken()) {
+        return LogUtil::registerPermissionError (ModUtil::url($this->name, 'user', 'view'));
     }
 
     if (!isset($results)) {
@@ -413,9 +413,9 @@ public function vote($args)
     LogUtil::registerStatus( __('Done! Vote added.', $dom));
 
     if (($polldisplayresults == 0) && isset($polldisplayresults) && isset($returnurl)) {
-        return pnRedirect($returnurl);
+        return System::redirect($returnurl);
     } else {
-        return pnRedirect(pnModURL('advanced_polls', 'user', 'display', array('pollid' => $pollid, 'results' => $results)));
+        return System::redirect(ModUtil::url($this->name, 'user', 'display', array('pollid' => $pollid, 'results' => $results)));
     }
 }
 }

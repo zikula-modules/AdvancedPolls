@@ -2,17 +2,17 @@
 {include file="advancedpolls_admin_menu.htm"}
 {gt text="Voting Statistics" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{pnimg modname='core' src='agt_business.gif' set='icons/large' alt=$templatetitle }</div>
+    <div class="z-adminpageicon">{img modname='core' src='agt_business.png' set='icons/large' alt=$templatetitle }</div>
     <h2>{$templatetitle}</h2>
-    <strong>{gt text="Name of poll"}:</strong> {$item.title|pnvarprephtmldisplay}<br />
-    <strong>{gt text="Date and time poll opens"}:</strong> {$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay}<br />
-    <strong>{gt text="Date and time poll closes"}:</strong> {$item.closedate|pndate_format:datetimebrief|pnvarprepfordisplay}<br />
-    <strong>{gt text="Total number of votes"}:</strong> {$votecount|pnvarprepfordisplay|default:'0'}<br />
+    <strong>{gt text="Name of poll"}:</strong> {$item.title|safehtml}<br />
+    <strong>{gt text="Date and time poll opens"}:</strong> {$item.opendate|pndate_format:datetimebrief|safetext}<br />
+    <strong>{gt text="Date and time poll closes"}:</strong> {$item.closedate|pndate_format:datetimebrief|safetext}<br />
+    <strong>{gt text="Total number of votes"}:</strong> {$votecount|safetext|default:'0'}<br />
 
-    <form class="z-form" action="{pnmodurl modname="advanced_polls" type="admin" func="adminstats"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="advancedpolls" type="admin" func="adminstats"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
-            <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
+            <input type="hidden" name="authid" value="{insert name=csrftoken module="advancedpolls"}" />
+            <input type="hidden" name="pollid" value="{$pollid|safetext}" />
             <fieldset>
                 <label for="advancedpolls_sortby">{gt text="Sort votes by"}</label>
                 <select id="advancedpolls_sortby" name="sortby">
@@ -42,12 +42,12 @@
         <tbody>
             {foreach from=$votes item=vote}
             <tr class="{cycle values=z-odd,z-even}">
-                <td>{$vote.voteid|pnvarprepfordisplay}</td>
-                <td>{$vote.ip|pnvarprepfordisplay}</td>
-                <td>{$vote.time|pndate_format:datetimebrief|pnvarprepfordisplay}</td>
-                <td>{$vote.user|pnvarprepfordisplay}</td>
-                <td>{$vote.voterank|pnvarprepfordisplay}</td>
-                <td>{$vote.optiontext|pnvarprepfordisplay}</td>
+                <td>{$vote.voteid|safetext}</td>
+                <td>{$vote.ip|safetext}</td>
+                <td>{$vote.time|pndate_format:datetimebrief|safetext}</td>
+                <td>{$vote.user|safetext}</td>
+                <td>{$vote.voterank|safetext}</td>
+                <td>{$vote.optiontext|safetext}</td>
             </tr>
             {foreachelse}
             <tr class="z-admintableempty"><td colspan="6">{gt text="No votes found."}</td></tr>
