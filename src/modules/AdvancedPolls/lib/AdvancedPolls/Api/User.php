@@ -1,6 +1,6 @@
 <?php
 
-class Advanced_Polls_User_Api extends Zikula_AbstractApi {
+class AdvancedPolls_Api_User extends Zikula_AbstractApi {
 
 /**
  * Advanced Polls module for Zikula
@@ -62,10 +62,10 @@ public function getall($args)
 
     // populate an array with each part of the where clause and then implode the array if there is a need.
     // credit to Jorg Napp for this technique - markwest
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     $pollscolumn = $pntable['advanced_polls_desc_column'];
     $queryargs = array();
-    if (pnConfigGetVar('multilingual') == 1 && $args['checkml']) {
+    if (System::getVar('multilingual') == 1 && $args['checkml']) {
         $queryargs[] = "($pollscolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "' OR $pollscolumn[language]='')";
     }
 
@@ -144,7 +144,7 @@ public function get($args)
         $poll = DBUtil::selectObjectByID('advanced_polls_desc', $args['title'], 'urltitle', '', $permFilter);
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     $datacolumn  = $pntable['advanced_polls_data_column'];
     $where = "$datacolumn[pollid]='" . (int)DataUtil::formatForStore($poll['pollid']) . "'";
     $poll['options'] = DBUtil::selectObjectArray('advanced_polls_data', $where, 'optionid');
@@ -184,12 +184,12 @@ public function countitems($args)
         $checkml = true;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     $desccolumn = $pntable['advanced_polls_desc_column'];
 
     // Check if we is an ML situation
     $querylang = '';
-    if ($checkml && pnConfigGetVar('multilingual') == 1) {
+    if ($checkml && System::getVar('multilingual') == 1) {
         $querylang = "WHERE ($desccolumn[language]='" . DataUtil::formatForStore(ZLanguage::getLanguageCode()) . "'
             OR $desccolumn[language]=''
             OR $desccolumn[language] IS NULL)";
@@ -212,7 +212,7 @@ public function isopen($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // no such item is db
     if ($item == false) {
@@ -254,7 +254,7 @@ public function isvoteallowed($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
 
     // no such item in db
     if ($item == false) {
@@ -280,9 +280,9 @@ public function isvoteallowed($args)
             return true;
         case 2: //UID Voting
             // // extract user id from session variables
-            $uid = pnUserGetVar('uid');
+            $uid = UserUtil::getVar('uid');
             // get all the matching votes
-            $pntable = pnDBGetTables();
+            $pntable = DBUtil::getTables();
             $votescolumn  = $pntable['advanced_polls_votes_column'];
             $where = "$votescolumn[uid]='" . (int)DataUtil::formatForStore($uid) . "' AND $votescolumn[pollid]='" . (int)DataUtil::formatForStore($args['pollid']) . "'";
             $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
@@ -303,10 +303,10 @@ public function isvoteallowed($args)
             }
         case 4: //IP address voting
             // extract ip from http headers
-            $ip = pnServerGetVar('REMOTE_ADDR');
+            $ip = System::serverGetVar('REMOTE_ADDR');
 
             // get all the matching votes
-            $pntable = pnDBGetTables();
+            $pntable = DBUtil::getTables();
             $votescolumn  = $pntable['advanced_polls_votes_column'];
             $where = "$votescolumn[ip]='" . DataUtil::formatForStore($ip) . "' AND $votescolumn[pollid]='" . (int)DataUtil::formatForStore($args['pollid']) . "'";
             $votes = DBUtil::selectObjectCount('advanced_polls_votes', $where);
@@ -341,7 +341,7 @@ public function resetrecurring($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -402,7 +402,7 @@ public function pollvotecount($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such poll found.', $dom));
     }
@@ -423,11 +423,11 @@ public function pollvotecount($args)
 
     // for ease of backwards compatabilty lets check for a 0 option count
     if ($item['optioncount'] == 0) {
-        $item['optioncount'] = pnModGetVar('advanced_polls', 'defaultoptioncount');
+        $item['optioncount'] = ModUtil::getVar('advanced_polls', 'defaultoptioncount');
     }
 
     // get database tables
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     $votestable = $pntable['advanced_polls_votes'];
     $votescolumn = &$pntable['advanced_polls_votes_column'];
 
@@ -453,7 +453,7 @@ public function pollvotecount($args)
         }
         if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
             if ($item['tiebreakalg'] == 1) {
-                $leadingvoteid = pnModAPIFunc('advanced_polls', 'user', 'timecountback',
+                $leadingvoteid = ModUtil::apiFunc('advanced_polls', 'user', 'timecountback',
                 array('pollid'  => $args['pollid'],
                       'voteid1' => $leadingvoteid,
                       'voteid2' => $i));
@@ -491,8 +491,8 @@ public function addvote($args)
 
     // Security check
     if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
-        $args['ip'] = pnServerGetVar('REMOTE_ADDR');
-        $args['uid'] = pnUserGetVar('uid');
+        $args['ip'] = System::serGetVar('REMOTE_ADDR');
+        $args['uid'] = UserUtil::getVar('uid');
         $args['time'] = time();
         if (!DBUtil::insertObject($args, 'advanced_polls_votes', 'id')) {
             return LogUtil::registerError (__('Error! Failed to register vote.', $dom));
@@ -532,11 +532,11 @@ public function timecountback($args)
     }
 
     // get database tables
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     $votestable = $pntable['advanced_polls_votes'];
     $votescolumn = &$pntable['advanced_polls_votes_column'];
 
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
 
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
@@ -571,7 +571,7 @@ public function timecountback($args)
 public function getlastclosed($args)
 {
     // The API function is called.
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
 
     // work out which poll has closed most recently
     $lastclosed = 0;
@@ -599,7 +599,7 @@ public function getrandom() {
     srand(make_seed());
 
     // The API function is called.
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
 
     $randomitemid = array_rand($items , 1);
     $randomitem = $items[$randomitemid];
@@ -636,9 +636,9 @@ public function encodeurl($args)
         }
         // get the item
         if (isset($args['args']['pollid'])) {
-            $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $args['args']['pollid']));
+            $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['args']['pollid']));
         } else {
-            $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
+            $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('title' => $args['args']['title']));
         }
         $vars = $item['urltitle'];
         if (isset($args['args']['page']) && $args['args']['page'] != 1) {
@@ -678,12 +678,12 @@ public function decodeurl($args)
     $funcs = array('main', 'view', 'display', 'results', 'vote');
     // set the correct function name based on our input
     if (empty($args['vars'][2])) {
-        pnQueryStringSetVar('func', 'main');
+        System::queryStringSetVar('func', 'main');
     } elseif (!in_array($args['vars'][2], $funcs)) {
-        pnQueryStringSetVar('func', 'display');
+        System::queryStringSetVar('func', 'display');
         $nextvar = 2;
     } else {
-        pnQueryStringSetVar('func', $args['vars'][2]);
+        System::queryStringSetVar('func', $args['vars'][2]);
         $nextvar = 3;
     }
 
@@ -691,7 +691,7 @@ public function decodeurl($args)
 
     // add the category info
     if ($func == 'view') {
-        pnQueryStringSetVar('cat', (string)$args['vars'][$nextvar]);
+        System::queryStringSetVar('cat', (string)$args['vars'][$nextvar]);
     }
 
     // identify the correct parameter to identify the page
@@ -700,9 +700,9 @@ public function decodeurl($args)
         $args['vars'] = array_slice($args['vars'], $nextvar);
         $nextvar = 0;
         if (is_numeric($args['vars'][$nextvar])) {
-            pnQueryStringSetVar('pollid', $args['vars'][$nextvar]);
+            System::queryStringSetVar('pollid', $args['vars'][$nextvar]);
         } else {
-            pnQueryStringSetVar('title', $args['vars'][$nextvar]);
+            System::queryStringSetVar('title', $args['vars'][$nextvar]);
         }
     }
 

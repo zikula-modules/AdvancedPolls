@@ -24,7 +24,7 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
  * @since 1.0
  * @version 1.1
  */
-public function main()
+public function main($args)
 {
     // Security check
     if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
@@ -32,7 +32,7 @@ public function main()
     }
 
     // do nothing
-    return pnRedirect(pnModURL('advanced_polls', 'user', 'view'));
+    return System::redirect(ModUtil::url($this->name, 'user', 'view'));
 }
 
 /**
@@ -44,7 +44,7 @@ public function main()
  * @since 1.0
  * @version 1.1
  */
-public function view()
+public function view($args)
 {
     $dom = ZLanguage::getModuleDomain('advanced_polls');
 
@@ -64,7 +64,7 @@ public function view()
     }
 
     // get module vars for later use
-    $modvars = pnModGetVar('advanced_polls');
+    $modvars = ModUtil::getVar('advanced_polls');
 
     if ($modvars['enablecategorization']) {
         // load the category registry util
@@ -92,21 +92,21 @@ public function view()
     }
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls');
-    $renderer->assign($modvars);
-    $renderer->assign('lang', ZLanguage::getLanguageCode());
+    //$renderer = pnRender::getInstance('advanced_polls');
+    $this->view->assign($modvars);
+    $this->view->assign('lang', ZLanguage::getLanguageCode());
 
     // Assign the categories information if enabled
     if ($modvars['enablecategorization']) {
-        $renderer->assign('catregistry', $catregistry);
-        $renderer->assign('numproperties', count($propArray));
-        $renderer->assign('properties', $propArray);
-        $renderer->assign('property', $property);
-        $renderer->assign('category', $category);
+        $this->view->assign('catregistry', $catregistry);
+        $this->view->assign('numproperties', count($propArray));
+        $this->view->assign('properties', $propArray);
+        $this->view->assign('property', $property);
+        $this->view->assign('category', $category);
     }
 
     // get all matching polls
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('checkml' => false,
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall', array('checkml' => false,
                                                                     'startnum' => $startnum,
                                                                     'category' => isset($catFilter) ? $catFilter : null,
                                                                     'catregistry'  => isset($catregistry) ? $catregistry : null));
@@ -123,10 +123,10 @@ public function view()
     foreach ($items as $item) {
 
         // is this poll currently open for voting
-        $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
+        $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $item['pollid']));
 
         // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
+        $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
 
         if ($item['opendate'] > time()) {
             $notyetopen = true;
@@ -143,16 +143,16 @@ public function view()
             if ($ispollopen == true) {
                 // display polls that are currently active
                 if ($isvoteallowed == true) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                    $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => 'demo.gif',
                                        'title' => __('Vote', $dom));
                 } else {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
+                    $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
                                        'image' => 'smallcal.gif',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                    $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
                 }
@@ -162,11 +162,11 @@ public function view()
             } elseif (($ispollopen == false) and ($notyetopen == true)) {
                 // Polls that have not opened yet
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                    $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => '14_layer_visible.gif',
                                        'title' => __('Preview', $dom)); }
                     if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
-                        $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                        $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
                     }
@@ -175,12 +175,12 @@ public function view()
             } elseif (($ispollopen == false) and ($notyetopen == false)) {
                 // Polls that have closed
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'user', 'display', array('pollid' => $item['pollid'])),
+                    $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => 'smallcal.gif',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
-                    $options[] = array('url' => pnModURL('advanced_polls', 'admin', 'modify', array('pollid' => $item['pollid'])),
+                    $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.gif',
                                        'title' => __('Edit', $dom));
                 }
@@ -190,12 +190,12 @@ public function view()
         }
     }
 
-    $renderer->assign('activepolls', $activepolls);
-    $renderer->assign('futurepolls', $futurepolls);
-    $renderer->assign('closedpolls', $closedpolls);
+    $this->view->assign('activepolls', $activepolls);
+    $this->view->assign('futurepolls', $futurepolls);
+    $this->view->assign('closedpolls', $closedpolls);
 
     // Return the output that has been generated by this function
-    return $renderer->fetch('advancedpolls_user_view.htm');
+    return $this->view->fetch('advancedpolls_user_view.htm');
 }
 
 /**
@@ -222,14 +222,14 @@ public function display($args)
     }
 
     // get module vars for later use
-    $modvars = pnModGetVar('advanced_polls');
+    $modvars = ModUtil::getVar('advanced_polls');
 
     // Get the poll
     if (isset($pollid) && is_numeric($pollid)) {
-        $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid, 'parse' => true));
+        $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid, 'parse' => true));
     } else {
-        $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('title' => $title, 'parse' => true));
-        pnQueryStringSetVar('pollid', $item['pollid']);
+        $item = ModUtil::apiFunc($this->name, 'user', 'get', array('title' => $title, 'parse' => true));
+        System::queryStringSetVar('pollid', $item['pollid']);
         $pollid = $item['pollid'];
     }
 
@@ -237,28 +237,25 @@ public function display($args)
         return LogUtil::registerError (__('Error! No such poll found.', $dom), 404);
     }
 
-    // Create output object
-    $renderer = pnRender::getInstance('advanced_polls');
-
     // get theme name
-    $renderer->assign('theme', pnUserGetTheme());
-    $renderer->assign($modvars);
-    $renderer->assign('lang', ZLanguage::getLanguageCode());
+    $this->view->assign('theme', UserUtil::getTheme());
+    $this->view->assign($modvars);
+    $this->view->assign('lang', ZLanguage::getLanguageCode());
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // Security check
     if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
 
         // is this poll currently open for voting
-        $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $item['pollid']));
+        $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $item['pollid']));
 
         // is this user/ip etc. allowed to vote under voting regulations
-        $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
+        $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
 
         // get vote counts
-        $votecount = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
+        $votecount = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
 
         if ($item['opendate'] > time()) {
             $notyetopen = true;
@@ -278,17 +275,17 @@ public function display($args)
         // if poll is open, voting is allowed then display voting form
         //----------------------------------------------------------------------------
         if ($displayvotingform) {
-            $renderer->assign('polltype', $item['multipleselect']);
-            $renderer->assign('multiplecount', $item['multipleselectcount']);
+            $this->view->assign('polltype', $item['multipleselect']);
+            $this->view->assign('multiplecount', $item['multipleselectcount']);
             $template = 'advancedpolls_user_votingform';
         } elseif ($displayresults) {
             //----------------------------------------------------------------------------
             // Output results graph if poll has closed/ is not open yet or
             // if results have been spefifically requested
             //----------------------------------------------------------------------------
-            $scalingfactor = pnModGetVar('advanced_polls', 'scalingfactor');
-            $renderer->assign('ispollopen', $ispollopen);
-            $renderer->assign('votecount', $votecount);
+            $scalingfactor = ModUtil::getVar('advanced_polls', 'scalingfactor');
+            $this->view->assign('ispollopen', $ispollopen);
+            $this->view->assign('votecount', $votecount);
 
             // display poll results
             $pollresults = array();
@@ -316,8 +313,8 @@ public function display($args)
     }
 
     // assign the full poll info
-    $renderer->assign('pollid', $pollid);
-    $renderer->assign('item', $item);
+    $this->view->assign('pollid', $pollid);
+    $this->view->assign('item', $item);
 
     // Add template suffix if display function is called via content plugin
     if (isset($args['displaytype'])) {
@@ -327,10 +324,10 @@ public function display($args)
     }
 
     // Return the output that has been generated by this function
-    if ($renderer->template_exists($template.$suffix.$pollid.'.htm')) {
-        return $renderer->fetch($template.$suffix.$pollid.'.htm');
+    if ($this->view->template_exists($template.$suffix.$pollid.'.htm')) {
+        return $this->view->fetch($template.$suffix.$pollid.'.htm');
     } else {
-        return $renderer->fetch($template.$suffix.'.htm');
+        return $this->view->fetch($template.$suffix.'.htm');
     }
 }
 
@@ -358,7 +355,7 @@ public function vote($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError (pnModURL('advanced_polls', 'user', 'view'));
+        return LogUtil::registerAuthidError (ModUtil::url($this->name, 'user', 'view'));
     }
 
     if (!isset($results)) {
@@ -372,12 +369,12 @@ public function vote($args)
         if (SecurityUtil::checkPermission('advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
 
             // call api function to establish if poll is currently open
-            $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
+            $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $pollid));
 
             // if the poll is open then start to add the current vote
             if ($ispollopen == true) {
                 // is this vote allowed under voting regulations
-                $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+                $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $pollid));
                 // if vote is allowed then add vote to db tables
                 if ($isvoteallowed == true) {
                     if ($multiple == 1) {
@@ -386,7 +383,7 @@ public function vote($args)
                             for ($i = 1; $i <= $max; $i++) {
                                 $optionid = FormUtil::getPassedValue('option' . ($i));
                                 if ($optionid != null) {
-                                    $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                                    $result = ModUtil::apiFunc($this->name, 'user', 'addvote', array('pollid' => $pollid,
                                                                                                       'title' => $title,
                                                                                                       'optionid' => $optionid,
                                                                                                       'voterank' => 1));
@@ -395,7 +392,7 @@ public function vote($args)
                         } else {
                             for ($i = 1, $max = $multiplecount; $i <= $max; $i++) {
                                 $optionid = FormUtil::getPassedValue('option' . ($i));
-                                $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                                $result = ModUtil::apiFunc($this->name, 'user', 'addvote', array('pollid' => $pollid,
                                                                                                   'title' => $title,
                                                                                                   'optionid' => $optionid,
                                                                                                   'voterank' => $i));
@@ -403,7 +400,7 @@ public function vote($args)
                         }
                     } else {
                         $optionid = FormUtil::getPassedValue('option'.$pollid);
-                        $result = pnModAPIFunc('advanced_polls', 'user', 'addvote', array('pollid' => $pollid,
+                        $result = ModUtil::apiFunc($this->name, 'user', 'addvote', array('pollid' => $pollid,
                                                                                           'title' => $title,
                                                                                           'optionid' => $optionid,
                                                                                           'voterank' => 1));

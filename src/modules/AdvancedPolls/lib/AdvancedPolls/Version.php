@@ -23,10 +23,10 @@ class AdvancedPolls_Version extends Zikula_AbstractVersion {
 		$meta['description']     = __('A comprehensive single question polling module', $dom);
 		$meta['url']             = __('advancedpolls', $dom);
 		$meta['version']         = '2.0.0';
-		$meta['credits']         = 'pndocs/credits.txt';
-		$meta['help']            = 'pndocs/help.txt';
-		$meta['changelog']       = 'pndocs/changelog.txt';
-		$meta['license']         = 'pndocs/license.txt';
+		$meta['credits']         = 'docs/credits.txt';
+		$meta['help']            = 'docs/help.txt';
+		$meta['changelog']       = 'docs/changelog.txt';
+		$meta['license']         = 'docs/license.txt';
 		$meta['official']        = 0;
 		$meta['author']          = 'Mark West, Carsten Volmer';
 		$meta['contact']         = 'http://code.zikula.org/advancedpolls/';
