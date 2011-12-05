@@ -234,7 +234,7 @@ public function display($args)
     }
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such poll found.', $dom), 404);
+        return LogUtil::registerError ($this->__('Error! No such poll found.'), 404);
     }
 
     // get theme name

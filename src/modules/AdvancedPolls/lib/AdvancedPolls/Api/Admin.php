@@ -280,7 +280,7 @@ public function getvotes($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc('advanced_polls', 'user', 'get', array('pollid' => $args['pollid']));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -365,7 +365,7 @@ public function duplicate($args)
         return LogUtil::registerPermissionError();
     } else {
         // The API function is called.
-        $pid = ModUtil::apiFunc('advanced_polls', 'admin', 'create',
+        $pid = ModUtil::apiFunc($this->name, 'admin', 'create',
         array('title'               => $item['title'],
               'urltitle'            => $item['urltitle'],
               'description'         => $item['description'],
@@ -384,7 +384,7 @@ public function duplicate($args)
         if ($pid != false) {
             // Once the poll is created we call the modify function to add
             // the poll options
-            $result = ModUtil::apiFunc('advanced_polls', 'admin', 'update',
+            $result = ModUtil::apiFunc($this->name, 'admin', 'update',
             array('pollid'              => $pid,
                   'title'               => $item['title'],
                   'urltitle'            => $item['urltitle']. $pid,
