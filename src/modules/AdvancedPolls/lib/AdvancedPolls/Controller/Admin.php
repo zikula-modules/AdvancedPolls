@@ -309,13 +309,13 @@ public function view($args)
                                'title' => __('Delete', $dom));
             }
             $options[] = array('url' => ModUtil::url($this->name, 'admin', 'resetvotes', array('pollid' => $item['pollid'])),
-                               'image' => 'undo.png',
+                               'image' => 'editclear.png',
                                'title' => __('Reset votes', $dom));
             $options[] = array('url' => ModUtil::url($this->name, 'admin', 'duplicate', array('pollid' => $item['pollid'])),
                                'image' => 'editcopy.png',
                                'title' => __('Duplicate poll', $dom));
             $options[] = array('url' => ModUtil::url($this->name, 'admin', 'adminstats', array('pollid' => $item['pollid'])),
-                               'image' => 'smallcal.png',
+                               'image' => 'vcalendar.png',
                                'title' => __('Voting statistics', $dom));
         }
         $items[$key]['options'] = $options;

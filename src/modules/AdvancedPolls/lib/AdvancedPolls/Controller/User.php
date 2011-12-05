@@ -144,16 +144,16 @@ public function view($args)
                 // display polls that are currently active
                 if ($isvoteallowed == true) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => 'demo.gif',
+                                       'image' => 'demo.png',
                                        'title' => __('Vote', $dom));
                 } else {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'], 'results' => 1)),
-                                       'image' => 'smallcal.gif',
+                                       'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                 }
 
@@ -163,11 +163,11 @@ public function view($args)
                 // Polls that have not opened yet
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => '14_layer_visible.gif',
+                                       'image' => '14_layer_visible.png',
                                        'title' => __('Preview', $dom)); }
                     if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                         $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                     }
                     $item['options'] = $options;
@@ -176,12 +176,12 @@ public function view($args)
                 // Polls that have closed
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
-                                       'image' => 'smallcal.gif',
+                                       'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
                 if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
-                                       'image' => 'xedit.gif',
+                                       'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
                 }
                 $item['options'] = $options;
