@@ -1,9 +1,9 @@
-<h2><!--[$item.title|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
-<!--[include file="advancedpolls_block_poll_results.htm"]-->
+<h2>{$item.title|pnmodcallhooks|pnvarprephtmldisplay}</h2>
+{include file="advancedpolls_block_poll_results.htm"}
 <ul class="adv_pollresults">
-    <!--[if $votecounts.leadingvotename]-->
-    <li><!--[gt text="Winner: %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"]--></li>
-    <!--[/if]-->
-    <li><!--[gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount domain="module_advanced_polls"]--></li>
-    <li><a href="<!--[pnmodurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid]-->"><!--[gt text="Detailed results" domain="module_advanced_polls"]--></a></li>
+    {if $votecounts.leadingvotename}
+    <li>{gt text="Winner: %s" tag1=$votecounts.leadingvotename|pnvarprephtmldisplay domain="module_advanced_polls"}</li>
+    {/if}
+    <li>{gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount domain="module_advanced_polls"}</li>
+    <li><a href="{modurl modname="advanced_polls" type="user" func="display" pollid=$item.pollid}">{gt text="Detailed results" domain="module_advanced_polls"}</a></li>
 </ul>

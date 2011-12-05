@@ -1,39 +1,39 @@
-<!--[*  $Id$  *]-->
-<!--[if $ispollopen eq 1]-->
-<!--[gt text="Current poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
-<!--[else]-->
-<!--[gt text="Previous poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
-<!--[/if]-->
-<!--[include file="advancedpolls_user_menu.htm"]-->
-<h3><!--[$templatetitle]--></h3>
-<!--[if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang]-->
-<h4><!--[gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay]--></h4>
-<!--[/if]-->
-<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
+{*  $Id$  *}
+{if $ispollopen eq 1}
+{gt text="Current poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle}
+{else}
+{gt text="Previous poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle}
+{/if}
+{include file="advancedpolls_user_menu.htm"}
+<h3>{$templatetitle}</h3>
+{if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang}
+<h4>{gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay}</h4>
+{/if}
+<p>{$item.description|pnmodcallhooks|pnvarprephtmldisplay}</p>
 <table class="z-datatable">
     <tbody>
-        <!--[foreach from=$item.options item=option]-->
-        <!--[if $option.optiontext]-->
-        <tr class="<!--[cycle values="z-odd,z-even"]-->">
-            <td><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></td>
+        {foreach from=$item.options item=option}
+        {if $option.optiontext}
+        <tr class="{cycle values="z-odd,z-even"}">
+            <td>{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</td>
             <td class="adv_value">
-                <!--[if $cssbars eq 1]-->
+                {if $cssbars eq 1}
                 <div class="progress-container">
-                    <div style="width: <!--[$option.percentintscaled]-->px; background-color: <!--[if $option.optioncolour neq '']--><!--[$option.optioncolour]--><!--[else]--><!--[$defaultcolour]--><!--[/if]-->;"></div>
+                    <div style="width: {$option.percentintscaled}px; background-color: {if $option.optioncolour neq ''}{$option.optioncolour}{else}{$defaultcolour}{/if};"></div>
                 </div>
-                <!--[else]-->
-                <!--[pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent]-->
-                <!--[/if]-->
+                {else}
+                {pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent}
+                {/if}
             </td>
-            <td class="z-w15"><!--[gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount]--></td>
-            <td class="z-w10"><!--[$option.percent|formatnumber:2]-->%</td>
+            <td class="z-w15">{gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount}</td>
+            <td class="z-w10">{$option.percent|formatnumber:2}%</td>
         </tr>
-        <!--[/if]-->
-        <!--[/foreach]-->
+        {/if}
+        {/foreach}
     </tbody>
 </table>
 
-<p><!--[gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"]--></p>
+<p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"}</p>
 
-<!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
-<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->
+{modurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl}
+{* {pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl} *}

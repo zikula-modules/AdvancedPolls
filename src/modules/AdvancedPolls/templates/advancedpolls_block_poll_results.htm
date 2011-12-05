@@ -1,10 +1,10 @@
-<!--[if $item.options]-->
+{if $item.options}
 <dl class="adv_voteresults">
-    <!--[foreach from=$item.options key=key item=option]-->
-    <!--[if $option.optiontext neq '']-->
-    <dt><!--[$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay]--></dt>
-    <dd><!--[$votecounts.percentages.$key.percent|pnvarprepfordisplay]-->%</dd>
-    <!--[/if]-->
-    <!--[/foreach]-->
+    {foreach from=$item.options key=key item=option}
+    {if $option.optiontext neq ''}
+    <dt>{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</dt>
+    <dd>{$votecounts.percentages.$key.percent|pnvarprepfordisplay}%</dd>
+    {/if}
+    {/foreach}
 </dl>
-<!--[/if]-->
+{/if}

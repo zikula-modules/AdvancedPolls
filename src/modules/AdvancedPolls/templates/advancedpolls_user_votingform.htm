@@ -1,40 +1,40 @@
-<!--[*  $Id$  *]-->
-<!--[gt text="Voting booth: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle]-->
-<!--[include file="advancedpolls_user_menu.htm"]-->
+{*  $Id$  *}
+{gt text="Voting booth: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle}
+{include file="advancedpolls_user_menu.htm"}
 
-<h3><!--[$templatetitle]--></h3>
-<!--[if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang]-->
-<h4><!--[gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay]--></h4>
-<!--[/if]-->
-<p><!--[$item.description|pnmodcallhooks|pnvarprephtmldisplay]--></p>
-<form class="z-form" id="advanced_polls_admin_modify" action="<!--[pnmodurl modname='advanced_polls' type='user' func='vote']-->" method="post" enctype="application/x-www-form-urlencoded">
+<h3>{$templatetitle}</h3>
+{if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang}
+<h4>{gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay}</h4>
+{/if}
+<p>{$item.description|pnmodcallhooks|pnvarprephtmldisplay}</p>
+<form class="z-form" id="advanced_polls_admin_modify" action="{pnmodurl modname='advanced_polls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
-        <input type="hidden" name="authid" value="<!--[insert name=generateauthkey module="advanced_polls"]-->" />
-        <input type="hidden" name="pollid" value="<!--[$pollid|pnvarprepfordisplay]-->" />
-        <input type="hidden" name="title" value="<!--[$item.title|pnvarprephtmldisplay]-->" />
+        <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
+        <input type="hidden" name="pollid" value="{$pollid|pnvarprepfordisplay}" />
+        <input type="hidden" name="title" value="{$item.title|pnvarprephtmldisplay}" />
         <input type="hidden" name="results" value="1" />
         <fieldset>
-            <legend><!--[gt text="Poll options"]--></legend>
-            <!--[if $polltype eq 0]-->
-            <!--[include file="advancedpolls_user_votingform-singleoptionselect.htm"]-->
-            <!--[else]-->
+            <legend>{gt text="Poll options"}</legend>
+            {if $polltype eq 0}
+            {include file="advancedpolls_user_votingform-singleoptionselect.htm"}
+            {else}
             <input type="hidden" name="multiple" value="1" />
-            <input type="hidden" name="multiplecount" value="<!--[$multiplecount]-->" />
-            <!--[if $polltype eq 1]-->
-            <!--[if $multiplecount eq -1]-->
-            <!--[include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"]-->
-            <!--[else]-->
-            <!--[include file="advancedpolls_user_votingform-multipleselect.htm"]-->
-            <!--[/if]-->
-            <!--[else]-->
-            <!--[include file="advancedpolls_user_votingform-rankedmultipleselect.htm"]-->
-            <!--[/if]-->
-            <!--[/if]-->
+            <input type="hidden" name="multiplecount" value="{$multiplecount}" />
+            {if $polltype eq 1}
+            {if $multiplecount eq -1}
+            {include file="advancedpolls_user_votingform-unlimitedmultipleselect.htm"}
+            {else}
+            {include file="advancedpolls_user_votingform-multipleselect.htm"}
+            {/if}
+            {else}
+            {include file="advancedpolls_user_votingform-rankedmultipleselect.htm"}
+            {/if}
+            {/if}
         </fieldset>
         <div class="z-formbuttons">
-            <input name="submit" type="submit" value="<!--[gt text="Vote"]-->" />
+            <input name="submit" type="submit" value="{gt text="Vote"}" />
         </div>
     </div>
 </form>
-<!--[pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl]-->
-<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl]-->
+{pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl}
+{pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl}
