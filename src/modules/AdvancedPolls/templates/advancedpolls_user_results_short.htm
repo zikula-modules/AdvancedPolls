@@ -1,18 +1,18 @@
 {* $Id$ *}
 <h3>
     {if $ispollopen eq 1}
-    {gt text="Current poll" domain="module_advanced_polls"}: {$item.title|pnvarprepfordisplay}
+    {gt text="Current poll" domain="module_advanced_polls"}: {$item.title|safetext}
     {else}
-    {gt text="Previous poll" domain="module_advanced_polls"}: {$item.title|pnvarprepfordisplay}
+    {gt text="Previous poll" domain="module_advanced_polls"}: {$item.title|safeteext}
     {/if}
 </h3>
-<p>{$item.description|pnvarprephtmldisplay}</p>
+<p>{$item.description|safethml}</p>
 <table class="z-datatable">
     <tbody>
         {foreach from=$item.options item=option}
         {if $option.optiontext}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td>{$option.optiontext|pnvarprephtmldisplay}</td>
+            <td>{$option.optiontext|safehtml}</td>
             <td class="adv_value">
                 {if $cssbars eq 1}
                 <div class="progress-container">
