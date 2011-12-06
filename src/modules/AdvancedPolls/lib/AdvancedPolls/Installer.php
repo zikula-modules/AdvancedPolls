@@ -20,7 +20,6 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
  */
 	public function install()
 	{
-    	$dom = ZLanguage::getModuleDomain('advanced_polls');
 
     	// create tables
     	$tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
@@ -32,7 +31,7 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
     	// create our default category
     	if (!$this->createdefaultcategory()) {
-        	return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+        	return LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
     	}
 
     	// Set up an initial value for each module variable
@@ -142,7 +141,11 @@ public function uninstall()
     }
 
     // Delete any module variables
-    pnModDelVar('advanced_polls');
+    $this->delVar('advanced_polls');
+    
+    // remove category registry entries
+    ModUtil::dbInfoLoad('Categories');
+    DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
 
     // Deletion successful
     return true;
@@ -155,12 +158,7 @@ public function uninstall()
  */
 public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
-
-    // load necessary classes
-    Loader::loadClass('CategoryUtil');
-    Loader::loadClassFromModule('Categories', 'Category');
-    Loader::loadClassFromModule('Categories', 'CategoryRegistry');
+    // TODO $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     // get the language file
     $lang = ZLanguage::getLanguageCode();
@@ -171,11 +169,11 @@ public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 
     if (!$apCat) {
         // create placeholder for all our migrated categories
-        $cat = new PNCategory ();
+        $cat = new Categories_DBObject_Category();
         $cat->setDataField('parent_id', $rootcat['id']);
         $cat->setDataField('name', 'Advanced Polls');
-        $cat->setDataField('display_name', array($lang => __('Advanced Polls', $dom)));
-        $cat->setDataField('display_desc', array($lang => __('Polls', $dom)));
+        $cat->setDataField('display_name', array($lang => $this->__('Advanced Polls')));
+        $cat->setDataField('display_desc', array($lang => $this->__('Polls')));
         if (!$cat->validate('admin')) {
             return false;
         }
@@ -187,8 +185,8 @@ public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
     $rootcat = CategoryUtil::getCategoryByPath($regpath);
     if ($rootcat) {
         // create an entry in the categories registry
-        $registry = new PNCategoryRegistry();
-        $registry->setDataField('modname', 'advanced_polls');
+        $registry = new Categories_DBObject_Registry();
+        $registry->setDataField('modname', 'AdvancedPolls');
         $registry->setDataField('table', 'advanced_polls_desc');
         $registry->setDataField('property', 'Main');
         $registry->setDataField('category_id', $rootcat['id']);

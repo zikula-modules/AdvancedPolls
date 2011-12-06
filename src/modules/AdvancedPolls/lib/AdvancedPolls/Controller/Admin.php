@@ -47,7 +47,7 @@ function newitem($args)
        /* if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
             pn_exit (__f('Error! Unable to load class [%s]', array('s' => 'CategoryRegistryUtil'), $dom));
         }*/
-        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories ('advanced_polls', 'advanced_polls_desc');
+        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories ($this->name, 'advanced_polls_desc');
 
         $this->view->assign('catregistry', $catregistry);
     }
@@ -131,7 +131,7 @@ public function modify($args)
         if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
             pn_exit (__f('Error! Unable to load class [%s]', array('s' => 'CategoryRegistryUtil'), $dom));
         }
-        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('advanced_polls', 'advanced_polls_desc');
+        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'advanced_polls_desc');
 
         $this->view->assign('catregistry', $catregistry);
     }

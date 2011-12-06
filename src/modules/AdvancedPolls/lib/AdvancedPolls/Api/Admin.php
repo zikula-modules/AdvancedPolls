@@ -422,7 +422,14 @@ public function getlinks()
 {
 
     $links = array();
-
+    
+    
+    if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        $links[] = array('url'   => ModUtil::url($this->name, 'user', 'main'),
+                'text'  => $this->__('Frontend'),
+                'title' => $this->__('Switch to user area.'),
+                'class' => 'z-icon-es-home');
+    }
     if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
         $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'view'),
                          'text' => $this->__('View Polls'));

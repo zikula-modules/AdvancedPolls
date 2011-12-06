@@ -708,4 +708,28 @@ public function decodeurl($args)
 
     return true;
 }
+
+/**
+ * Get available admin panel links
+ *
+ * @return array array of admin links
+ */
+public function getlinks()
+{
+
+    $links = array();
+    
+    if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url'   => ModUtil::url($this->name, 'admin', 'main'),
+                'text'  => $this->__('Backend'),
+                'title' => $this->__('Switch to administration area.'),
+                'class' => 'z-icon-es-options');
+        }  
+    if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
+        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'user', 'view'),
+                         'text' => $this->__('View Polls'));
+    } 
+
+    return $links;
+}
 }
