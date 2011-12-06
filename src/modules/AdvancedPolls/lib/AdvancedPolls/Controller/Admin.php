@@ -124,7 +124,7 @@ public function modify($args)
     $modvars = ModUtil::getVar('advanced_polls');
 
     // get vote counts
-    $votecount = ModUtil::apiFunc('AdvancedPolls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecount = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
 
     if ($modvars['enablecategorization']) {
         // load the category registry util
@@ -582,7 +582,7 @@ public function duplicate()
 
     // Confirm authorisation code.
     if (!SecurityUtil::generateCsrfToken()) {
-        return LogUtil::registerPermissionError (ModUtil::url('advanced_polls', 'admin', 'view'));
+        return LogUtil::registerPermissionError (ModUtil::url($this->name, 'admin', 'view'));
     }
 
     // The API function is called
