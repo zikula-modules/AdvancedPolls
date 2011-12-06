@@ -22,7 +22,7 @@ function advancedpolls_vote()
     Element.update('advancedpollsvoteinfo', recordingvote);
     var pars = "module=advancedpolls&func=vote&" + Form.serialize('advancedpollsvoteform');
     var myAjax = new Ajax.Request(
-    document.location.pnbaseURL+'ajax.php',
+    document.location.pnbaseURL+'Ajax.php',
     {
         method: 'post',
         parameters: pars,
