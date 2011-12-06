@@ -132,8 +132,8 @@
                 <div class="z-formrow">
                     <label for="advancedpolls_option{$rowcount}">{gt text="Poll option"} {$rowcount}</label>
                     <div>
-                        <input id="advancedpolls_option{$rowcount}" type="text" name="poll[options][{$rowcount}][optiontext]" size="50" maxlength="255" value="{$polloptions.$arraycount.optiontext|pnvarprepfordisplay}" />
-                        <input id="advancedpolls_option{$rowcount}color" type="text" name="poll[options][{$rowcount}][optioncolour]" size="7" maxlength="7" value="{$polloptions.$arraycount.optioncolour|pnvarprepfordisplay}" />
+                        <input id="advancedpolls_option{$rowcount}" type="text" name="poll[options][{$rowcount}][optiontext]" size="50" maxlength="255" value="{$polloptions.$arraycount.optiontext|safetext}" />
+                        <input id="advancedpolls_option{$rowcount}color" type="text" name="poll[options][{$rowcount}][optioncolour]" size="7" maxlength="7" value="{$polloptions.$arraycount.optioncolour|safetext}" />
                         <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['advancedpolls_option{$rowcount}color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
                     </div>
                 </div>
@@ -146,10 +146,10 @@
             <fieldset>
                 <legend>{gt text="Meta data"}</legend>
                 <ul>
-                    {pnusergetvar name=uname uid=$cr_uid assign=username}
+                    {usergetvar name=uname uid=$cr_uid assign=username}
                     <li>{gt text="Created by %s" tag1=$username}</li>
                     <li>{gt text="Created on %s" tag1=$cr_date|pndate_format}</li>
-                    {pnusergetvar name=uname uid=$lu_uid assign=username}
+                    {usergetvar name=uname uid=$lu_uid assign=username}
                     <li>{gt text="Last updated by %s" tag1=$username}</li>
                     <li>{gt text="Updated on %s" tag1=$lu_date|pndate_format}</li>
                 </ul>
