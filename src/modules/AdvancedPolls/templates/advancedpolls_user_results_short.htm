@@ -6,13 +6,13 @@
     {gt text="Previous poll" domain="module_advanced_polls"}: {$item.title|pnvarprepfordisplay}
     {/if}
 </h3>
-<p>{$item.description|pnmodcallhooks|pnvarprephtmldisplay}</p>
+<p>{$item.description|pnvarprephtmldisplay}</p>
 <table class="z-datatable">
     <tbody>
         {foreach from=$item.options item=option}
         {if $option.optiontext}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td>{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</td>
+            <td>{$option.optiontext|pnvarprephtmldisplay}</td>
             <td class="adv_value">
                 {if $cssbars eq 1}
                 <div class="progress-container">

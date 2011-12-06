@@ -6,7 +6,7 @@
 {if $enablecategorization && $item.__CATEGORIES__.Main.display_name.$lang}
 <h4>{gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|pnvarprepfordisplay}</h4>
 {/if}
-<p>{$item.description|pnmodcallhooks|safehtml}</p>
+<p>{$item.description|safehtml}</p>
 <form class="z-form" id="advanced_polls_admin_modify" action="{modurl modname='advancedpolls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="authid" value="{insert name=generateauthkey module="advancedpolls"}" />
@@ -36,5 +36,5 @@
         </div>
     </div>
 </form>
-{pnmodurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl}
-{pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl}
+{modurl modname='advanced_polls' func='display' pollid=$pollid assign=returnurl}
+{* {pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl} *}
