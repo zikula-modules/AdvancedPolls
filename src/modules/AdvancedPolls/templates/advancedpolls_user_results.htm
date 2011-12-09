@@ -22,7 +22,7 @@
                     <div style="width: {$option.percentintscaled}px; background-color: {if $option.optioncolour neq ''}{$option.optioncolour}{else}{$defaultcolour}{/if};"></div>
                 </div>
                 {else}
-                {img modname="advancedpolls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent}
+                {pnimg modname="advancedpolls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent}
                 {/if}
             </td>
             <td class="z-w15">{gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount}</td>

@@ -453,7 +453,7 @@ public function pollvotecount($args)
         }
         if (($votecountarray[$i] == $leadingvotecount) and ($item['tiebreakalg']) > 0) {
             if ($item['tiebreakalg'] == 1) {
-                $leadingvoteid = ModUtil::apiFunc('advanced_polls', 'user', 'timecountback',
+                $leadingvoteid = ModUtil::apiFunc($this->name, 'user', 'timecountback',
                 array('pollid'  => $args['pollid'],
                       'voteid1' => $leadingvoteid,
                       'voteid2' => $i));

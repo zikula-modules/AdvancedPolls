@@ -222,7 +222,7 @@ public function display($args)
     }
 
     // get module vars for later use
-    $modvars = ModUtil::getVar('advanced_polls');
+    $modvars = ModUtil::getVar($this->name);
 
     // Get the poll
     if (isset($pollid) && is_numeric($pollid)) {
@@ -283,7 +283,7 @@ public function display($args)
             // Output results graph if poll has closed/ is not open yet or
             // if results have been spefifically requested
             //----------------------------------------------------------------------------
-            $scalingfactor = ModUtil::getVar('advanced_polls', 'scalingfactor');
+            $scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
             $this->view->assign('ispollopen', $ispollopen);
             $this->view->assign('votecount', $votecount);
 

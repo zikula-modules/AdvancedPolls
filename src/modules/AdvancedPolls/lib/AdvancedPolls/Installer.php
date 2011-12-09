@@ -35,13 +35,13 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
     	}
 
     	// Set up an initial value for each module variable
-    	pnModSetVar('advanced_polls', 'usereversedns', 0);
-    	pnModSetVar('advanced_polls', 'scalingfactor', 4);
-    	pnModSetVar('advanced_polls', 'cssbars', 1);
-    	pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-    	pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
-    	pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
-    	pnModSetVar('advanced_polls', 'enablecategorization', true);
+    	ModUtil::setVar($this->name, 'usereversedns', 0);
+    	ModUtil::setVar($this->name, 'scalingfactor', 4);
+    	ModUtil::setVar($this->name, 'cssbars', 1);
+    	ModUtil::setVar($this->name, 'adminitemsperpage', 25);
+    	ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
+    	ModUtil::setVar($this->name, 'defaultoptioncount', '12');
+    	ModUtil::setVar($this->name, 'enablecategorization', true);
 
     	// Initialisation successful
     	return true;
@@ -68,30 +68,30 @@ public function upgrade($oldversion)
     switch($oldversion) {
         case '1.0':
             // Version 1.0 Didn't have the Module variables
-            pnModSetVar('advanced_polls', 'admindateformat', 'r');
-            pnModSetVar('advanced_polls', 'userdateformat', 'r');
-            pnModSetVar('advanced_polls', 'usereversedns', 0);
-            pnModSetVar('advanced_polls', 'scalingfactor', 4);
+            ModUtil::setVar($this->name, 'admindateformat', 'r');
+            ModUtil::setVar($this->name, 'userdateformat', 'r');
+            ModUtil::setVar($this->name, 'usereversedns', 0);
+            ModUtil::setVar($this->name, 'scalingfactor', 4);
             return advanced_polls_upgrade('1.1');
         case '1.1':
             // Add additional module variables in this version
-            pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-            pnModSetVar('advanced_polls', 'useritemsperpage', 25);
-            pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
-            pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
+            ModUtil::setVar($this->name, 'adminitemsperpage', 25);
+            ModUtil::setVar($this->name, 'useritemsperpage', 25);
+            ModUtil::setVar($this->name, 'defaultcolour', '#000000');
+            ModUtil::setVar($this->name, 'defaultoptioncount', '12');
             return advanced_polls_upgrade('1.5');
         case '1.5':
             // all changes in this release are covered by the table change
             return advanced_polls_upgrade('1.51');
         case '1.51':
             // setup categorisation
-            pnModSetVar('advanced_polls', 'enablecategorization', true);
-            pnModSetVar('advanced_polls', 'cssbars', 1);
-            pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
-            pnModDelVar('advanced_polls', 'admindateformat');
-            pnModDelVar('advanced_polls', 'userdateformat');
-            pnModDelVar('advanced_polls', 'useritemsperpage');
-            pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
+            ModUtil::setVar($this->name, 'enablecategorization', true);
+            ModUtil::setVar($this->name, 'cssbars', 1);
+            ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
+            ModUtil::delVar($this->name, 'admindateformat');
+            ModUtil::delVar($this->name, 'userdateformat');
+            ModUtil::delVar($this->name, 'useritemsperpage');
+            ModUtil::dbInfoLoad($this->name, 'advanced_polls', true);
 
             //change table: remove votingmethod column
             if (!DBUtil::changeTable('advanced_polls_desc')) {
@@ -115,6 +115,9 @@ public function upgrade($oldversion)
             return $this->upgrade('2.0.0');
         case '2.0.0':
             // future upgrade routines
+            
+        	$this->delVars();
+        	
             break;
     }
 
@@ -141,7 +144,7 @@ public function uninstall()
     }
 
     // Delete any module variables
-    $this->delVar('advanced_polls');
+    $this->delVar($this->name);
     
     // remove category registry entries
     ModUtil::dbInfoLoad('Categories');
