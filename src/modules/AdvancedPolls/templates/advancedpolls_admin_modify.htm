@@ -26,9 +26,9 @@
                     <label>{gt text="Category"}</label>
                     {nocache}
                     {foreach from=$catregistry key='property' item='category'}
-                    {array_field array=$item.__CATEGORIES__ field=$property assign='catExists'}
+                    {array_field_isset array=$item.__CATEGORIES__ field=$property assign='catExists'}
                     {if $catExists}
-                    {array_field array=$item.__CATEGORIES__.$property field="id" returnValue=1 assign='selectedValue'}
+                    {array_field_isset array=$item.__CATEGORIES__.$property field="id" returnValue=1 assign='selectedValue'}
                     {else}
                     {assign var="selectedValue" value="0"}
                     {/if}
@@ -134,7 +134,7 @@
                     <div>
                         <input id="advancedpolls_option{$rowcount}" type="text" name="poll[options][{$rowcount}][optiontext]" size="50" maxlength="255" value="{$polloptions.$arraycount.optiontext|safetext}" />
                         <input id="advancedpolls_option{$rowcount}color" type="text" name="poll[options][{$rowcount}][optioncolour]" size="7" maxlength="7" value="{$polloptions.$arraycount.optioncolour|safetext}" />
-                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['advancedpolls_option{$rowcount}color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+                        <a href="javascript:TCP.popup(document.forms['advancedpolls_admin_modify'].elements['advancedpolls_option{$rowcount}color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/AdvancedPolls/images/sel.gif" /></a>
                     </div>
                 </div>
                 {/section}
@@ -156,8 +156,8 @@
             </fieldset>
             {* {modcallhooks hookobject=item hookaction=modify hookid=$pollid module=Polls} *}
             <div class="z-formbuttons">
-                {button src='button_ok.png' set='icons/small' __alt="Update" __title="Update"}
-                <a href="{modurl modname=advancedpolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+                {button src='button_ok.png' set='icons/extraextrasmall' __alt="Update" __title="Update"}
+                <a href="{modurl modname=advancedpolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extraextrasmall'   __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>

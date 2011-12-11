@@ -45,15 +45,15 @@
                     <label for="advancedpolls_defaultcolor">{gt text="Default colour"}</label>
                     <div>
                         <input id="advancedpolls_defaultcolor" type="text" name="config[defaultcolour]" size="7" maxlength="7" value="{$defaultcolour|safetext}" />
-                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/AdvancedPolls/images/sel.gif" /></a>
                     </div>
                 </div>
             </fieldset>
 
             {* {modcallhooks hookobject=module hookaction=modifyconfig module=advanced_polls} *}
             <div class="z-formbuttons">
-                {button src='button_ok.png' set='icons/small' __alt="Update Configuration" __title="Update Configuration"}
-                <a href="{modurl modname=advancedpolls type=admin func=view}">{pnimg modname='core' src='button_cancel.png' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt="Update Configuration" __title="Update Configuration"}
+                <a href="{modurl modname=advancedpolls type=admin func=view}">{pnimg modname='core' src='button_cancel.png' set='icons/extrasmall'   __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>
