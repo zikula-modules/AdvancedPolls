@@ -22,7 +22,7 @@ function advancedpolls_vote()
     Element.update('advancedpollsvoteinfo', recordingvote);
     var pars = "module=advancedpolls&func=vote&" + Form.serialize('advancedpollsvoteform');
     var myAjax = new Ajax.Request(
-    document.location.pnbaseURL+'Ajax.php',
+    document.location.pnbaseURL+'ajax.php',
     {
         method: 'post',
         parameters: pars,
@@ -39,10 +39,10 @@ function advancedpolls_vote()
 */
 function advancedpolls_vote_response(req)
 {
-    if(req.status != 200 ) {
+   /* if(req.status != 200 ) {
         pnshowajaxerror(req.responseText);
         return;
-    }
+    }*/
     var json = pndejsonize(req.responseText);
     Element.update('advancedpollblockcontent', json.result);
 }
