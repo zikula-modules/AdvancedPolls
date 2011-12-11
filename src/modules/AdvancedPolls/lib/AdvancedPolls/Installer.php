@@ -114,9 +114,30 @@ public function upgrade($oldversion)
             }
             return $this->upgrade('2.0.0');
         case '2.0.0':
-            // future upgrade routines
-            
+            // get the values of module vars            
+    		$usereveredns = ModUtil::getVar($this->name, 'usereversedns');
+    		$scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
+    		$cssbars = ModUtil::getVar($this->name, 'cssbars');
+    		$adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
+    		$defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
+    		$defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
+    		$enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
+                       
         	$this->delVars();
+        	
+        	// Set up an initial value for each module variable
+
+    		ModUtil::setVar($this->name, 'usereversedns', $usereveredns);
+    		ModUtil::setVar($this->name, 'scalingfactor', $scalingfactor);
+    		ModUtil::setVar($this->name, 'cssbars', $cssbars);
+    		ModUtil::setVar($this->name, 'adminitemsperpage', $adminitemsperpage);
+    		ModUtil::setVar($this->name, 'defaultcolour', $defaultcolour);
+    		ModUtil::setVar($this->name, 'defaultoptioncount', $defaultoptioncount);
+    		ModUtil::setVar($this->name, 'enablecategorization', $enablecategorization);
+        	
+        	return $this->upgrade('2.0.1');
+        case '2.0.1':
+        	// future upgrade routines
         	
             break;
     }
