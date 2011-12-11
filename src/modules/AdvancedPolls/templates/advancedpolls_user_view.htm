@@ -150,7 +150,7 @@
             <td>
                 {assign var="options" value=$poll.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|pnvarprepfordisplay}">{pnimg modname='core' set='icons/extraextrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>
