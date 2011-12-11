@@ -1,7 +1,7 @@
 {*  $Id$  *}
 {include file="advancedpolls_admin_menu.htm"}
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
-{pnajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
+{ajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 {gt text="Create poll" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{pnimg modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>
@@ -116,8 +116,8 @@
             </fieldset>
             {* {pnmodcallhooks hookobject=item hookaction=new module=advanced_polls} *}
             <div class="z-formbuttons">
-                {button src='button_ok.png' set='icons/small' __alt="Create" __title="Create"}
-                <a href="{pnmodurl modname=advanced_polls type=admin func=view}">{pnimg modname='core' src='button_cancel.png' set='icons/small' __alt="Cancel" __title="Cancel"}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt="Create" __title="Create"}
+                <a href="{modurl modname=advanced_polls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>

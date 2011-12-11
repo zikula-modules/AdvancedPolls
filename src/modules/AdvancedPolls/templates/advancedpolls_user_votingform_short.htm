@@ -1,7 +1,7 @@
 {* $Id$ *}
 
-<h3>{$item.title|pnmodcallhooks|safehtml}</h3>
-<p>{$item.description|pnmodcallhooks|safehtml}</p>
+<h3>{$item.title|safehtml}</h3>
+<p>{$item.description|safehtml}</p>
 <form class="z-form" id="advanced_polls_admin_modify" action="{modurl modname='advancedpolls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="authid" value="{insert name=generateauthkey module="advancedpolls"}" />
@@ -27,7 +27,7 @@
             {/if}
         </fieldset>
         <div class="z-formbuttons">
-            <input name="submit" type="submit" value="{gt text="Vote" domain="module_advanced_polls"}" />
+            <input name="submit" type="submit" value="{gt text="Vote" domain="module_advancedpolls"}" />
         </div>
     </div>
 </form>

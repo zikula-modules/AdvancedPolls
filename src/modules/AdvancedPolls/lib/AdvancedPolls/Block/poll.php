@@ -8,6 +8,7 @@
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
+
 class AdvancedPolls_Block_Poll extends Zikula_Controller_AbstractBlock {
 /**
  * Initialise block
@@ -200,7 +201,7 @@ public function modify($blockinfo)
     }
 
     // get a full list of available polls
-    $items = ModUtil::apiFunc('advanced_polls', 'user', 'getall');
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {

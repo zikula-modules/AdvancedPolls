@@ -9,7 +9,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
-class AdvacedPolls_Api_Ajax extends Zikula_AbstractApi {
+class AdvancedPolls_Controller_Ajax extends Zikula_Controller_AbstractAjax {
 
 /**
  * Log a vote and display the results form
@@ -33,8 +33,8 @@ public function vote()
         AjaxUtil::error(__('Error! No authorization to access this module.', $dom));
     }
 
-    if (!SecurityUtil::confirmAuthKey()) {
-        AjaxUtil::error(__('Invalid \'Authkey\': This probably means that you pressed the \'Back\' button, or that the page \'Authkey\' expired. Please refresh the page and try again.', $dom));
+    if (!SecurityUtil::generateCsrfToken()) {
+        AjaxUtil::error(__('Invalid \'CsrfToken\': This probably means that you pressed the \'Back\' button, or that the page \'Authkey\' expired. Please refresh the page and try again.', $dom));
     }
 
     // call api function to establish if poll is currently open
@@ -115,8 +115,8 @@ public function vote()
     $votecounts['percentages'] = $percentages;
 
     // Create output object
-    $renderer = pnRender::getInstance('advancedpolls', false);
-
+    $renderer = pnRender::getInstance($this->name, false);
+	
     // assign the item to template
     $renderer->assign('item', $item);
     $renderer->assign('votecounts', $votecounts);

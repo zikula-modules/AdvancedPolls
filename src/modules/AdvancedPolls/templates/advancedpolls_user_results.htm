@@ -1,8 +1,8 @@
 {*  $Id$  *}
 {if $ispollopen eq 1}
-{gt text="Current poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle}
+{gt text="Current poll: %s" tag1=$item.title|safetext assign=templatetitle}
 {else}
-{gt text="Previous poll: %s" tag1=$item.title|pnvarprepfordisplay assign=templatetitle}
+{gt text="Previous poll: %s" tag1=$item.title|safetext assign=templatetitle}
 {/if}
 {include file="advancedpolls_user_menu.htm"}
 <h3>{$templatetitle}</h3>
@@ -15,14 +15,14 @@
         {foreach from=$item.options item=option}
         {if $option.optiontext}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td>{$option.optiontext|pnvarprephtmldisplay}</td>
+            <td>{$option.optiontext|safetext}</td>
             <td class="adv_value">
                 {if $cssbars eq 1}
                 <div class="progress-container">
                     <div style="width: {$option.percentintscaled}px; background-color: {if $option.optioncolour neq ''}{$option.optioncolour}{else}{$defaultcolour}{/if};"></div>
                 </div>
                 {else}
-                {pnimg modname="advanced_polls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent}
+                {pnimg modname="advancedpolls" src="bar.png" height="16" width=$option.percentintscaled+1 alt=$option.percent}
                 {/if}
             </td>
             <td class="z-w15">{gt text="%s vote" plural="%s votes" count=$option.votecount tag1=$option.votecount}</td>
