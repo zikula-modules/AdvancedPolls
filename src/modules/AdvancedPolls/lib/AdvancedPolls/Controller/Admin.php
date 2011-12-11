@@ -505,7 +505,7 @@ public function adminstats()
           'sortorder' => $sortorder,
           'sortby' => $sortby,
           'startnum' => $startnum,
-          'numitems' => ModUtil::getVar('advanced_polls', 'adminitemsperpage')));
+          'numitems' => ModUtil::getVar($this->name, 'adminitemsperpage')));
 
     // get all votes for this poll from api
     $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
@@ -520,7 +520,7 @@ public function adminstats()
 
     if ($votes == true ) {
         foreach ($votes as $key => $vote) {
-            if (ModUtil::getVar('advanced_polls', 'usereversedns')) {
+            if (ModUtil::getVar($this->name, 'usereversedns')) {
                 $host = gethostbyaddr($vote['ip']) . ' - ' . $vote['ip'];
             } else {
                 $host = $vote['ip'];
