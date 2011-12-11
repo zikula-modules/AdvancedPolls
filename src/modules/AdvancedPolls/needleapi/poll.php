@@ -33,10 +33,10 @@ function advanced_polls_needleapi_poll($args)
         if (!isset($cache[$nid])) {
             // not in cache array
 
-            $obj = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $nid));
+            $obj = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $nid));
 
             if ($obj != false) {
-                $url   = DataUtil::formatForDisplay(pnModURL('advanced_polls', 'user', 'display', array('pollid' => $nid)));
+                $url   = DataUtil::formatForDisplay(ModUtil::url('advanced_polls', 'user', 'display', array('pollid' => $nid)));
                 $title = DataUtil::formatForDisplay($obj['title']);
                 $cache[$nid] = '<a href="' . $url . '" title="' . $title . '">' . $title . '</a>';
             } else {

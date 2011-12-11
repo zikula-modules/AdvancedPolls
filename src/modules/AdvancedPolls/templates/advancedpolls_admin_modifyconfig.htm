@@ -3,11 +3,11 @@
 {gt text="Settings" assign=templatetitle}
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{pnimg modname='core' src='configure.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" id="advanced_polls_admin_modifyconfig" action="{modurl modname=advancedpolls type=admin func=updateconfig}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
+            <input type="hidden" name="authid" value="{insert name=csrftoken module="advanced_polls"}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
@@ -24,7 +24,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_adminitemsperpage">{gt text="Items per page in admin interface"}</label>
-                    <input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="{$adminitemsperpage|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_adminitemsperpage" type="text" name="config[adminitemsperpage]" size="3" value="{$adminitemsperpage|safetext}" />
                 </div>
             </fieldset>
             <fieldset>
@@ -35,25 +35,25 @@
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_scalingfactor">{gt text="Scaling factor for poll results bars"}</label>
-                    <input id="advancedpolls_scalingfactor" type="text" name="config[scalingfactor]" size="3" value="{$scalingfactor|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_scalingfactor" type="text" name="config[scalingfactor]" size="3" value="{$scalingfactor|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_defaultoptioncount">{gt text="Default number of options in a poll"}</label>
-                    <input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="{$defaultoptioncount|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_defaultoptioncount" type="text" name="config[defaultoptioncount]" size="3" value="{$defaultoptioncount|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_defaultcolor">{gt text="Default colour"}</label>
                     <div>
-                        <input id="advancedpolls_defaultcolor" type="text" name="config[defaultcolour]" size="7" maxlength="7" value="{$defaultcolour|pnvarprepfordisplay}" />
-                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+                        <input id="advancedpolls_defaultcolor" type="text" name="config[defaultcolour]" size="7" maxlength="7" value="{$defaultcolour|safetext}" />
+                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modifyconfig'].elements['defaultcolour'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/AdvancedPolls/images/sel.gif" /></a>
                     </div>
                 </div>
             </fieldset>
 
-            {pnmodcallhooks hookobject=module hookaction=modifyconfig module=advanced_polls}
+            {* {modcallhooks hookobject=module hookaction=modifyconfig module=advanced_polls} *}
             <div class="z-formbuttons">
-                {pnbutton src='button_ok.gif' set='icons/small' __alt="Update Configuration" __title="Update Configuration"}
-                <a href="{pnmodurl modname=advanced_polls type=admin func=view}">{pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt="Update Configuration" __title="Update Configuration"}
+                <a href="{modurl modname=advancedpolls type=admin func=view}">{pnimg modname='core' src='button_cancel.png' set='icons/extrasmall'   __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>

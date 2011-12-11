@@ -1,34 +1,34 @@
 {*  $Id$  *}
 {include file="advancedpolls_admin_menu.htm"}
 <script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
-{pnajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
+{ajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 {gt text="Edit Poll" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{pnimg modname='core' src='edit.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='edit.png' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" id="advanced_polls_admin_modify" action="{modurl modname="advancedpolls" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=generateauthkey module="advanced_polls"}" />
-            <input type="hidden" name="poll[pollid]" value="{$pollid|pnvarprepfordisplay}" />
+            <input type="hidden" name="authid" value="{insert name=csrftoken module="advancedpolls"}" />
+            <input type="hidden" name="poll[pollid]" value="{$pollid|safetext}" />
             <fieldset>
                 <legend>{gt text="Basic Information"}</legend>
                 <div class="z-formrow">
                     <label for="advancedpolls_title">{gt text="Name of poll"}</label>
-                    <input id="advancedpolls_title" name="poll[title]" type="text" size="50" maxlength="100" value="{$title|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_title" name="poll[title]" type="text" size="50" maxlength="100" value="{$title|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_urltitle">{gt text="PermaLink URL title"}</label>
-                    <input id="advancedpolls_urltitle" name="poll[urltitle]" type="text" size="50" maxlength="120" value="{$urltitle|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_urltitle" name="poll[urltitle]" type="text" size="50" maxlength="120" value="{$urltitle|safetext}" />
                     <em class="z-formnote z-sub">{gt text="(Blank = auto-generate)"}</em>
                 </div>
                 {if $enablecategorization}
                 <div class="z-formrow">
                     <label>{gt text="Category"}</label>
                     {nocache}
-                    {foreach from=$catregistry key=property item=category}
-                    {array_field_isset array=$__CATEGORIES__ field=$property assign="catExists"}
+                    {foreach from=$catregistry key='property' item='category'}
+                    {array_field_isset array=$item.__CATEGORIES__ field=$property assign='catExists'}
                     {if $catExists}
-                    {array_field_isset array=$__CATEGORIES__.$property field="id" returnValue=1 assign="selectedValue"}
+                    {array_field_isset array=$item.__CATEGORIES__.$property field="id" returnValue=1 assign='selectedValue'}
                     {else}
                     {assign var="selectedValue" value="0"}
                     {/if}
@@ -39,7 +39,7 @@
                 {/if}
                 <div class="z-formrow">
                     <label for="advancedpolls_description">{gt text="Description"}</label>
-                    <textarea id="advancedpolls_description" name="poll[description]" rows="10" cols="50">{$description|pnvarprephtmldisplay}</textarea>
+                    <textarea id="advancedpolls_description" name="poll[description]" rows="10" cols="50">{$description|safehtml}</textarea>
                 </div>
                 <div class="z-formrow">
                     <label for="advancedpolls_language">{gt text="Language"}</label>
@@ -84,12 +84,12 @@
                     <p class="z-formnote z-informationmsg">{gt text="The following options are only relevant if a recurring poll is selected."}</p>
                     <div class="z-formrow">
                         <label for="advancedpolls_recurringoffset">{gt text="Recurring offset"}</label>
-                        <input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="{$recurringoffset|pnvarprepfordisplay}" />
+                        <input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="{$recurringoffset|safetext}" />
                         <em class="z-sub z-formnote">{gt text="Number of hours after the close date the poll reopens."}</em>
                     </div>
                     <div class="z-formrow">
                         <label for="advancedpolls_recurringinterval">{gt text="Recurrence interval"}</label>
-                        <input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="{$recurringinterval|pnvarprepfordisplay}" />
+                        <input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="{$recurringinterval|safetext}" />
                         <em class="z-sub z-formnote">{gt text="Number of days the poll will recur."}</em>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <p class="z-formnote z-informationmsg">{gt text="The following option only relevant if a multiple selection poll is selected."}</p>
                     <div class="z-formrow">
                         <label for="advancedpolls_multipleselectcount">{gt text="You may select "}</label>
-                        <input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="{$multipleselectcount|pnvarprepfordisplay}" />
+                        <input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="{$multipleselectcount|safetext}" />
                         <em class="z-formnote z-sub">{gt text="(-1 for Unlimited selections)"}</em>
                     </div>
                 </div>
@@ -132,32 +132,32 @@
                 <div class="z-formrow">
                     <label for="advancedpolls_option{$rowcount}">{gt text="Poll option"} {$rowcount}</label>
                     <div>
-                        <input id="advancedpolls_option{$rowcount}" type="text" name="poll[options][{$rowcount}][optiontext]" size="50" maxlength="255" value="{$polloptions.$arraycount.optiontext|pnvarprepfordisplay}" />
-                        <input id="advancedpolls_option{$rowcount}color" type="text" name="poll[options][{$rowcount}][optioncolour]" size="7" maxlength="7" value="{$polloptions.$arraycount.optioncolour|pnvarprepfordisplay}" />
-                        <a href="javascript:TCP.popup(document.forms['advanced_polls_admin_modify'].elements['advancedpolls_option{$rowcount}color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/advanced_polls/pnimages/sel.gif" /></a>
+                        <input id="advancedpolls_option{$rowcount}" type="text" name="poll[options][{$rowcount}][optiontext]" size="50" maxlength="255" value="{$polloptions.$arraycount.optiontext|safetext}" />
+                        <input id="advancedpolls_option{$rowcount}color" type="text" name="poll[options][{$rowcount}][optioncolour]" size="7" maxlength="7" value="{$polloptions.$arraycount.optioncolour|safetext}" />
+                        <a href="javascript:TCP.popup(document.forms['advancedpolls_admin_modify'].elements['advancedpolls_option{$rowcount}color'])"><img width="15" height="13" alt="Click Here to pick the color" src="modules/AdvancedPolls/images/sel.gif" /></a>
                     </div>
                 </div>
                 {/section}
                 <div class="z-formrow">
                     <label for="advancedpolls_optioncount">{gt text="Number of options in this poll"}</label>
-                    <input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="{$optioncount|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="{$optioncount|safetext}" />
                 </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Meta data"}</legend>
                 <ul>
-                    {pnusergetvar name=uname uid=$cr_uid assign=username}
+                    {usergetvar name=uname uid=$cr_uid assign=username}
                     <li>{gt text="Created by %s" tag1=$username}</li>
                     <li>{gt text="Created on %s" tag1=$cr_date|pndate_format}</li>
-                    {pnusergetvar name=uname uid=$lu_uid assign=username}
+                    {usergetvar name=uname uid=$lu_uid assign=username}
                     <li>{gt text="Last updated by %s" tag1=$username}</li>
                     <li>{gt text="Updated on %s" tag1=$lu_date|pndate_format}</li>
                 </ul>
             </fieldset>
             {* {modcallhooks hookobject=item hookaction=modify hookid=$pollid module=Polls} *}
             <div class="z-formbuttons">
-                {button src='button_ok.gif' set='icons/small' __alt="Update" __title="Update"}
-                <a href="{modurl modname=advancedpolls type=admin func=view}">{pnimg modname='core' src='button_cancel.gif' set='icons/small'   __alt="Cancel" __title="Cancel"}</a>
+                {button src='button_ok.png' set='icons/extraextrasmall' __alt="Update" __title="Update"}
+                <a href="{modurl modname=advancedpolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'   __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>

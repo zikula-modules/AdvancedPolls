@@ -38,7 +38,7 @@
                 {if $blockvars.ajaxvoting}
                 <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text="Vote" domain="module_advanced_polls"}" />
                 {else}
-                <input name="submit" type="submit" value="{gt text="Vote" domain="module_advanced_polls"}" />
+                <input name="submit" type="submit" value="{gt text="Vote" domain="module_advancedpolls"}" />
                 {/if}
             </div>
         </div>
@@ -47,7 +47,7 @@
     {if $blockvars.ajaxvoting}
     <div id="advancedpollsvoteinfo" style="color:red;">&nbsp;</div>
     <script type="text/javascript">
-        var recordingvote  = '{gt text="Recording vote" domain="module_advancedpolls"}';
+    var recordingvote = '<img src="images/ajax/indicator_circle.gif" />';
     </script>
     {/if}
 

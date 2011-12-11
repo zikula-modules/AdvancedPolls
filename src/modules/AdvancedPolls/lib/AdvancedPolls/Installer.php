@@ -20,7 +20,6 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
  */
 	public function install()
 	{
-    	$dom = ZLanguage::getModuleDomain('advanced_polls');
 
     	// create tables
     	$tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
@@ -32,17 +31,17 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
     	// create our default category
     	if (!$this->createdefaultcategory()) {
-        	return LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+        	return LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
     	}
 
     	// Set up an initial value for each module variable
-    	pnModSetVar('advanced_polls', 'usereversedns', 0);
-    	pnModSetVar('advanced_polls', 'scalingfactor', 4);
-    	pnModSetVar('advanced_polls', 'cssbars', 1);
-    	pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-    	pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
-    	pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
-    	pnModSetVar('advanced_polls', 'enablecategorization', true);
+    	ModUtil::setVar($this->name, 'usereversedns', 0);
+    	ModUtil::setVar($this->name, 'scalingfactor', 4);
+    	ModUtil::setVar($this->name, 'cssbars', 1);
+    	ModUtil::setVar($this->name, 'adminitemsperpage', 25);
+    	ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
+    	ModUtil::setVar($this->name, 'defaultoptioncount', '12');
+    	ModUtil::setVar($this->name, 'enablecategorization', true);
 
     	// Initialisation successful
     	return true;
@@ -69,30 +68,30 @@ public function upgrade($oldversion)
     switch($oldversion) {
         case '1.0':
             // Version 1.0 Didn't have the Module variables
-            pnModSetVar('advanced_polls', 'admindateformat', 'r');
-            pnModSetVar('advanced_polls', 'userdateformat', 'r');
-            pnModSetVar('advanced_polls', 'usereversedns', 0);
-            pnModSetVar('advanced_polls', 'scalingfactor', 4);
+            ModUtil::setVar($this->name, 'admindateformat', 'r');
+            ModUtil::setVar($this->name, 'userdateformat', 'r');
+            ModUtil::setVar($this->name, 'usereversedns', 0);
+            ModUtil::setVar($this->name, 'scalingfactor', 4);
             return advanced_polls_upgrade('1.1');
         case '1.1':
             // Add additional module variables in this version
-            pnModSetVar('advanced_polls', 'adminitemsperpage', 25);
-            pnModSetVar('advanced_polls', 'useritemsperpage', 25);
-            pnModSetVar('advanced_polls', 'defaultcolour', '#000000');
-            pnModSetVar('advanced_polls', 'defaultoptioncount', '12');
+            ModUtil::setVar($this->name, 'adminitemsperpage', 25);
+            ModUtil::setVar($this->name, 'useritemsperpage', 25);
+            ModUtil::setVar($this->name, 'defaultcolour', '#000000');
+            ModUtil::setVar($this->name, 'defaultoptioncount', '12');
             return advanced_polls_upgrade('1.5');
         case '1.5':
             // all changes in this release are covered by the table change
             return advanced_polls_upgrade('1.51');
         case '1.51':
             // setup categorisation
-            pnModSetVar('advanced_polls', 'enablecategorization', true);
-            pnModSetVar('advanced_polls', 'cssbars', 1);
-            pnModSetVar('advanced_polls', 'defaultcolour', '#66CC33');
-            pnModDelVar('advanced_polls', 'admindateformat');
-            pnModDelVar('advanced_polls', 'userdateformat');
-            pnModDelVar('advanced_polls', 'useritemsperpage');
-            pnModDBInfoLoad('advanced_polls', 'advanced_polls', true);
+            ModUtil::setVar($this->name, 'enablecategorization', true);
+            ModUtil::setVar($this->name, 'cssbars', 1);
+            ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
+            ModUtil::delVar($this->name, 'admindateformat');
+            ModUtil::delVar($this->name, 'userdateformat');
+            ModUtil::delVar($this->name, 'useritemsperpage');
+            ModUtil::dbInfoLoad($this->name, 'advanced_polls', true);
 
             //change table: remove votingmethod column
             if (!DBUtil::changeTable('advanced_polls_desc')) {
@@ -115,7 +114,31 @@ public function upgrade($oldversion)
             }
             return $this->upgrade('2.0.0');
         case '2.0.0':
-            // future upgrade routines
+            // get the values of module vars            
+    		$usereveredns = ModUtil::getVar($this->name, 'usereversedns');
+    		$scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
+    		$cssbars = ModUtil::getVar($this->name, 'cssbars');
+    		$adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
+    		$defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
+    		$defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
+    		$enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
+                       
+        	$this->delVars();
+        	
+        	// Set up an initial value for each module variable
+
+    		ModUtil::setVar($this->name, 'usereversedns', $usereveredns);
+    		ModUtil::setVar($this->name, 'scalingfactor', $scalingfactor);
+    		ModUtil::setVar($this->name, 'cssbars', $cssbars);
+    		ModUtil::setVar($this->name, 'adminitemsperpage', $adminitemsperpage);
+    		ModUtil::setVar($this->name, 'defaultcolour', $defaultcolour);
+    		ModUtil::setVar($this->name, 'defaultoptioncount', $defaultoptioncount);
+    		ModUtil::setVar($this->name, 'enablecategorization', $enablecategorization);
+        	
+        	return $this->upgrade('2.0.1');
+        case '2.0.1':
+        	// future upgrade routines
+        	
             break;
     }
 
@@ -142,7 +165,11 @@ public function uninstall()
     }
 
     // Delete any module variables
-    pnModDelVar('advanced_polls');
+    $this->delVar($this->name);
+    
+    // remove category registry entries
+    ModUtil::dbInfoLoad('Categories');
+    DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
 
     // Deletion successful
     return true;
@@ -155,12 +182,7 @@ public function uninstall()
  */
 public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
-
-    // load necessary classes
-    Loader::loadClass('CategoryUtil');
-    Loader::loadClassFromModule('Categories', 'Category');
-    Loader::loadClassFromModule('Categories', 'CategoryRegistry');
+    // TODO $dom = ZLanguage::getModuleDomain('advanced_polls');
 
     // get the language file
     $lang = ZLanguage::getLanguageCode();
@@ -171,11 +193,11 @@ public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 
     if (!$apCat) {
         // create placeholder for all our migrated categories
-        $cat = new PNCategory ();
+        $cat = new Categories_DBObject_Category();
         $cat->setDataField('parent_id', $rootcat['id']);
         $cat->setDataField('name', 'Advanced Polls');
-        $cat->setDataField('display_name', array($lang => __('Advanced Polls', $dom)));
-        $cat->setDataField('display_desc', array($lang => __('Polls', $dom)));
+        $cat->setDataField('display_name', array($lang => $this->__('Advanced Polls')));
+        $cat->setDataField('display_desc', array($lang => $this->__('Polls')));
         if (!$cat->validate('admin')) {
             return false;
         }
@@ -187,8 +209,8 @@ public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
     $rootcat = CategoryUtil::getCategoryByPath($regpath);
     if ($rootcat) {
         // create an entry in the categories registry
-        $registry = new PNCategoryRegistry();
-        $registry->setDataField('modname', 'advanced_polls');
+        $registry = new Categories_DBObject_Registry();
+        $registry->setDataField('modname', 'AdvancedPolls');
         $registry->setDataField('table', 'advanced_polls_desc');
         $registry->setDataField('property', 'Main');
         $registry->setDataField('category_id', $rootcat['id']);
