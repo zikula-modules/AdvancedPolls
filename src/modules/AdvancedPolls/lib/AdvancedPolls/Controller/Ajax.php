@@ -19,7 +19,7 @@ class AdvancedPolls_Controller_Ajax extends Zikula_Controller_AbstractAjax {
  */
 public function vote()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     $pollid        = FormUtil::getPassedValue('pollid', null, 'POST');
     $title         = FormUtil::getPassedValue('title', null, 'POST');
@@ -28,7 +28,7 @@ public function vote()
     $multiplecount = FormUtil::getPassedValue('multiplecount', null, 'POST');
     $optioncount   = FormUtil::getPassedValue('optioncount', null, 'POST');
 
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$title::$pollid", ACCESS_COMMENT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$title::$pollid", ACCESS_COMMENT)) {
         AjaxUtil::error(__('Error! No authorization to access this module.', $dom));
     }
 

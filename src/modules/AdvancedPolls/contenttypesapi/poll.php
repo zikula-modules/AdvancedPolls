@@ -8,20 +8,20 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
-class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
+class AdvancedPolls_contenttypesapi_pollPlugin extends contentTypeBase
 {
     var $pollid;
 
-    function getModule() { return 'advanced_polls'; }
+    function getModule() { return 'AdvancedPolls'; }
     function getName() { return 'poll'; }
     function getTitle()
     {
-        $dom = ZLanguage::getModuleDomain('advanced_polls');
+        $dom = ZLanguage::getModuleDomain('AdvancedPolls');
         return __('Poll', $dom);
     }
     function getDescription()
     {
-        $dom = ZLanguage::getModuleDomain('advanced_polls');
+        $dom = ZLanguage::getModuleDomain('AdvancedPolls');
         return __('Display a single poll from the advanced polls module.', $dom);
     }
     function isTranslatable() { return false; }
@@ -33,16 +33,16 @@ class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
 
     function display()
     {
-        $poll = ModUtil::func('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
+        $poll = ModUtil::func('AdvancedPolls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
         return $poll;
     }
 
     function displayEditing()
     {
-        $dom = ZLanguage::getModuleDomain('advanced_polls');
+        $dom = ZLanguage::getModuleDomain('AdvancedPolls');
         if (!empty($this->pollid))
         {
-            return ModUtil::func('advanced_polls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
+            return ModUtil::func('AdvancedPolls', 'user', 'display', array('pollid' => (int) $this->pollid, 'displaytype' => 'short'));
         }
         return __('No poll selected', $dom);
     }
@@ -55,12 +55,12 @@ class advanced_polls_contenttypesapi_pollPlugin extends contentTypeBase
 
     function startEditing(&$render)
     {
-        array_push($render->plugins_dir, 'modules/advanced_polls/pntemplates/pnform');
+        array_push($render->plugins_dir, 'modules/AdvancedPolls/pntemplates/pnform');
     }
 }
 
 
-function advanced_polls_contenttypesapi_poll($args)
+function AdvancedPolls_contenttypesapi_poll($args)
 {
-    return new advanced_polls_contenttypesapi_pollPlugin();
+    return new AdvancedPolls_contenttypesapi_pollPlugin();
 }

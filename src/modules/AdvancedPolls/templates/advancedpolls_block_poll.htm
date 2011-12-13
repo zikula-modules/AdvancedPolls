@@ -36,7 +36,7 @@
             </fieldset>
             <div class="z-formbuttons">
                 {if $blockvars.ajaxvoting}
-                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text="Vote" domain="module_advanced_polls"}" />
+                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text="Vote" domain="module_advancedpolls"}" />
                 {else}
                 <input name="submit" type="submit" value="{gt text="Vote" domain="module_advancedpolls"}" />
                 {/if}
@@ -60,18 +60,18 @@
         {else}
         {if $ispollopen}
         {if $votecounts.totalvotecount > 0}
-        <li><strong>{gt text="The current leader in this poll is %s" tag1=$votecounts.leadingvotename|safehtml domain="module_advanced_polls"}</strong></li>
+        <li><strong>{gt text="The current leader in this poll is %s" tag1=$votecounts.leadingvotename|safehtml domain="module_advancedpolls"}</strong></li>
         {if $item.pollnoclosedate neq 0}
-        <li>{gt text="Poll close date: %s" tag1=$item.closedate|pndate_format:datetimebrief domain="module_advanced_polls"}</li>
+        <li>{gt text="Poll close date: %s" tag1=$item.closedate|pndate_format:datetimebrief domain="module_advancedpolls"}</li>
         {/if}
         {/if}
         {else}
         {if $votecounts.totalvotecount > 0}
-        <li>{gt text="Winner: %s" tag1=$votecounts.leadingvotename|safehtml domain="module_advanced_polls"}</li>
+        <li>{gt text="Winner: %s" tag1=$votecounts.leadingvotename|safehtml domain="module_advancedpolls"}</li>
         {/if}
         {/if}
         {/if}
-        <li>{gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount|default:0 domain="module_advanced_polls"}</li>
-        <li><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$pollid}">{gt text="Detailed results" domain="module_advanced_polls"}</a></li>
+        <li>{gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount|default:0 domain="module_advancedpolls"}</li>
+        <li><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$pollid}">{gt text="Detailed results" domain="module_advancedpolls"}</a></li>
     </ul>
 </div>

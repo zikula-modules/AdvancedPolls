@@ -54,7 +54,7 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
  */
 public function upgrade($oldversion)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // update tables
     $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
@@ -71,17 +71,17 @@ public function upgrade($oldversion)
             ModUtil::setVar($this->name, 'userdateformat', 'r');
             ModUtil::setVar($this->name, 'usereversedns', 0);
             ModUtil::setVar($this->name, 'scalingfactor', 4);
-            return advanced_polls_upgrade('1.1');
+            return '1.1';
         case '1.1':
             // Add additional module variables in this version
             ModUtil::setVar($this->name, 'adminitemsperpage', 25);
             ModUtil::setVar($this->name, 'useritemsperpage', 25);
             ModUtil::setVar($this->name, 'defaultcolour', '#000000');
             ModUtil::setVar($this->name, 'defaultoptioncount', '12');
-            return advanced_polls_upgrade('1.5');
+            return '1.5';
         case '1.5':
             // all changes in this release are covered by the table change
-            return advanced_polls_upgrade('1.51');
+            return '1.51';
         case '1.51':
             // setup categorisation
             ModUtil::setVar($this->name, 'enablecategorization', true);
@@ -181,7 +181,7 @@ public function uninstall()
  */
 public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
 {
-    // TODO $dom = ZLanguage::getModuleDomain('advanced_polls');
+    // TODO $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // get the language file
     $lang = ZLanguage::getLanguageCode();

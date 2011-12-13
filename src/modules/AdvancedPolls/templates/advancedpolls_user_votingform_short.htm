@@ -7,7 +7,7 @@
         <input type="hidden" name="title" value="{$item.title|safehtml}" />
         <input type="hidden" name="results" value="1" />
         <fieldset>
-            <legend>{gt text="Poll options" domain="module_advanced_polls"}</legend>
+            <legend>{gt text="Poll options" domain="module_advancedpolls"}</legend>
             {if $polltype eq 0}
             {include file="advancedpolls_user_votingform-singleoptionselect.htm"}
             {else}

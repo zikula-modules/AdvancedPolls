@@ -14,7 +14,7 @@ class AdvancedPolls_Block_Pollresults extends Zikula_Controller_AbstractBlock {
 public function init()
 {
     // Security
-    SecurityUtil::registerPermissionSchema('advanced_polls:pollresultsblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('AdvancedPolls:pollresultsblock:', 'Block title::');
 }
 
 /**
@@ -23,10 +23,10 @@ public function init()
  */
 public function info()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Values
-    return array('module'         => 'advanced_polls',
+    return array('module'         => 'AdvancedPolls',
                  'text_type'      => __('Poll results', $dom),
                  'text_type_long' => __('Show results of the most recently closed poll', $dom),
                  'allow_multiple' => true,
@@ -44,12 +44,12 @@ public function info()
 public function display($blockinfo) {
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:pollresultsblock:',	"$blockinfo[title]::",	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:pollresultsblock:',	"$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
 
     // get full details on this poll from api
-    $pollid = pnModAPIFunc('advanced_polls', 'user', 'getlastclosed');
+    $pollid = pnModAPIFunc('AdvancedPolls', 'user', 'getlastclosed');
 
     //don't show block if no closed polls yet
     if ($pollid == 0) {
@@ -57,7 +57,7 @@ public function display($blockinfo) {
     }
 
     // get full details on this poll from api
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid));
+    $item = pnModAPIFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid));
 
     // don't show block if we failed to get the item
     if ($item == false) {
@@ -65,13 +65,13 @@ public function display($blockinfo) {
     }
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = pnModAPIFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls', false);
+    $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get current vote counts
-    $votecounts = pnModAPIFunc('advanced_polls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = pnModAPIFunc('AdvancedPolls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // don't show block if we failed to get any results
     if ($votecounts == false) {

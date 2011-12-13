@@ -32,7 +32,7 @@
     </tbody>
 </table>
 
-<p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"}</p>
+<p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advancedpolls"}</p>
 
 {modurl modname='advancedpolls' func='display' pollid=$pollid assign=returnurl}
-{* {pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='advanced_polls' returnurl=$returnurl} *}
+{* {pnmodcallhooks hookobject='item' hookaction='display' hookid=$pollid module='AdvancedPolls' returnurl=$returnurl} *}

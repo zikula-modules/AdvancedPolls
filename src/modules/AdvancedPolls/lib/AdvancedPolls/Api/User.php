@@ -45,7 +45,7 @@ public function getall($args)
     $items = array();
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::', '::', ACCESS_OVERVIEW)) {
         return $items;
     }
 
@@ -75,7 +75,7 @@ public function getall($args)
 
     // define the permission filter to apply
     $permFilter = array(array('realm'           => 0,
-                              'component_left'  => 'advanced_polls',
+                              'component_left'  => 'AdvancedPolls',
                               'component_right' => 'item',
                               'instance_left'   => 'title',
                               'instance_right'  => 'pollid',
@@ -125,13 +125,13 @@ public function get($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::', '::', ACCESS_OVERVIEW)) {
         return false;
     }
 
     // define the permission filter to apply
     $permFilter = array(array('realm'           => 0,
-                              'component_left'  => 'advanced_polls',
+                              'component_left'  => 'AdvancedPolls',
                               'component_right' => 'item',
                               'instance_left'   => 'title',
                               'instance_right'  => 'pollid',
@@ -219,7 +219,7 @@ public function isopen($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -261,10 +261,10 @@ public function isvoteallowed($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
         return LogUtil::registerPermissionError();
     }
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
         // Here we don't set an error as this indicates that the user can't vote in this poll
         return false;
     }
@@ -348,7 +348,7 @@ public function resetrecurring($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_READ)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -407,7 +407,7 @@ public function pollvotecount($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -422,7 +422,7 @@ public function pollvotecount($args)
 
     // for ease of backwards compatabilty lets check for a 0 option count
     if ($item['optioncount'] == 0) {
-        $item['optioncount'] = ModUtil::getVar('advanced_polls', 'defaultoptioncount');
+        $item['optioncount'] = ModUtil::getVar('AdvancedPolls', 'defaultoptioncount');
     }
 
     // get database tables
@@ -489,7 +489,7 @@ public function addvote($args)
     }
 
     // Security check
-    if (SecurityUtil::checkPermission('advanced_polls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
+    if (SecurityUtil::checkPermission('AdvancedPolls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
         $args['ip'] = System::getVar('REMOTE_ADDR');
         $args['uid'] = UserUtil::getVar('uid');
         $args['time'] = time();
@@ -538,7 +538,7 @@ public function timecountback($args)
     $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 

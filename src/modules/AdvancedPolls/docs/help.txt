@@ -92,7 +92,7 @@ To disallow unregistered users from seeing the a poll block titled 'A Sample
 Poll' set these permissions
 
 Group - Unregistered
-Component - advanced_polls:pollblock:
+Component - AdvancedPolls:pollblock:
 Instance - A Sample Poll::
 Permissions Level - None
 
@@ -102,7 +102,7 @@ To disallow unregistered users from seeing the a polllist block titled 'Voting
 Booth' set these permissions
 
 Group - Unregistered
-Component - advanced_polls:polllistblock:
+Component - AdvancedPolls:polllistblock:
 Instance - Voting Booth::
 Permissions Level - None
 

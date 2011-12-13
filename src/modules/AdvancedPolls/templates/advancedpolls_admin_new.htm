@@ -1,13 +1,13 @@
 {include file="advancedpolls_admin_menu.htm"}
-<script type="text/javascript" src="modules/advanced_polls/pnincludes/picker.js"></script>
-{ajaxheader modname=advanced_polls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
+<script type="text/javascript" src="modules/AdvancedPolls/pnincludes/picker.js"></script>
+{ajaxheader modname=AdvancedPolls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 {gt text="Create poll" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{pnimg modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname=advancedpolls type=admin func=create}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=generateauthkey module=advanced_polls}" />
+            <input type="hidden" name="authid" value="{insert name=generateauthkey module=AdvancedPolls}" />
             <fieldset>
                 <legend>{gt text="Basic Information"}</legend>
                 <div class="z-formrow">
@@ -113,10 +113,10 @@
                     <input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="{$defaultoptioncount|pnvarprepfordisplay}" />
                 </div>
             </fieldset>
-            {* {pnmodcallhooks hookobject=item hookaction=new module=advanced_polls} *}
+            {* {pnmodcallhooks hookobject=item hookaction=new module=AdvancedPolls} *}
             <div class="z-formbuttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt="Create" __title="Create"}
-                <a href="{modurl modname=advanced_polls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt="Cancel" __title="Cancel"}</a>
+                <a href="{modurl modname=AdvancedPolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt="Cancel" __title="Cancel"}</a>
             </div>
         </div>
     </form>

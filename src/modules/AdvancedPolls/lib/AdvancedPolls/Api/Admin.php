@@ -18,7 +18,7 @@
  */
 public function create($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['title']) || !isset($args['description']) || !isset($args['optioncount'])) {
@@ -26,7 +26,7 @@ public function create($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::", ACCESS_ADD)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$args['title']}::", ACCESS_ADD)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -63,10 +63,10 @@ public function create($args)
     }
 
     // Let any hooks know that we have created a new item.
-    ModUtil::callHooks('item', 'create', $args['pollid'], array('module' => 'advanced_polls'));
+    ModUtil::callHooks('item', 'create', $args['pollid'], array('module' => 'AdvancedPolls'));
 
     // An item was created, so we clear all cached pages of the items list.
-    $renderer = pnRender::getInstance('advanced_polls');
+    $renderer = pnRender::getInstance('AdvancedPolls');
     $renderer->clear_cache('advancedpolls_user_view.htm');
 
     // Return the id of the newly created item to the calling process
@@ -81,7 +81,7 @@ public function create($args)
  */
 public function delete($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -96,7 +96,7 @@ public function delete($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_DELETE)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_DELETE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -132,7 +132,7 @@ public function delete($args)
  */
 public function update($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid']) || !isset($args['title']) ||
@@ -150,10 +150,10 @@ public function update($args)
 
     // Note that at this stage we have two sets of item information, the
     // pre-modification and the post-modification.
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -216,7 +216,7 @@ public function update($args)
  */
 public function resetvotes($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -232,7 +232,7 @@ public function resetvotes($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     } else {
         if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
@@ -253,7 +253,7 @@ public function resetvotes($args)
  */
 public function getvotes($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -287,7 +287,7 @@ public function getvotes($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     } else {
         // get database setup
@@ -344,7 +344,7 @@ public function getvotes($args)
  */
 public function duplicate($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -360,7 +360,7 @@ public function duplicate($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
         return LogUtil::registerPermissionError();
     } else {
         // The API function is called.

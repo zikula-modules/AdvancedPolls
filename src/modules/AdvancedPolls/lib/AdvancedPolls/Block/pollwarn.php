@@ -14,7 +14,7 @@ class AdvancedPolls_Block_Pollwarn extends Zikula_Controller_AbstractBlock {
 public function init()
 {
     // Security
-    SecurityUtil::registerPermissionSchema('advanced_polls:pollblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('AdvancedPolls:pollblock:', 'Block title::');
 }
 
 /**
@@ -22,10 +22,10 @@ public function init()
  */
 public function info()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Values
-    return array('module'         => 'advanced_polls',
+    return array('module'         => 'AdvancedPolls',
                  'text_type'      => __('Poll warn', $dom),
                  'text_type_long' => __('Warns if poll is unanswered', $dom),
                  'allow_multiple' => true,
@@ -41,11 +41,11 @@ public function info()
 public function display($blockinfo)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
 
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
@@ -68,18 +68,18 @@ public function display($blockinfo)
 
     switch ($vars['polluse']) {
         case 1:
-            $items = pnModAPIFunc('advanced_polls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
             $item = $items[0];
             $pollid = $item['pollid'];
             break;
         case 2:
-            $pollid = pnModAPIFunc('advanced_polls', 'user', 'getrandom');
+            $pollid = pnModAPIFunc('AdvancedPolls', 'user', 'getrandom');
             break;
         default:
             $pollid = $vars['pollid'];
     }
 
-    $item = pnModAPIFunc('advanced_polls', 'user', 'get', array('pollid' => $pollid,
+    $item = pnModAPIFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid,
                                                                 'titlename' => 'name',
                                                                 'idname' => 'id'));
     if ($item == false) {
@@ -87,10 +87,10 @@ public function display($blockinfo)
     }
 
     // check for permissions on poll
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
         return;
     }
-    if (!SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_READ)) {
         return;
     }
 
@@ -99,10 +99,10 @@ public function display($blockinfo)
     $polloptionarray = $item['optionarray'];
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('advanced_polls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = pnModAPIFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // is this poll currently open for voting
-    $ispollopen = pnModAPIFunc('advanced_polls', 'user', 'isopen', array('pollid' => $pollid));
+    $ispollopen = pnModAPIFunc('AdvancedPolls', 'user', 'isopen', array('pollid' => $pollid));
 
     // check if the poll is open for voting
     if (($vars['pollopenclosebaseddisplay']) and ($ispollopen == false)) {
@@ -110,7 +110,7 @@ public function display($blockinfo)
     }
 
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = pnModAPIFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // check if the person can vote on this poll
     if ((!$ispollopen == true) and (!$isvoteallowed == true)) {
@@ -119,7 +119,7 @@ public function display($blockinfo)
 
     // Create output object - this object will store all of our output so that
     // we can return it easily when required
-    $renderer = pnRender::getInstance('advanced_polls', false);
+    $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // assign content to the template
     $renderer->assign('blockvars', $vars);
@@ -142,11 +142,11 @@ public function display($blockinfo)
 public function modify($blockinfo)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
 
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Get current content
     $vars = pnBlockVarsFromContent($blockinfo['content']);
@@ -165,10 +165,10 @@ public function modify($blockinfo)
     }
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls', false);
+    $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get a full list of available polls
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {

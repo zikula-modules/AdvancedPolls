@@ -9,11 +9,11 @@
  */
 
 /**
- * Advanced_polls needle
+ * AdvancedPolls needle
  * @param $args['nid'] needle id
  * @return array()
  */
-function advanced_polls_needleapi_poll($args)
+function AdvancedPolls_needleapi_poll($args)
 {
     // Get arguments from argument array
     $nid = $args['nid'];
@@ -26,7 +26,7 @@ function advanced_polls_needleapi_poll($args)
         $cache = array();
     }
 
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     if (!empty($nid)) {
         if (!isset($cache[$nid])) {
@@ -35,7 +35,7 @@ function advanced_polls_needleapi_poll($args)
             $obj = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $nid));
 
             if ($obj != false) {
-                $url   = DataUtil::formatForDisplay(ModUtil::url('advanced_polls', 'user', 'display', array('pollid' => $nid)));
+                $url   = DataUtil::formatForDisplay(ModUtil::url('AdvancedPolls', 'user', 'display', array('pollid' => $nid)));
                 $title = DataUtil::formatForDisplay($obj['title']);
                 $cache[$nid] = '<a href="' . $url . '" title="' . $title . '">' . $title . '</a>';
             } else {

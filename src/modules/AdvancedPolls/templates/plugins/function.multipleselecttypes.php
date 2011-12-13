@@ -10,7 +10,7 @@
 
 function smarty_function_multipleselecttypes($params, &$smarty)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     extract($params);
 

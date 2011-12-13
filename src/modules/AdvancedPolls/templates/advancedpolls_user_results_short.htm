@@ -1,8 +1,8 @@
 <h3>
     {if $ispollopen eq 1}
-    {gt text="Current poll" domain="module_advanced_polls"}: {$item.title|safetext}
+    {gt text="Current poll" domain="module_advancedpolls"}: {$item.title|safetext}
     {else}
-    {gt text="Previous poll" domain="module_advanced_polls"}: {$item.title|safeteext}
+    {gt text="Previous poll" domain="module_advancedpolls"}: {$item.title|safeteext}
     {/if}
 </h3>
 <p>{$item.description|safethml}</p>
@@ -29,4 +29,4 @@
     </tbody>
 </table>
 
-<p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advanced_polls"}</p>
+<p>{gt text="Total number of votes: %s" tag1=$votecount.totalvotecount domain="module_advancedpolls"}</p>

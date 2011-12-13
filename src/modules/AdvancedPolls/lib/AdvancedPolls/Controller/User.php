@@ -25,7 +25,7 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
 public function main($args)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::', '::', ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -44,10 +44,10 @@ public function main($args)
  */
 public function view($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls::', '::', ACCESS_OVERVIEW)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls::', '::', ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -137,7 +137,7 @@ public function view($args)
         $item['notyetopen'] = $notyetopen;
         $options = array();
 
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
             if ($ispollopen == true) {
                 // display polls that are currently active
                 if ($isvoteallowed == true) {
@@ -149,7 +149,7 @@ public function view($args)
                                        'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
@@ -159,11 +159,11 @@ public function view($args)
                 $activepolls[] = $item;
             } elseif (($ispollopen == false) and ($notyetopen == true)) {
                 // Polls that have not opened yet
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
+                if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => '14_layer_visible.png',
                                        'title' => __('Preview', $dom)); }
-                    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
+                    if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                         $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
@@ -172,12 +172,12 @@ public function view($args)
                     $futurepolls[] = $item;
             } elseif (($ispollopen == false) and ($notyetopen == false)) {
                 // Polls that have closed
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
+                if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pollid' => $item['pollid'])),
                                        'image' => 'vcalendar.png',
                                        'title' => __('Results', $dom));
                 }
-                if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url($this->name, 'admin', 'modify', array('pollid' => $item['pollid'])),
                                        'image' => 'xedit.png',
                                        'title' => __('Edit', $dom));
@@ -209,7 +209,7 @@ public function view($args)
  */
 public function display($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     $pollid   = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
     $title    = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
@@ -244,7 +244,7 @@ public function display($args)
     $resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // Security check
-    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
 
         // is this poll currently open for voting
         $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $item['pollid']));
@@ -338,7 +338,7 @@ public function display($args)
  */
 public function vote($args)
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // get variables submitted from form
     $pollid             = FormUtil::getPassedValue('pollid');
@@ -363,8 +363,8 @@ public function vote($args)
         $multiple = 0;
     }
 
-    if (SecurityUtil::checkPermission('advanced_polls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
-        if (SecurityUtil::checkPermission('advanced_polls::item',"$title::$pollid",ACCESS_COMMENT)) {
+    if (SecurityUtil::checkPermission('AdvancedPolls::item',"$title::$pollid",ACCESS_OVERVIEW)) {
+        if (SecurityUtil::checkPermission('AdvancedPolls::item',"$title::$pollid",ACCESS_COMMENT)) {
 
             // call api function to establish if poll is currently open
             $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $pollid));

@@ -15,7 +15,7 @@ class AdvancedPolls_Block_Poll extends Zikula_Controller_AbstractBlock {
 public function init()
 {
     // Security
-    SecurityUtil::registerPermissionSchema('advanced_polls:pollblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('AdvancedPolls:pollblock:', 'Block title::');
 }
 
 /**
@@ -27,10 +27,10 @@ public function init()
  */
 public function info()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Values
-    return array('module'          => 'advanced_polls',
+    return array('module'          => 'AdvancedPolls',
                  'text_type'       => __('Poll', $dom),
                  'text_type_long'  => __('Show a poll', $dom),
                  'allow_multiple'  => true,
@@ -47,7 +47,7 @@ public function info()
 public function display($blockinfo)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
 
@@ -122,8 +122,8 @@ public function display($blockinfo)
     }
 
     // check for permissions on poll
-    if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$pollid", ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_OVERVIEW)) {
+        if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_READ)) {
 
             // if poll is open then display voting form otherwise
             // show results summary
@@ -172,11 +172,11 @@ public function display($blockinfo)
 public function modify($blockinfo)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:pollblock:', "$blockinfo[title]::",	ACCESS_READ)) {
         return;
     }
 
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Get current content
     $vars = BlockUtil::varsFromContent($blockinfo['content']);

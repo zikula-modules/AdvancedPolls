@@ -23,8 +23,8 @@ class AdvancedPolls_Version extends Zikula_AbstractVersion {
 		$meta['core_min']        = '1.3.0'; // requires minimum 1.3.0 or later
 		$meta['capabilities']    = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
 		$meta['contact']         = 'Advanced Polls Development Team, Michael Ueberschaer';
-		$meta['securityschema']  = array('advanced_polls::item' => 'Poll Title::Poll ID',
-                                       'advanced_polls::' => '::');
+		$meta['securityschema']  = array('AdvancedPolls::item' => 'Poll Title::Poll ID',
+                                       'AdvancedPolls::' => '::');
 		$meta['dependencies']    = array(array('modname'    => 'EZComments',
                                              	'minversion' => '3.0.0',
                                              	'maxversion' => '',

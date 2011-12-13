@@ -6,7 +6,6 @@
 * @link https://github.com/zikula-modules/AdvancedPolls
 * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * @package Zikula_3rdParty_Modules
-* @subpackage Advanced_Polls
 */
 
 /**

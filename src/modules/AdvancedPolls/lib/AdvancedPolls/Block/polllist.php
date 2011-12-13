@@ -14,7 +14,7 @@ class AdvancedPolls_Block_Polllist extends Zikula_Controller_AbstractBlock {
 public function init()
 {
     // Security
-    SecurityUtil::registerPermissionSchema('advanced_polls:polllistblock:', 'Block title::');
+    SecurityUtil::registerPermissionSchema('AdvancedPolls:polllistblock:', 'Block title::');
 }
 
 /**
@@ -23,10 +23,10 @@ public function init()
  */
 public function info()
 {
-    $dom = ZLanguage::getModuleDomain('advanced_polls');
+    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Values
-    return array('module'         => 'advanced_polls',
+    return array('module'         => 'AdvancedPolls',
                  'text_type'      => __('Poll list', $dom),
                  'text_type_long' => __('Display list of open polls', $dom),
                  'allow_multiple' => true,
@@ -43,17 +43,17 @@ public function info()
 public function display($blockinfo)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('advanced_polls:polllistblock:', "$blockinfo[title]::", 	ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('AdvancedPolls:polllistblock:', "$blockinfo[title]::", 	ACCESS_READ)) {
         return;
     }
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
     // get a polls from the api
-    $items = pnModAPIFunc('advanced_polls', 'user', 'getall');
+    $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall');
 
     // Create output object
-    $renderer = pnRender::getInstance('advanced_polls', false);
+    $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // if there are no polls then don't display anything
     if (count($items) == 0) {
@@ -66,10 +66,10 @@ public function display($blockinfo)
     // create a results array
     $polls = array();
     foreach ($items as $item) {
-        if (SecurityUtil::checkPermission('advanced_polls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
+        if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
             // is this user/ip etc. allowed to vote under voting regulations
             if (($currentdate >= $item['opendate'] && $currentdate <= $item['closedate']) || $item['closedate'] == 0) {
-                if (pnModAPIFunc('advanced_polls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {
+                if (pnModAPIFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {
                     $polls[] = $item;
                 }
             }

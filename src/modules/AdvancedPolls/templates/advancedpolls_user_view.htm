@@ -3,7 +3,7 @@
 <h3>{$templatetitle}</h3>
 
 {if $enablecategorization and $numproperties gt 0}
-<form class="z-form" action="{pnmodurl modname='advanced_polls' type='user' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{pnmodurl modname='AdvancedPolls' type='user' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset id="advanced_polls_multicategory_filter">
         <label for="advanced_polls_{$property}_category">{gt text="Category"}</label>
         {nocache}
@@ -93,7 +93,7 @@
     <tbody>
         {foreach from=$futurepolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
+            <td><a href="{pnmodurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
             <td>{$poll.opendate|pndate_format:datetimebrief}</td>
             {if $enablecategorization}
             <td>
@@ -134,7 +134,7 @@
     <tbody>
         {foreach from=$closedpolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname="advanced_polls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
+            <td><a href="{pnmodurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
             <td>{$poll.opendate|pndate_format:datetimebrief}</td>
             {if $enablecategorization}
             <td>
