@@ -3,7 +3,7 @@
 <h3>{$templatetitle}</h3>
 
 {if $enablecategorization and $numproperties gt 0}
-<form class="z-form" action="{pnmodurl modname='AdvancedPolls' type='user' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname='AdvancedPolls' type='user' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset id="advanced_polls_multicategory_filter">
         <label for="advanced_polls_{$property}_category">{gt text="Category"}</label>
         {nocache}
@@ -46,10 +46,10 @@
     <tbody>
         {foreach from=$activepolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
+            <td><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|safehtml}</a></td>
             <td>
                 {if $poll.closedate}
-                {$poll.closedate|pndate_format:datetimebrief}
+                {$poll.closedate|dateformat:datetimebrief}
                 {else}
                 {gt text="No close date"}
                 {/if}
@@ -67,7 +67,7 @@
             <td>
                 {assign var="options" value=$poll.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|pnvarprepfordisplay}">{img modname='core' set='icons/extraextrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extraextrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>
@@ -93,8 +93,8 @@
     <tbody>
         {foreach from=$futurepolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
-            <td>{$poll.opendate|pndate_format:datetimebrief}</td>
+            <td><a href="{modurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|safehtml}</a></td>
+            <td>{$poll.opendate|dateformat:datetimebrief}</td>
             {if $enablecategorization}
             <td>
                 {foreach from=$poll.__CATEGORIES__ name=cat item=cat}
@@ -108,7 +108,7 @@
             <td>
                 {assign var="options" value=$poll.options}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|pnvarprepfordisplay}">{pnimg modname='core' set='icons/extraextrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                <a href="{$options[options].url|safetext}">{img modname='core' set='icons/extraextrasmall' src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                 {/section}
             </td>
         </tr>
@@ -134,8 +134,8 @@
     <tbody>
         {foreach from=$closedpolls item=poll}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|pnvarprephtmldisplay}</a></td>
-            <td>{$poll.opendate|pndate_format:datetimebrief}</td>
+            <td><a href="{modurl modname="AdvancedPolls" type="user" func="display" pollid=$poll.pollid}">{$poll.title|safehtml}</a></td>
+            <td>{$poll.opendate|dateformat:datetimebrief}</td>
             {if $enablecategorization}
             <td>
                 {foreach from=$poll.__CATEGORIES__ name=cat item=cat}

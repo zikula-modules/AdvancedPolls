@@ -50,7 +50,7 @@ public function display($blockinfo)
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
     // get a polls from the api
-    $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall');
+    $items = ModUtil::apiFunc('AdvancedPolls', 'user', 'getall');
 
     // Create output object
     $renderer = pnRender::getInstance('AdvancedPolls', false);
@@ -69,7 +69,7 @@ public function display($blockinfo)
         if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_COMMENT)) {
             // is this user/ip etc. allowed to vote under voting regulations
             if (($currentdate >= $item['opendate'] && $currentdate <= $item['closedate']) || $item['closedate'] == 0) {
-                if (pnModAPIFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {
+                if (ModUtil::apiFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $item['pollid']))) {
                     $polls[] = $item;
                 }
             }

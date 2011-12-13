@@ -6,13 +6,13 @@
 {counter name=counter print=false start=0}
 {foreach from=$item.options item=option}
 <div class="z-formnote">
-    <input id="option{$option.optionid|pnvarprepfordisplay}" type="checkbox" name="option{counter}" value="{$option.optionid|pnvarprepfordisplay}" />
+    <input id="option{$option.optionid|safetext}" type="checkbox" name="option{counter}" value="{$option.optionid|safetext}" />
     {if $option.optioncolour neq ''}
     <span style="color:{$option.optioncolour};">
-        <label id="option{$option.optionid|pnvarprepfordisplay}">{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</label>
+        <label id="option{$option.optionid|safetext}">{$option.optiontext|modcallhooks|safehtml}</label>
     </span>
     {else}
-    <label for="option{$option.optionid|pnvarprepfordisplay}">{$option.optiontext|pnmodcallhooks|pnvarprephtmldisplay}</label>
+    <label for="option{$option.optionid|safetext}">{$option.optiontext|modcallhooks|safehtml}</label>
     {/if}
 </div>
 {/foreach}

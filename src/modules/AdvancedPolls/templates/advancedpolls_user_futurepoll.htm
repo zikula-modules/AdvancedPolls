@@ -1,13 +1,13 @@
 {include file="advancedpolls_user_menu.htm"}
-<p class="z-informationmsg">{gt text="This poll opens on %s" tag1=$item.opendate|pndate_format:datetimebrief|pnvarprepfordisplay}</p>
-<h3>{gt text="Future poll: %s" tag1=$item.title|pnvarprepfordisplay}</h3>
-<p>{$item.description|pnvarprephtmldisplay}</p>
+<p class="z-informationmsg">{gt text="This poll opens on %s" tag1=$item.opendate|dateformat:datetimebrief|safetext}</p>
+<h3>{gt text="Future poll: %s" tag1=$item.title|safetext}</h3>
+<p>{$item.description|safehtml}</p>
 <div class="z-form">
     <div class="z-fieldset">
         {foreach from=$item.options name=option item=option}
         <div class="z-formrow">
             <span class="z-label">{gt text="Choice %s" tag1=$smarty.foreach.option.iteration}:</span>
-            <span>{$option.optiontext|pnvarprepfordisplay}</span>
+            <span>{$option.optiontext|safetext}</span>
         </div>
         {/foreach}
     </div>

@@ -7,7 +7,7 @@
 {section name=multiloop loop=$multiplecount}
 <div class="z-formrow">
     <label for="choice{$optioncounter|safetext}">{gt text="Choice %s" tag1=$optioncounter|safetext domain="module_advancedpolls"}</label>
-    <select id="choice{$optioncounter|safetext}" name="option{$optioncounter|pnvarprepfordisplay}">
+    <select id="choice{$optioncounter|safetext}" name="option{$optioncounter|safetext}">
         {foreach from=$item.options item=option}
         <option value="{$option.optionid|safetext}">{$option.optiontext|safehtml}</option>
         {/foreach}

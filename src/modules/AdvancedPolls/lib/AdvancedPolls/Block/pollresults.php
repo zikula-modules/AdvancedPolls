@@ -49,7 +49,7 @@ public function display($blockinfo) {
     }
 
     // get full details on this poll from api
-    $pollid = pnModAPIFunc('AdvancedPolls', 'user', 'getlastclosed');
+    $pollid = ModUtil::apiFunc('AdvancedPolls', 'user', 'getlastclosed');
 
     //don't show block if no closed polls yet
     if ($pollid == 0) {
@@ -57,7 +57,7 @@ public function display($blockinfo) {
     }
 
     // get full details on this poll from api
-    $item = pnModAPIFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid));
 
     // don't show block if we failed to get the item
     if ($item == false) {
@@ -65,13 +65,13 @@ public function display($blockinfo) {
     }
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // Create output object
     $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get current vote counts
-    $votecounts = pnModAPIFunc('AdvancedPolls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = ModUtil::apiFunc('AdvancedPolls', 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // don't show block if we failed to get any results
     if ($votecounts == false) {

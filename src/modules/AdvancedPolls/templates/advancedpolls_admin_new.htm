@@ -1,9 +1,9 @@
 {include file="advancedpolls_admin_menu.htm"}
-<script type="text/javascript" src="modules/AdvancedPolls/pnincludes/picker.js"></script>
+<script type="text/javascript" src="modules/AdvancedPolls/includes/picker.js"></script>
 {ajaxheader modname=AdvancedPolls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 {gt text="Create poll" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{pnimg modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname=advancedpolls type=admin func=create}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -110,10 +110,10 @@
                 <legend>{gt text="Options"}</legend>
                 <div class="z-formrow">
                     <label for="advancedpolls_optioncount">{gt text="Number of options in this poll"}</label>
-                    <input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="{$defaultoptioncount|pnvarprepfordisplay}" />
+                    <input id="advancedpolls_optioncount" name="poll[optioncount]" type="text" size="3" maxlength="3" value="{$defaultoptioncount|safetext}" />
                 </div>
             </fieldset>
-            {* {pnmodcallhooks hookobject=item hookaction=new module=AdvancedPolls} *}
+            {* {modcallhooks hookobject=item hookaction=new module=AdvancedPolls} *}
             <div class="z-formbuttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt="Create" __title="Create"}
                 <a href="{modurl modname=AdvancedPolls type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt="Cancel" __title="Cancel"}</a>

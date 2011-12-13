@@ -62,7 +62,7 @@
         {if $votecounts.totalvotecount > 0}
         <li><strong>{gt text="The current leader in this poll is %s" tag1=$votecounts.leadingvotename|safehtml domain="module_advancedpolls"}</strong></li>
         {if $item.pollnoclosedate neq 0}
-        <li>{gt text="Poll close date: %s" tag1=$item.closedate|pndate_format:datetimebrief domain="module_advancedpolls"}</li>
+        <li>{gt text="Poll close date: %s" tag1=$item.closedate|dateformat:datetimebrief domain="module_advancedpolls"}</li>
         {/if}
         {/if}
         {else}

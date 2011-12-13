@@ -68,18 +68,18 @@ public function display($blockinfo)
 
     switch ($vars['polluse']) {
         case 1:
-            $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $items = ModUtil::apiFunc('AdvancedPolls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
             $item = $items[0];
             $pollid = $item['pollid'];
             break;
         case 2:
-            $pollid = pnModAPIFunc('AdvancedPolls', 'user', 'getrandom');
+            $pollid = ModUtil::apiFunc('AdvancedPolls', 'user', 'getrandom');
             break;
         default:
             $pollid = $vars['pollid'];
     }
 
-    $item = pnModAPIFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid,
+    $item = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid,
                                                                 'titlename' => 'name',
                                                                 'idname' => 'id'));
     if ($item == false) {
@@ -99,10 +99,10 @@ public function display($blockinfo)
     $polloptionarray = $item['optionarray'];
 
     // check if we need to reset any poll votes
-    $resetrecurring = pnModAPIFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // is this poll currently open for voting
-    $ispollopen = pnModAPIFunc('AdvancedPolls', 'user', 'isopen', array('pollid' => $pollid));
+    $ispollopen = ModUtil::apiFunc('AdvancedPolls', 'user', 'isopen', array('pollid' => $pollid));
 
     // check if the poll is open for voting
     if (($vars['pollopenclosebaseddisplay']) and ($ispollopen == false)) {
@@ -110,7 +110,7 @@ public function display($blockinfo)
     }
 
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = pnModAPIFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = ModUtil::apiFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // check if the person can vote on this poll
     if ((!$ispollopen == true) and (!$isvoteallowed == true)) {
@@ -168,7 +168,7 @@ public function modify($blockinfo)
     $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get a full list of available polls
-    $items = pnModAPIFunc('AdvancedPolls', 'user', 'getall');
+    $items = ModUtil::apiFunc('AdvancedPolls', 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {

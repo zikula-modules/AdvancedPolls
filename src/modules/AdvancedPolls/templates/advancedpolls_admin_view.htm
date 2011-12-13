@@ -61,7 +61,7 @@
                     {/foreach}
                 </td>
                 {/if}
-                <td>{$poll.opendate|pndate_format:datetimebrief}</td>
+                <td>{$poll.opendate|dateformat:datetimebrief}</td>
                 <td>{$poll.isopen|yesno}</td>
                 <td class="z-nowrap">
                     {assign var="options" value=$poll.options}

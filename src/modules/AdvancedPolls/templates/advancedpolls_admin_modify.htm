@@ -1,5 +1,5 @@
 {include file="advancedpolls_admin_menu.htm"}
-<script type="text/javascript" src="modules/AdvancedPolls/pnincludes/picker.js"></script>
+<script type="text/javascript" src="modules/AdvancedPolls/includes/picker.js"></script>
 {ajaxheader modname=AdvancedPolls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 {gt text="Edit Poll" assign=templatetitle}
 <div class="z-admincontainer">
@@ -147,10 +147,10 @@
                 <ul>
                     {usergetvar name=uname uid=$cr_uid assign=username}
                     <li>{gt text="Created by %s" tag1=$username}</li>
-                    <li>{gt text="Created on %s" tag1=$cr_date|pndate_format}</li>
+                    <li>{gt text="Created on %s" tag1=$cr_date|dateformat}</li>
                     {usergetvar name=uname uid=$lu_uid assign=username}
                     <li>{gt text="Last updated by %s" tag1=$username}</li>
-                    <li>{gt text="Updated on %s" tag1=$lu_date|pndate_format}</li>
+                    <li>{gt text="Updated on %s" tag1=$lu_date|dateformat}</li>
                 </ul>
             </fieldset>
             {* {modcallhooks hookobject=item hookaction=modify hookid=$pollid module=Polls} *}
