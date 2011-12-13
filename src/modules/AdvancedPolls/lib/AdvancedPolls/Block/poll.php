@@ -2,10 +2,9 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West, Carsten Volmer
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
- * @link http://code.zikula.org/advancedpolls
- * @version $Id$
+ * @author Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
+ * @link https://github.com/zikula-modules/AdvancedPolls
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -22,8 +21,7 @@ public function init()
 /**
  * get information on block
  * @returns block info array
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */

@@ -1,10 +1,9 @@
 /**
 * Advanced Polls module for Zikula
 *
-* @author Mark West <mark@markwest.me.uk>
-* @copyright (C) 2002-2010 by Mark West
-* @link http://code.zikula.org/advancedpolls
-* @version $Id$
+* @author Advanced Polls Development Team
+* @copyright (C) 2002-2011 by Mark West
+* @link https://github.com/zikula-modules/AdvancedPolls
 * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * @package Zikula_3rdParty_Modules
 * @subpackage Advanced_Polls
@@ -15,7 +14,6 @@
 *
 *@params none;
 *@return none;
-*@author Mark West
 */
 function advancedpolls_vote()
 {
@@ -35,7 +33,6 @@ function advancedpolls_vote()
 *
 *@params none;
 *@return none;
-*@author Mark West
 */
 function advancedpolls_vote_response(req)
 {

@@ -10,7 +10,7 @@ two modules will happily coincide with each other.
 
 Download
 --------
-http://code.zikula.org/advancedpolls/
+https://github.com/zikula-modules/AdvancedPolls/
 http://community.zikula.org/module-Extensions.htm
 
 Demo
@@ -110,6 +110,6 @@ All permissions examples can be equally applied to user based permissions.
 
 Support and Feedback
 -------------------
-Support can be obtained via http://code.zikula.org/advancedpolls/ or via 
+Support can be obtained via https://github.com/zikula-modules/AdvancedPolls/ or via 
 forums on http://commmunity.zikula.org.
 

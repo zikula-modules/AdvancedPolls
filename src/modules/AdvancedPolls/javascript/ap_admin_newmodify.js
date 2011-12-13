@@ -1,6 +1,3 @@
-/*
-*  $Id$
-*/
 Event.observe(window, 'load', ap_newmodify_init_check, false);
 
 function ap_newmodify_init_check()

@@ -2,10 +2,9 @@
 /**
  * Advanced Polls module for Zikula
  *
- * @author Mark West, Carsten Volmer
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
- * @link http://code.zikula.org/advancedpolls
- * @version $Id$
+ * @author Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
+ * @link https://github.com/zikula-modules/AdvancedPolls
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -19,8 +18,7 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
  * returns or calls whatever the module designer feels should be the default
  * function (often this is the view() function)
  * @returns HTML output
- * @author Mark West <mark@markwest.me.uk>
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -40,7 +38,7 @@ public function main($args)
  * This is a standard function to provide an overview of all of the items
  * available from the module.
  * @returns HTML output
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -205,7 +203,7 @@ public function view($args)
  * @param $args['pollid'] Poll id to display
  * @param $args['results'] 1 to show results components 0 otherwise
  * @returns HTML output
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
@@ -334,7 +332,7 @@ public function display($args)
 /**
  * Process voting form
  * @returns HTML output
- * @copyright (C) 2002-2010 by Advanced Polls Development Team
+ * @copyright (C) 2002-2011 by Advanced Polls Development Team
  * @since 1.0
  * @version 1.1
  */
