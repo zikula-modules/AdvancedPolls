@@ -17,20 +17,15 @@ class AdvancedPolls_Version extends Zikula_AbstractVersion {
 	
 	public function getMetaData() {	
 
-		$dom = ZLanguage::getModuleDomain('advanced_polls');
 		$meta['name']            = 'advanced_polls';
-		$meta['displayname']     = __('Advanced Polls', $dom);
-		$meta['description']     = __('A comprehensive single question polling module', $dom);
-		$meta['url']             = __('advancedpolls', $dom);
+		$meta['displayname']     = $this->__('Advanced Polls');
+		$meta['description']     = $this->__('A comprehensive single question polling module');
+		$meta['url']             = $this->__('advancedpolls');
+		$meta['oldnames']        = array('advanced_polls');
 		$meta['version']         = '2.0.1';
-		$meta['credits']         = 'docs/credits.txt';
-		$meta['help']            = 'docs/help.txt';
-		$meta['changelog']       = 'docs/changelog.txt';
-		$meta['license']         = 'docs/license.txt';
-		$meta['official']        = 0;
-		$meta['author']          = 'Mark West, Carsten Volmer, Michael Ueberschaer';
-		$meta['contact']         = 'http://code.zikula.org/advancedpolls/';
-		$meta['admin']           = 1;
+		$meta['core_min']        = '1.3.0'; // requires minimum 1.3.0 or later
+		$meta['capabilities']    = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
+		$meta['contact']         = 'Mark West, Carsten Volmer, Michael Ueberschaer';
 		$meta['securityschema']  = array('advanced_polls::item' => 'Poll Title::Poll ID',
                                        'advanced_polls::' => '::');
 		$meta['dependencies']    = array(array('modname'    => 'EZComments',
