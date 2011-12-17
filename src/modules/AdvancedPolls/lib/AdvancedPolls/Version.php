@@ -19,6 +19,7 @@ class AdvancedPolls_Version extends Zikula_AbstractVersion {
 		$meta['displayname']     = $this->__('Advanced Polls');
 		$meta['description']     = $this->__('A comprehensive single question polling module');
 		$meta['url']             = $this->__('advancedpolls');
+		$meta['version']          = '2.0.1';
 		$meta['oldnames']        = array('advanced_polls');
 		$meta['core_min']        = '1.3.0'; // requires minimum 1.3.0 or later
 		$meta['capabilities']    = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
