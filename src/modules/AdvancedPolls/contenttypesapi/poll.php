@@ -55,7 +55,7 @@ class AdvancedPolls_contenttypesapi_pollPlugin extends contentTypeBase
 
     function startEditing(&$render)
     {
-        array_push($render->plugins_dir, 'modules/AdvancedPolls/pntemplates/pnform');
+        array_push($render->plugins_dir, 'modules/AdvancedPolls/templates/pnform');
     }
 }
 
