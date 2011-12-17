@@ -26,8 +26,8 @@ public function info()
 
     // Values
     return array('module'         => 'AdvancedPolls',
-                 'text_type'      => __('Poll warn', $dom),
-                 'text_type_long' => __('Warns if poll is unanswered', $dom),
+                 'text_type'      => $this->__('Poll warn'),
+                 'text_type_long' => $this->__('Warns if poll is unanswered'),
                  'allow_multiple' => true,
                  'form_content'   => false,
                  'form_refresh'   => false,
@@ -48,7 +48,7 @@ public function display($blockinfo)
     $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Get variables from content block
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // set some defaults
     if (empty($vars['pollid'])) {
@@ -68,18 +68,18 @@ public function display($blockinfo)
 
     switch ($vars['polluse']) {
         case 1:
-            $items = ModUtil::apiFunc('AdvancedPolls', 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
+            $items = ModUtil::apiFunc($this->name, 'user', 'getall', array('startnum' => 0, 'numitems' => 1, 'desc' => true));
             $item = $items[0];
             $pollid = $item['pollid'];
             break;
         case 2:
-            $pollid = ModUtil::apiFunc('AdvancedPolls', 'user', 'getrandom');
+            $pollid = ModUtil::apiFunc($this->name, 'user', 'getrandom');
             break;
         default:
             $pollid = $vars['pollid'];
     }
 
-    $item = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid,
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid,
                                                                 'titlename' => 'name',
                                                                 'idname' => 'id'));
     if ($item == false) {
@@ -99,10 +99,10 @@ public function display($blockinfo)
     $polloptionarray = $item['optionarray'];
 
     // check if we need to reset any poll votes
-    $resetrecurring = ModUtil::apiFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // is this poll currently open for voting
-    $ispollopen = ModUtil::apiFunc('AdvancedPolls', 'user', 'isopen', array('pollid' => $pollid));
+    $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $pollid));
 
     // check if the poll is open for voting
     if (($vars['pollopenclosebaseddisplay']) and ($ispollopen == false)) {
@@ -110,7 +110,7 @@ public function display($blockinfo)
     }
 
     // is this user/ip etc. allowed to vote under voting regulations
-    $isvoteallowed = ModUtil::apiFunc('AdvancedPolls', 'user', 'isvoteallowed', array('pollid' => $pollid));
+    $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $pollid));
 
     // check if the person can vote on this poll
     if ((!$ispollopen == true) and (!$isvoteallowed == true)) {
@@ -122,18 +122,18 @@ public function display($blockinfo)
     $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // assign content to the template
-    $renderer->assign('blockvars', $vars);
+    $this->view->assign('blockvars', $vars);
 
     // poll use values
-    $renderer->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
+    $this->view->assign('pollusevalues', array(0 => __('Individual Selection', $dom),
                                              1 => __('Latest', $dom),
                                              2 => __('Random', $dom)));
 
-    $renderer->assign('item', $item);
+    $this->view->assign('item', $item);
 
     // Populate block info and pass to theme
     $blockinfo['content'] = $renderer->fetch('advancedpolls_block_pollwarn.htm');
-    return themesideblock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -149,7 +149,7 @@ public function modify($blockinfo)
     $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (empty($vars['pollid'])) {
@@ -168,7 +168,7 @@ public function modify($blockinfo)
     $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get a full list of available polls
-    $items = ModUtil::apiFunc('AdvancedPolls', 'user', 'getall');
+    $items = ModUtil::apiFunc($this->name, 'user', 'getall');
     $polls = array();
     if (is_array($items)) {
         foreach ($items as $item) {
@@ -205,7 +205,7 @@ public function update($blockinfo)
     $vars['backgroundcolor']           = FormUtil::getPassedValue('backgroundcolor');
 
     // generate the block array
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     return $blockinfo;
 }

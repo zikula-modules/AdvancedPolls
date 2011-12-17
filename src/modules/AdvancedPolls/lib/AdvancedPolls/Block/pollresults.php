@@ -49,7 +49,7 @@ public function display($blockinfo) {
     }
 
     // get full details on this poll from api
-    $pollid = ModUtil::apiFunc('AdvancedPolls', 'user', 'getlastclosed');
+    $pollid = ModUtil::apiFunc($this->name, 'user', 'getlastclosed');
 
     //don't show block if no closed polls yet
     if ($pollid == 0) {
@@ -57,7 +57,7 @@ public function display($blockinfo) {
     }
 
     // get full details on this poll from api
-    $item = ModUtil::apiFunc('AdvancedPolls', 'user', 'get', array('pollid' => $pollid));
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid));
 
     // don't show block if we failed to get the item
     if ($item == false) {
@@ -65,13 +65,13 @@ public function display($blockinfo) {
     }
 
     // check if we need to reset any poll votes
-    $resetrecurring = ModUtil::apiFunc('AdvancedPolls', 'user', 'resetrecurring', array('pollid' => $pollid));
+    $resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
     // Create output object
     $renderer = pnRender::getInstance('AdvancedPolls', false);
 
     // get current vote counts
-    $votecounts = ModUtil::apiFunc('AdvancedPolls', 'user', 'pollvotecount', array('pollid' => $pollid));
+    $votecounts = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
 
     // don't show block if we failed to get any results
     if ($votecounts == false) {
@@ -102,12 +102,12 @@ public function display($blockinfo) {
     $votecounts['percentages'] = $percentages;
 
     // assign the item to template
-    $renderer->assign('item', $item);
-    $renderer->assign('votecounts', $votecounts);
+    $this->view->assign('item', $item);
+    $this->view->assign('votecounts', $votecounts);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $renderer->fetch('advancedpolls_block_pollresults.htm');
-    return themesideblock($blockinfo);
+    $blockinfo['content'] = $this->view->fetch('advancedpolls_block_pollresults.htm');
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -128,7 +128,7 @@ public function update($blockinfo)
     $vars['numitems']     = FormUtil::getPassedValue('numitems');
 
     // generate the block array
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     return $blockinfo;
 }
