@@ -1,22 +1,13 @@
-Event.observe(window, 'load', ap_newmodify_init_check, false);
+document.observe('dom:loaded', ap_newmodify_init_check);
+
 
 function ap_newmodify_init_check()
 {
-    Event.observe('advancedpolls_noclosedate', 'click', ap_newmodify_closedate);
-    Event.observe('advancedpolls_recurring', 'click', ap_newmodify_recurring);
-    Event.observe('advancedpolls_multipleselect', 'click', ap_newmodify_multipleselect);
-    ap_newmodify_closedate();
+    
+    Event.observe('recurring',      'click', ap_newmodify_recurring);
+    Event.observe('multipleselect', 'click', ap_newmodify_multipleselect);
     ap_newmodify_recurring();
     ap_newmodify_multipleselect();
-}
-
-function ap_newmodify_closedate()
-{
-    if($('advancedpolls_noclosedate').checked == true) {
-        $('advancedpolls_closedate_container').hide();
-    } else {
-        $('advancedpolls_closedate_container').show();
-    }
 }
 
 function ap_newmodify_recurring()

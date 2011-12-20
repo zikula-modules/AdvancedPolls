@@ -18,8 +18,7 @@
  */
 public function create($args)
 {
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
-
+    
     // Argument check
     if (!isset($args['title']) || !isset($args['description']) || !isset($args['optioncount'])) {
         return LogUtil::registerArgsError();
@@ -58,9 +57,11 @@ public function create($args)
         }
     }
 
-    if (!DBUtil::insertObject($args, 'advanced_polls_desc', 'pollid')) {
-        return LogUtil::registerError ($this->__('Error! Creation attempt failed.', $dom));
-    }
+    $desc = $this->entityManager->find('AdvancedPolls_Entity_Desc', $pollid);
+    $this->entityManager->remove($poll);
+    $this->entityManager->flush();
+    
+    
 
     // Let any hooks know that we have created a new item.
     ModUtil::callHooks('item', 'create', $args['pollid'], array('module' => 'AdvancedPolls'));
@@ -81,7 +82,6 @@ public function create($args)
  */
 public function delete($args)
 {
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -92,7 +92,7 @@ public function delete($args)
     $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
 
     if ($item == false) {
-        return LogUtil::registerError (__('Error! No such poll found.', $dom));
+        return LogUtil::registerError ($this->__('Error! No such poll found.'));
     }
 
     // Security check
@@ -101,112 +101,15 @@ public function delete($args)
     }
 
     // Delete the object
-    if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
-    }
-    if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
-    }
-    if (!DBUtil::deleteObjectByID('advanced_polls_desc', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
-    }
+    
+    $poll = $this->entityManager->find('AdvancedPolls_Entity_Desc', $args['pollid']);
+    $this->entityManager->remove($poll);
+    $this->entityManager->flush();
+    
 
     return true;
 }
 
-/**
- * Update a poll
- * @param $args['pollid'] the ID of the item
- * @param $args['title'] the name of the poll to be updated
- * @param $args['description'] the name of the poll to be updated
- * @param $args['language'] the number of the item to be updated
- * @param $args['tiebreakalg'] the tiebreak methodlogy to use
- * @param $args['voteauthtype'] vote authorisation type to use
- * @param $args['multipleselect'] type of poll selection
- * @param $args['multipleselectcount'] number of selections allowed
- * @param $args['recurring'] is poll a recurring one
- * @param $args['reucrringoffset'] offset for recurring polls
- * @param $args['recurringinterval'] interval to add for recurring polls
- * @param $args['optioncount'] number of options for this poll
- * @return bool true on success, false on failure
- */
-public function update($args)
-{
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
-
-    // Argument check
-    if (!isset($args['pollid']) || !isset($args['title']) ||
-    !isset($args['description']) || !isset($args['optioncount'])) {
-        return LogUtil::registerArgsError();
-    }
-
-    // The user API function is called
-    $item = ModUtil::apiFunc($this->name , 'user', 'get', array('pollid' => $args['pollid']));
-    if ($item == false) {
-        return LogUtil::registerError(__('Error! No such poll found.', $dom));
-    }
-
-    // Security check
-
-    // Note that at this stage we have two sets of item information, the
-    // pre-modification and the post-modification.
-    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-        return LogUtil::registerPermissionError();
-    }
-    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$args['title']}::{$args['pollid']}", ACCESS_EDIT)) {
-        return LogUtil::registerPermissionError();
-    }
-
-    // defaults
-    if (!isset($args['language'])) {
-        $args['language'] = '';
-    }
-
-    // define the permalink title if not present
-    if (!isset($args['urltitle']) || empty($args['urltitle'])) {
-        $args['urltitle'] = DataUtil::formatPermalink($args['title']);
-    }
-
-    if (isset($args['unixopendate'])) {
-        // used for duplication a poll
-        $args['opendate'] = $args['unixopendate'];
-    } else {
-        $args['opendate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['startYear'], $args['startMonth'], $args['startDay'], $args['startHour'], $args['startMinute'], 0));
-    }
-
-    if (isset($args['unixclosedate'])) {
-        // used for duplication a poll
-        $args['closedate'] = $args['unixclosedate'];
-    } else {
-        if (!$args['noclosedate']) {
-            $args['closedate'] = DateUtil::makeTimestamp(DateUtil::buildDatetime($args['closeYear'], $args['closeMonth'], $args['closeDay'], $args['closeHour'], $args['closeMinute'], 0));
-        } else {
-            $args['closedate'] = 0;
-        }
-    }
-
-    // update the object
-    if (!DBUtil::updateObject($args, 'advanced_polls_desc', '', 'pollid')) {
-        return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
-    }
-
-    // first delete the poll options before reinserting them
-    if (!DBUtil::deleteObjectByID('advanced_polls_data', $args['pollid'], 'pollid')) {
-        return LogUtil::registerError (__('Error! Deletion attempt failed.', $dom));
-    }
-    for ($count = 1; $count <= $args['optioncount']; $count++) {
-        $items[] = array('pollid' => $args['pollid'],
-                         'optiontext' => $args['options'][$count]['optiontext'],
-                         'optioncolour' => $args['options'][$count]['optioncolour'],
-                         'optionid' => $count);
-    }
-    if (!DBUtil::insertObjectArray($items, 'advanced_polls_data')) {
-        return LogUtil::registerError (__('Error! Update attempt failed.', $dom));
-    }
-
-    // Let the calling process know that we have finished successfully
-    return true;
-}
 
 /**
  * Reset vote counts to zero
@@ -216,8 +119,6 @@ public function update($args)
  */
 public function resetvotes($args)
 {
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
-
     // Argument check
     if (!isset($args['pollid'])) {
         return LogUtil::registerArgsError();
@@ -228,15 +129,18 @@ public function resetvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such poll found.', $dom));
+        return LogUtil::registerError($this->__('Error! No such poll found.'));
     }
 
     // Security check
     if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     } else {
-        if (!DBUtil::deleteObjectByID('advanced_polls_votes', $args['pollid'], 'pollid')) {
-            return LogUtil::registerError (__('Error! Vote reset failed.', $dom));
+        $votes = $this->entityManager->getRepository('AdvancedPolls_Entity_Votes2')
+                                 ->findBy(array('pollid' => $args['pollid']));
+        foreach($votes as $vote) {
+            $this->entityManager->remove($vote);
+            $this->entityManager->flush();
         }
     }
 
@@ -253,8 +157,6 @@ public function resetvotes($args)
  */
 public function getvotes($args)
 {
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
-
     // Argument check
     if (!isset($args['pollid'])) {
         return LogUtil::registerArgsError();
@@ -283,7 +185,7 @@ public function getvotes($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such poll found.', $dom));
+        return LogUtil::registerError($this->__('Error! No such poll found.'));
     }
 
     // Security check
@@ -291,45 +193,55 @@ public function getvotes($args)
         return LogUtil::registerPermissionError();
     } else {
         // get database setup
-        $pntable = DBUtil::getTables();
-        $votescolumn = &$pntable['advanced_polls_votes_column'];
+        $em = $this->getService('doctrine.entitymanager');
+        $qb = $em->createQueryBuilder();
+        $qb->select('v')
+           ->from('AdvancedPolls_Entity_Votes', 'v');
 
         switch ($args['sortby']) {
             case 1:
-                $sortstring = " ORDER BY {$votescolumn['voteid']}";
+                $sortstring = 'v.voteid';
                 break;
             case 2:
-                $sortstring = " ORDER BY {$votescolumn['ip']}";
+                $sortstring = 'v.ip';
                 break;
             case 3:
-                $sortstring = " ORDER BY {$votescolumn['time']}";
+                $sortstring = 'v.time';
                 break;
             case 4:
-                $sortstring = " ORDER BY {$votescolumn['uid']}";
+                $sortstring ='v.uid';
                 break;
             case 5:
-                $sortstring = " ORDER BY {$votescolumn['voterank']}";
+                $sortstring = 'v.voterank';
                 break;
             case 6:
-                $sortstring = " ORDER BY {$votescolumn['optionid']}";
+                $sortstring = 'v.optionid';
                 break;
             default:
                 $sortstring = '';
         }
+        
+        
 
         if ($args['sortorder'] == 1 ) {
             $sortstring = $sortstring . ' DESC';
         }
+        $qb->orderBy($sortstring);
 
-        $where = "WHERE $votescolumn[pollid] = '" . DataUtil::formatForStore($args['pollid']) . "'";
-
-        // get the objects from the db
-        $votes = DBUtil::selectObjectArray('advanced_polls_votes', $where, $sortstring, $args['startnum']-1, $args['numitems']);
+        $qb->where('v.pollid = :pollid')
+           ->setParameter('pollid', $args['pollid']);
+        
+                
+        $query = $qb->getQuery();
+        $votes = $query->setFirstResult($args['startnum']-1)
+                       ->setMaxResults($args['numitems'])
+                       ->getArrayResult();
+        
 
         // Check for an error with the database code, and if so set an appropriate
         // error message and return
         if ($votes === false) {
-            return LogUtil::registerError (__('Error! Could not load votes.', $dom));
+            return LogUtil::registerError ($this->__('Error! Could not load votes.'));
         }
     }
 
@@ -344,7 +256,6 @@ public function getvotes($args)
  */
 public function duplicate($args)
 {
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
     // Argument check
     if (!isset($args['pollid'])) {
@@ -356,7 +267,7 @@ public function duplicate($args)
 
     // check for no such poll return from api function
     if ($item == false) {
-        return LogUtil::registerError(__('Error! No such poll found.', $dom));
+        return LogUtil::registerError($this->__('Error! No such poll found.'));
     }
 
     // Security check
@@ -406,7 +317,7 @@ public function duplicate($args)
 
         // The return value of the function is checked
         if ($result = false) {
-            LogUtil::registerError (__('Error! Creation attempt failed.', $dom));
+            LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
         }
         return (bool)$result;
     }
@@ -431,15 +342,21 @@ public function getlinks()
     }
     if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
         $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'view'),
-                         'text' => $this->__('View Polls'));
+                         'text' => $this->__('View Polls'),
+                        'class' => 'z-icon-es-view'
+                   );
     } 
     if (SecurityUtil::checkPermission($this->name, '::', ACCESS_READ)) {
-        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'newitem'),
-                         'text' => $this->__('Create new poll'));
+        $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'modify'),
+                         'text' => $this->__('Create new poll'),
+                         'class' => 'z-icon-es-new',
+                   );
     } 
     if (SecurityUtil::checkPermission($this->name, '::', ACCESS_ADMIN)) {
         $links[] = array('url' => ModUtil::url('AdvancedPolls', 'admin', 'modifyconfig'),
-        				 'text' => $this->__('Settings'));
+                         'text' => $this->__('Settings'),
+                         'class' => 'z-icon-es-config',
+                   );
     }
 
     return $links;

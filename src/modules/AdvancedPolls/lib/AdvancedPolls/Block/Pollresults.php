@@ -106,7 +106,7 @@ public function display($blockinfo) {
     $this->view->assign('votecounts', $votecounts);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $this->view->fetch('advancedpolls_block_pollresults.htm');
+    $blockinfo['content'] = $this->view->fetch('block/pollresults.tpl');
     return BlockUtil::themeBlock($blockinfo);
 }
 
