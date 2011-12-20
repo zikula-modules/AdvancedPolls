@@ -1,2 +1,0 @@
-SetEnvIf Request_URI "\.html$" object_is_html=html
-Allow from env=object_is_html
