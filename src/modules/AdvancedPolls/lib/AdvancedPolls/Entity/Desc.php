@@ -11,6 +11,8 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * AddressBook entity class.
@@ -18,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advancedpolls_polls")
+ * @ORM\Table(name="advanced_polls_desc")
  */
 class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
 {
@@ -177,6 +179,36 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     private $language = '';
     
     
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="create")
+     */
+    private $cr_uid;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="update")
+     */
+    private $lu_uid;
+    
+    
+    
+    /**	
+      * @ORM\Column(type="datetime")	
+      * @Gedmo\Timestampable(on="create")	
+      */	
+    private $cr_date;
+    
+    
+     /**	
+      * @ORM\Column(type="datetime")	
+      * @Gedmo\Timestampable(on="update")	
+      */	
+    private $lu_date;
+    
+    
+    
+    
     public function set($value, $column) {
         $this->$column = $value;
     }
@@ -205,7 +237,6 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
             'title'               => $this->title,
             'urltitle'            => $this->urltitle,    
             'description'         => $this->description,
-            'voterank'            => $this->voterank,
             'optioncount'         => $this->optioncount,
             'opendate'            => $this->opendate,
             'closedate'           => $this->closedate,
@@ -217,6 +248,10 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
             'voteauthtype'        => $this->voteauthtype,
             'tiebreakalg'         => $this->tiebreakalg,
             'language'            => $this->language,
+            'cr_uid'              => $this->cr_uid,
+            'cr_date'             => $this->cr_date,
+            'lu_uid'              => $this->lu_uid,
+            'lu_date'             => $this->lu_date,
          );
         
     }

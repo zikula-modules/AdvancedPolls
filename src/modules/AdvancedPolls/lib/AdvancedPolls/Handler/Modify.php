@@ -34,26 +34,22 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
 
          
          if ($pollid) {
-             // Security check.
-            if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$pollid", ACCESS_EDIT)) {
-                return LogUtil::registerPermissionError();
-            }    
              
             $view->assign('templatetitle', $this->__('Edit poll'));
-            
             $this->poll = $this->entityManager->getRepository('AdvancedPolls_Entity_Desc')
-                                 ->find($pollid);
+                                 ->find($pollid);         
             
-
             if ($this->poll) {
-                $view->assign($this->poll->getAll());
+                $polldata = $this->poll->getAll();
             } else {
                 return LogUtil::registerError($this->__f('Poll with tid %s not found', $pollid));
             }
             
-            
-            // get vote counts
-            $votecount = ModUtil::apiFunc($this->name, 'user', 'pollvotecount', array('pollid' => $pollid));
+                         
+            // Security check.
+            if (!SecurityUtil::checkPermission('AdvancedPolls::item', $polldata['title']."::".$pollid, ACCESS_EDIT)) {
+                return LogUtil::registerPermissionError();
+            }
 
             if ($modvars['enablecategorization']) {
                 // load the category registry util
@@ -77,10 +73,85 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
 
             $view->assign('templatetitle', $this->__('New poll'));
             $view->assign('optioncount', $this->getVar('defaultoptioncount', 10));
+            $view->assign('options', array());
+            
+            
+            $this->poll = new AdvancedPolls_Entity_Desc();
+            $polldata = $this->poll->getAll();
+                
             
         }
         
         
+        $multipleselect_types = array(
+            0 => array(
+                    'value' => 0,
+                    'text' => $this->__('Single')
+                 ),
+            1 => array(
+                    'value' => 1,
+                    'text' => $this->__('Multiple')
+                 ),
+            2 =>  array(
+                    'value' => 3,
+                    'text' => $this->__('Ranked')
+                 )
+        );
+        $view->assign('multipleselect_types', $multipleselect_types);
+        
+        
+        $tiebreakalg_types = array(
+            0 => array(
+                    'value' => 0,
+                    'text' => $this->__('None')
+                 ),
+            1 => array(
+                    'value' => 1,
+                    'text' => $this->__('Vote time count back')
+                 ),
+            2 =>  array(
+                    'value' => 3,
+                    'text' => $this->__('Alphabetical')
+                 )
+        );
+        $view->assign('tiebreakalg_types', $tiebreakalg_types);
+
+        
+        $voteauthtype_types = array(
+            0 => array(
+                    'value' => 1,
+                    'text' => $this->__('Free')
+                 ),
+            1 => array(
+                    'value' => 2,
+                    'text' => $this->__('User ID')
+                 ),
+            2 =>  array(
+                    'value' => 3,
+                    'text' => $this->__('Cookie')
+                 ),
+            3 =>  array(
+                    'value' => 4,
+                    'text' => $this->__('IP Address')
+                 )
+        );
+        $view->assign('voteauthtype_types', $voteauthtype_types);
+        
+        
+        $recurring_types = array(
+            0 => array(
+                    'value' => 0,
+                    'text' => $this->__('No')
+                    ),
+            1 => array(
+                    'value' => 1,
+                    'text' => $this->__('Yes')
+                    ),
+        );
+        $view->assign('recurring_types', $recurring_types);
+        
+        
+        $view->assign($polldata); 
         $this->view->assign('dateformat', $this->__('%Y-%m-%d %H:%M:%S') );
         
         
@@ -126,7 +197,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
         
 
         
-        $options =array();
+        $options = array();
         $texts  = $data['option_texts'];  
         $colors = $data['option_colors'];
         while ($t = current($texts)){
@@ -147,11 +218,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
                 
         
         // switch between edit and create mode        
-        if ($this->poll) {
-            $poll = $this->poll;
-        } else {
-            $poll = new AdvancedPolls_Entity_Desc();
-        }
+        $poll = $this->poll;
         
     
         

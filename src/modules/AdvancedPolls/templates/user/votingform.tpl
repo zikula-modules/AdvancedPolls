@@ -20,6 +20,7 @@
             {else}
                 <input type="hidden" name="multiple" value="1" />
                 <input type="hidden" name="multiplecount" value="{$multiplecount}" />
+                
                 {if $polltype eq 1}
                     {if $multiplecount eq -1}
                         {include file="user/votingform-unlimitedmultipleselect.tpl"}
@@ -36,5 +37,5 @@
         </div>
     </div>
 </form>
-{modurl modname='advancedpolls' func='display' pollid=$pollid assign=returnurl}
+{modurl modname='advancedpolls' type='user' func='display' pollid=$pollid assign=returnurl}
 {* {modcallhooks hookobject='item' hookaction='display' hookid=$pollid module='AdvancedPolls' returnurl=$returnurl} *}

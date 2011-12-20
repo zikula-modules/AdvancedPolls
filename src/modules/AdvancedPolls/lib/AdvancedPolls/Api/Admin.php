@@ -263,7 +263,8 @@ public function duplicate($args)
     }
 
     // The user API function is called.
-    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
+    $item = $this->entityManager->getRepository('AdvancedPolls_Entity_Desc')
+                                 ->find($args['pollid']);
 
     // check for no such poll return from api function
     if ($item == false) {
@@ -271,56 +272,22 @@ public function duplicate($args)
     }
 
     // Security check
-    if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
-        return LogUtil::registerPermissionError();
-    } else {
-        // The API function is called.
-        $pid = ModUtil::apiFunc($this->name, 'admin', 'create',
-        array('title'               => $item['title'],
-              'urltitle'            => $item['urltitle'],
-              'description'         => $item['description'],
-              'language'            => $item['language'],
-              'unixopendate'        => $item['opendate'],
-              'unixclosedate'       => $item['closedate'],
-              'tiebreakalg'         => $item['tiebreakalg'],
-              'voteauthtype'        => $item['voteauthtype'],
-              'multipleselect'      => $item['multipleselect'],
-              'multipleselectcount' => $item['multipleselectcount'],
-              'recurring'           => $item['recurring'],
-              'recurringoffset'     => $item['recurringoffset'],
-              'recurringinterval'   => $item['recurringinterval'],
-              'optioncount'         => $item['optioncount']));
-
-        if ($pid != false) {
-            // Once the poll is created we call the modify function to add
-            // the poll options
-            $result = ModUtil::apiFunc($this->name, 'admin', 'update',
-            array('pollid'              => $pid,
-                  'title'               => $item['title'],
-                  'urltitle'            => $item['urltitle']. $pid,
-                  'description'         => $item['description'],
-                  'optioncount'         => $item['optioncount'],
-                  'language'            => $item['language'],
-                  'unixopendate'        => $item['opendate'],
-                  'unixclosedate'       => $item['closedate'],
-                  'tiebreakalg'         => $item['tiebreakalg'],
-                  'voteauthtype'        => $item['voteauthtype'],
-                  'multipleselect'      => $item['multipleselect'],
-                  'multipleselectcount' => $item['multipleselectcount'],
-                  'recurring'           => $item['recurring'],
-                  'recurringoffset'     => $item['recurringoffset'],
-                  'recurringinterval'   => $item['recurringinterval'],
-                  'options'             => $item['optionarray']));
-        } else {
-            $result = false;
-        }
+    //if (!SecurityUtil::checkPermission('AdvancedPolls::item', "{$item['title']}::{$args['pollid']}", ACCESS_ADD)) {
+      //  return LogUtil::registerPermissionError();
+    //} else {
+        
+        $new_item = clone $item;
+        $new_item->set(null, 'pollid');
+        $this->entityManager->persist($new_item);
+        $this->entityManager->flush();
+        
 
         // The return value of the function is checked
-        if ($result = false) {
+        /*(if ($result = false) {
             LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
-        }
-        return (bool)$result;
-    }
+        }*/
+        return true; //(bool)$result;
+    //}
 }
 
 /**

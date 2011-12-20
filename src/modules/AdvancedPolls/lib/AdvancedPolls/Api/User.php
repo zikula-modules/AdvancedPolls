@@ -291,6 +291,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
 
         // get voting authorisation from item array
         $voteauthtype = $item['voteauthtype'];
+        
 
         switch ($voteauthtype) {
             case 0: //Legacy - should not be used
@@ -333,20 +334,19 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
                 }
             case 4: //IP address voting
                 // extract ip from http headers
-                $ip = System::serverGetVar('REMOTE_ADDR');
+                $ip = $_SERVER['REMOTE_ADDR'];
 
                 // get all the matching votes
                 $em = $this->getService('doctrine.entitymanager');
                 $qb = $em->createQueryBuilder();
                 $qb->select('v')
-                   ->from('AdvancedPolls_Entity_Votes', 'v')
+                   ->from('AdvancedPolls_Entity_Votes2', 'v')
                    ->where('v.ip = :ip AND v.pollid = :pollid')
                    ->setParameter('ip', $ip)
                    ->setParameter('pollid', $args['pollid']);
                 $query = $qb->getQuery();
                 $items = $query->getArrayResult();
                 $votes = count($items);
-
                 //If there are no rows back from this query then this uid can vote
                 if ($votes == 0) {
                     return true;
@@ -541,7 +541,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
 
         // Security check
         if (SecurityUtil::checkPermission('AdvancedPolls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
-            $args['ip'] = System::getVar('REMOTE_ADDR');
+            $args['ip'] = $_SERVER['REMOTE_ADDR'];
             $args['uid'] = UserUtil::getVar('uid');
             $args['time'] = time();
             

@@ -73,27 +73,19 @@
         </div>
             
         <div class="z-formrow">
-            <label for="advancedpolls_recurring">{gt text="Recurring poll?"}</label>
-            <select id="advancedpolls_recurring" name="poll[recurring]">
-                {if $recurring eq 0}
-                <option value="0" selected="selected">{gt text="No"}</option>
-                <option value="1">{gt text="Yes"}</option>
-                {else}
-                <option value="0">{gt text="No"}</option>
-                <option value="1" selected="selected">{gt text="Yes"}</option>
-                {/if}
-            </select>
+            {formlabel for="recurring" __text='Recurring poll?'}
+            {formdropdownlist id="recurring" items=$recurring_types}
         </div>
         <div id="advancedpolls_recurring_container">
             <p class="z-formnote z-informationmsg">{gt text="The following options are only relevant if a recurring poll is selected."}</p>
             <div class="z-formrow">
-                <label for="advancedpolls_recurringoffset">{gt text="Recurring offset"}</label>
-                <input id="advancedpolls_recurringoffset" name="poll[recurringoffset]" type="text" size="5" maxlength="5" value="{$recurringoffset|safetext}" />
+                {formlabel for="recurringoffset" __text='Recurring offset'}
+                {formtextinput size="5" maxLength="5" id="recurringoffset"}
                 <em class="z-sub z-formnote">{gt text="Number of hours after the close date the poll reopens."}</em>
             </div>
             <div class="z-formrow">
-                <label for="advancedpolls_recurringinterval">{gt text="Recurrence interval"}</label>
-                <input id="advancedpolls_recurringinterval" name="poll[recurringinterval]" type="text" size="5" maxlength="5" value="{$recurringinterval|safetext}" />
+                {formlabel for="recurringinterval" __text='Recurrence interval'}
+                {formtextinput size="5" maxLength="5" id="recurringinterval"}
                 <em class="z-sub z-formnote">{gt text="Number of days the poll will recur."}</em>
             </div>
         </div>
@@ -101,28 +93,22 @@
     <fieldset>
         <legend>{gt text="Voting regulations"}</legend>
         <div class="z-formrow">
-            <label for="advancedpolls_voteauthtype">{gt text="Poll authorisation method"}</label>
-            <select id="advancedpolls_voteauthtype" name="poll[voteauthtype]">
-                {votingtypes selected=$voteauthtype}
-            </select>
+            {formlabel for="voteauthtype" __text='Poll authorisation method'}
+            {formdropdownlist id="voteauthtype" items=$voteauthtype_types}
         </div>
         <div class="z-formrow">
-            <label for="advancedpolls_tiebreakalg">{gt text="Tiebreak method"}</label>
-            <select id="advancedpolls_tiebreakalg" name="poll[tiebreakalg]">
-                {tiebreaktypes selected=$tiebreakalg}
-            </select>
+            {formlabel for="tiebreakalg" __text='Tiebreak method'}
+            {formdropdownlist id="tiebreakalg" items=$tiebreakalg_types}
         </div>
         <div class="z-formrow">
-            <label for="advancedpolls_multipleselect">{gt text="Selection method"}</label>
-            <select id="advancedpolls_multipleselect" name="poll[multipleselect]">
-                {multipleselecttypes selected=$multipleselect}
-            </select>
+            {formlabel for="multipleselect" __text='Selection method'}
+            {formdropdownlist id="multipleselect" items=$multipleselect_types}
         </div>
         <div id="advancedpolls_multipleselect_container">
             <p class="z-formnote z-informationmsg">{gt text="The following option only relevant if a multiple selection poll is selected."}</p>
             <div class="z-formrow">
-                <label for="advancedpolls_multipleselectcount">{gt text="You may select "}</label>
-                <input id="advancedpolls_multipleselectcount" name="poll[multipleselectcount]" type="text" size="5" maxlength="5" value="{$multipleselectcount|safetext}" />
+                {formlabel for="multipleselectcount" __text='You may select '}
+                {formtextinput size="5" maxLength="5" id="multipleselectcount"}
                 <em class="z-formnote z-sub">{gt text="(-1 for Unlimited selections)"}</em>
             </div>
         </div>
