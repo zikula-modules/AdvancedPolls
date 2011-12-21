@@ -16,5 +16,3 @@
     {/if}
 </div>
 {/foreach}
-
-<input type="hidden" name="optioncount" value="{$smarty.section.options.iteration-1}" />

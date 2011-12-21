@@ -95,9 +95,10 @@ var colorPicker=Class.create({
 		this.setSelector(this.color);
 		this.setCurrentColor((this.options.origColor?this.options.origColor:this.color));
 		this.setNewColor(this.color);
-		if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'backgroundColor':'#'+this.HSBToHex(this.color)});
+		if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'border-color':'#'+this.HSBToHex(this.color)});
 
 		//Event.observe(window, "scroll", this.repositionPicker.bindAsEventListener(this));
+                $(this.options.previewElement).setStyle({'border-right-width':'20px'});
 		this.options.onLoad(this);
 		return this;
 		
@@ -127,7 +128,7 @@ var colorPicker=Class.create({
 		this.hue.setStyle({'top':parseInt(150 - 150 * hsb.h/360, 10)+'px'});
 	},
 	setCurrentColor:function(hsb){
-		this.currentColor.setStyle({'backgroundColor':'#' + this.HSBToHex(hsb)});
+		this.currentColor.setStyle({'backgroundColor-color':'#' + this.HSBToHex(hsb)});
 		if(!this.options.origColor) this.options.origColor = hsb;
 	},
 	setNewColor:function(hsb){
@@ -166,7 +167,7 @@ var colorPicker=Class.create({
 		if(this.options.updateOnChange){
 			if(this.el.nodeName == 'INPUT') this.el.value = this.HSBToHex(col);
 			if($(this.options.inputElement)) $(this.options.inputElement).value = this.HSBToHex(col);
-			if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'backgroundColor':'#'+this.HSBToHex(col)});
+			if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'border-color':'#'+this.HSBToHex(col)});
 		}
 	},
 	blur:function(ev){
@@ -272,7 +273,7 @@ var colorPicker=Class.create({
 		this.setCurrentColor(col);
 		if(this.el.nodeName == 'INPUT') this.el.value = this.HSBToHex(col);
 		if($(this.options.inputElement)) $(this.options.inputElement).value = this.HSBToHex(col);
-		if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'backgroundColor':'#'+this.HSBToHex(col)});
+		if($(this.options.previewElement)) $(this.options.previewElement).setStyle({'border-color':'#'+this.HSBToHex(col)});
 		this.options.onSubmit(this);
 		if(this.options.hideOnSubmit) this.hidePicker();
 	},

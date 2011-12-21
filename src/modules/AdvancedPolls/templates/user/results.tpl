@@ -23,7 +23,7 @@
                 <div class="progress-container">
                     {assign var="votes" value=$option.votes|@count}
                     {assign var="percentintscaled" value=$votes/$item.number_of_votes*100*$scalingfactor}
-                    <div style="width: {$percentintscaled}px; background-color: {if $option.optioncolour neq ''}{$option.optioncolour}{else}{$defaultcolour}{/if};"></div>
+                    <div style="width: {$percentintscaled}px; background-color: {if $option.optioncolour neq ''}#{$option.optioncolour}{else}{$defaultcolour}{/if};"></div>
                 </div>
                 {else}
                 {img modname="advancedpolls" src="bar.png" height="16" width=$percentintscaled+1 alt=$option.percent}

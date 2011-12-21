@@ -60,16 +60,6 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
      * @ORM\Column(type="text", nullable="true")
      */
     private $description = null;
-        
-        
-    /**
-     * The following are annotations which define the optioncount field.
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $optioncount = 0;
-    
-    
     
     
     /**
@@ -242,7 +232,6 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
             'title'               => $this->title,
             'urltitle'            => $this->urltitle,    
             'description'         => $this->description,
-            'optioncount'         => $this->optioncount,
             'opendate'            => $this->opendate,
             'closedate'           => $this->closedate,
             'recurring'           => $this->recurring,

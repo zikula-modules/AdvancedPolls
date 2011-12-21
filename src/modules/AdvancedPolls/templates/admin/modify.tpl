@@ -1,8 +1,6 @@
 {pageaddvar name="javascript" value="prototype"}
 {pageaddvar name="javascript" value="modules/AdvancedPolls/javascript/prototype_colorpicker/js/prototype_colorpicker.js"}
 {pageaddvar name="stylesheet" value="modules/AdvancedPolls/javascript/prototype_colorpicker/css/prototype_colorpicker.css"}
-
-
 {ajaxheader modname=AdvancedPolls filename=ap_admin_newmodify.js effects=true nobehaviour=true noscriptaculous=true}
 
 
@@ -20,7 +18,7 @@
         <legend>{gt text="Basic Information"}</legend>
         <div class="z-formrow">
             {formlabel for="title"  __text='Name of poll'}
-            {formtextinput size="50" maxLength="100" id="title"}
+            {formtextinput size="50" maxLength="100" id="title" mandatory=true"}
         </div>
 
                 
@@ -122,16 +120,9 @@
             <div class="z-formrow">
                 {assign var="i" value=$smarty.foreach.options.iteration}
                 {formlabel __text="Poll option $i"}
-                <div>
-                    <table>
-                        <tr>
-                            <td>
-                                {formtextinput size="50" maxLength="255" id="optiontext_$i"  group="option_texts" text=$option.optiontext}
-                            </td><td id="defaultcolor-preview-{$i}" class="color-preview" width=80>
-                                {formtextinput size="6"  maxLength="6"   id="optioncolor_$i" group="option_colors" text=$option.optioncolour}
-                            </td>
-                        </tr>
-                    </table>
+                <div style="white-space:nowrap">
+                    {formtextinput size="50" maxLength="255" id="optiontext_$i"  group="option_texts" text=$option.optiontext}
+                    {formtextinput size="6"  maxLength="6"   id="optioncolor_$i" group="option_colors" text=$option.optioncolour}
                 </div>
             </div>
             <script type="text/javascript">
@@ -139,47 +130,42 @@
                     'optioncolor_{{$i}}',
                     {
                         color:'#{{$option.optioncolour}}',
-                        previewElement:'defaultcolor-preview-{{$i}}'
+                        previewElement:'optioncolor_{{$i}}'
                     }
                 );
             </script>  
         {/foreach}
-        <div class="z-formrow">
-            {formlabel __text="Poll option"}
-            <div> 
-                <table>
-                    <tr>
-                        <td>
-                            {formtextinput size="50" maxLength="255" id="optiontext_n1"  group="option_texts"}
-                        </td>
-                        <td id="defaultcolor-preview" class="color-preview" width=80>
-                            {formtextinput size="6"  maxLength="6"   id="optioncolor_n1" group="option_colors"}
-                        </td>
-                    </tr>
-                </table>
-                
+        
+        {section name="i" start=1 loop=$defaultoptioncount+1 step=1}
+            {assign var="j" value=$smarty.section.i.index}
+             <div class="z-formrow">
+                {if $j == 1}
+                    {formlabel __text="New poll options"}
+                {else}
+                    {formlabel text=""}
+                {/if}
+                <div style="white-space:nowrap">
+                    {formtextinput size="50" maxLength="255" id="optiontext_n$j"  group="option_texts"}
+                    {formtextinput size="6"  maxLength="6"   id="optioncolor_n$j" group="option_colors"}
+                </div>
             </div>
-        </div>
-                    
-        <script type="text/javascript">
-            var cp1 = new colorPicker(
-                'optioncolor_n1',
-                {
-                    color:'',
-                    previewElement:'defaultcolor-preview'
-                }
-            );
-        </script>            
-                    
-                    
-        <div class="z-formrow">
-            {formlabel for="optioncount" __text='Number of options in this poll'}
-            {formtextinput size="3" maxLength="3" id="optioncount"}
-        </div>
+                
+            <script type="text/javascript">
+                var cp1 = new colorPicker(
+                    'optioncolor_n{{$j}}',
+                    {
+                        color:'',
+                        previewElement:'optioncolor_n{{$j}}'
+                    }
+                );
+            </script>   
+        {/section}
+          
+
     </fieldset>
     <fieldset>
         <legend>{gt text="Meta data"}</legend>
-        <ul>
+        <ul style="margin: 7px 0px 7px 20px">
             {usergetvar name=uname uid=$cr_uid assign=username}
             <li>{gt text="Created by %s" tag1=$username}</li>
             <li>{gt text="Created on %s" tag1=$cr_date|dateformat}</li>
