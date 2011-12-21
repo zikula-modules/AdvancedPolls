@@ -19,254 +19,257 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
  */
 	public function install()
 	{
+            
+            // create the table
+            try {
+                DoctrineHelper::createSchema($this->entityManager, array('AdvancedPolls_Entity_Desc', 
+                                                                        'AdvancedPolls_Entity_Options',
+                                                                        'AdvancedPolls_Entity_Votes2'));
+            } catch (Exception $e) {
+                LogUtil::registerStatus($e->getMessage());
+                return false;
+            }    
 
-    	// create tables
-    	$tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
-    	foreach ($tables as $table) {
-        	if (!DBUtil::createTable($table)) {
-            	return false;
-        	}
-    	}
 
-    	// create our default category
-    	if (!$this->createdefaultcategory()) {
-        	return LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
-    	}
 
-    	// Set up an initial value for each module variable
-    	ModUtil::setVar($this->name, 'usereversedns', 0);
-    	ModUtil::setVar($this->name, 'scalingfactor', 4);
-    	ModUtil::setVar($this->name, 'cssbars', 1);
-    	ModUtil::setVar($this->name, 'adminitemsperpage', 25);
-    	ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
-    	ModUtil::setVar($this->name, 'defaultoptioncount', '12');
-    	ModUtil::setVar($this->name, 'enablecategorization', true);
+            // create our default category
+            /*if (!$this->createdefaultcategory()) {
+                return LogUtil::registerError ($this->__('Error! Creation attempt failed.'));
+            }*/
 
-    	// Initialisation successful
-    	return true;
+            // Set up an initial value for each module variable
+            $this->setVar('usereversedns', 0);
+            $this->setVar('scalingfactor', 4);
+            $this->setVar('cssbars', 1);
+            $this->setVar('adminitemsperpage', 25);
+            $this->setVar('defaultcolour', '66CC33');
+            $this->setVar('defaultoptioncount', '12');
+            $this->setVar('enablecategorization', true);
+
+            // Initialisation successful
+            return true;
 	}
 
-/**
- * Upgrade  the Advanced Polls module from an old version
- * This function can be called multiple times
- *
- * @return bool true on success, false on failure
- */
-public function upgrade($oldversion)
-{
-    $dom = ZLanguage::getModuleDomain('AdvancedPolls');
+    /**
+    * Upgrade  the Advanced Polls module from an old version
+    * This function can be called multiple times
+    *
+    * @return bool true on success, false on failure
+    */
+    public function upgrade($oldversion)
+    {
+        $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
-    // update tables
-    $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
-    foreach ($tables as $table) {
-        if (!DBUtil::changeTable($table)) {
-            return false;
-        }
-    }
-
-    switch($oldversion) {
-        case '1.0':
-            // Version 1.0 Didn't have the Module variables
-            ModUtil::setVar($this->name, 'admindateformat', 'r');
-            ModUtil::setVar($this->name, 'userdateformat', 'r');
-            ModUtil::setVar($this->name, 'usereversedns', 0);
-            ModUtil::setVar($this->name, 'scalingfactor', 4);
-            return '1.1';
-        case '1.1':
-            // Add additional module variables in this version
-            ModUtil::setVar($this->name, 'adminitemsperpage', 25);
-            ModUtil::setVar($this->name, 'useritemsperpage', 25);
-            ModUtil::setVar($this->name, 'defaultcolour', '#000000');
-            ModUtil::setVar($this->name, 'defaultoptioncount', '12');
-            return '1.5';
-        case '1.5':
-            // all changes in this release are covered by the table change
-            return '1.51';
-        case '1.51':
-            // setup categorisation
-            ModUtil::setVar($this->name, 'enablecategorization', true);
-            ModUtil::setVar($this->name, 'cssbars', 1);
-            ModUtil::setVar($this->name, 'defaultcolour', '#66CC33');
-            ModUtil::delVar($this->name, 'admindateformat');
-            ModUtil::delVar($this->name, 'userdateformat');
-            ModUtil::delVar($this->name, 'useritemsperpage');
-            ModUtil::dbInfoLoad($this->name, 'advanced_polls', true);
-
-            //change table: remove votingmethod column
-            if (!DBUtil::changeTable('advanced_polls_desc')) {
-                return LogUtil::registerError (__('Error! Could not change the advanced polls tables.', $dom));
+        // update tables
+        $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
+        foreach ($tables as $table) {
+            if (!DBUtil::changeTable($table)) {
+                return false;
             }
-
-            // populate permalinks for existing content
-            if (!$this->createPermalinks()) {
-                return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
-            }
-
-            // create the default category
-            if (!$this->createdefaultcategory()) {
-                return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
-            }
-
-            // convert language codes
-            if (!$this->updatePollsLanguages()) {
-                return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
-            }
-            return $this->upgrade('2.0.0');
-        case '2.0.0':
-            // get the values of module vars            
-    		$usereveredns = ModUtil::getVar($this->name, 'usereversedns');
-    		$scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
-    		$cssbars = ModUtil::getVar($this->name, 'cssbars');
-    		$adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
-    		$defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
-    		$defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
-    		$enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
-                       
-        	$this->delVars();
-        	
-        	// Set up an initial value for each module variable
-
-    		ModUtil::setVar($this->name, 'usereversedns', $usereveredns);
-    		ModUtil::setVar($this->name, 'scalingfactor', $scalingfactor);
-    		ModUtil::setVar($this->name, 'cssbars', $cssbars);
-    		ModUtil::setVar($this->name, 'adminitemsperpage', $adminitemsperpage);
-    		ModUtil::setVar($this->name, 'defaultcolour', $defaultcolour);
-    		ModUtil::setVar($this->name, 'defaultoptioncount', $defaultoptioncount);
-    		ModUtil::setVar($this->name, 'enablecategorization', $enablecategorization);
-        	
-        	return $this->upgrade('2.0.1');
-        case '2.0.1':
-        	// future upgrade routines
-        	
-            break;
-    }
-
-    // Update successful
-    return true;
-
-}
-
-/**
- * Delete the t the Advanced Polls module
- * This function is only ever called once during the lifetime of a particular
- * module instance
- *
- * @return bool true on success, false on failure
- */
-public function uninstall()
-{
-    // delete tables
-    $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
-    foreach ($tables as $table) {
-        if (!DBUtil::dropTable($table)) {
-            return false;
         }
-    }
 
-    // Delete any module variables
-    $this->delVar($this->name);
-    
-    // remove category registry entries
-    ModUtil::dbInfoLoad('Categories');
-    DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
+        switch($oldversion) {
+            case '1.0':
+                // Version 1.0 Didn't have the Module variables
+                $this->setVar('admindateformat', 'r');
+                $this->setVar('userdateformat', 'r');
+                $this->setVar('usereversedns', 0);
+                $this->setVar('scalingfactor', 4);
+                return '1.1';
+            case '1.1':
+                // Add additional module variables in this version
+                $this->setVar('adminitemsperpage', 25);
+                $this->setVar('useritemsperpage', 25);
+                $this->setVar('defaultcolour', '#000000');
+                $this->setVar('defaultoptioncount', '12');
+                return '1.5';
+            case '1.5':
+                // all changes in this release are covered by the table change
+                return '1.51';
+            case '1.51':
+                // setup categorisation
+                $this->setVar('enablecategorization', true);
+                $this->setVar('cssbars', 1);
+                $this->setVar('defaultcolour', '#66CC33');
+                $this->detVar( 'admindateformat');
+                $this->detVar( 'userdateformat');
+                $this->detVar( 'useritemsperpage');
+                ModUtil::dbInfoLoad($this->name, 'advanced_polls', true);
 
-    // Deletion successful
-    return true;
-}
 
-/**
- * Create the category placeholder
- *
- * @return bool true on success, false on failure
- */
-public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
-{
-    // TODO $dom = ZLanguage::getModuleDomain('AdvancedPolls');
+                //change table: remove votingmethod column
+                if (!DBUtil::changeTable('advanced_polls_desc')) {
+                    return LogUtil::registerError (__('Error! Could not change the advanced polls tables.', $dom));
+                }
 
-    // get the language file
-    $lang = ZLanguage::getLanguageCode();
+                // populate permalinks for existing content
+                if (!$this->createPermalinks()) {
+                    return LogUtil::registerError (__('Error! Could not populate permalinks for existing content.', $dom));
+                }
 
-    // get the category path for which we're going to insert our place holder category
-    $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules');
-    $apCat   = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Advanced Polls');
+                // create the default category
+                if (!$this->createdefaultcategory()) {
+                    return LogUtil::registerError (__('Error! Could not create the default category.', $dom));
+                }
 
-    if (!$apCat) {
-        // create placeholder for all our migrated categories
-        $cat = new Categories_DBObject_Category();
-        $cat->setDataField('parent_id', $rootcat['id']);
-        $cat->setDataField('name', 'Advanced Polls');
-        $cat->setDataField('display_name', array($lang => $this->__('Advanced Polls')));
-        $cat->setDataField('display_desc', array($lang => $this->__('Polls')));
-        if (!$cat->validate('admin')) {
-            return false;
+                // convert language codes
+                if (!$this->updatePollsLanguages()) {
+                    return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
+                }
+                return $this->upgrade('2.0.0');
+            case '2.0.0':
+                // get the values of module vars            
+                    $usereveredns = ModUtil::getVar($this->name, 'usereversedns');
+                    $scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
+                    $cssbars = ModUtil::getVar($this->name, 'cssbars');
+                    $adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
+                    $defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
+                    $defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
+                    $enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
+
+                    $this->delVars();
+
+                    // Set up an initial value for each module variable
+
+                    $this->setVar('usereversedns', $usereveredns);
+                    $this->setVar('scalingfactor', $scalingfactor);
+                    $this->setVar('cssbars', $cssbars);
+                    $this->setVar('adminitemsperpage', $adminitemsperpage);
+                    $this->setVar('defaultcolour', $defaultcolour);
+                    $this->setVar('defaultoptioncount', $defaultoptioncount);
+                    $this->setVar('enablecategorization', $enablecategorization);
+
+                    return $this->upgrade('2.0.1');
+            case '2.0.1':
+                    // future upgrade routines
+
+                break;
         }
-        $cat->insert();
-        $cat->update();
+
+        // Update successful
+        return true;
+
     }
 
-    // get the category path for which we're going to insert our upgraded categories
-    $rootcat = CategoryUtil::getCategoryByPath($regpath);
-    if ($rootcat) {
-        // create an entry in the categories registry
-        $registry = new Categories_DBObject_Registry();
-        $registry->setDataField('modname', 'AdvancedPolls');
-        $registry->setDataField('table', 'advanced_polls_desc');
-        $registry->setDataField('property', 'Main');
-        $registry->setDataField('category_id', $rootcat['id']);
-        $registry->insert();
-    } else {
-        return false;
+    /**
+    * Delete the t the Advanced Polls module
+    * This function is only ever called once during the lifetime of a particular
+    * module instance
+    *
+    * @return bool true on success, false on failure
+    */
+    public function uninstall()
+    {
+
+        // drop table
+        DoctrineHelper::dropSchema($this->entityManager, array('AdvancedPolls_Entity_Desc', 
+                                                                'AdvancedPolls_Entity_Options',
+                                                                'AdvancedPolls_Entity_Votes2'));
+
+        // remove all module vars
+        $this->delVars();
+
+        // remove category registry entries
+        ModUtil::dbInfoLoad('Categories');
+        DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
+
+        // Deletion successful
+        return true;
     }
 
-    return true;
-}
+    /**
+    * Create the category placeholder
+    *
+    * @return bool true on success, false on failure
+    */
+    public function createdefaultcategory($regpath = '/__SYSTEM__/Modules/Global')
+    {
+        // TODO $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
+        // get the language file
+        $lang = ZLanguage::getLanguageCode();
 
-public function updatePollsLanguages()
-{
-    $obj = DBUtil::selectObjectArray('advanced_polls_desc');
+        // get the category path for which we're going to insert our place holder category
+        $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules');
+        $apCat   = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Advanced Polls');
 
-    if (count($obj) == 0) {
-        // nothing to do
-        return;
-    }
-
-    foreach ($obj as $pollid) {
-        // translate l3 -> l2
-        if ($l2 = ZLanguage::translateLegacyCode($pollid['language'])) {
-            $pollid['language'] = $l2;
+        if (!$apCat) {
+            // create placeholder for all our migrated categories
+            $cat = new Categories_DBObject_Category();
+            $cat->setDataField('parent_id', $rootcat['id']);
+            $cat->setDataField('name', 'Advanced Polls');
+            $cat->setDataField('display_name', array($lang => $this->__('Advanced Polls')));
+            $cat->setDataField('display_desc', array($lang => $this->__('Polls')));
+            if (!$cat->validate('admin')) {
+                return false;
+            }
+            $cat->insert();
+            $cat->update();
         }
-        DBUtil::updateObject($pollid, 'advanced_polls_desc', '', 'pollid', true);
-    }
 
-    return true;
-}
-
-
-public function createPermalinks()
-{
-    // get all the ID and permalink of the table
-    $data = DBUtil::selectObjectArray('advanced_polls_desc', '', '', -1, -1, 'pollid', null, null, array('pollid', 'title', 'urltitle'));
-
-    // loop the data searching for non equal permalinks
-    $perma = '';
-    foreach (array_keys($data) as $pollid) {
-        $perma = DataUtil::formatPermalink($data[$pollid]['title']);
-        if ($data[$pollid]['urltitle'] != $perma) {
-            $data[$pollid]['urltitle'] = $perma;
+        // get the category path for which we're going to insert our upgraded categories
+        $rootcat = CategoryUtil::getCategoryByPath($regpath);
+        if ($rootcat) {
+            // create an entry in the categories registry
+            $registry = new Categories_DBObject_Registry();
+            $registry->setDataField('modname', 'AdvancedPolls');
+            $registry->setDataField('table', 'advanced_polls_desc');
+            $registry->setDataField('property', 'Main');
+            $registry->setDataField('category_id', $rootcat['id']);
+            $registry->insert();
         } else {
-            unset($data[$pollid]);
+            return false;
         }
+
+        return true;
     }
 
-    if (empty($data)) {
+
+    public function updatePollsLanguages()
+    {
+        $obj = DBUtil::selectObjectArray('advanced_polls_desc');
+
+        if (count($obj) == 0) {
+            // nothing to do
+            return;
+        }
+
+        foreach ($obj as $pollid) {
+            // translate l3 -> l2
+            if ($l2 = ZLanguage::translateLegacyCode($pollid['language'])) {
+                $pollid['language'] = $l2;
+            }
+            DBUtil::updateObject($pollid, 'advanced_polls_desc', '', 'pollid', true);
+        }
+
         return true;
-        // store the modified permalinks
-    } elseif (DBUtil::updateObjectArray($data, 'advanced_polls_desc', 'pollid')) {
-        // let the calling process know that we have finished successfully
-        return true;
-    } else {
-        return false;
     }
-}
+
+
+    public function createPermalinks()
+    {
+        // get all the ID and permalink of the table
+        $data = DBUtil::selectObjectArray('advanced_polls_desc', '', '', -1, -1, 'pollid', null, null, array('pollid', 'title', 'urltitle'));
+
+        // loop the data searching for non equal permalinks
+        $perma = '';
+        foreach (array_keys($data) as $pollid) {
+            $perma = DataUtil::formatPermalink($data[$pollid]['title']);
+            if ($data[$pollid]['urltitle'] != $perma) {
+                $data[$pollid]['urltitle'] = $perma;
+            } else {
+                unset($data[$pollid]);
+            }
+        }
+
+        if (empty($data)) {
+            return true;
+            // store the modified permalinks
+        } elseif (DBUtil::updateObjectArray($data, 'advanced_polls_desc', 'pollid')) {
+            // let the calling process know that we have finished successfully
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

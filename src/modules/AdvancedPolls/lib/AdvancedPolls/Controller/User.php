@@ -98,15 +98,12 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
         }
         
         // get all matching polls
-        $items = ModUtil::apiFunc($this->name, 'user', 'getall', array('checkml' => false,
-                                                                        'startnum' => $startnum,
-                                                                        'category' => isset($catFilter) ? $catFilter : null,
-                                                                        'catregistry'  => isset($catregistry) ? $catregistry : null));
-
-        // The return value of the function is checked
-        if ($items == false) {
-            return LogUtil::registerError($this->__('Error! No polls found.'));
-        }
+        $items = ModUtil::apiFunc($this->name, 'user', 'getall', array(
+            'checkml'     => false,
+            'startnum'    => $startnum,
+            'category'    => isset($catFilter) ? $catFilter : null,
+            'catregistry' => isset($catregistry) ? $catregistry : null)
+        );
 
         $activepolls = array();
         $futurepolls = array();
@@ -115,11 +112,11 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
         foreach ($items as $item) {
 
             // is this poll currently open for voting
-            $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $item['pollid']));
+            $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('item' => $item));
 
             
             // is this user/ip etc. allowed to vote under voting regulations
-            $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
+            $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('item' => $item));
 
             
             if ($item['opendate'] > time()) {
@@ -133,6 +130,7 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
             $item['notyetopen'] = $notyetopen;
             $options = array();
 
+            
             
             if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
                 if ($ispollopen == true) {
@@ -229,11 +227,14 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
             return LogUtil::registerError ($this->__('Error! No such poll found.'), 404);
         }
 
+        
+        
         // get theme name
         $this->view->assign('theme', UserUtil::getTheme());
         $this->view->assign($this->getVars());
         $this->view->assign('lang', ZLanguage::getLanguageCode());
 
+        
         // check if we need to reset any poll votes
         //$resetrecurring = ModUtil::apiFunc($this->name, 'user', 'resetrecurring', array('pollid' => $pollid));
 
@@ -241,11 +242,10 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
         if (SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$item[pollid]", ACCESS_READ)) {
 
             // is this poll currently open for voting
-            $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('pollid' => $item['pollid']));
+            $ispollopen = ModUtil::apiFunc($this->name, 'user', 'isopen', array('item' => $item));
 
             // is this user/ip etc. allowed to vote under voting regulations
-            $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('pollid' => $item['pollid']));
-
+            $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('item' => $item));
             
             if ($item['opendate'] > time()) {
                 $notyetopen = true;

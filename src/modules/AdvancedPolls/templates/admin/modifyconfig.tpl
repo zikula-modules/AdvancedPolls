@@ -45,8 +45,8 @@
             {formlabel for="defaultcolor" __text="Default colour"}
             <table>
                 <tr>
-                    <td id="defaultcolor-preview" class="color-preview" width=80>
-                        {formtextinput id="defaultcolor" size="6" maxLength="6"}
+                    <td id="defaultcolour-preview" class="colour-preview" width=80>
+                        {formtextinput id="defaultcolour" size="6" maxLength="6"}
                     </td>
                 </tr>
             </table>
@@ -62,10 +62,10 @@
         
   <script type="text/javascript">
     var cp1 = new colorPicker(
-        'defaultcolor',
+        'defaultcolour',
         {
-            color:'#{{$defaultcolor}}',
-            previewElement:'defaultcolor-preview'
+            color:'#{{$defaultcolour}}',
+            previewElement:'defaultcolour-preview'
         }
     );
 </script>

@@ -10,9 +10,11 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+
+
 
 /**
  * AddressBook entity class.
@@ -55,9 +57,9 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     /**
      * The following are annotations which define the description field.
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable="true")
      */
-    private $description;
+    private $description = null;
         
         
     /**
@@ -185,6 +187,9 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
      */
     private $cr_uid;
     
+    
+    
+    
     /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="update")
@@ -194,9 +199,9 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     
     
     /**	
-      * @ORM\Column(type="datetime")	
-      * @Gedmo\Timestampable(on="create")	
-      */	
+     * @ORM\Column(type="datetime")	
+     * @Gedmo\Timestampable(on="create")	
+     */	
     private $cr_date;
     
     
@@ -260,6 +265,10 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     public function __construct()
     {
         $this->options = new Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function setTitle($title) {
+        $this->title = $title;
     }
     
     

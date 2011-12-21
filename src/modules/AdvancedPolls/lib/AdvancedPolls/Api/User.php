@@ -226,20 +226,25 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
     public function isopen($args)
     {
         // Argument check
-        if (!isset($args['pollid'])) {
+        if (!isset($args['pollid']) and !isset($args['item'])) {
             return LogUtil::registerArgsError();
         }
-
-        // The user API function is called.
-        $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
+        
+        if (isset($args['item'])) {
+            $item = $args['item'];
+        } else {
+            // The user API function is called.
+            $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
+        }
 
         // no such item is db
         if ($item == false) {
             return LogUtil::registerError($this->__('Error! No such poll found.'));
         }
 
+        
         // Security check
-        if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('AdvancedPolls::item', $item['title'].'::'.$item['pollid'], ACCESS_OVERVIEW)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -268,12 +273,16 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
     public function isvoteallowed($args)
     {
         // Argument check
-        if (!isset($args['pollid'])) {
+        if (!isset($args['pollid']) and !isset($args['item'])) {
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
+        if (isset($args['item'])) {
+            $item = $args['item'];
+        } else {
+            // The user API function is called.
+            $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid']));
+        }
 
         // no such item in db
         if ($item == false) {
@@ -281,10 +290,10 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('AdvancedPolls::item', $item['title'].'::'.$item['pollid'], ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
-        if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('AdvancedPolls::item', $item['title'].'::'.$item['pollid'], ACCESS_COMMENT)) {
             // Here we don't set an error as this indicates that the user can't vote in this poll
             return false;
         }
@@ -302,8 +311,6 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
                 // // extract user id from session variables
                 $uid = UserUtil::getVar('uid');
                 
-                
-                
                 // get all the matching votes
                 $em = $this->getService('doctrine.entitymanager');
                 $qb = $em->createQueryBuilder();
@@ -311,12 +318,10 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
                    ->from('AdvancedPolls_Entity_Votes', 'v')
                    ->where('v.uid = :uid AND v.pollid = :pollid')
                    ->setParameter('uid', $uid)
-                   ->setParameter('pollid', $args['pollid']);
+                   ->setParameter('pollid', $item['pollid']);
                 $query = $qb->getQuery();
                 $items = $query->getArrayResult();
                 $votes = count($items);
-                
-                
 
                 if ($votes == 0) {
                     return true;
@@ -327,7 +332,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
                 // check for existance of session variable (cookie)
                 // if set then vote is invalid otherwise set session variable
                 // and return valid
-                if (SessionUtil::getVar("advanced_polls_voted{$args['pollid']}")) {
+                if (SessionUtil::getVar("advanced_polls_voted{$item['pollid']}")) {
                     return false;
                 } else {
                     return true;
@@ -343,7 +348,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
                    ->from('AdvancedPolls_Entity_Votes2', 'v')
                    ->where('v.ip = :ip AND v.pollid = :pollid')
                    ->setParameter('ip', $ip)
-                   ->setParameter('pollid', $args['pollid']);
+                   ->setParameter('pollid', $item['pollid']);
                 $query = $qb->getQuery();
                 $items = $query->getArrayResult();
                 $votes = count($items);

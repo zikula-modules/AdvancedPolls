@@ -19,7 +19,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * @var integer
      */
-    private $poll;
+    private $poll, $new;
 
     
 
@@ -75,7 +75,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
             $view->assign('optioncount', $this->getVar('defaultoptioncount', 10));
             $view->assign('options', array());
             
-            
+            $this->new = true;
             $this->poll = new AdvancedPolls_Entity_Desc();
             $polldata = $this->poll->getAll();
                 
@@ -222,8 +222,6 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
         
     
         
-        
-        //$poll->set($data['title'], 'title');
         $poll->setAll($data);
         $this->entityManager->persist($poll);
         $this->entityManager->flush();

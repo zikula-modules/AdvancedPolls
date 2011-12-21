@@ -77,7 +77,6 @@
     </tbody>
 </table>
 
-{cycle print=false advance=false reset=true}
 <h4>{gt text="Upcoming polls"}</h4>
 <table class="z-datatable">
     <thead>
@@ -118,7 +117,6 @@
     </tbody>
 </table>
 
-{cycle print=false advance=false reset=true}
 <h4>{gt text="Previous polls"}</h4>
 <table class="z-datatable">
     <thead>

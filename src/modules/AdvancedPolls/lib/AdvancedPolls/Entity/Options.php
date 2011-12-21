@@ -18,8 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_data",
- *            uniqueConstraints={@ORM\UniqueConstraint(name="cat_unq",columns={"pollid", "pollid"})})
+ * @ORM\Table(name="advanced_polls_data")
  */
 class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
 {    
@@ -104,7 +103,7 @@ class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
             'time'     => $this->time,    
             'uid'      => $this->uid,
             'voterank' => $this->voterank,
-            'pollid'   => $this->pollid,
+            'pollid'   => $this->entity,
             'optionid' => $this->optionid,
          );
         
