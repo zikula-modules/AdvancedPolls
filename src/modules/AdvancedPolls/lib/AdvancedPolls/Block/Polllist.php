@@ -61,7 +61,7 @@ public function display($blockinfo)
     }
 
     // get the currant time
-    $currentdate = time();
+    $currentdate = new DateTime();
 
     // create a results array
     $polls = array();

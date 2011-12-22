@@ -39,6 +39,9 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
      */
     public function view($args)
     {
+
+        
+        
         // Security check
         if (!SecurityUtil::checkPermission('AdvancedPolls::', '::', ACCESS_OVERVIEW)) {
             return LogUtil::registerPermissionError();
@@ -118,8 +121,8 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
             // is this user/ip etc. allowed to vote under voting regulations
             $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('item' => $item));
 
-            
-            if ($item['opendate'] > time()) {
+            $currentDate = new DateTime() ;
+            if ($item['opendate'] > $currentDate) {
                 $notyetopen = true;
             } else {
                 $notyetopen = false;
@@ -247,7 +250,8 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
             // is this user/ip etc. allowed to vote under voting regulations
             $isvoteallowed = ModUtil::apiFunc($this->name, 'user', 'isvoteallowed', array('item' => $item));
             
-            if ($item['opendate'] > time()) {
+            $currentDate = new DateTime();
+            if ($item['opendate'] > $currentDate) {
                 $notyetopen = true;
             } else {
                 $notyetopen = false;

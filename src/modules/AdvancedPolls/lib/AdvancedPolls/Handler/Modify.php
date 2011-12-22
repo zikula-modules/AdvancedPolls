@@ -19,7 +19,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * @var integer
      */
-    private $poll, $new;
+    private $poll;
 
     
 
@@ -29,8 +29,8 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
 
          $pollid = FormUtil::getPassedValue('pollid', null, "GET", FILTER_SANITIZE_NUMBER_INT);
 
-         $modvars = $this->getVars();
-         $this->view->assign($modvars);
+         $enablecategorization = $this->getVar('enablecategorization');
+         $view->assign('enablecategorization', $enablecategorization);
 
          
          if ($pollid) {
@@ -51,7 +51,7 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
                 return LogUtil::registerPermissionError();
             }
 
-            if ($modvars['enablecategorization']) {
+            if ($enablecategorization) {
                 // load the category registry util
                 if (!($class = Loader::loadClass('CategoryRegistryUtil'))) {
                     pn_exit ($this->__f('Error! Unable to load class [%s]', array('s' => 'CategoryRegistryUtil')));
@@ -63,6 +63,8 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
 
             $poll = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $pollid, 'parse' => true));
             $this->view->assign($poll);
+            
+            $view->assign('newoptioncount', 3);
         } else {
             // new poll
             
@@ -72,15 +74,16 @@ class AdvancedPolls_Handler_Modify extends Zikula_Form_AbstractHandler
             }
 
             $view->assign('templatetitle', $this->__('New poll'));
-            $view->assign('optioncount', $this->getVar('defaultoptioncount', 10));
+            $view->assign('newoptioncount', $this->getVar('defaultoptioncount', 10));
             $view->assign('options', array());
             
-            $this->new = true;
             $this->poll = new AdvancedPolls_Entity_Desc();
             $polldata = $this->poll->getAll();
                 
             
         }
+        
+        
         
         
         $multipleselect_types = array(

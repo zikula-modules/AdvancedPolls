@@ -10,8 +10,7 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * AddressBook entity class.
@@ -19,9 +18,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advancedpolls_votes")
+ * @ORM\Table(name="advanced_polls_votes")
  */
-class AdvancedPolls_Entity_Votes extends Zikula_EntityAccess
+class AdvancedPolls_Entity_VotesOld extends Zikula_EntityAccess
 {
     
     
@@ -32,36 +31,31 @@ class AdvancedPolls_Entity_Votes extends Zikula_EntityAccess
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $voteid;
+    private $pn_voteid;
     
-    
-    
-    // personal
     
     /**
      * The following are annotations which define the ip field.
      *
      * @ORM\Column(type="string", length=20, nullable="true")
      */
-    private $ip = null;
+    private $pn_ip;
+        
+    /**
+     * The following are annotations which define the time field.
+     *
+     * @ORM\Column(type="string", length=14)
+     */
+    private $pn_time;
     
-    
-    
-    /**	
-     * @ORM\Column(type="datetime")	
-     * @Gedmo\Timestampable(on="create")	
-     */	
-    private $time;
-    
-   
-    
+
     
     /**
      * The following are annotations which define the uid field.
      *
      * @ORM\Column(type="integer")
      */
-    private $uid = 0;
+    private $pn_uid;
         
         
     /**
@@ -69,7 +63,7 @@ class AdvancedPolls_Entity_Votes extends Zikula_EntityAccess
      *
      * @ORM\Column(type="integer")
      */
-    private $voterank = 0;
+    private $pn_voterank;
     
     
     /**
@@ -77,7 +71,7 @@ class AdvancedPolls_Entity_Votes extends Zikula_EntityAccess
      *
      * @ORM\Column(type="integer")
      */
-    private $pollid = 0;
+    private $pn_pollid;
     
     
     
@@ -86,42 +80,7 @@ class AdvancedPolls_Entity_Votes extends Zikula_EntityAccess
      *
      * @ORM\Column(type="integer")
      */
-    private $optionid = 0;
-    
-   
-
-    
-    public function set($value, $column) {
-        $this->$column = $value;
-    }
-    
-    
-    public function setAll($data) {
-        foreach($data as $key => $value) {           
-            $this->set($value, $key);
-        }
-    }
-    
-
-    public function getAll() {
-
-        return array(
-            'voteid'   => $this->voteid,
-            'ip'       => $this->ip,
-            'time'     => $this->time,    
-            'uid'      => $this->uid,
-            'voterank' => $this->voterank,
-            'pollid'   => $this->pollid,
-            'optionid' => $this->optionid,
-         );
-        
-    }
-    
-        
-    public function __construct()
-    {
-        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $pn_optionid;
     
     
 }

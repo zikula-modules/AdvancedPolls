@@ -367,6 +367,7 @@ class AdvancedPolls_Controller_Admin extends Zikula_AbstractController {
             LogUtil::registerStatus( $this->__('Done! Poll duplicated.'));
         }
 
+        
         // redirect the user to an appropriate page
         return System::redirect(ModUtil::url($this->name, 'admin', 'view'));
     }

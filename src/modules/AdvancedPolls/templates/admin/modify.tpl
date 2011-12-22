@@ -136,7 +136,7 @@
             </script>  
         {/foreach}
         
-        {section name="i" start=1 loop=$defaultoptioncount+1 step=1}
+        {section name="i" start=1 loop=$newoptioncount+1 step=1}
             {assign var="j" value=$smarty.section.i.index}
              <div class="z-formrow">
                 {if $j == 1}

@@ -10,7 +10,8 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 
 /**
  * AddressBook entity class.
@@ -18,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_votes")
+ * @ORM\Table(name="advancedpolls_votes")
  */
 class AdvancedPolls_Entity_Votes2 extends Zikula_EntityAccess
 {
@@ -47,14 +48,13 @@ class AdvancedPolls_Entity_Votes2 extends Zikula_EntityAccess
      * @ORM\Column(type="string", length=20)
      */
     private $ip = '';
-        
-    /**
-     * The following are annotations which define the time field.
-     *
-     * @ORM\Column(type="string", length=14)
-     */
-    private $time = '';
     
+    
+    /**	
+     * @ORM\Column(type="datetime")	
+     * @Gedmo\Timestampable(on="create")	
+     */	
+    private $time;
    
     
     
@@ -93,19 +93,11 @@ class AdvancedPolls_Entity_Votes2 extends Zikula_EntityAccess
     }
     
     
-    /*public function setAll($data) {
-        foreach($data as $key => $value) {
-            if($key == 'bday' and is_string($value) ) {
-                $value = new DateTime($value);
-            } else if($key == 'categories' ) {
-                foreach ($value as $category) {
-                    $this->categories[] = new AddressBook_Entity_CategoryMembership($category, $this);
-                }
-                continue;
-            }
-            $this->set($value, $key);
+    public function setAll($options) {
+        foreach ($options as $key => $value) {
+            $this->$key = $value;
         }
-    }*/
+    }
     
 
     public function getAll() {
@@ -117,15 +109,17 @@ class AdvancedPolls_Entity_Votes2 extends Zikula_EntityAccess
             'uid'      => $this->uid,
             'voterank' => $this->voterank,
             'pollid'   => $this->pollid,
-            'optionid' => $this->optionid,
+            'optionid' => $this->entity,
          );
         
     }
     
-        
-    public function __construct()
+    
+    
+    public function __construct($votes, $entity)
     {
-        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+        $this->setAll($votes);
+        $this->entity = $entity;
     }
     
     

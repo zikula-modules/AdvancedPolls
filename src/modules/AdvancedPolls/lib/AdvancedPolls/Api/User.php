@@ -249,7 +249,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         }
 
         //establish current date and time
-        $currentdate = time();
+        $currentdate = new DateTime();
 
         //establish poll open date and time
         $opendate = $item['opendate'];
@@ -258,7 +258,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         $closedate = $item['closedate'];
 
         //is poll open?
-        if (($currentdate >= $opendate) && (($currentdate <= $closedate) || $closedate == 0)) {
+        if (($currentdate >= $opendate) && (($currentdate <= $closedate) || $closedate == null)) {
             return true;
         } else {
             return false;
@@ -403,7 +403,8 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         // Doesn't call IsPollOpen API as this checks for both before
         // poll open date and after poll close date
         // We are only insterest in Poll close date
-        if (($closetimewithoffset < time()) and ($item['recurring'] == 1)) {
+        $currentDate = new DateTime();
+        if (($closetimewithoffset < $currentDate) and ($item['recurring'] == 1)) {
 
             
             $poll = $this->entityManager->find('AdvancedPolls_Entity_Votes', $pollid);
@@ -456,7 +457,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('AdvancedPolls::item', "$item[title]::$args[pollid]", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('AdvancedPolls::item', $item['title'].'::'.$args['pollid'], ACCESS_OVERVIEW)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -477,11 +478,6 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         $leadingvotecount = 0;
         $leadingvoteid = 0;
 
-        // for ease of backwards compatabilty lets check for a 0 option count
-        if ($item['optioncount'] == 0) {
-            $item['optioncount'] = ModUtil::getVar('AdvancedPolls', 'defaultoptioncount');
-        }
-
         
         $em = $this->getService('doctrine.entitymanager');
         $qb = $em->createQueryBuilder();
@@ -501,8 +497,8 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
             }
         }
         
-
-        for ($i = 1, $max = $item['optioncount']; $i <= $max; $i++) {
+        
+        for ($i = 1, $max = $item['number_of_votes']; $i <= $max; $i++) {
             if (!isset($votecountarray[$i])) {
                 $votecountarray[$i] = 0;
             }
@@ -547,9 +543,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         // Security check
         if (SecurityUtil::checkPermission('AdvancedPolls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
             $args['ip'] = $_SERVER['REMOTE_ADDR'];
-            $args['uid'] = UserUtil::getVar('uid');
-            $args['time'] = time();
-            
+            $args['uid'] = UserUtil::getVar('uid');            
             
             $poll = new AdvancedPolls_Entity_Votes();
             $poll->setAll($args);
@@ -645,7 +639,8 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         $lastclosed = 0;
         $lastcloseddate = 0;
         foreach ($items as $item) {
-            if ($item['opendate'] < time() && $item['closedate'] < time() && $item['closedate'] != 0 && $item['closedate'] >= $lastcloseddate) {
+            $currentDate = new DateTime();
+            if ($item['opendate'] < $currentDate && $item['closedate'] < $currentDate && $item['closedate'] != 0 && $item['closedate'] >= $lastcloseddate) {
                 $lastclosed = $item['pollid'];
                 $lastcloseddate = $item['closedate'];
             }

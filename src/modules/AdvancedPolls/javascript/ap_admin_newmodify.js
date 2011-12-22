@@ -1,8 +1,8 @@
 document.observe('dom:loaded', ap_newmodify_init_check);
 
-
+             
 function ap_newmodify_init_check()
-{
+{ 
     
     Event.observe('recurring',      'change', ap_newmodify_recurring);
     Event.observe('multipleselect', 'change', ap_newmodify_multipleselect);

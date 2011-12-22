@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Advanced Polls module for Zikula
  *
@@ -14,23 +12,23 @@
 
 class AdvancedPolls_Version extends Zikula_AbstractVersion {
 	
-	public function getMetaData() {	
-
-		$meta['displayname']     = $this->__('Advanced Polls');
-		$meta['description']     = $this->__('A comprehensive single question polling module');
-		$meta['url']             = $this->__('advancedpolls');
-		$meta['version']          = '2.0.1';
-		$meta['oldnames']        = array('advanced_polls');
-		$meta['core_min']        = '1.3.0'; // requires minimum 1.3.0 or later
-		$meta['capabilities']    = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
-		$meta['contact']         = 'Advanced Polls Development Team, Michael Ueberschaer';
-		$meta['securityschema']  = array('AdvancedPolls::item' => 'Poll Title::Poll ID',
-                                       'AdvancedPolls::' => '::');
-		$meta['dependencies']    = array(array('modname'    => 'EZComments',
-                                             	'minversion' => '3.0.0',
-                                             	'maxversion' => '',
-                                             	'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));
-
-		return $meta;
-}
+    public function getMetaData()
+    {	
+        $meta = array();
+        $meta['displayname']     = $this->__('Advanced Polls');
+        $meta['description']     = $this->__('A comprehensive single question polling module');
+        $meta['url']             = $this->__('advancedpolls');
+        $meta['version']          = '3.0.0';
+        $meta['oldnames']        = array('advanced_polls');
+        $meta['core_min']        = '1.3.0'; // requires minimum 1.3.0 or later
+        $meta['capabilities']    = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
+        $meta['contact']         = 'Advanced Polls Development Team, Michael Ueberschaer';
+        $meta['securityschema']  = array('AdvancedPolls::item' => 'Poll Title::Poll ID',
+                                'AdvancedPolls::' => '::');
+        $meta['dependencies']    = array(array('modname'    => 'EZComments',
+                                        'minversion' => '3.0.0',
+                                        'maxversion' => '',
+                                        'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));
+        return $meta;
+    }
 }

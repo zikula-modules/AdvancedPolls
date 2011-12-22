@@ -22,9 +22,11 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
             
             // create the table
             try {
-                DoctrineHelper::createSchema($this->entityManager, array('AdvancedPolls_Entity_Desc', 
-                                                                        'AdvancedPolls_Entity_Options',
-                                                                        'AdvancedPolls_Entity_Votes2'));
+                DoctrineHelper::createSchema($this->entityManager, array(
+                    'AdvancedPolls_Entity_Desc', 
+                    'AdvancedPolls_Entity_Options',
+                    'AdvancedPolls_Entity_Votes2'
+                ) );
             } catch (Exception $e) {
                 LogUtil::registerStatus($e->getMessage());
                 return false;
@@ -51,22 +53,22 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 	}
 
     /**
-    * Upgrade  the Advanced Polls module from an old version
-    * This function can be called multiple times
-    *
-    * @return bool true on success, false on failure
-    */
+     * Upgrade  the Advanced Polls module from an old version
+     * This function can be called multiple times
+     *
+     * @return bool true on success, false on failure
+     */
     public function upgrade($oldversion)
     {
         $dom = ZLanguage::getModuleDomain('AdvancedPolls');
 
         // update tables
-        $tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
+        /*$tables = array('advanced_polls_votes', 'advanced_polls_data', 'advanced_polls_desc');
         foreach ($tables as $table) {
             if (!DBUtil::changeTable($table)) {
                 return false;
             }
-        }
+        }*/
 
         switch($oldversion) {
             case '1.0':
@@ -141,14 +143,97 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
                     return $this->upgrade('2.0.1');
             case '2.0.1':
-                    // future upgrade routines
-
-                break;
+                    $this->upgrade3();
+                    break;
         }
 
         // Update successful
         return true;
 
+    }
+    
+    public function upgrade3()
+    {
+        
+        // create the table
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'AdvancedPolls_Entity_Desc', 
+                'AdvancedPolls_Entity_Options',
+                'AdvancedPolls_Entity_Votes2'
+            ) );
+        } catch (Exception $e) {
+            LogUtil::registerStatus($e->getMessage());
+            return false;
+        } 
+        
+        
+        $polls = $this->entityManager->getRepository('AdvancedPolls_Entity_DescOld')
+                                 ->findAll(); 
+        foreach($polls as $poll) {
+            
+            // get poll data
+            $polldata = $poll->getAll();
+            $opendate = $polldata['opendate'];
+            $polldata['opendate'] = new DateTime();
+            $polldata['opendate']->setTimestamp($opendate);
+            $closedate = $polldata['closedate'];
+            $polldata['closedate'] = new DateTime();
+            $polldata['closedate']->setTimestamp($closedate);
+            $pollid = $polldata['pollid'];
+            
+            
+            // get options data
+            $em = $this->getService('doctrine.entitymanager');
+            $qb = $em->createQueryBuilder();
+            $qb->select('o.pn_optiontext as optiontext, o.pn_optioncolour as optioncolour, o.pn_optionid as optionid')
+            ->from('AdvancedPolls_Entity_OptionsOld', 'o')
+            ->where('o.pn_pollid = :pollid and o.pn_optiontext != \'\'')
+            ->setParameter('pollid', $pollid);
+            $options = $qb->getQuery()->getArrayResult();
+            foreach($options as $option) {
+                $option['optioncolour'] = str_replace('#', '', $option['optioncolour']);
+                $optionid = $option['optionid'];
+                unset($option['optionid']);
+                
+                
+                // get votes
+                $em = $this->getService('doctrine.entitymanager');
+                $qb = $em->createQueryBuilder();
+                $qb->select('v.pn_ip as ip, v.pn_time as time, v.pn_uid as uid, v.pn_voterank as voterank, v.pn_pollid as pollid')
+                ->from('AdvancedPolls_Entity_VotesOld', 'v')
+                ->where('v.pn_pollid = :pollid and v.pn_optionid = :optionid')
+                ->setParameter('pollid',   $pollid)
+                ->setParameter('optionid', $optionid);
+                $votes = $qb->getQuery()->getArrayResult();
+                foreach ($votes as $vote) {
+                    // add votes to option
+                    $time = $vote['time'];
+                    $vote['time'] = new DateTime();
+                    $vote['time']->setTimestamp($time);
+                    $closedate = $polldata['closedate'];
+                    $option['votes'][] = $vote;
+                }
+
+                
+                // add otions to poll
+                $polldata['options'][] = $option;
+            }
+            
+            $poll = new AdvancedPolls_Entity_Desc();
+            $poll->setAll($polldata);
+            $this->entityManager->persist($poll);
+            $this->entityManager->flush();
+            
+            /*DoctrineHelper::dropSchema($this->entityManager, array(
+                'AdvancedPolls_Entity_DescOld', 
+                'AdvancedPolls_Entity_OptionsOld',
+                'AdvancedPolls_Entity_VotesOld'
+            ));*/
+        }
+
+        
+        
     }
 
     /**
@@ -163,15 +248,15 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
         // drop table
         DoctrineHelper::dropSchema($this->entityManager, array('AdvancedPolls_Entity_Desc', 
-                                                                'AdvancedPolls_Entity_Options',
-                                                                'AdvancedPolls_Entity_Votes2'));
+                                                               'AdvancedPolls_Entity_Options',
+                                                               'AdvancedPolls_Entity_Votes2'));
 
         // remove all module vars
         $this->delVars();
 
         // remove category registry entries
-        ModUtil::dbInfoLoad('Categories');
-        DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
+        //ModUtil::dbInfoLoad('Categories');
+        //DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
 
         // Deletion successful
         return true;
@@ -272,4 +357,5 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
             return false;
         }
     }
+
 }

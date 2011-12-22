@@ -43,13 +43,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="defaultcolor" __text="Default colour"}
-            <table>
-                <tr>
-                    <td id="defaultcolour-preview" class="colour-preview" width=80>
-                        {formtextinput id="defaultcolour" size="6" maxLength="6"}
-                    </td>
-                </tr>
-            </table>
+            {formtextinput id="defaultcolour" size="6" maxLength="6" style="width:80px;"}
         </div>
     </fieldset>
 
@@ -65,7 +59,7 @@
         'defaultcolour',
         {
             color:'#{{$defaultcolour}}',
-            previewElement:'defaultcolour-preview'
+            previewElement:'defaultcolour'
         }
     );
 </script>

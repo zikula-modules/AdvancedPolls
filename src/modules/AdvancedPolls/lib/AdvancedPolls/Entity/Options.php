@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_data")
+ * @ORM\Table(name="advancedpolls_options")
  */
 class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
 {    
@@ -61,9 +61,9 @@ class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
     /**
      * The following are annotations which define the optioncolour field.
      *
-     * @ORM\Column(type="string", length="7")
+     * @ORM\Column(type="string", length="6", nullable="true")
      */
-    private $optioncolour = 0;
+    private $optioncolour = null;
    
 
     
@@ -72,27 +72,17 @@ class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
     }
     
     
-    public function setTest($options) {
-        print_r($options);
+    public function setAll($options) {
         foreach ($options as $key => $value) {
-            $this->$key = $value;
+            if($key == 'votes' ) {
+                foreach ($value as $key => $votes) {
+                    $this->votes[] = new AdvancedPolls_Entity_Votes2($votes, $this);
+                }
+            } else {
+                $this->$key = $value;
+            }
         }
     }
-    
-    
-    /*public function setAll($data) {
-        foreach($data as $key => $value) {
-            if($key == 'bday' and is_string($value) ) {
-                $value = new DateTime($value);
-            } else if($key == 'categories' ) {
-                foreach ($value as $category) {
-                    $this->categories[] = new AddressBook_Entity_CategoryMembership($category, $this);
-                }
-                continue;
-            }
-            $this->set($value, $key);
-        }
-    }*/
     
 
     public function getAll() {
@@ -113,8 +103,14 @@ class AdvancedPolls_Entity_Options extends Zikula_EntityAccess
     public function __construct($value, $entity)
     {
         $this->votes = new Doctrine\Common\Collections\ArrayCollection();
-        $this->setTest($value);
+        $this->setAll($value);
         $this->entity = $entity;
+    }
+    
+    
+    public function getEntity()
+    {
+        return $this->entity;
     }
     
 

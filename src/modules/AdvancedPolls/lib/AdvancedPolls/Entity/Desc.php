@@ -22,7 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_desc")
+ * @ORM\Table(name="advancedpolls_polls")
  */
 class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
 {
@@ -69,14 +69,14 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
      *                mappedBy="entity", cascade={"all"}, 
      *                orphanRemoval=true)
      */
-    private $options;
+    public $options;
     
         
     public function setOptions($options) {
                 
         foreach ($this->options as $key => $value) {
             if(array_key_exists($key, $options)) {
-                $this->options[$key]->setTest($options[$key]);
+                $this->options[$key]->setAll($options[$key]);
                 unset($options[$key]);
             } else {
                 $this->options->remove($key);
@@ -245,20 +245,15 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
             'cr_uid'              => $this->cr_uid,
             'cr_date'             => $this->cr_date,
             'lu_uid'              => $this->lu_uid,
-            'lu_date'             => $this->lu_date,
+            'lu_date'             => $this->lu_date
          );
         
     }
     
-        
     public function __construct()
     {
         $this->options = new Doctrine\Common\Collections\ArrayCollection();
     }
-    
-    public function setTitle($title) {
-        $this->title = $title;
-    }
-    
+
     
 }

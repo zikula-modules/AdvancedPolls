@@ -263,9 +263,9 @@ public function duplicate($args)
     }
 
     // The user API function is called.
-    $item = $this->entityManager->getRepository('AdvancedPolls_Entity_Desc')
-                                 ->find($args['pollid']);
-
+    $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pollid' => $args['pollid'], 'parse' => true));
+    
+    
     // check for no such poll return from api function
     if ($item == false) {
         return LogUtil::registerError($this->__('Error! No such poll found.'));
@@ -276,10 +276,24 @@ public function duplicate($args)
       //  return LogUtil::registerPermissionError();
     //} else {
         
-        $new_item = clone $item;
-        $new_item->set(null, 'pollid');
-        $this->entityManager->persist($new_item);
-        $this->entityManager->flush();
+    
+    unset($item['pollid']);
+    
+    
+    foreach($item['options'] as $key => $value) {
+        unset($item['options'][$key]['optionid']);
+        unset($item['options'][$key]['votes']);
+    }
+    
+    //unset($item['options']);
+    
+    
+    
+    
+    $new_item = new AdvancedPolls_Entity_Desc();
+    $new_item->setAll($item);
+    $this->entityManager->persist($new_item);
+    $this->entityManager->flush();
         
 
         // The return value of the function is checked
