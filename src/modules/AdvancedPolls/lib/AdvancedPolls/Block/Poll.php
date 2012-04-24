@@ -161,7 +161,7 @@ public function display($blockinfo)
     $this->view->assign('blockvars', $vars);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $this->view->fetch('advancedpolls_block_poll.htm');
+    $blockinfo['content'] = $this->view->fetch('block/poll.tpl');
     return BlockUtil::themesideblock($blockinfo);
 }
 
@@ -221,7 +221,7 @@ public function modify($blockinfo)
                                      1 => __('Yes', $dom)));
 
     // Return output
-    return $this->view->fetch('advancedpolls_block_poll_modify.htm');
+    return $this->view->fetch('block/poll_modify.tpl');
 }
 
 /**

@@ -61,7 +61,7 @@ public function display($blockinfo)
     }
 
     // get the currant time
-    $currentdate = time();
+    $currentdate = new DateTime();
 
     // create a results array
     $polls = array();
@@ -83,7 +83,7 @@ public function display($blockinfo)
     $renderer->assign('polls', $polls);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $renderer->fetch('advancedpolls_block_polllist.htm');
+    $blockinfo['content'] = $renderer->fetch('block/polllist.tpl');
     return themesideblock($blockinfo);
 }
 

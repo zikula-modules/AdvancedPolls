@@ -132,7 +132,7 @@ public function display($blockinfo)
     $this->view->assign('item', $item);
 
     // Populate block info and pass to theme
-    $blockinfo['content'] = $renderer->fetch('advancedpolls_block_pollwarn.htm');
+    $blockinfo['content'] = $renderer->fetch('block/pollwarn.tpl');
     return BlockUtil::themeBlock($blockinfo);
 }
 
@@ -190,7 +190,7 @@ public function modify($blockinfo)
                                      1 => __('Yes', $dom)));
 
     // Return output
-    return $renderer->fetch('advancedpolls_block_pollwarn_modify.htm');
+    return $renderer->fetch('block/pollwarn_modify.tpl');
 }
 
 /**
