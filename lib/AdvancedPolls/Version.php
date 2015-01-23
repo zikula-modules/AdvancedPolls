@@ -28,7 +28,7 @@ class AdvancedPolls_Version extends Zikula_AbstractVersion {
         $meta['dependencies']    = array(array('modname'    => 'EZComments',
                                         'minversion' => '3.0.0',
                                         'maxversion' => '',
-                                        'status'     => PNMODULE_DEPENDENCY_RECOMMENDED));
+                                        'status'     => ModUtil::DEPENDENCY_RECOMMENDED));
         return $meta;
     }
 }
