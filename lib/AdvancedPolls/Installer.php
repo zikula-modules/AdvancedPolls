@@ -154,6 +154,22 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
     
     public function upgrade3()
     {
+        // rename old tables, if prefix exist in the system config for legacy modules
+        $prefix = $this->serviceManager['prefix'];
+        if (!empty($prefix)) {
+            $sqlQueries = array();
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_desc' . " TO advanced_polls_desc";
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_data' . " TO advanced_polls_data";
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_votes' . " TO advanced_polls_votes";
+            $connection = Doctrine_Manager::getInstance()->getConnection('default');
+            foreach ($sqlQueries as $sql) {
+                $stmt = $connection->prepare($sql);
+                try {
+                    $stmt->execute();
+                } catch (Exception $e) {
+                }   
+            }
+        }
         
         // create the table
         try {
