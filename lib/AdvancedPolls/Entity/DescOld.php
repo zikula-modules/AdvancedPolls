@@ -22,7 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_desc")
+ * @ORM\Table(name="pn_advanced_polls_desc")
  */
 class AdvancedPolls_Entity_DescOld extends Zikula_EntityAccess
 {

@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="advanced_polls_votes")
+ * @ORM\Table(name="pn_advanced_polls_votes")
  */
 class AdvancedPolls_Entity_VotesOld extends Zikula_EntityAccess
 {
