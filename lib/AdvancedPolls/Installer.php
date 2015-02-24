@@ -174,10 +174,18 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
             
             // get poll data
             $polldata = $poll->getAll();
-            $opendate = $polldata['opendate'];
+            if (substr($polldata['opendate'], 0, 10) == '1970-01-01') {
+                $opendate = null;
+            } else {
+                $opendate = $polldata['opendate'];
+            }
             $polldata['opendate'] = new DateTime();
             $polldata['opendate']->setTimestamp($opendate);
-            $closedate = $polldata['closedate'];
+            if (substr($polldata['closedate'], 0, 10) == '1970-01-01') {
+                $closedate = null;
+            } else {
+                $closedate = $polldata['closedate'];
+            }
             $polldata['closedate'] = new DateTime();
             $polldata['closedate']->setTimestamp($closedate);
             $pollid = $polldata['pollid'];
