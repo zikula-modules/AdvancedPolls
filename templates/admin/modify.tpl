@@ -119,7 +119,7 @@
         {foreach from=$options item="option" name="options"}
             <div class="z-formrow">
                 {assign var="i" value=$smarty.foreach.options.iteration}
-                {formlabel __text="Poll option $i"}
+                {formlabel __text="Poll option"|cat:" "|cat:$i}
                 <div style="white-space:nowrap">
                     {formtextinput size="50" maxLength="255" id="optiontext_$i"  group="option_texts" text=$option.optiontext}
                     {formtextinput size="6"  maxLength="6"   id="optioncolor_$i" group="option_colors" text=$option.optioncolour}
