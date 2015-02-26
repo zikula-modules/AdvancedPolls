@@ -1,0 +1,799 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula 1.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-25 10:03+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: needleapi/poll.php:42
+#, php-format
+msgid "Error! Poll ID '%s' not found."
+msgstr ""
+
+#: needleapi/poll.php:47
+msgid "Error! No needle ID provided."
+msgstr ""
+
+#: templates/plugins/function.sortordertypes.php:22
+msgid "Ascending"
+msgstr ""
+
+#: templates/plugins/function.sortordertypes.php:23
+msgid "Descending"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:22
+#: templates/admin/adminstats.tpl:36
+msgid "Vote ID"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:23
+#: templates/admin/adminstats.tpl:37
+msgid "IP address"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:24
+#: templates/admin/adminstats.tpl:38
+msgid "Time"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:25
+#: templates/admin/adminstats.tpl:39
+msgid "Username"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:26
+#: templates/admin/adminstats.tpl:40
+msgid "Vote rank"
+msgstr ""
+
+#: templates/plugins/function.sortbytypes.php:27
+#: templates/admin/adminstats.tpl:41
+msgid "Option"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:34 contenttypesapi/poll.php:20
+msgid "Poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:35
+msgid "Show a poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:215
+#: lib/AdvancedPolls/Block/Pollwarn.php:128
+#: lib/AdvancedPolls/Block/Pollwarn.php:184
+msgid "Individual Selection"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:216
+#: lib/AdvancedPolls/Block/Pollwarn.php:129
+#: lib/AdvancedPolls/Block/Pollwarn.php:185
+msgid "Latest"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:217
+#: lib/AdvancedPolls/Block/Pollwarn.php:130
+#: lib/AdvancedPolls/Block/Pollwarn.php:186
+msgid "Random"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:220
+#: lib/AdvancedPolls/Block/Pollwarn.php:189
+#: lib/AdvancedPolls/Handler/Modify.php:147
+msgid "No"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Poll.php:221
+#: lib/AdvancedPolls/Block/Pollwarn.php:190
+#: lib/AdvancedPolls/Handler/Modify.php:151
+msgid "Yes"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Polllist.php:30
+msgid "Poll list"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Polllist.php:31
+msgid "Display list of open polls"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Pollresults.php:30
+msgid "Poll results"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Pollresults.php:31
+msgid "Show results of the most recently closed poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Pollwarn.php:29
+msgid "Poll warn"
+msgstr ""
+
+#: lib/AdvancedPolls/Block/Pollwarn.php:30
+msgid "Warns if poll is unanswered"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/ModifyConfig.php:65
+msgid "Done! Module configuration updated."
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:38
+msgid "Edit poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:45
+#, php-format
+msgid "Poll with tid %s not found"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:57
+#: lib/AdvancedPolls/Controller/User.php:67
+#, php-format
+msgid "Error! Unable to load class [%s]"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:76
+msgid "New poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:92
+msgid "Single"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:96
+msgid "Multiple"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:100
+msgid "Ranked"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:109
+msgid "None"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:113
+msgid "Vote time count back"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:117
+msgid "Alphabetical"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:126
+msgid "Free"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:130
+msgid "User ID"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:134
+msgid "Cookie"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:138
+msgid "IP Address"
+msgstr ""
+
+#: lib/AdvancedPolls/Handler/Modify.php:158
+msgid "%Y-%m-%d %H:%M:%S"
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:104
+msgid "Error! Could not change the advanced polls tables."
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:109
+msgid "Error! Could not populate permalinks for existing content."
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:114
+msgid "Error! Could not create the default category."
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:119
+msgid "Error! Could not convert language codes."
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:312 lib/AdvancedPolls/Version.php:18
+#: templates/user/menu.tpl:2
+msgid "Advanced Polls"
+msgstr ""
+
+#: lib/AdvancedPolls/Installer.php:313
+msgid "Polls"
+msgstr ""
+
+#: lib/AdvancedPolls/Version.php:19
+msgid "A comprehensive single question polling module"
+msgstr ""
+
+#: lib/AdvancedPolls/Version.php:20
+msgid "advancedpolls"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:99
+msgid "Error! Could not load polls."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:157
+msgid "No poll found!"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:242 lib/AdvancedPolls/Api/User.php:289
+#: lib/AdvancedPolls/Api/User.php:389 lib/AdvancedPolls/Api/User.php:456
+#: lib/AdvancedPolls/Api/Admin.php:95 lib/AdvancedPolls/Api/Admin.php:132
+#: lib/AdvancedPolls/Api/Admin.php:188 lib/AdvancedPolls/Api/Admin.php:271
+#: lib/AdvancedPolls/Controller/User.php:230
+#: lib/AdvancedPolls/Controller/Admin.php:54
+#: lib/AdvancedPolls/Controller/Admin.php:338
+msgid "Error! No such poll found."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:365
+msgid "Error! No poll authorisation method."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:791
+msgid "Backend"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:792
+msgid "Switch to administration area."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/User.php:797 lib/AdvancedPolls/Api/Admin.php:326
+#: templates/admin/view.tpl:2
+msgid "View Polls"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/Admin.php:244
+msgid "Error! Could not load votes."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/Admin.php:320
+msgid "Frontend"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/Admin.php:321
+msgid "Switch to user area."
+msgstr ""
+
+#: lib/AdvancedPolls/Api/Admin.php:332
+msgid "Create new poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Api/Admin.php:338 templates/admin/modifyconfig.tpl:6
+msgid "Settings"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:144 templates/user/votingform.tpl:36
+#: templates/user/votingform_short.tpl:28 templates/block/poll.tpl:39
+#: templates/block/poll.tpl:41
+msgid "Vote"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:148
+#: lib/AdvancedPolls/Controller/User.php:176
+msgid "Results"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:153
+#: lib/AdvancedPolls/Controller/User.php:167
+#: lib/AdvancedPolls/Controller/User.php:181
+#: lib/AdvancedPolls/Controller/Admin.php:157
+msgid "Edit"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:163
+msgid "Preview"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:291
+msgid "Error! No template selected."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/User.php:393
+msgid "Done! Vote added."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:83
+msgid "Done! Poll deleted."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:161 templates/admin/delete.tpl:18
+msgid "Delete"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:165 templates/admin/resetvotes.tpl:1
+msgid "Reset votes"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:168 templates/admin/duplicate.tpl:1
+#: templates/admin/duplicate.tpl:18
+msgid "Duplicate poll"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:171
+msgid "Voting statistics"
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:249
+msgid "Done! Votes reset."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Admin.php:367
+msgid "Done! Poll duplicated."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Ajax.php:32
+msgid "Error! No authorization to access this module."
+msgstr ""
+
+#: lib/AdvancedPolls/Controller/Ajax.php:36
+msgid ""
+"Invalid 'CsrfToken': This probably means that you pressed the 'Back' button, "
+"or that the page 'Authkey' expired. Please refresh the page and try again."
+msgstr ""
+
+#: contenttypesapi/poll.php:25
+msgid "Display a single poll from the advanced polls module."
+msgstr ""
+
+#: contenttypesapi/poll.php:47
+msgid "No poll selected"
+msgstr ""
+
+#: templates/admin/resetvotes.tpl:10
+msgid "Do you really want to reset the votes?"
+msgstr ""
+
+#: templates/admin/resetvotes.tpl:17 templates/admin/delete.tpl:16
+#: templates/admin/duplicate.tpl:16
+msgid "Confirmation prompt"
+msgstr ""
+
+#: templates/admin/resetvotes.tpl:19 templates/admin/view.tpl:34
+#: templates/user/view.tpl:29
+msgid "Reset"
+msgstr ""
+
+#: templates/admin/resetvotes.tpl:20 templates/admin/modifyconfig.tpl:53
+#: templates/admin/delete.tpl:19 templates/admin/modify.tpl:180
+#: templates/admin/duplicate.tpl:19
+msgid "Cancel"
+msgstr ""
+
+#: templates/admin/view.tpl:13 templates/admin/view.tpl:44
+#: templates/admin/modify.tpl:33 templates/user/view.tpl:8
+#: templates/user/view.tpl:41 templates/user/view.tpl:87
+#: templates/user/view.tpl:127
+msgid "Category"
+msgstr ""
+
+#: templates/admin/view.tpl:30 templates/user/view.tpl:25
+msgid "Choose One"
+msgstr ""
+
+#: templates/admin/view.tpl:33 templates/user/view.tpl:28
+msgid "Filter"
+msgstr ""
+
+#: templates/admin/view.tpl:41
+msgid "Poll ID"
+msgstr ""
+
+#: templates/admin/view.tpl:42 templates/admin/adminstats.tpl:9
+#: templates/admin/modify.tpl:20
+msgid "Name of poll"
+msgstr ""
+
+#: templates/admin/view.tpl:46 templates/user/view.tpl:85
+msgid "Poll open date"
+msgstr ""
+
+#: templates/admin/view.tpl:47
+msgid "Is poll open?"
+msgstr ""
+
+#: templates/admin/view.tpl:48 templates/admin/modify.tpl:115
+#: templates/user/view.tpl:43 templates/user/view.tpl:89
+#: templates/user/view.tpl:129
+msgid "Options"
+msgstr ""
+
+#: templates/admin/view.tpl:78 templates/user/view.tpl:75
+#: templates/user/view.tpl:115 templates/user/view.tpl:155
+msgid "No polls found."
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:16
+msgid "General settings"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:18
+msgid "Enable categorization"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:22
+msgid "Use Reverse DNS for IP Addresses"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:26
+msgid "Items per page in admin interface"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:31
+msgid "Poll settings"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:33
+msgid "Use css poll results bars"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:37
+msgid "Scaling factor for poll results bars"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:41
+msgid "Default number of options in a poll"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:45
+msgid "Default colour"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:52 templates/admin/modify.tpl:179
+msgid "Save"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:1
+msgid "Voting Statistics"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:10 templates/admin/modify.tpl:63
+msgid "Date and time poll opens"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:11 templates/admin/modify.tpl:69
+msgid "Date and time poll closes"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:12
+msgid "Total number of votes"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:19
+msgid "Sort votes by"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:23
+msgid "Sort order"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:27
+msgid "Sort votes"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:32
+msgid "Vote history"
+msgstr ""
+
+#: templates/admin/adminstats.tpl:55
+msgid "No votes found."
+msgstr ""
+
+#: templates/admin/delete.tpl:1
+msgid "Delete poll"
+msgstr ""
+
+#: templates/admin/delete.tpl:9
+msgid "Do you really want to delete this poll?"
+msgstr ""
+
+#: templates/admin/modify.tpl:18
+msgid "Basic Information"
+msgstr ""
+
+#: templates/admin/modify.tpl:26
+msgid "PermaLink URL title"
+msgstr ""
+
+#: templates/admin/modify.tpl:28
+msgid "(Blank = auto-generate)"
+msgstr ""
+
+#: templates/admin/modify.tpl:42
+msgid "Choose Category"
+msgstr ""
+
+#: templates/admin/modify.tpl:49
+msgid "Description"
+msgstr ""
+
+#: templates/admin/modify.tpl:54
+msgid "Language"
+msgstr ""
+
+#: templates/admin/modify.tpl:60
+msgid "Timing"
+msgstr ""
+
+#: templates/admin/modify.tpl:74
+msgid "Recurring poll?"
+msgstr ""
+
+#: templates/admin/modify.tpl:78
+msgid ""
+"The following options are only relevant if a recurring poll is selected."
+msgstr ""
+
+#: templates/admin/modify.tpl:80
+msgid "Recurring offset"
+msgstr ""
+
+#: templates/admin/modify.tpl:82
+msgid "Number of hours after the close date the poll reopens."
+msgstr ""
+
+#: templates/admin/modify.tpl:85
+msgid "Recurrence interval"
+msgstr ""
+
+#: templates/admin/modify.tpl:87
+msgid "Number of days the poll will recur."
+msgstr ""
+
+#: templates/admin/modify.tpl:92
+msgid "Voting regulations"
+msgstr ""
+
+#: templates/admin/modify.tpl:94
+msgid "Poll authorisation method"
+msgstr ""
+
+#: templates/admin/modify.tpl:98
+msgid "Tiebreak method"
+msgstr ""
+
+#: templates/admin/modify.tpl:102
+msgid "Selection method"
+msgstr ""
+
+#: templates/admin/modify.tpl:106
+msgid ""
+"The following option only relevant if a multiple selection poll is selected."
+msgstr ""
+
+#: templates/admin/modify.tpl:108
+msgid "You may select "
+msgstr ""
+
+#: templates/admin/modify.tpl:110
+msgid "(-1 for Unlimited selections)"
+msgstr ""
+
+#: templates/admin/modify.tpl:122
+msgid "Poll option"
+msgstr ""
+
+#: templates/admin/modify.tpl:142
+msgid "New poll options"
+msgstr ""
+
+#: templates/admin/modify.tpl:166
+msgid "Meta data"
+msgstr ""
+
+#: templates/admin/modify.tpl:169
+#, php-format
+msgid "Created by %s"
+msgstr ""
+
+#: templates/admin/modify.tpl:170
+#, php-format
+msgid "Created on %s"
+msgstr ""
+
+#: templates/admin/modify.tpl:172
+#, php-format
+msgid "Last updated by %s"
+msgstr ""
+
+#: templates/admin/modify.tpl:173
+#, php-format
+msgid "Updated on %s"
+msgstr ""
+
+#: templates/admin/duplicate.tpl:9
+msgid "Please confirm duplication of poll."
+msgstr ""
+
+#: templates/contenttype/poll_edit.html:2
+msgid "Please enter the poll id"
+msgstr ""
+
+#: templates/user/votingform.tpl:1
+#, php-format
+msgid "Voting booth: %s"
+msgstr ""
+
+#: templates/user/votingform.tpl:6 templates/user/results.tpl:9
+#, php-format
+msgid "Category: %s"
+msgstr ""
+
+#: templates/user/votingform.tpl:17 templates/user/votingform_short.tpl:10
+#: templates/block/poll.tpl:20
+msgid "Poll options"
+msgstr ""
+
+#: templates/user/results.tpl:2
+#, php-format
+msgid "Current poll: %s"
+msgstr ""
+
+#: templates/user/results.tpl:4
+#, php-format
+msgid "Previous poll: %s"
+msgstr ""
+
+#: templates/user/results.tpl:32 templates/user/results_short.tpl:24
+#, php-format
+msgid "%s vote"
+msgid_plural "%s votes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/user/results.tpl:40 templates/user/results_short.tpl:32
+#: templates/block/poll.tpl:74 templates/block/pollresults.tpl:7
+#, php-format
+msgid "Total number of votes: %s"
+msgstr ""
+
+#: templates/user/votingform-rankedmultipleselect.tpl:2
+msgid "This is a ranked multiple selection poll."
+msgstr ""
+
+#: templates/user/votingform-rankedmultipleselect.tpl:3
+#, php-format
+msgid "You may select %s option ranked in order."
+msgid_plural "You may select %s options ranked in order."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/user/votingform-rankedmultipleselect.tpl:9
+#: templates/user/futurepoll.tpl:9
+#: templates/user/votingform-multipleselect.tpl:9
+#, php-format
+msgid "Choice %s"
+msgstr ""
+
+#: templates/user/votingform-unlimitedmultipleselect.tpl:2
+msgid "This is an unlimited multiple selection poll."
+msgstr ""
+
+#: templates/user/votingform-unlimitedmultipleselect.tpl:3
+msgid "You may select any number of options."
+msgstr ""
+
+#: templates/user/view.tpl:1
+msgid "View polls"
+msgstr ""
+
+#: templates/user/view.tpl:34
+msgid "Currently open polls"
+msgstr ""
+
+#: templates/user/view.tpl:38 templates/user/view.tpl:84
+#: templates/user/view.tpl:124
+msgid "Poll title"
+msgstr ""
+
+#: templates/user/view.tpl:39 templates/user/view.tpl:125
+msgid "Poll close date"
+msgstr ""
+
+#: templates/user/view.tpl:54
+msgid "No close date"
+msgstr ""
+
+#: templates/user/view.tpl:80
+msgid "Upcoming polls"
+msgstr ""
+
+#: templates/user/view.tpl:120
+msgid "Previous polls"
+msgstr ""
+
+#: templates/user/futurepoll.tpl:2
+#, php-format
+msgid "This poll opens on %s"
+msgstr ""
+
+#: templates/user/futurepoll.tpl:3
+#, php-format
+msgid "Future poll: %s"
+msgstr ""
+
+#: templates/user/results_short.tpl:3
+msgid "Current poll"
+msgstr ""
+
+#: templates/user/results_short.tpl:5
+msgid "Previous poll"
+msgstr ""
+
+#: templates/user/votingform-multipleselect.tpl:2
+msgid "This is a multiple selection poll."
+msgstr ""
+
+#: templates/user/votingform-multipleselect.tpl:3
+#, php-format
+msgid "You may select %s option."
+msgid_plural "You may select %s options."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/block/poll.tpl:63
+#, php-format
+msgid "The current leader in this poll is %s"
+msgstr ""
+
+#: templates/block/poll.tpl:65
+#, php-format
+msgid "Poll close date: %s"
+msgstr ""
+
+#: templates/block/poll.tpl:70 templates/block/pollresults.tpl:5
+#, php-format
+msgid "Winner: %s"
+msgstr ""
+
+#: templates/block/poll.tpl:75 templates/block/pollresults.tpl:8
+msgid "Detailed results"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:2
+msgid "Individual selection"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:4
+msgid ""
+"The selection method 'Latest' and 'Random' override this individual poll "
+"selection"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:7
+msgid "Poll to use"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:11
+msgid "Use ajax for voting form"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:15
+msgid "Display block based on open/close dates"
+msgstr ""
+
+#: templates/block/poll_modify.tpl:19
+msgid "Display results page after vote"
+msgstr ""
+
+#: templates/block/pollwarn.tpl:2
+msgid "You have not voted in the poll"
+msgstr ""

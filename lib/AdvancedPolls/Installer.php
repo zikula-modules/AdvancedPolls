@@ -7,6 +7,8 @@
  * @link https://github.com/zikula-modules/AdvancedPolls
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  */
+ 
+use \Doctrine\ORM\Mapping\ClassMetadata;
 
 class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
@@ -154,6 +156,26 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
     
     public function upgrade3()
     {
+        // change color storage
+        $defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
+        ModUtil::setVar($this->name, str_replace('#', '', $defaultcolour));
+
+        // rename old tables, if prefix exist in the system config for legacy modules
+        $prefix = $this->serviceManager['prefix'];
+        if (!empty($prefix)) {
+            $sqlQueries = array();
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_desc' . " TO advanced_polls_desc";
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_data' . " TO advanced_polls_data";
+            $sqlQueries[] = 'RENAME TABLE ' . $prefix . '_advanced_polls_votes' . " TO advanced_polls_votes";
+            $connection = Doctrine_Manager::getInstance()->getConnection('default');
+            foreach ($sqlQueries as $sql) {
+                $stmt = $connection->prepare($sql);
+                try {
+                    $stmt->execute();
+                } catch (Exception $e) {
+                }   
+            }
+        }
         
         // create the table
         try {
@@ -166,23 +188,30 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
             LogUtil::registerStatus($e->getMessage());
             return false;
         } 
-        
-        
+
+        // migrate data
         $polls = $this->entityManager->getRepository('AdvancedPolls_Entity_DescOld')
                                  ->findAll(); 
         foreach($polls as $poll) {
             
             // get poll data
             $polldata = $poll->getAll();
-            $opendate = $polldata['opendate'];
-            $polldata['opendate'] = new DateTime();
-            $polldata['opendate']->setTimestamp($opendate);
-            $closedate = $polldata['closedate'];
-            $polldata['closedate'] = new DateTime();
-            $polldata['closedate']->setTimestamp($closedate);
+            if (substr(empty($polldata['opendate']) || $polldata['opendate'], 0, 10) == '1970-01-01') {
+                $opendate = null;
+            } else {
+                $opendate = $polldata['opendate'];
+                $polldata['opendate'] = new DateTime();
+                $polldata['opendate']->setTimestamp($opendate);
+            }
+            if (empty($polldata['closedate']) || substr($polldata['closedate'], 0, 10) == '1970-01-01') {
+                $polldata['closedate'] = null;
+            } else {
+                $closedate = $polldata['closedate'];
+                $polldata['closedate'] = new DateTime();
+                $polldata['closedate']->setTimestamp($closedate);
+            }
             $pollid = $polldata['pollid'];
-            
-            
+
             // get options data
             $em = $this->getService('doctrine.entitymanager');
             $qb = $em->createQueryBuilder();
@@ -195,7 +224,6 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                 $option['optioncolour'] = str_replace('#', '', $option['optioncolour']);
                 $optionid = $option['optionid'];
                 unset($option['optionid']);
-                
                 
                 // get votes
                 $em = $this->getService('doctrine.entitymanager');
@@ -211,16 +239,19 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                     $time = $vote['time'];
                     $vote['time'] = new DateTime();
                     $vote['time']->setTimestamp($time);
-                    $closedate = $polldata['closedate'];
                     $option['votes'][] = $vote;
                 }
-
                 
                 // add otions to poll
                 $polldata['options'][] = $option;
             }
             
             $poll = new AdvancedPolls_Entity_Desc();
+            // disable auto-incrementing during import
+            $metadata = $this->entityManager->getClassMetaData('AdvancedPolls_Entity_Desc');
+            //$old_generator_type_Desc = $metadata->generatorType;
+            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+            // import data
             $poll->setAll($polldata);
             $this->entityManager->persist($poll);
             $this->entityManager->flush();
@@ -231,9 +262,6 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                 'AdvancedPolls_Entity_VotesOld'
             ));*/
         }
-
-        
-        
     }
 
     /**
