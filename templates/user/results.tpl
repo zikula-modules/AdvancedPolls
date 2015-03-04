@@ -9,8 +9,6 @@
     <h4>{gt text="Category: %s" tag1=$item.__CATEGORIES__.Main.display_name.$lang|safetext}</h4>
 {/if}
 
-
-
 <p>{$item.description|safehtml}</p>
 <table class="z-datatable">
     <tbody>
@@ -40,3 +38,5 @@
 <p>{gt text="Total number of votes: %s" tag1=$item.number_of_votes domain="module_advancedpolls"}</p>
 
 {modurl modname='advancedpolls' type='user' func='display' pollid=$pollid assign=returnurl}
+
+{notifydisplayhooks eventname='advancedpolls.ui_hooks.polls.display_view' id=$pollid}

@@ -30,7 +30,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         if (isset($args['desc']) && $args['desc']) {
             $args['desc'] = 'DESC';
         } else {
-            $args['desc'] = '';
+            $args['desc'] = 'ASC';
         }
         
         $items = array();
@@ -54,7 +54,7 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         $qb = $em->createQueryBuilder();
         $qb->select('d')
            ->from('AdvancedPolls_Entity_Desc', 'd')
-           ->orderBy('d.pollid');
+           ->orderBy('d.pollid', $args['desc']);
         
         
         if (System::getVar('multilingual') == 1 && $args['checkml']) {
