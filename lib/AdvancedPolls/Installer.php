@@ -50,6 +50,10 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
             $this->setVar('defaultoptioncount', '12');
             $this->setVar('enablecategorization', true);
 
+            // Register hooks
+            HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+            HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
+
             // Initialisation successful
             return true;
 	}
@@ -79,17 +83,17 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                 $this->setVar('userdateformat', 'r');
                 $this->setVar('usereversedns', 0);
                 $this->setVar('scalingfactor', 4);
-                return '1.1';
+
             case '1.1':
                 // Add additional module variables in this version
                 $this->setVar('adminitemsperpage', 25);
                 $this->setVar('useritemsperpage', 25);
                 $this->setVar('defaultcolour', '#000000');
                 $this->setVar('defaultoptioncount', '12');
-                return '1.5';
+
             case '1.5':
                 // all changes in this release are covered by the table change
-                return '1.51';
+
             case '1.51':
                 // setup categorisation
                 $this->setVar('enablecategorization', true);
@@ -99,7 +103,6 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                 $this->detVar( 'userdateformat');
                 $this->detVar( 'useritemsperpage');
                 ModUtil::dbInfoLoad($this->name, 'advanced_polls', true);
-
 
                 //change table: remove votingmethod column
                 if (!DBUtil::changeTable('advanced_polls_desc')) {
@@ -120,33 +123,37 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
                 if (!$this->updatePollsLanguages()) {
                     return LogUtil::registerError (__('Error! Could not convert language codes.', $dom));
                 }
-                return $this->upgrade('2.0.0');
+
             case '2.0.0':
                 // get the values of module vars            
-                    $usereveredns = ModUtil::getVar($this->name, 'usereversedns');
-                    $scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
-                    $cssbars = ModUtil::getVar($this->name, 'cssbars');
-                    $adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
-                    $defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
-                    $defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
-                    $enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
+                $usereveredns = ModUtil::getVar($this->name, 'usereversedns');
+                $scalingfactor = ModUtil::getVar($this->name, 'scalingfactor');
+                $cssbars = ModUtil::getVar($this->name, 'cssbars');
+                $adminitemsperpage = ModUtil::getVar($this->name, 'adminitemsperpage');
+                $defaultcolour = ModUtil::getVar($this->name, 'defaultcolour');
+                $defaultoptioncount = ModUtil::getVar($this->name, 'defaultoptioncount');
+                $enablecategorization = ModUtil::getVar($this->name, 'enablecategorization');        	
 
-                    $this->delVars();
+                $this->delVars();
 
-                    // Set up an initial value for each module variable
+                // Set up an initial value for each module variable
+                $this->setVar('usereversedns', $usereveredns);
+                $this->setVar('scalingfactor', $scalingfactor);
+                $this->setVar('cssbars', $cssbars);
+                $this->setVar('adminitemsperpage', $adminitemsperpage);
+                $this->setVar('defaultcolour', $defaultcolour);
+                $this->setVar('defaultoptioncount', $defaultoptioncount);
+                $this->setVar('enablecategorization', $enablecategorization);
 
-                    $this->setVar('usereversedns', $usereveredns);
-                    $this->setVar('scalingfactor', $scalingfactor);
-                    $this->setVar('cssbars', $cssbars);
-                    $this->setVar('adminitemsperpage', $adminitemsperpage);
-                    $this->setVar('defaultcolour', $defaultcolour);
-                    $this->setVar('defaultoptioncount', $defaultoptioncount);
-                    $this->setVar('enablecategorization', $enablecategorization);
-
-                    return $this->upgrade('2.0.1');
             case '2.0.1':
-                    $this->upgrade3();
-                    break;
+                // New table structures
+                //$this->upgrade3();
+
+                // Register hooks
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
+        HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
         }
 
         // Update successful
@@ -285,6 +292,10 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
         // remove category registry entries
         //ModUtil::dbInfoLoad('Categories');
         //DBUtil::deleteWhere('categories_registry', "modname = 'AdvancedPolls'");    
+
+        // Remove hooks
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
+        HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
 
         // Deletion successful
         return true;

@@ -114,8 +114,6 @@
     <fieldset>
         <legend>{gt text="Options"}</legend>
         
-        
-        
         {foreach from=$options item="option" name="options"}
             <div class="z-formrow">
                 {assign var="i" value=$smarty.foreach.options.iteration}
@@ -160,9 +158,8 @@
                 );
             </script>   
         {/section}
-          
-
     </fieldset>
+
     <fieldset>
         <legend>{gt text="Meta data"}</legend>
         <ul style="margin: 7px 0px 7px 20px">
@@ -175,12 +172,11 @@
         </ul>
     </fieldset>
 
+    {notifydisplayhooks eventname='advancedpolls.ui_hooks.polls.form_edit' id=$pollid}
     
     <div class="z-formbuttons z-buttons">
         {formbutton class="z-bt-ok" commandName="save" __text="Save"}
         {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
     </div>
-
-
 {/form}
 {adminfooter}
