@@ -147,11 +147,9 @@ class AdvancedPolls_Installer extends Zikula_AbstractInstaller {
 
             case '2.0.1':
                 // New table structures
-                //$this->upgrade3();
+                $this->upgrade3();
 
                 // Register hooks
-        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
-        HookUtil::unregisterProviderBundles($this->version->getHookProviderBundles());
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
         }
