@@ -35,7 +35,7 @@ class AdvancedPolls_Entity_OptionsOld extends Zikula_EntityAccess
     /**
      * The following are annotations which define the optiontext field.
      *
-     * @ORM\Column(type="string", length=255, nullable="false")
+     * @ORM\Column(type="string", length=255)
      */
     private $pn_optiontext;
 
@@ -51,7 +51,7 @@ class AdvancedPolls_Entity_OptionsOld extends Zikula_EntityAccess
     /**
      * The following are annotations which define the optioncolour field.
      *
-     * @ORM\Column(type="string", length="7")
+     * @ORM\Column(type="string", length=7)
      */
     private $pn_optioncolour;
     

@@ -37,7 +37,7 @@ class AdvancedPolls_Entity_VotesOld extends Zikula_EntityAccess
     /**
      * The following are annotations which define the ip field.
      *
-     * @ORM\Column(type="string", length=20, nullable="true")
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $pn_ip;
         

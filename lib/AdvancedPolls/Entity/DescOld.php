@@ -57,7 +57,7 @@ class AdvancedPolls_Entity_DescOld extends Zikula_EntityAccess
     /**
      * The following are annotations which define the description field.
      *
-     * @ORM\Column(type="text", nullable="true")
+     * @ORM\Column(type="text")
      */
     private $pn_description;
     

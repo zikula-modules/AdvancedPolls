@@ -127,7 +127,9 @@ class AdvancedPolls_Controller_Admin extends Zikula_AbstractController {
 
             // Assign a default property - mateo
             if (empty($property) || !in_array($property, $properties)) {
-                $property = $properties[0];
+                if (isset($properties[0])) {
+                    $property = $properties[0];
+                }
             }
 
             // plan ahead for ML features
