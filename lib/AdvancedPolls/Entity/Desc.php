@@ -59,7 +59,7 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private $description = null;
     
     
     /**
