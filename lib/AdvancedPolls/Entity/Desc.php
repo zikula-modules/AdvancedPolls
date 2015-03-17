@@ -57,7 +57,7 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     /**
      * The following are annotations which define the description field.
      *
-     * @ORM\Column(type="text", nullable="true")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description = null;
     
@@ -94,7 +94,7 @@ class AdvancedPolls_Entity_Desc extends Zikula_EntityAccess
     /**
      * The following are annotations which define the opendate field.
      *
-     * @ORM\Column(type="datetime", nullable="true")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $opendate = null;
     

@@ -57,7 +57,7 @@
             {if $enablecategorization}
             <td>
                 {foreach from=$poll.__CATEGORIES__ name=cat item=cat}
-                {array_field_isset assign="catname" array=$cat.display_name field=$lang returnValue=1}
+                {array_field assign="catname" array=$cat.display_name field=$lang returnValue=1}
                 {if $catname eq ''}{assign var="catname" value=$cat.name}{/if}
                 {$catname}
                 {if !$smarty.foreach.cat.last}<br />{/if}
@@ -97,7 +97,7 @@
             {if $enablecategorization}
             <td>
                 {foreach from=$poll.__CATEGORIES__ name=cat item=cat}
-                {array_field_isset assign="catname" array=$cat.display_name field=$lang returnValue=1}
+                {array_field assign="catname" array=$cat.display_name field=$lang returnValue=1}
                 {if $catname eq ''}{assign var="catname" value=$cat.name}{/if}
                 {$catname}
                 {if !$smarty.foreach.cat.last}<br />{/if}
@@ -137,7 +137,7 @@
             {if $enablecategorization}
             <td>
                 {foreach from=$poll.__CATEGORIES__ name=cat item=cat}
-                {array_field_isset assign="catname" array=$cat.display_name field=$lang returnValue=1}
+                {array_field assign="catname" array=$cat.display_name field=$lang returnValue=1}
                 {if $catname eq ''}{assign var="catname" value=$cat.name}{/if}
                 {$catname}
                 {if !$smarty.foreach.cat.last}<br />{/if}

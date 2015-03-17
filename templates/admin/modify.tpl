@@ -32,15 +32,17 @@
             <div class="z-formrow">
                 {formlabel for="title"  __text='Category'}
                 {nocache}
+                {if isset($catregistry)}
                 {foreach from=$catregistry key='property' item='category'}
-                {array_field_isset array=$item.__CATEGORIES__ field=$property assign='catExists'}
+                {array_field array=$item.__CATEGORIES__ field=$property assign='catExists'}
                 {if $catExists}
-                {array_field_isset array=$item.__CATEGORIES__.$property field="id" returnValue=1 assign='selectedValue'}
+                {array_field array=$item.__CATEGORIES__.$property field="id" returnValue=1 assign='selectedValue'}
                 {else}
                 {assign var="selectedValue" value="0"}
                 {/if}
                 <div class="z-formlist">{selector_category category=$category name="poll[__CATEGORIES__][$property]" field="id" selectedValue=$selectedValue defaultValue="0" __defaultText='Choose Category'}</div>
                 {/foreach}
+                {/if}
                 {/nocache}
             </div>
         {/if}
