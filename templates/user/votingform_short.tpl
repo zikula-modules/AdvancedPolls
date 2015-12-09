@@ -1,3 +1,4 @@
+{setmetatag name='description' value=$item.description|strip_tags|trim|truncate:255}
 {gt text="Voting booth: %s" tag1=$item.title|safetext assign=templatetitle}
 <h3>{$templatetitle}</h3>
 <p>{$item.description|safehtml}</p>

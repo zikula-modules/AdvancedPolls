@@ -18,13 +18,13 @@
         <legend>{gt text="Basic Information"}</legend>
         <div class="z-formrow">
             {formlabel for="title"  __text='Name of poll'}
-            {formtextinput size="50" maxLength="100" id="title" mandatory=true"}
+            {formtextinput size="50" maxLength="255" id="title" mandatory=true"}
         </div>
 
                 
         <div class="z-formrow">
             {formlabel for="urltitle"  __text='PermaLink URL title'}
-            {formtextinput size="50" maxLength="120" id="urltitle"}
+            {formtextinput size="50" maxLength="255" id="urltitle"}
             <em class="z-formnote z-sub">{gt text="(Blank = auto-generate)"}</em>
         </div>
         
@@ -49,7 +49,7 @@
                 
         <div class="z-formrow">
             {formlabel for="description"  __text='Description'}
-            {formtextinput textMode="multiline" size="50" maxLength="100" id="description" rows="10" cols="50"}
+            {formtextinput textMode="multiline" size="50" maxLength="0" id="description" rows="10" cols="50"}
         </div>
         
         <div class="z-formrow">

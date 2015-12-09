@@ -1,3 +1,4 @@
+{setmetatag name='description' value=$item.description|strip_tags|trim|truncate:255}
 {if $ispollopen eq 1}
     {gt text="Current poll: %s" tag1=$item.title|safetext assign=templatetitle}
 {else}
