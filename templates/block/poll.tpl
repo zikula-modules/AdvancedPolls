@@ -1,5 +1,5 @@
 <div id="advancedpollblockcontent">
-    <h2>{$item.title|safetext}</h2>
+    <h3>{$item.title|safetext}</h3>
     <p>{$item.description|safehtml}</p>
 
     {if $ispollopen and $isvoteallowed}
@@ -10,7 +10,7 @@
 
     <form id="advancedpollsvoteform" class="z-form" action="{modurl modname="advancedpolls" type="user" func="vote"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name=csrftoken module="advancedpolls"}" />
+            <input type="hidden" name="authid" value="{insert name=csrftoken module='advancedpolls'}" />
             <input type="hidden" name="pollid" value="{$pollid|safetext}" />
             <input type="hidden" name="title" value="{$item.title|safehtml}" />
             <input type="hidden" name="results" value="1" />
@@ -36,9 +36,9 @@
             </fieldset>
             <div class="z-formbuttons">
                 {if $blockvars.ajaxvoting}
-                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text="Vote" domain="module_advancedpolls"}" />
+                <input onclick="javascript:advancedpolls_vote();" name="vote" type="button" value="{gt text='Vote' domain='module_advancedpolls'}" />
                 {else}
-                <input name="submit" type="submit" value="{gt text="Vote" domain="module_advancedpolls"}" />
+                <input name="submit" type="submit" value="{gt text='Vote' domain='module_advancedpolls'}" />
                 {/if}
             </div>
         </div>
@@ -72,6 +72,6 @@
         {/if}
         {/if}
         <li>{gt text="Total number of votes: %s" tag1=$votecounts.totalvotecount|default:0 domain="module_advancedpolls"}</li>
-        <li><a href="{modurl modname="advancedpolls" type="user" func="display" pollid=$pollid}">{gt text="Detailed results" domain="module_advancedpolls"}</a></li>
+        <li><a href="{modurl modname='advancedpolls' type='user' func='display' pollid=$pollid}">{gt text="Detailed results" domain="module_advancedpolls"}</a></li>
     </ul>
 </div>
