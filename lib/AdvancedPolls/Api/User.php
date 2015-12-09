@@ -543,7 +543,10 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
         // Security check
         if (SecurityUtil::checkPermission('AdvancedPolls::item',"{$args['title']}::{$args['pollid']}",ACCESS_COMMENT)) {
             $args['ip'] = $_SERVER['REMOTE_ADDR'];
-            $args['uid'] = UserUtil::getVar('uid');            
+            $args['uid'] = UserUtil::getVar('uid');
+            if (!$args['uid']) {
+                $args['uid'] = 0;
+            }
             
             $poll = new AdvancedPolls_Entity_Votes();
             $poll->setAll($args);

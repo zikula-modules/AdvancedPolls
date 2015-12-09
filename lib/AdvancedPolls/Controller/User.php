@@ -387,7 +387,11 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
                         }
                     }
                 }
+            } else {
+                return LogUtil::registerPermissionError();
             }
+        } else {
+            return LogUtil::registerPermissionError();
         }
 
         LogUtil::registerStatus( $this->__('Done! Vote added.'));
