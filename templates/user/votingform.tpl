@@ -1,3 +1,4 @@
+{setmetatag name='description' value=$item.description|strip_tags|trim|truncate:255}
 {gt text="Voting booth: %s" tag1=$item.title|safetext assign=templatetitle}
 {include file="user/menu.tpl"}
 
@@ -9,7 +10,7 @@
 
 <form class="z-form" id="advanced_polls_admin_modify" action="{modurl modname='advancedpolls' type='user' func='vote'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
-        <input type="hidden" name="authid" value="{insert name=csrftoken module="advancedpolls"}" />
+        <input type="hidden" name="authid" value="{insert name=csrftoken module='advancedpolls'}" />
         <input type="hidden" name="pollid" value="{$pollid|safetext}" />
         <input type="hidden" name="title" value="{$item.title|safehtml}" />
         <input type="hidden" name="results" value="1" />
@@ -33,7 +34,7 @@
             {/if}
         </fieldset>
         <div class="z-formbuttons">
-            <input name="submit" type="submit" value="{gt text="Vote"}" />
+            <input name="submit" type="submit" value="{gt text='Vote'}" />
         </div>
     </div>
 </form>
