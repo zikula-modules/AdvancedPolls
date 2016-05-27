@@ -207,11 +207,10 @@ class AdvancedPolls_Controller_User extends Zikula_AbstractController {
     */
     public function display($args)
     {
-
-        $pollid   = FormUtil::getPassedValue('pollid', isset($args['pollid']) ? $args['pollid'] : null, 'GET');
-        $title    = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'GET');
-        $results  = FormUtil::getPassedValue('results', isset($args['results']) ? $args['results'] : null, 'GET');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
+        $pollid = $this->request->query->filter('pollid', $args['pollid'], FILTER_SANITIZE_NUMBER_INT);
+        $title = $this->request->query->filter('title', $args['title'], FILTER_SANITIZE_STRING);
+        $results = $this->request->query->filter('results', '');
+        $objectid = $this->request->query->filter('objectid', '', FILTER_SANITIZE_NUMBER_INT);
         if (!empty($objectid)) {
             $pollid = $objectid;
         }
