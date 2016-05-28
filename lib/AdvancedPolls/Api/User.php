@@ -139,9 +139,11 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
             return false;
         }
         
-        
-        $em = $this->getService('doctrine.entitymanager');
-        $qb = $em->createQueryBuilder();
+        $em = $this->getService('doctrine.entitymanager');        
+
+        if ($args['pollid'] > 0) {
+
+        $qb = $em->createQueryBuilder();       	
         $qb->select('d, o, v')
            ->from('AdvancedPolls_Entity_Desc', 'd')
            ->where('d.pollid = :pollid AND (v.pollid = :pollid OR v.pollid IS NULL)')
@@ -149,19 +151,53 @@ class AdvancedPolls_Api_User extends Zikula_AbstractApi {
            ->leftJoin('d.options', 'o')
            ->leftJoin('o.votes', 'v');
         
-        $query = $qb->getQuery();
-        $poll = $query->getArrayResult();
+        	$query = $qb->getQuery();
+        	$poll = $query->getArrayResult();        
+        }
+        if ($args['title'] != '') {
+        	$qb2 = $em->createQueryBuilder();
+        	$qb2->select('e')
+        	->from('AdvancedPolls_Entity_Desc', 'e')
+        	->where('e.urltitle = :title')
+        	->setParameter('title', $args['title'] );
+        	
+        	$query2 = $qb2->getQuery();
+        	$poll2 = $query2->getArrayResult();
+        }       
         
+        if ($poll2[0]['pollid'] > 0 && $args['title'] != '') {
+        $qb3 = $em->createQueryBuilder();
+        $qb3->select('d, o, v')
+           ->from('AdvancedPolls_Entity_Desc', 'd')
+           ->where('d.pollid = :pollid AND (v.pollid = :pollid OR v.pollid IS NULL)')
+           ->setParameter('pollid', $poll2[0]['pollid'] )
+           ->leftJoin('d.options', 'o')
+           ->leftJoin('o.votes', 'v');
+        	
+        	$query3 = $qb3->getQuery();
+        	$poll3 = $query3->getArrayResult();
+        }     
         
-        if(count($poll) < 1) {
+        if(count($poll) < 1 && count($poll3) < 1) {
             LogUtil::registerStatus($this->__('No poll found!'));
         }
         
-        $poll = $poll[0];
         
-        $poll['number_of_votes'] = 0;
-        foreach($poll['options'] as $option) {
-            $poll['number_of_votes'] += count($option['votes']);
+        if (count($poll) > 0) {
+        	$poll = $poll[0];
+        
+        	$poll['number_of_votes'] = 0;
+        		foreach($poll['options'] as $option) {
+            		$poll['number_of_votes'] += count($option['votes']);
+        }
+        } 
+        if (count($poll3) > 0) {
+        	$poll = $poll3[0];
+        	
+        	$poll['number_of_votes'] = 0;
+        		foreach($poll['options'] as $option) {
+        			$poll['number_of_votes'] += count($option['votes']);
+        	}        	
         }
 
         // Return the item array

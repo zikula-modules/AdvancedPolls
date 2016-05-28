@@ -124,7 +124,7 @@ public function vote()
     $renderer->assign('ajaxvoting', true);
 
     // Populate block info and pass to theme
-    $result = $renderer->fetch('advancedpolls_block_pollresults.htm');
+    $result = $renderer->fetch('block/poll_results.tpl');
 
     // return the new content for the block
     return array('result' => $result);
